@@ -5,15 +5,47 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    {{-- <a wire:navigate href="{{ route('dashboard') }}">
                         <x-application-mark class="block h-9 w-auto" />
+                    </a> --}}
+                    <a wire:navigate href="{{ route('dashboard') }}">
+                        <span class="sr-only">Libe.dev logo</span>
+                        <div class="flex items-center group">
+                            <x-libe-dev-logo class="w-10 rounded-none rounded-l" />
+                            <img class=" ml-[-0.128rem] w-[5.5rem] rounded-r" src="{{ asset('images/games/nes_controller.png') }}" alt="">
+                        </div>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Home') }}
+                    </x-nav-link>
+                    <x-nav-link href="#" 
+                        {{-- :active="request()->routeIs('dashboard')" --}}
+                    >
+                        {{ __('Super NES') }}
+                    </x-nav-link>
+                    <x-nav-link href="#" 
+                        {{-- :active="request()->routeIs('dashboard')" --}}
+                    >
+                        {{ __('NES') }}
+                    </x-nav-link>
+                    <x-nav-link href="#" 
+                        {{-- :active="request()->routeIs('dashboard')" --}}
+                    >
+                        {{ __('Arcade') }}
+                    </x-nav-link>
+                    <x-nav-link href="#" 
+                        {{-- :active="request()->routeIs('dashboard')" --}}
+                    >
+                        {{ __('Atari 2600') }}
+                    </x-nav-link>
+                    <x-nav-link href="#" 
+                        {{-- :active="request()->routeIs('dashboard')" --}}
+                    >
+                        {{ __('PC') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -25,7 +57,7 @@
                         <x-dropdown align="right" width="60">
                             <x-slot name="trigger">
                                 <span class="inline-flex rounded-md">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
+                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-2xl leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
                                         {{ Auth::user()->currentTeam->name }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -38,7 +70,7 @@
                             <x-slot name="content">
                                 <div class="w-60">
                                     <!-- Team Management -->
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                    <div class="block px-4 py-2 text-gray-400">
                                         {{ __('Manage Team') }}
                                     </div>
 
@@ -57,7 +89,7 @@
                                     @if (Auth::user()->allTeams()->count() > 1)
                                         <div class="border-t border-gray-200 dark:border-gray-600"></div>
 
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                        <div class="block px-4 py-2 text-gray-400">
                                             {{ __('Switch Teams') }}
                                         </div>
 
@@ -76,12 +108,12 @@
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                <button class="flex text-2xl border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                                     <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
+                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-2xl leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
                                         {{ Auth::user()->name }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -94,7 +126,7 @@
 
                         <x-slot name="content">
                             <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
+                            <div class="block px-4 py-2 text-gray-400">
                                 {{ __('Manage Account') }}
                             </div>
 
@@ -115,7 +147,7 @@
                                 @csrf
 
                                 <x-dropdown-link href="{{ route('logout') }}"
-                                         @click.prevent="$root.submit();">
+                                        @click.prevent="$root.submit();">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>
@@ -155,7 +187,7 @@
 
                 <div>
                     <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="font-medium text-2xl text-gray-500">{{ Auth::user()->email }}</div>
                 </div>
             </div>
 
@@ -185,7 +217,7 @@
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="border-t border-gray-200 dark:border-gray-600"></div>
 
-                    <div class="block px-4 py-2 text-xs text-gray-400">
+                    <div class="block px-4 py-2 text-gray-400">
                         {{ __('Manage Team') }}
                     </div>
 
@@ -204,7 +236,7 @@
                     @if (Auth::user()->allTeams()->count() > 1)
                         <div class="border-t border-gray-200 dark:border-gray-600"></div>
 
-                        <div class="block px-4 py-2 text-xs text-gray-400">
+                        <div class="block px-4 py-2 text-gray-400">
                             {{ __('Switch Teams') }}
                         </div>
 
