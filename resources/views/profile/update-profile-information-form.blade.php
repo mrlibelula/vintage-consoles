@@ -69,7 +69,7 @@
                 <p class="text-2xl mt-2 dark:text-white">
                     {{ __('Your email address is unverified.') }}
 
-                    <button type="button" class="underline text-2xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 dark:focus:ring-offset-gray-800" wire:click.prevent="sendEmailVerification">
+                    <button type="button" class="underline text-2xl text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-900 dark:hover:text-cod-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 dark:focus:ring-offset-cod-gray-800" wire:click.prevent="sendEmailVerification">
                         {{ __('Click here to re-send the verification email.') }}
                     </button>
                 </p>
@@ -84,12 +84,14 @@
     </x-slot>
 
     <x-slot name="actions">
-        <x-action-message class="mr-3" on="saved">
-            {{ __('Saved.') }}
-        </x-action-message>
-
-        <x-button wire:loading.attr="disabled" wire:target="photo">
-            {{ __('Save') }}
-        </x-button>
+        
+        <div class="flex items-center gap-x-6">
+            <x-button wire:loading.attr="disabled" wire:target="photo">
+                {{ __('Save') }}
+            </x-button>
+            <x-action-message class="mr-3" on="saved">
+                {{ __('Saved 👍') }}
+            </x-action-message>
+        </div>
     </x-slot>
 </x-form-section>

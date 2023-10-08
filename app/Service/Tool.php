@@ -129,14 +129,14 @@ class Tool
      * @param array $array_of_arrays
      * @param string $find_key
      * @param [type] $find_value
-     * @return array|\Illuminate\Support\Collection
+     * @return array
      */
-    public static function findItemByKey(array $array_of_arrays, string $find_key, $find_value): array|\Illuminate\Support\Collection
+    public static function findItemByKey(array $array_of_arrays, string $find_key, $find_value): array
     {
         foreach ($array_of_arrays as $key => $array) {
             if (array_key_exists($find_key, $array)) {
                 if ($array[$find_key] == $find_value) {
-                    return collect([$key => $array]);
+                    return collect([$key => $array])->first();
                 }
             }
         }

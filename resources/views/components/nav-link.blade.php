@@ -2,8 +2,8 @@
 
 @php
 $classes = ($active ?? false)
-            ? 'inline-flex items-center px-1 pt-1 border-b-2 border-sky-400 dark:border-sky-600 text-2xl leading-5 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-sky-700 transition duration-150 ease-in-out'
-            : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-2xl leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out';
+            ? 'sepia_ inline-flex whitespace-nowrap items-center px-1 pt-1 border-b-[4.7px] border-rose-400 dark:border-rose-600 text-xl leading-5 text-cod-gray-900 dark:text-cod-gray-100 focus:outline-none focus:border-rose-700 transition duration-300 ease-in-out'
+            : 'sepia_ inline-flex whitespace-nowrap items-center px-1 pt-1 border-b-[4.7px] border-transparent text-xl leading-5 text-cod-gray-500 dark:text-cod-gray-400 hover:text-cod-gray-700 dark:hover:text-rose-600 hover:border-cod-gray-300 dark:hover:border-cod-gray-700 focus:outline-none focus:text-cod-gray-700 dark:focus:text-cod-gray-300 focus:border-cod-gray-300 dark:focus:border-cod-gray-700 transition duration-300 ease-in-out';
 @endphp
 
 <a wire:navigate {{ $attributes->merge(['class' => $classes]) }}>

@@ -1,63 +1,43 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false }" class="bg-white dark:bg-cod-gray-900">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto px-4 xl:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            <div class="flex">
+            <div class="flex w-full">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    {{-- <a wire:navigate href="{{ route('dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
-                    </a> --}}
-                    <a wire:navigate href="{{ route('dashboard') }}">
-                        <span class="sr-only">Libe.dev logo</span>
-                        <div class="flex items-center group">
-                            <x-libe-dev-logo class="w-10 rounded-none rounded-l" />
-                            <img class=" ml-[-0.128rem] w-[5.5rem] rounded-r" src="{{ asset('images/games/nes_controller.png') }}" alt="">
-                        </div>
-                    </a>
+                    <x-logo />
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-8 xl:-my-px xl:ml-10 xl:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Home') }}
+                        {{ __('Consoles') }}
                     </x-nav-link>
+
                     <x-nav-link href="#" 
-                        {{-- :active="request()->routeIs('dashboard')" --}}
+                        {{-- :active="request()->routeIs('hof')" --}}
                     >
-                        {{ __('Super NES') }}
+                        {{ __('HOF') }}
                     </x-nav-link>
-                    <x-nav-link href="#" 
-                        {{-- :active="request()->routeIs('dashboard')" --}}
-                    >
-                        {{ __('NES') }}
-                    </x-nav-link>
-                    <x-nav-link href="#" 
-                        {{-- :active="request()->routeIs('dashboard')" --}}
-                    >
-                        {{ __('Arcade') }}
-                    </x-nav-link>
-                    <x-nav-link href="#" 
-                        {{-- :active="request()->routeIs('dashboard')" --}}
-                    >
-                        {{ __('Atari 2600') }}
-                    </x-nav-link>
-                    <x-nav-link href="#" 
-                        {{-- :active="request()->routeIs('dashboard')" --}}
-                    >
-                        {{ __('PC') }}
-                    </x-nav-link>
+                    
                 </div>
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
+            <!-- search bar -->
+            <div class="relative w-full flex gap-x-2 items-center justify-between">
+                <x-input class="absolute h-[1.8rem] w-full text-xl px-8" placeholder="Search games" />
+                <x-icons.magnify class=" absolute mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-600" />
+                <x-icons.x class="absolute right-0 mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-600 cursor-pointer" />
+            </div>
+
+            <div class="hidden xl:flex xl:items-center xl:ml-6">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ml-3 relative">
                         <x-dropdown align="right" width="60">
                             <x-slot name="trigger">
                                 <span class="inline-flex rounded-md">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-2xl leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
+                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-2xl leading-4 font-medium rounded-md text-cod-gray-500 dark:text-cod-gray-400 bg-white dark:bg-cod-gray-900 hover:text-cod-gray-700 dark:hover:text-cod-gray-300 focus:outline-none focus:bg-cod-gray-50 dark:focus:bg-cod-gray-700 active:bg-cod-gray-50 dark:active:bg-cod-gray-700 transition ease-in-out duration-150">
                                         {{ Auth::user()->currentTeam->name }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -70,7 +50,7 @@
                             <x-slot name="content">
                                 <div class="w-60">
                                     <!-- Team Management -->
-                                    <div class="block px-4 py-2 text-gray-400">
+                                    <div class="block px-4 py-2 text-cod-gray-400">
                                         {{ __('Manage Team') }}
                                     </div>
 
@@ -87,9 +67,9 @@
 
                                     <!-- Team Switcher -->
                                     @if (Auth::user()->allTeams()->count() > 1)
-                                        <div class="border-t border-gray-200 dark:border-gray-600"></div>
+                                        <div class="border-t border-cod-gray-200 dark:border-cod-gray-600"></div>
 
-                                        <div class="block px-4 py-2 text-gray-400">
+                                        <div class="block px-4 py-2 text-cod-gray-400">
                                             {{ __('Switch Teams') }}
                                         </div>
 
@@ -102,18 +82,18 @@
                         </x-dropdown>
                     </div>
                 @endif
-
+                
                 <!-- Settings Dropdown -->
                 <div class="ml-3 relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <button class="flex text-2xl border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                <button class="flex text-2xl border-2 border-transparent rounded-full focus:outline-none focus:border-cod-gray-300 transition">
                                     <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
-                                <span class="inline-flex rounded-md">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-2xl leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
+                                <span class="inline-flex rounded-md mt-0.5">
+                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-xl leading-4 font-medium rounded-md text-cod-gray-500 dark:text-cod-gray-400 bg-white dark:bg-cod-gray-900 hover:text-cod-gray-700 dark:hover:text-cod-gray-300 focus:outline-none focus:bg-cod-gray-50 dark:focus:bg-cod-gray-700 active:bg-cod-gray-50 dark:active:bg-cod-gray-700 transition ease-in-out duration-150 sepia_">
                                         {{ Auth::user()->name }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -126,7 +106,7 @@
 
                         <x-slot name="content">
                             <!-- Account Management -->
-                            <div class="block px-4 py-2 text-gray-400">
+                            <div class="block px-4 py-2 text-cod-gray-400 sepia_">
                                 {{ __('Manage Account') }}
                             </div>
 
@@ -140,25 +120,26 @@
                                 </x-dropdown-link>
                             @endif
 
-                            <div class="border-t border-gray-200 dark:border-gray-600"></div>
+                            <div class="border-t border-cod-gray-200 dark:border-cod-gray-600"></div>
 
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
 
-                                <x-dropdown-link href="{{ route('logout') }}"
+                                <a href="{{ route('logout') }}" class="block w-full px-4 py-2 text-left text-xl leading-5 text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-100 dark:hover:bg-rose-600 dark:hover:text-white focus:outline-none focus:bg-cod-gray-100 dark:focus:bg-cod-gray-900 transition duration-150 ease-in-out sepia_"
                                         @click.prevent="$root.submit();">
                                     {{ __('Log Out') }}
-                                </x-dropdown-link>
+                                </a>
                             </form>
                         </x-slot>
                     </x-dropdown>
                 </div>
+
             </div>
 
             <!-- Hamburger -->
-            <div class="-mr-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
+            <div class="ml-4 flex items-center xl:hidden">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-cod-gray-400 dark:text-cod-gray-500 hover:text-cod-gray-500 dark:hover:text-cod-gray-400 hover:bg-cod-gray-100 dark:hover:bg-cod-gray-900 focus:outline-none focus:bg-cod-gray-100 dark:focus:bg-cod-gray-900 focus:text-cod-gray-500 dark:focus:text-cod-gray-400 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -169,15 +150,15 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden xl:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Consoles') }}
             </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+        <div class="pt-4 pb-1 border-t border-cod-gray-200 dark:border-cod-gray-600">
             <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                     <div class="shrink-0 mr-3">
@@ -186,13 +167,19 @@
                 @endif
 
                 <div>
-                    <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-2xl text-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="font-medium text-base text-cod-gray-800 dark:text-cod-gray-200">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-2xl text-cod-gray-500">{{ Auth::user()->email }}</div>
                 </div>
             </div>
 
             <div class="mt-3 space-y-1">
                 <!-- Account Management -->
+                <x-responsive-nav-link href="#" 
+                    {{-- :active="request()->routeIs('profile.show')" --}}
+                    >
+                    {{ __('HOF') }}
+                </x-responsive-nav-link>
+
                 <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
@@ -207,17 +194,17 @@
                 <form method="POST" action="{{ route('logout') }}" x-data>
                     @csrf
 
-                    <x-responsive-nav-link href="{{ route('logout') }}"
-                                   @click.prevent="$root.submit();">
+                    <a href="{{ route('logout') }}" class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-lg text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-800 dark:hover:text-cod-gray-200 hover:bg-cod-gray-50 dark:hover:bg-rose-900/50 hover:border-cod-gray-300 dark:hover:border-rose-600 focus:outline-none focus:text-cod-gray-800 dark:focus:text-cod-gray-200 focus:bg-cod-gray-50 dark:focus:bg-cod-gray-700 focus:border-cod-gray-300 dark:focus:border-cod-gray-600 transition duration-300 ease-in-out"
+                        @click.prevent="$root.submit();">
                         {{ __('Log Out') }}
-                    </x-responsive-nav-link>
+                    </a>
                 </form>
 
                 <!-- Team Management -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="border-t border-gray-200 dark:border-gray-600"></div>
+                    <div class="border-t border-cod-gray-200 dark:border-cod-gray-600"></div>
 
-                    <div class="block px-4 py-2 text-gray-400">
+                    <div class="block px-4 py-2 text-cod-gray-400">
                         {{ __('Manage Team') }}
                     </div>
 
@@ -234,9 +221,9 @@
 
                     <!-- Team Switcher -->
                     @if (Auth::user()->allTeams()->count() > 1)
-                        <div class="border-t border-gray-200 dark:border-gray-600"></div>
+                        <div class="border-t border-cod-gray-200 dark:border-cod-gray-600"></div>
 
-                        <div class="block px-4 py-2 text-gray-400">
+                        <div class="block px-4 py-2 text-cod-gray-400">
                             {{ __('Switch Teams') }}
                         </div>
 

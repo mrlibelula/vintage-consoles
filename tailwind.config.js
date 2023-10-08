@@ -17,6 +17,22 @@ export default {
                 // sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 sans: ['VT323', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'cod-gray': {
+                    DEFAULT: '#181818',
+                    50: '#C5C5C5',
+                    100: '#BBBBBB',
+                    200: '#A7A7A7',
+                    300: '#929292',
+                    400: '#7E7E7E',
+                    500: '#6A6A6A',
+                    600: '#555555',
+                    700: '#414141',
+                    800: '#2C2C2C',
+                    900: '#181818',
+                    950: '#0A0A0A'
+                },
+            }
         },
     },
 

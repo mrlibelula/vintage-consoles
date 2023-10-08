@@ -1,0 +1,696 @@
+{
+    "consoles": [
+        {
+            "id": 1,
+            "long_name": "Nintendo Entertainment System",
+            "short_name": "NES",
+            "description": "The Nintendo Entertainment System (NES), often referred to as the NES, is a landmark home video game console released by Nintendo. It was first introduced in North America in 1985, marking a significant turning point in the history of video games. The NES played a pivotal role in revitalizing the video game industry, which had experienced a downturn in the early 1980s due to a saturation of poor-quality games.",
+            "console_logo": "https://logodownload.org/wp-content/uploads/2017/04/nintendo-logo-1-1.png",
+            "console_icon": "images/games/nes.png",
+            "console_bgs": [
+                "https://i.blogs.es/ecc6a7/nes-fondo/1366_2000.jpg"
+            ],
+            "manufacturer": "Nintendo",
+            "release_year": "1985",
+            "specs": {
+                "cpu": "8-bit microprocessor, Ricoh 2A03 (a modified version of the MOS Technology 6502) running at 1.79 MHz (PAL regions) or 1.66 MHz (NTSC regions)",
+                "memory": "16-bit address bus (64KB of addressable memory)",
+                "graphics": "256x240 pixels for NTSC regions (North America and Japan) and 256x224 pixels for PAL regions (Europe and Australia). The NES supports a color palette of 52 colors. It could display up to 64 sprites on the screen at a time",
+                "audio": "Five sound channels. Is capable of producing stereo sound; however, many games used monaural audio due to the limitations of the console's hardware and the prevalence of mono televisions at the time.",
+                "input": "Controller: The NES uses a rectangular controller with a distinctive cross-shaped directional pad (D-pad) on the left, and two red buttons, labeled \"A\" and \"B\" on the right. This controller design became iconic and served as a template for future game controllers. It has a \"Start\" button and a \"Select\" button, both located in the center of the controller. Wired connection",
+                "media_format": "Cartridges: NES games were distributed on cartridges, often referred to as \"game paks\". These cartridges contained the game's program code, graphics, sound data, and other assets.",
+                "media_format_capacity": "NES cartridges came in various capacities, ranging from 8 kilobytes (KB) to 1 megabyte (MB) of ROM storage, with the most common size being 128 KB and 256 KB.",
+                "operating_system": "",
+                "bios": "Lack of traditional BIOS, direct hardware access. Cartridge-Based System: The NES relied on cartridges that contained both the game code and data. When a game cartridge was inserted, it typically contained everything needed to run the game, including any initialization routines."
+            },
+            "community_links": [
+                {
+                    "community_name": "Reddit - r/nes",
+                    "url": "https://www.reddit.com/r/nes/",
+                    "description": "A subreddit dedicated to NES enthusiasts, where you can discuss games, seek advice, and share your NES-related experiences."
+                },
+                {
+                    "community_name": "Nnintendolife",
+                    "url": "https://www.nintendolife.com/",
+                    "description": "A website that covers Nintendo news, including articles about NES games, reviews, and retrospectives."
+                },
+                {
+                    "community_name": "The Gaming Historian",
+                    "url": "https://www.youtube.com/user/mcfrosticles",
+                    "description": "The Gaming Historian, hosted by Norman Caruso, provides in-depth historical documentaries about video game topics, including the NES. It offers detailed retrospectives on NES games and the history of Nintendo."
+                }
+            ],
+            "options": {},
+            "games": [
+                {
+                    "id": 1,
+                    "title": "Super Mario Bros. + Duck Hunt",
+                    "release_year": "1985",
+                    "publisher": "Nintendo",
+                    "genres": [
+                        {
+                            "name": "platformer",
+                            "description": "\"Super Mario Bros.\" is one of the most iconic platforming games in video game history. Players control Mario as he navigates through various levels, jumping on enemies, collecting power-ups, and ultimately attempting to rescue Princess Toadstool from the villainous Bowser."
+                        },
+                        {
+                            "name": "shooter-light-gun",
+                            "description": "\"Duck Hunt\" is a light gun shooting game where players use the NES Zapper light gun accessory to aim and shoot at ducks as they fly across the screen. The objective is to hit as many ducks as possible to score points."
+                        }
+                    ],
+                    "description": "\"Super Mario Bros.\" is a timeless platforming adventure that introduced players to the world of Mario, the heroic plumber. In the game, players assume the role of Mario and embark on a quest to rescue Princess Toadstool from the clutches of the villainous Bowser. Players navigate through a variety of colorful and challenging levels filled with enemies, obstacles, and power-ups. Mario can jump on enemies to defeat them or collect power-ups like the Super Mushroom to grow larger and gain special abilities. With memorable music and level design, \"Super Mario Bros.\" became an instant classic and laid the foundation for the entire Super Mario franchise. \"Duck Hunt\" is a lighthearted shooting game that makes use of the NES Zapper light gun accessory. In this game, players take on the role of a hunter with a trusty hunting dog by their side. The objective is to shoot down flying ducks that appear on the screen by aiming the Zapper and pulling the trigger. Players can enjoy multiple game modes, including single ducks and pairs of ducks, each offering its own set of challenges. The game keeps track of players' accuracy and scores, providing a fun and competitive experience for friends and family.",
+                    "rating": "0.89",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Super Mario Bros. + Duck Hunt (U) [!].nes",
+                    "box": "https://i.blogs.es/bff63e/smb_art/450_1000.jpeg",
+                    "poster": "https://i.pinimg.com/originals/0f/0a/90/0f0a90dc7b31d6bfc6b9ab60abc2cd52.jpg",
+                    "cartridge": "https://i.etsystatic.com/18453998/r/il/f2e2e7/2876090128/il_fullxfull.2876090128_iuys.jpg",
+                    "screenshots": [
+                        "https://gandoriongames.com/cdn/shop/products/SuperMarioBros.DuckHuntNintendoNES-GandorionGames_b594110f-818a-4c03-8c47-b56c155bfb18.jpg?v=1619816044",
+                        "https://i.ytimg.com/vi/JMImj6EC8jM/sddefault.jpg?sqp=-oaymwEmCIAFEOAD8quKqQMa8AEB-AHoBIAC4AOKAgwIABABGEMgQihyMA8=&rs=AOn4CLCQMd0d5lANaxmOM65VXL0WkTj9zA",
+                        "https://i.pinimg.com/originals/4d/fd/8e/4dfd8e5d36d5ed136b6dda4b90ab6128.jpg",
+                        "https://e.rpp-noticias.io/normal/2021/04/02/344134_1077698.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 2,
+                    "title": "Megaman 2",
+                    "release_year": "1988",
+                    "publisher": "Capcom",
+                    "genres": [
+                        {
+                            "name": "action",
+                            "description": "\"Mega Man 2\" is an action game at its core. Players control the titular character, Mega Man, as he progresses through a series of challenging levels, battling enemies and bosses in real-time action."
+                        },
+                        {
+                            "name": "platformer",
+                            "description": "\"Mega Man 2\" features platforming elements, with players guiding Mega Man through various platforms, obstacles, and hazards. Precise jumping and maneuvering are essential to progress through the game."
+                        },
+                        {
+                            "name": "run-and-gun",
+                            "description": "As Mega Man, players use an arm cannon to shoot projectiles at enemies while moving through the levels. This run-and-gun gameplay is a central mechanic in the game."
+                        },
+                        {
+                            "name": "side-scrolling",
+                            "description": "\"Mega Man 2\" is a side-scrolling game, with the action taking place on a 2D plane as players move from left to right or vice versa through each level."
+                        },
+                        {
+                            "name": "shooter",
+                            "description": "The game includes shooter elements, as Mega Man can acquire different weapon upgrades, each with unique projectile types, and use them to defeat enemies and bosses."
+                        },
+                        {
+                            "name": "action-adventure",
+                            "description": "While primarily an action-platformer, \"Mega Man 2\" also involves exploration and progression, with players choosing which order to tackle the game's eight initial stages before facing off against the final boss."
+                        }
+                    ],
+                    "description": "\"Mega Man 2\" is a beloved NES classic that epitomizes action-platformer excellence. Players step into the futuristic world of Mega Man, a heroic robot created by Dr. Light, on a mission to thwart the diabolical Dr. Wily's world-domination scheme. This iconic title is renowned for its challenging 2D platforming gameplay, precision-based action, and creative level design. Each of the eight Robot Master stages presents a unique theme, with a challenging boss fight at the end. Mega Man can acquire a variety of special weapons from defeated bosses, adding strategic depth. With a memorable soundtrack and enduring appeal, it remains a timeless gem in gaming history.",
+                    "rating": "0.87",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "MEGAMAN2.NES",
+                    "box": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOjcpzdRlMqaudqOTlHnabho-TCRhPC0_3TQc0iMN_IVOqTqqdsZZwtRxzT2XqIIur9aY&usqp=CAU",
+                    "poster": "https://upload.wikimedia.org/wikipedia/en/b/be/Megaman2_box.jpg",
+                    "cartridge": "https://http2.mlstatic.com/D_NQ_NP_611375-MLM49961599013_052022-O.webp",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/15734964-mega-man-2-nes-metal-mans-stage.png",
+                        "https://cdn.mobygames.com/screenshots/15735078-mega-man-2-nes-wood-mans-stage.png",
+                        "https://cdn.mobygames.com/screenshots/15735051-mega-man-2-nes-quick-mans-stage.png",
+                        "https://www.nesfiles.com/NES/Megaman_2/water.png",
+                        "https://jogoveio.com.br/wp-content/uploads/2020/04/83371-mega-man-2-nes-screenshot-bubble-man-s-stage.png",
+                        "https://i.ytimg.com/vi/jrjy00qfww8/hqdefault.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 3,
+                    "title": "The Adventures of Dizzy",
+                    "release_year": "1991",
+                    "publisher": "Codemasters",
+                    "genres": [
+                        {
+                            "name": "platform-adventure",
+                            "description": "\"The Adventures of Dizzy\" combines platforming gameplay with adventure elements. Players control Dizzy, the egg-shaped protagonist, as they navigate various levels, solve puzzles, collect items, and interact with characters to progress through the game."
+                        }
+                    ],
+                    "description": "Dizzy, the egg-shaped character, became popular through games developed by Codemasters on home computers but did not have an official NES release.",
+                    "rating": "0.69",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Fantastic Adventures of Dizzy, The (Unl) [!].nes",
+                    "box": "https://i0.wp.com/www.arcadeattack.co.uk/wp-content/uploads/2016/11/Fantastic-Dizzy-NES-Banner.png?w=600&ssl=1",
+                    "poster": "https://m.media-amazon.com/images/I/51s0AHl3vUL.jpg",
+                    "cartridge": "https://m.media-amazon.com/images/I/51wzizjz19L._AC_UF1000,1000_QL80_.jpg",
+                    "screenshots": [
+                        "https://i0.wp.com/www.arcadeattack.co.uk/wp-content/uploads/2016/11/Fantastic-Dizzy-NES-1-300x263.png?resize=350%2C307",
+                        "https://i.ytimg.com/vi/fha8FEynhfs/hqdefault.jpg",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyoM23cd2kdD68WYEbAqn1T_8pxWpJxpodPwvZ4vRDzwk6lDCzLnR4bvHMLCGffdogaDo&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1CXoUKlhZ_SvdWO8jwXrZyDEGEQHUyKEHQ5cc9JdWvCFf2yRTd_fG_N-TCQRNV3ZFWSY&usqp=CAU",
+                        "https://tcrf.net/images/4/43/TFAoD-EndlessFall.png",
+                        "https://i0.wp.com/www.arcadeattack.co.uk/wp-content/uploads/2016/11/Fantastic-Dizzy-NES-2.png?resize=350%2C306"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 4,
+                    "title": "Super Mario Bros. 3",
+                    "release_year": "1988",
+                    "publisher": "Nintendo",
+                    "genres": [
+                        {
+                            "name": "platformer",
+                            "description": "The core gameplay of \"Super Mario Bros. 3\" revolves around platforming, where players control Mario or Luigi as they traverse a series of levels filled with obstacles, enemies, and various platforms."
+                        },
+                        {
+                            "name": "action-adventure",
+                            "description": "While primarily a platformer, \"Super Mario Bros. 3\" incorporates some action-adventure elements, such as exploration and item collection. Players can access an overworld map and choose different paths, discover secrets, and acquire power-ups and items."
+                        },
+                        {
+                            "name": "side-scrolling",
+                            "description": "The game features a side-scrolling perspective, with players moving horizontally through the levels, similar to other classic Mario games."
+                        },
+                        {
+                            "name": "multiplayer",
+                            "description": "\"Super Mario Bros. 3\" introduces multiplayer gameplay, allowing two players to take turns or cooperate in completing levels and stages."
+                        },
+                        {
+                            "name": "puzzle-platformer",
+                            "description": "Certain levels and sections of the game involve puzzle-solving elements, requiring players to figure out how to advance by using items, switches, or platforms strategically."
+                        },
+                        {
+                            "name": "mini-games",
+                            "description": "The game includes mini-games that provide players with opportunities to earn extra lives, power-ups, and other rewards."
+                        }
+                    ],
+                    "description": "\"Super Mario Bros. 3\" is an iconic NES platformer that sends players on a grand adventure to rescue Princess Toadstool from the clutches of Bowser. Players control Mario or Luigi, navigating a diverse world map filled with unique lands and levels. The game showcases creative level design, power-ups like Super Mushrooms and Super Leaves for flying, and suits that grant special abilities. Its innovative inventory system adds depth, while hidden secrets and Warp Whistles provide exploration incentives. With engaging two-player co-op, memorable boss battles, and a charming aesthetic, it's a timeless classic celebrated for its innovation, gameplay, and enduring appeal.",
+                    "rating": "0.93",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Super Mario Bros. 3 (U) (PRG1) [!].nes",
+                    "box": "https://cdn02.nintendo-europe.com/media/images/10_share_images/games_15/virtual_console_wii_u_7/H2x1_WiiUVC_SuperMarioBros3_image1600w.jpg",
+                    "poster": "https://commondatastorage.googleapis.com/images.pricecharting.com/AMIfv96pkx_1CLdpo4ramwFSypnxD0S-B0cujK82bGHcS-H7cXgpzqmNWW_SN-2ahqsq7IRMdjkSAu12KE3MTA54w5Yl41sPvWvkfkdkqKR2sbfmqs5IJ7Alrt2QwrD7r3r8kL1s3ywDPFt1XMbGToG6taMoP9r22w/240.jpg",
+                    "cartridge": "https://www.nesfiles.com/NES/Super_Mario_Bros_3/Super_Mario_Bros_3_cart.jpg",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/10144510-super-mario-bros-3-nes-starting-the-game.jpg",
+                        "https://www.nintendotimes.com/wp-content/uploads/2019/12/Super-Mario-Bros-3-9.png",
+                        "https://cdn.mobygames.com/screenshots/15926874-super-mario-bros-3-nes-world-5.png",
+                        "https://cdn.mobygames.com/screenshots/15926907-super-mario-bros-3-nes-high-in-the-clouds.png",
+                        "https://cdn.mobygames.com/screenshots/15933604-super-mario-bros-3-nes-fighting-a-boss.png",
+                        "https://cdn.mobygames.com/screenshots/15926694-super-mario-bros-3-nes-swimming-in-world-3.png",
+                        "https://cdn.mobygames.com/screenshots/4752806-super-mario-bros-3-nes-bowsers-castle-world-8.png",
+                        "https://preview.redd.it/super-mario-bros-3-sequel-screenshots-from-my-wip-hack-v0-lnc5ub8bp40b1.png?width=640&crop=smart&auto=webp&s=f329806100d31ce310112788fe4f783d80bb4647"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 5,
+                    "title": "The Simpsons - Bart Vs. the World",
+                    "release_year": "1991",
+                    "publisher": "Acclaim Entertainment",
+                    "genres": [
+                        {
+                            "name": "platformer",
+                            "description": "The core gameplay of the game revolves around platforming, where players control Bart Simpson as he navigates through various levels, jumps between platforms, and overcomes obstacles."
+                        },
+                        {
+                            "name": "action",
+                            "description": "The game includes action elements, with Bart having to defeat enemies and avoid hazards using various power-ups and abilities."
+                        },
+                        {
+                            "name": "adventure",
+                            "description": "While primarily a platformer, the game also incorporates adventure elements, such as exploration, item collection, and puzzle-solving as players progress through different levels and locations."
+                        }
+                    ],
+                    "description": "\"The Simpsons: Bart vs. the World\" is a classic NES game released in 1991. In this side-scrolling platformer, players assume the role of Bart Simpson as he embarks on a globe-trotting adventure to recover the family's missing Krustyland tickets. The game features diverse locations, each with its unique challenges and enemies, including Egypt, Antarctica, and more. Bart can utilize various weapons and power-ups to defeat foes and bosses while collecting essential items. With its engaging gameplay, humorous references to the popular TV series, and vibrant 8-bit graphics, \"Bart vs. the World\" offers fans and gamers an entertaining journey through the world of Springfield's favorite troublemaker.",
+                    "rating": "0.75",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Simpsons, The - Bart Vs. the World (U) [!].nes",
+                    "box": "https://www.gogglebob.com/pics/fgc3/485platform.gif",
+                    "poster": "https://commondatastorage.googleapis.com/images.pricecharting.com/AMIfv95rKtnHVMGHVDjd4uDcYkDFlEt417-tG1I43sFwHsLQrF4h6nXKXD_NuqezlV6PgpqFKZqvfm3bCoHYpjRw_jdZm0f2wfymGH5OEP6POac5ikMW9SKH2C4fKOLufH0Oj_gccmVB0aiTIF4hTX0PFawd_JL-GA/240.jpg",
+                    "cartridge": "https://www.retrogamezone.fr/wp-content/uploads/2020/03/Retro-Game-Zone-%E2%80%93-The-Simpsons-Bart-vs.-the-World-%E2%80%93-Cartouche-Face.jpg",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/10199955-the-simpsons-bart-vs-the-world-nes-meeting-chinese-on-the-chines.jpg",
+                        "https://www.lemonamiga.com/games/media/screens/full/simpsons_-_bart_vs_the_world/simpsons_-_bart_vs_the_world_06.png",
+                        "https://gamefabrique.com/storage/screenshots/gg/the-simpsons-bart-vs-the-world-03.png",
+                        "https://cdn.mobygames.com/screenshots/265937-the-simpsons-bart-vs-the-world-nes-puzzle.jpg",
+                        "https://www.myabandonware.com/media/screenshots/t/the-simpsons-bart-vs-the-world-b58/the-simpsons-bart-vs-the-world_11.gif",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg70_V_s-7b2Z_1S3EFqfFOhH-k1VphpjejA&usqp=CAU"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 6,
+                    "title": "Snake Rattle 'n' Roll",
+                    "release_year": "1990",
+                    "publisher": "Nintendo",
+                    "genres": [
+                        {
+                            "name": "action-adventure",
+                            "description": "It combines elements of both genres, with players controlling snakes as they navigate various levels, eat colored pellets, and battle enemies to reach the goal."
+                        }
+                    ],
+                    "description": "\"Snake Rattle 'n' Roll\" is a unique NES game released in 1990. It's an action-packed, isometric, multiplayer adventure where players control colorful snakes trying to gain entry into \"Bigfoot's\" mountain. The goal is to collect enough colored balls and subsequently weigh down the scales at the mountain's entrance to open the door. Players must avoid enemies, jump over obstacles, and strategically compete or cooperate with a friend in two-player mode. The game is known for its challenging platforming, quirky characters, and wacky sense of humor. With its mix of cooperative and competitive gameplay, it's a memorable and entertaining NES classic.",
+                    "rating": "0.88",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Snake Rattle n Roll (USA).nes",
+                    "box": "https://i.gifer.com/origin/0c/0cd3c0fbda8c54dba777dc4176244ada.gif",
+                    "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSIhsXE5dv6yZ1chLbRGgvF1g96fk4VgjEhC41eanExsyEGzm4m7DNEF1li_3naez4LmQ&usqp=CAU",
+                    "cartridge": "https://commondatastorage.googleapis.com/images.pricecharting.com/AMIfv94WDqr4WSzpV6UXwa8kiz_uuMtvZbXzWhQgeSNJZMVJbjlt4HpvD0a-lkNDrpmTFKUadmVzb2W-22IshjkRD6p6bA2DEnRuJjeH1BF9mdGTrxlZxMg-UZ7OkhnFa4kS78Mudmg-CcQcjRFCb0HzocGtWyXazA/240.jpg",
+                    "screenshots": [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOpx4k7XVuixo6cWQXk_9DriZyBZeTgKDEVVsZFW9LU-U2FshkZMNBLyqn2qxug73Id9U&usqp=CAU",
+                        "https://upload.wikimedia.org/wikipedia/en/c/c3/Snakerattlenroll.png",
+                        "https://i.ytimg.com/vi/mF19LhEM8Q8/maxresdefault.jpg",
+                        "https://i.ytimg.com/vi/r1aFoGEWHFA/hqdefault.jpg",
+                        "https://r.mprd.se/fup/up/56930-Snake_Rattle_n_Roll_(USA)-1.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 7,
+                    "title": "Excitebike",
+                    "release_year": "1984",
+                    "publisher": "Nintendo",
+                    "genres": [
+                        {
+                            "name": "racing",
+                            "description": "The core gameplay of \"Excitebike\" revolves around motorcycle racing. Players compete against the clock and, in some modes, against computer-controlled opponents, navigating a series of tracks filled with jumps and obstacles. The objective is to complete the tracks as quickly as possible."
+                        },
+                        {
+                            "name": "motocross",
+                            "description": "As a sub-genre of racing, \"Excitebike\" specifically focuses on motocross, a type of off-road motorcycle racing. Players need to master the art of maneuvering their bikes on various terrains, including dirt tracks with ramps and obstacles."
+                        }
+                    ],
+                    "description": "\"Excitebike\" is a classic NES game released in 1985, offering high-speed motocross racing excitement. Players take on the role of a daring dirt bike rider, tackling a series of challenging tracks filled with jumps, ramps, and obstacles. The game features both solo time trials and competitive modes where you can race against computer-controlled opponents. Precision control and strategic use of turbo boosts are essential to victory. \"Excitebike\" is known for its addictive gameplay, creating a thrilling experience as you strive for faster lap times and avoid overheating your bike. Its simple yet engaging design has made it a timeless favorite among gamers.",
+                    "rating": "0.72",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Excitebike (Japan, USA).nes",
+                    "box": "https://p4.wallpaperbetter.com/wallpaper/666/817/196/video-game-excitebike-hd-wallpaper-preview.jpg",
+                    "poster": "https://m.media-amazon.com/images/I/51sWMGiayBL._AC_.jpg",
+                    "cartridge": "https://www.nerdgasm.ca/wp-content/uploads/2022/04/excitebike-nes-cart-compress.jpg",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/1284194-excitebike-nes-blue-track.png",
+                        "https://cdn.mobygames.com/screenshots/1281522-excitebike-nes-a-simple-obstacle.png",
+                        "https://www.pjsgames.com/cdn/shop/products/Excitebike-NES-Nintendo-Game-Screenshot-1_1024x.jpg?v=1474595217",
+                        "https://www.retrogames.cz/games/055/NES_03.gif",
+                        "https://i1.ytimg.com/vi/PIJ2lqSVF7k/mqdefault.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "long_name": "Super Nintendo Entertainment System",
+            "short_name": "SNES",
+            "description": "The Super Nintendo Entertainment System (SNES), released in 1990, is a legendary 16-bit home video game console by Nintendo. It's renowned for its iconic game library, featuring classics like Super Mario World and The Legend of Zelda: A Link to the Past. The SNES remains cherished for its role in gaming history.",
+            "console_logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/SNES_logo.svg/1200px-SNES_logo.svg.png",
+            "console_icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/SNES_US.png/1024px-SNES_US.png",
+            "console_bgs": [
+                "https://i.pinimg.com/originals/36/b0/c7/36b0c77ae2bdc83ff3653543abd81da8.png"
+            ],
+            "manufacturer": "Nintendo",
+            "release_year": "1990",
+            "specs": {
+                "cpu": "Ricoh 5A22, a custom 16-bit processor running at 3.58 MHz.",
+                "memory": "128 KB (including both main and video RAM).",
+                "graphics": "Custom Picture Processing Unit (PPU) and a Sony S-SMP audio processor. The SNES could display 32,768 colors, although only 256 could be displayed simultaneously on-screen. The standard resolution for SNES games was 256x224 pixels, but some games could use a higher resolution mode.",
+                "audio": "8-channel Sony SPC700 sound processor, capable of producing stereo sound.",
+                "input": "",
+                "media_format": "Cartridges.",
+                "media_format_capacity": "Ranging from 2MB to 48MB in capacity.",
+                "operating_system": "",
+                "bios": "It has a basic BIOS (Basic Input/Output System) that primarily handled initialization tasks and provided some essential functions for the hardware."
+            },
+            "community_links": [
+                {
+                    "community_name": "Reddit - r/snes",
+                    "url": "https://www.reddit.com/r/snes/",
+                    "description": "A subreddit dedicated to the Super Nintendo Entertainment System. It's a vibrant community where fans discuss SNES games, hardware, emulation, and share nostalgia."
+                },
+                {
+                    "community_name": "SNES Central",
+                    "url": "http://snescentral.com/",
+                    "description": "SNES Central is a website dedicated to preserving the history of the SNES. It features articles, reviews, and information about unreleased games and prototypes."
+                }
+            ],
+            "options": {},
+            "games": [
+                {
+                    "id": 1,
+                    "title": "Donkey Kong Country",
+                    "release_year": "1994",
+                    "publisher": "Nintendo",
+                    "genres": [
+                        {
+                            "name": "platform",
+                            "description": "\"Donkey Kong Country\" is a classic 2D platformer known for its innovative pre-rendered 3D graphics. Players control Donkey Kong and Diddy Kong as they traverse a series of challenging levels, jumping on enemies, swinging from vines, and collecting items. The core gameplay involves precise platforming and timing to navigate obstacles."
+                        },
+                        {
+                            "name": "action",
+                            "description": "The game includes action elements, such as defeating enemies and bosses using various techniques and teaming up with different characters to access hidden areas and power-ups. The action-packed gameplay keeps players engaged throughout their adventure."
+                        },
+                        {
+                            "name": "adventure",
+                            "description": "\"Donkey Kong Country\" takes players on an adventurous journey through a variety of environments, from lush jungles to underground caverns and factory settings. The game's story unfolds as players progress, adding depth to the overall adventure."
+                        }
+                    ],
+                    "description": "\"Donkey Kong Country\" for the SNES, released in 1994, is a groundbreaking platformer that redefined 2D gaming. Players control Donkey Kong and Diddy Kong as they embark on a quest to recover their stolen banana hoard from the villainous King K. Rool. The game wows with its stunning pre-rendered 3D graphics, innovative for its time, and intricate level design. With lush jungle settings, minecart rides, and underwater challenges, it offers diverse gameplay experiences. The game's precise platforming, memorable characters, and captivating soundtrack make it a beloved classic, setting a high bar for platformers on the SNES and in the gaming world.",
+                    "rating": "0.98",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Donkey Kong Country (E) (V1.0) [!].smc.7z",
+                    "box": "https://elrincondelretrogamer.files.wordpress.com/2016/07/69847-donkey-kong-country-snes-front-cover.jpg",
+                    "poster": "https://m.media-amazon.com/images/M/MV5BOTc1MDc1MGYtYWEwNS00YTRjLWI3MmItYmRhODQ3NjQxZGY4XkEyXkFqcGdeQXVyMTA3NjAwMDc4._V1_.jpg",
+                    "cartridge": "https://m.media-amazon.com/images/I/71Bmt2idqmL.jpg",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/10168670-donkey-kong-country-snes-riding-a-rhinoceros-watch-out-pesky-fro.jpg",
+                        "https://www.gamegrin.com/assets/Uploads/2019/12/04/screenshot-45.jpg",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxbY9W7wu35UGtxgTvPcATLIc6tqVl6xPSdp1Ucczn4ruiJfDq8Fz1p8XMyisTIdsScLY&usqp=CAU",
+                        "https://retrogameman.files.wordpress.com/2018/01/donkey-kong-country-screen-shot-2017-12-17-7-19-pm-2.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "long_name": "Arcade",
+            "short_name": "Arcade",
+            "description": "Arcade games are coin-operated video games typically found in public spaces like arcades and amusement centers. They offer short, exciting gameplay experiences, often focused on high scores and quick reflexes. These games range from classic titles like Pac-Man to modern cabinets with immersive graphics and multiplayer options, providing entertainment for gamers of all ages.",
+            "console_logo": "https://assets.jumpseller.com/store/g5-arcade-classics/themes/521683/options/88512538/lgogo%20transparente%201920.png?1672330510",
+            "console_icon": "https://icon-library.com/images/arcade-icon-png/arcade-icon-png-6.jpg",
+            "console_bgs": [
+                "https://p4.wallpaperbetter.com/wallpaper/654/236/982/black-and-white-blur-dark-equipment-wallpaper-preview.jpg"
+            ],
+            "manufacturer": "Various companies",
+            "release_year": "1909",
+            "specs": {
+                "cpu": "Arcade machines use various CPUs, ranging from older processors like the Z80 and 68000 to more modern ones like the Intel Pentium series. Specific clock speeds and architecture can vary.",
+                "memory": "Arcade machines have RAM ranging from a few kilobytes to several gigabytes, depending on the era and game complexity.",
+                "graphics": "Arcade cabinets feature custom or specialized graphics hardware optimized for real-time rendering. Some systems use dedicated GPU chips, while others use CPU-driven graphics.",
+                "audio": "Arcade cabinets are equipped with audio hardware, often featuring multiple channels for sound effects and music. Some systems have separate sound cards.",
+                "input": "Arcade machines feature custom control panels with joysticks, buttons, and specialized input devices designed for each game. Some modern machines may also incorporate touch screens.",
+                "media_format": "ROM Chips: n older arcade machines, game data was stored on Read-Only Memory (ROM) chips. These chips contained the program code and data necessary to run the game. Arcade operators could replace or upgrade games by swapping out ROM chips. Networked Content: Some contemporary arcade machines download game content and updates via a network connection, reducing the reliance on physical media.",
+                "media_format_capacity": "ROM chips used in older arcade games typically had capacities ranging from a few kilobytes (KB) to a few megabytes (MB). These chips stored the game code and data directly and were limited in size. Cartridge-based arcade games, similar to home consoles, could vary in capacity. Early arcade cartridges often had capacities ranging from 8 KB to 16 KB. Later arcade cartridges could store up to several megabytes (MB) of data. Networked Content: Arcade machines with network connectivity can access and download game content and updates from remote servers. The capacity is virtually limitless as it depends on the server's storage capacity and the content available online.",
+                "operating_system": "Arcade machines typically do not use traditional operating systems like those found on personal computers or consoles. Instead, they use custom firmware, software, or real-time operating systems (RTOS) that are specifically designed for running the arcade game software efficiently and reliably.",
+                "bios": "Arcade machines typically have a Basic Input/Output System (BIOS) that is specific to the hardware platform or arcade system they use."
+            },
+            "community_links": [
+                {
+                    "community_name": "Reddit - r/cade",
+                    "url": "https://www.reddit.com/r/cade/",
+                    "description": "A subreddit dedicated to arcade gaming discussions, including cabinet restoration, game recommendations, and collecting."
+                },
+                {
+                    "community_name": "Online Arcade Game High Score Competitions",
+                    "url": "https://www.twingalaxies.com/",
+                    "description": "Websites like Twin Galaxies (https://www.twingalaxies.com/) host high score competitions and leaderboards for classic arcade games, where players can submit their scores and compete for recognition."
+                }
+            ],
+            "options": {},
+            "games": [
+                {
+                    "id": 1,
+                    "title": "Pacman",
+                    "release_year": "1980",
+                    "publisher": "Namco",
+                    "genres": [
+                        {
+                            "name": "maze",
+                            "description": "\"Pac-Man\" is a classic maze game that challenges players to navigate a series of intricate mazes filled with dots, fruit, and four colorful ghosts. The goal is to control the titular character, Pac-Man, through the maze while eating all of the dots to advance to the next level."
+                        },
+                        {
+                            "name": "action-game",
+                            "description": "\"Pac-Man\" incorporates action elements as players control Pac-Man's movement and must react quickly to avoid ghosts and eat dots. The game's fast-paced nature and real-time decision-making contribute to its action genre characteristics."
+                        },
+                        {
+                            "name": "puzzle",
+                            "description": "\"Pac-Man\" combines arcade-style gameplay with puzzle-solving elements. Players must strategize to clear each maze efficiently, gather all the dots, and navigate the maze while outsmarting pursuing ghosts."
+                        },
+                        {
+                            "name": "collectible",
+                            "description": "The core gameplay in \"Pac-Man\" revolves around collecting dots, Power Pellets, and fruit for points. This collecting aspect is central to the game's mechanics, making it a collectible game within the arcade genre."
+                        },
+                        {
+                            "name": "score-chasing",
+                            "description": "\"Pac-Man\" encourages players to aim for high scores by continually clearing mazes, eating dots, consuming ghosts, and collecting fruit. The competitive aspect of achieving the highest score is a defining characteristic of the game."
+                        }
+                    ],
+                    "description": "\"Pac-Man,\" released in 1980, is an iconic arcade game that revolutionized the gaming industry. Players control the titular character, Pac-Man, in a maze filled with dots while being pursued by colorful ghosts. The objective is to eat all the dots, fruit, and Power Pellets to clear each level. The game's charm lies in its simple yet addictive gameplay, requiring quick reflexes and strategic planning to outwit the ghosts. \"Pac-Man\" introduced high-score competition and became a cultural phenomenon, inspiring merchandise, sequels, and adaptations. It remains a timeless classic, cherished for its enduring appeal and contribution to the history of video games.",
+                    "rating": "0.93",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "pacman.zip",
+                    "box": "https://www.lavanguardia.com/files/image_449_220/uploads/2020/05/23/5fa91d0150f0b.png",
+                    "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqw40BL6goKOjWM1GXLlfiBFAxpZDb8cYKFiUs9ELUpI9V4iXa2y1-mF9nNLSdVHk6q-w&usqp=CAU",
+                    "cartridge": "https://www.arcade-museum.com/images/118/118124217732.jpg",
+                    "screenshots": [
+                        "https://www.researchgate.net/profile/Petter-Ogland/publication/326319846/figure/fig1/AS:647164153827336@1531307366681/Detail-from-a-Pac-Man-screenshot.png",
+                        "https://i.redd.it/ujjg6ga3ufd81.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "long_name": "Atari 2600",
+            "short_name": "Atari",
+            "description": "The Atari 2600, released in 1977, is a legendary home video game console known for popularizing gaming in the late 1970s and early 1980s. It featured a diverse library of games played using cartridges and simple joystick controllers. The Atari 2600 holds a special place in gaming history as one of the first mass-market consoles.",
+            "console_logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Atari_2600_Logo.png/1024px-Atari_2600_Logo.png",
+            "console_icon": "images/games/Atari_2600.png",
+            "console_bgs": [
+                "https://img4.goodfon.com/wallpaper/nbig/2/2c/atari-controllers-atari-controllers-atari-dzhoistik-atari-dz.jpg"
+            ],
+            "manufacturer": "Atari, Inc.",
+            "release_year": "1977",
+            "specs": {
+                "cpu": "MOS Technology 6507, an 8-bit microprocessor running at 1.19 MHz.",
+                "memory": "128 bytes of RAM for game variables and program data.",
+                "graphics": "The Atari 2600 had custom graphics hardware capable of displaying 2D graphics with a resolution of 160x192 pixels and a limited color palette of 128 colors.",
+                "audio": "The system featured two sound channels, with simple square wave tones and noise generation.",
+                "input": "The standard controller was a joystick with a single button, but various third-party controllers and peripherals were available.",
+                "media_format": "Games were distributed on cartridges that plugged into the console.",
+                "media_format_capacity": "Cartridges contained read-only memory (ROM) with game code and data, typically ranging from 2 KB to 32 KB.",
+                "operating_system": "The Atari 2600 had a basic BIOS stored in its ROM. This BIOS handled some initialization tasks, but it was relatively minimal compared to modern computer BIOS. Cartridge-Based Operating Logic: The majority of the operating logic for games and applications on the Atari 2600 was contained within the game cartridges themselves. Each cartridge included the game code, graphics, and the necessary logic to run the specific game.",
+                "bios": "The Atari 2600 had a basic BIOS stored in its ROM. This BIOS handled some initialization tasks, but it was relatively minimal compared to modern computer BIOS."
+            },
+            "community_links": [
+                {
+                    "community_name": "Reddit - /r/Atari2600",
+                    "url": "https://www.reddit.com/r/Atari2600/",
+                    "description": "This subreddit is dedicated to discussions about the Atari 2600, its games, hardware, and related topics. It's a great place to connect with fellow Atari enthusiasts."
+                },
+                {
+                    "community_name": "Atari.IO Forums",
+                    "url": "https://forums.atari.io/",
+                    "description": "Atari.IO is a retro gaming community that includes a section for Atari 2600 enthusiasts. It covers topics like game collecting, restoration, and discussions about classic Atari titles."
+                }
+            ],
+            "options": {},
+            "games": [
+                {
+                    "id": 1,
+                    "title": "Dig Dug",
+                    "release_year": "1982",
+                    "publisher": "Atari, Inc.",
+                    "genres": [
+                        {
+                            "name": "action",
+                            "description": "\"Dig Dug\" on the Atari 2600 is an adaptation of the classic arcade action game. Players control a character named Taizo Hori, who must tunnel through the ground, eliminate underground-dwelling monsters (Pookas and Fygars), and collect vegetables for points. The objective is to clear each level while avoiding or defeating enemies and managing limited air supply. The game combines strategic digging and fast-paced action, making it a beloved classic in the arcade and Atari 2600 gaming history."
+                        }
+                    ],
+                    "description": "\"Dig Dug\" for the Atari 2600, released in 1983, is a thrilling arcade classic. Players assume the role of Taizo Hori, a brave miner, tasked with tunneling through underground mazes infested with menacing creatures like Pookas and Fygars. Armed with an air pump, you must strategically eliminate foes by inflating them until they burst or by dropping rocks to crush them. As you dig deeper, collect vegetables for points while managing your limited air supply. The game combines strategy, quick thinking, and arcade action, offering a challenging and addictive gaming experience that retains its nostalgic charm among Atari 2600 enthusiasts.",
+                    "rating": "0.89",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Digdug.bin",
+                    "box": "https://retrotip.com/games/atari_2600/dig-dug/dig-dug.png",
+                    "poster": "https://i.pinimg.com/originals/45/8b/d3/458bd3e6769480fa733f12bc5a457dad.jpg",
+                    "cartridge": "https://i.pinimg.com/736x/b9/19/21/b91921d45663f92037bc787cbbd9f2b9.jpg",
+                    "screenshots": [
+                        "https://atariage.com/2600/screenshots/s_DigDug_2.png",
+                        "https://atariage.com/2600/screenshots/s_DigDug_1.png",
+                        "https://www.pixelatedarcade.com/screenshots/57/2512/screenshot_61d-dig-dug-running-from-the-last-few-enemies.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "long_name": "MS-DOS",
+            "short_name": "PC",
+            "description": "MS-DOS, a vintage operating system, played a pivotal role in the early days of gaming. Released in the 1980s, it provided a platform for classic games like \"Doom\" and \"Prince of Persia\". Its text-based interface and limited graphics capabilities challenged developers to create innovative gameplay, paving the way for the gaming industry's evolution.",
+            "console_logo": "https://hyperspin-fe.com/siteuploads/downloads/screenshots/monthly_2018_02/5a95f7aa58e76_MicrosoftMS-DOS.thumb.png.55d7a7f3d0b5ab178001fd76ed08cb04.png",
+            "console_icon": "images/games/classic_pc.png",
+            "console_bgs": [
+                "https://previews.123rf.com/images/atmosphere1/atmosphere11712/atmosphere1171200005/92122905-old-dirty-retro-keyboard-of-a-vintage-computer-from-1990s.jpg"
+            ],
+            "manufacturer": "Microsoft",
+            "release_year": "1981",
+            "specs": {
+                "cpu": "MS-DOS itself did not have strict CPU requirements, but it was compatible with early x86 processors like the Intel 8086 and 8088.",
+                "memory": "MS-DOS 1.0, released in 1981, could run in as little as 12 KB of RAM. Later versions, such as MS-DOS 6.22, required a minimum of 640 KB of RAM for optimal performance.",
+                "graphics": "MS-DOS supported various text and graphic modes, including CGA (Color Graphics Adapter), EGA (Enhanced Graphics Adapter), and VGA (Video Graphics Array). Monochrome and 16-color graphics were common in early games.",
+                "audio": "Sound cards like the AdLib and Sound Blaster were popular for game audio.",
+                "input": "MS-DOS used standard PC peripherals like keyboards and mice. ",
+                "media_format": "Floppy Disks: MS-DOS was originally designed to work with 5.25-inch and later 3.5-inch floppy disks. These floppy disks came in various capacities, such as 360 KB, 720 KB, 1.2 MB, and 1.44 MB for 3.5-inch disks. MS-DOS used the FAT12 file system for formatting these disks. Hard Drives: As hard drives became more common in PCs, MS-DOS adapted to work with them. It used the FAT12 and later FAT16 and FAT32 file systems for organizing data on hard drives. CD-ROMs: MS-DOS gained limited support for CD-ROM drives as they became available. Special drivers and extensions were required to access CD-ROM data. ISO 9660 was a common file system used for CD-ROMs. Network Drives: MS-DOS could connect to network resources through network drives. Common protocols included NetWare and Microsoft's own networking protocols. Network drives typically used the FAT file system. USB Drives (Limited Support): In later versions of MS-DOS, limited USB support was introduced through third-party drivers. However, this support was not as robust as in modern operating systems.",
+                "media_format_capacity": "Floppy Disks: 360 KB, 720 KB, 1.2 MB, and 1.44 MB for 3.5-inch disks. 1980s and Early 1990s: hard drives typically had capacities measured in megabytes (MB). Common capacities ranged from 10 MB to 100 MB. Mid-1990s: hard drive capacities had grown to the range of hundreds of megabytes to a few gigabytes (GB). A 1 GB hard drive was considered quite sizable. Late 1990s to Early 2000s: with common sizes reaching 10 GB, 20 GB, and even 40 GB or more. Mid-2000s: The mid-2000s saw the introduction of hard drives with capacities commonly measured in hundreds of gigabytes. Drives in the 100 GB to 500 GB range were popular during this time. Late 2000s to Early 2010s: Hard drive capacities kept increasing. Drives with 1 TB (terabyte) of storage space became readily available to consumers. 2010s: hard drives grew larger and more affordable. Drives with 2 TB, 4 TB, and even 8 TB or more became common for personal computers. 2020s (Knowledge Cutoff in 2021): n the early 2020s, consumer-grade hard drives continued to expand in capacity, with 10 TB and 12 TB drives becoming available. Additionally, solid-state drives (SSDs) with high capacities were becoming more popular due to their speed and reliability.",
+                "operating_system": "MS-DOS",
+                "bios": "It plays a crucial role in the boot-up process and provides low-level control over hardware components. Here are its basic functions: Boot Process, Firmware, Configuration, Boot Order, Security, Hardware Management, Upgrades."
+            },
+            "community_links": [
+                {
+                    "community_name": "Reddit - r/dosgaming",
+                    "url": "https://www.reddit.com/r/dosgaming/",
+                    "description": "Is a community of MS-DOS and retro-gaming enthusiasts on Reddit. You can find discussions, game recommendations, and technical support related to MS-DOS gaming."
+                },
+                {
+                    "community_name": "DOSBox",
+                    "url": "https://www.dosbox.com/",
+                    "description": "DOSBox is an emulator that allows you to run MS-DOS programs on modern hardware. The official website (https://www.dosbox.com/) provides downloads, documentation, and a user forum where you can find help and discussions related to MS-DOS gaming and applications."
+                }
+            ],
+            "options": {},
+            "games": [
+                {
+                    "id": 1,
+                    "title": "Prince of Persia",
+                    "release_year": "1989",
+                    "publisher": "Brøderbund",
+                    "genres": [
+                        {
+                            "name": "platformer",
+                            "description": "\"Prince of Persia\" is primarily a platformer game. Players control the titular prince as he navigates through a series of intricate, trap-filled levels, jumping between ledges, avoiding hazards, and solving puzzles."
+                        },
+                        {
+                            "name": "action-adventure",
+                            "description": "The game combines platforming elements with action and adventure gameplay. Players must combat various enemies, including guards and other hostile creatures, using the prince's sword-fighting skills."
+                        },
+                        {
+                            "name": "puzzle",
+                            "description": "\"Prince of Persia\" includes puzzle-solving aspects, where players must figure out how to progress through levels by activating switches, avoiding traps, and deciphering the right sequence of movements to overcome obstacles."
+                        },
+                        {
+                            "name": "cinematic",
+                            "description": "One of the game's defining features was its cinematic presentation for its time. It incorporated rotoscoped animation, which made the prince's movements appear realistic and fluid. This contributed to the game's immersive atmosphere."
+                        },
+                        {
+                            "name": "time-pressure",
+                            "description": "The game added a unique sense of urgency by imposing time limits for completing levels. Players had to race against time to rescue the princess and prevent her from being executed by the game's antagonist, Jaffar."
+                        },
+                        {
+                            "name": "sword-fighting",
+                            "description": "Combat in the game involved sword fighting with enemy guards. Players had to engage in well-timed sword battles, block attacks, and defeat adversaries to progress."
+                        },
+                        {
+                            "name": "story-driven",
+                            "description": "\"Prince of Persia\" featured a narrative-driven gameplay style, with the goal of saving the kidnapped princess. The game's story unfolds through in-game cutscenes and interactions."
+                        },
+                        {
+                            "name": "challenging",
+                            "description": "The game is known for its challenging gameplay, requiring precision timing and careful planning to navigate the deadly traps and defeat enemies."
+                        }
+                    ],
+                    "description": "\"Prince of Persia\" is a groundbreaking MS-DOS game that blends platforming, action, and puzzles in a captivating Arabian setting. Players control the agile prince as he battles through perilous levels, filled with deadly traps and enemy guards, to rescue a kidnapped princess from the clutches of an evil vizier. Known for its fluid, rotoscoped animation, the game immerses players in a cinematic experience. With a sense of urgency, challenging gameplay, and a gripping storyline, \"Prince of Persia\" became a classic, setting the stage for future action-adventure games and leaving an enduring legacy in the world of gaming.",
+                    "rating": "0.9",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "https://libe.dev/bundles/prince.jsdos",
+                    "box": "https://upload.wikimedia.org/wikipedia/commons/2/28/Prince_of_Persia_1_-_MS-DOS_-_Gameplay_-_Potion.gif",
+                    "poster": "https://i.pinimg.com/originals/e8/23/b1/e823b1a0423d6f163c9cb97b4d951969.jpg",
+                    "cartridge": "https://static1.squarespace.com/static/54ff650ae4b0fe7485c80e63/55019f0ae4b03037fd15b908/61d2df1fba06661d78c1db0e/1641210578215/Pop_02.jpg?format=1500w",
+                    "screenshots": [
+                        "https://upload.wikimedia.org/wikipedia/commons/0/06/Prince_of_Persia_1_-_MS-DOS_-_Level_3.png",
+                        "https://upload.wikimedia.org/wikipedia/commons/9/94/Prince_of_Persia_1_-_MS-DOS_-_Level_12.png",
+                        "https://upload.wikimedia.org/wikipedia/commons/5/56/Prince_of_Persia_1_-_MS-DOS_-_Level_13.png",
+                        "https://static.wikia.nocookie.net/princeofpersia/images/b/b6/Prince_of_Persia_1989.jpg/revision/latest?cb=20140327030227&path-prefix=en",
+                        "https://upload.wikimedia.org/wikipedia/commons/5/5c/Prince_of_Persia_1_-_MS-DOS_-_Gameplay_-_Game_over_%281%29.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                }
+            ]
+        }
+    ]
+}

@@ -21,8 +21,8 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body>
-        <div class="text-gray-900 dark:text-gray-100 antialiased">
+    <body class="cursor-default sepia_">
+        <div class="antialiased text-cod-gray-900 dark:text-cod-gray-400 bg-cod-gray-100 dark:bg-cod-gray-800">
             {{ $slot }}
         </div>
 

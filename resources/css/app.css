@@ -5,3 +5,31 @@
 [x-cloak] {
     display: none;
 }
+
+.fade-hero {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#111827+0,111827+100&0+0,0.25+0,1+100 */
+    background: linear-gradient(to bottom,  rgba(17,24,39,0.25) 0%,rgba(17,24,39,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #1f2937;
+    border-radius: 6px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 6px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
