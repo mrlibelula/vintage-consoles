@@ -15,21 +15,26 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
+        <!-- Iconset from semantic ui -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/icon.min.css" integrity="sha256-KyXPF3/VOPPst/NQOzCWr97QMfSfzJLyFT0o5lYJXiQ=" crossorigin="anonymous" />
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+        <!-- Styles -->
         <style>
             * {
                 font-family: 'VT323', monospace;
                 font-size: 1.32rem;
             }
         </style>
+        
+        @stack('styles')
 
-        <!-- Styles -->
         @livewireStyles
     </head>
     <body>
-        <div class="isolate antialiased cursor-default text-2xl text-cod-gray-700 dark:text-cod-gray-400 bg-cod-gray-100 dark:bg-cod-gray-900">
+        <div class="isolate antialiased cursor-default text-2xl text-cod-gray-700 dark:text-cod-gray-200 bg-cod-gray-100 dark:bg-cod-gray-900">
             
             {{-- <div class="absolute h-full inset-x-0 -z-10 transform-gpu overflow-hidden blur-3xl">
                 <svg class="relative animate-pulse left-[calc(50%-11rem)] -z-10 h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]" viewBox="0 0 1155 678" xmlns="http://www.w3.org/2000/svg">
@@ -46,7 +51,10 @@
             <x-banner />
     
             <div class="min-h-screen">
+
                 @livewire('navigation-menu')
+
+                <x-top-spacer />
     
                 <!-- Page Heading -->
                 @if (isset($header))
@@ -64,6 +72,8 @@
             </div>
     
             @stack('modals')
+
+            @stack('scripts')
     
             @livewireScripts
         </div>

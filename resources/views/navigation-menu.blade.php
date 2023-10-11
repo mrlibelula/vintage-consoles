@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-cod-gray-900">
+<nav x-data="{ open: false }" class="fixed fade-nav w-full top-0 z-[55]">
     <!-- Primary Navigation Menu -->
     <div class="max-w-5xl mx-auto px-4 xl:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -11,7 +11,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 xl:-my-px xl:ml-10 xl:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Consoles') }}
+                        {{ __('Vintage Consoles') }}
                     </x-nav-link>
 
                     <x-nav-link href="#" 
@@ -25,9 +25,9 @@
 
             <!-- search bar -->
             <div class="relative w-full flex gap-x-2 items-center justify-between">
-                <x-input class="absolute h-[1.8rem] w-full text-xl px-8" placeholder="Search games" />
-                <x-icons.magnify class=" absolute mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-600" />
-                <x-icons.x class="absolute right-0 mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-600 cursor-pointer" />
+                <x-input class="absolute h-[2.2rem] w-full text-xl px-8" placeholder="Search games" />
+                <x-icons.magnify class=" absolute mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-500" />
+                <x-icons.x class="absolute right-0 mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-500 cursor-pointer" />
             </div>
 
             <div class="hidden xl:flex xl:items-center xl:ml-6">
@@ -150,10 +150,10 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden xl:hidden">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden xl:hidden bg-white dark:bg-cod-gray-900">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Consoles') }}
+                {{ __('Vintage Consoles') }}
             </x-responsive-nav-link>
         </div>
 

@@ -6,11 +6,11 @@
             "short_name": "NES",
             "description": "The Nintendo Entertainment System (NES), often referred to as the NES, is a landmark home video game console released by Nintendo. It was first introduced in North America in 1985, marking a significant turning point in the history of video games. The NES played a pivotal role in revitalizing the video game industry, which had experienced a downturn in the early 1980s due to a saturation of poor-quality games.",
             "console_logo": "https://logodownload.org/wp-content/uploads/2017/04/nintendo-logo-1-1.png",
-            "console_icon": "images/games/nes.png",
+            "console_icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/NES-Console-Set.png/1280px-NES-Console-Set.png",
             "console_bgs": [
                 "https://i.blogs.es/ecc6a7/nes-fondo/1366_2000.jpg"
             ],
-            "manufacturer": "Nintendo",
+            "manufacturer": "Nintendo of America Inc.",
             "release_year": "1985",
             "specs": {
                 "cpu": "8-bit microprocessor, Ricoh 2A03 (a modified version of the MOS Technology 6502) running at 1.79 MHz (PAL regions) or 1.66 MHz (NTSC regions)",
@@ -30,7 +30,7 @@
                     "description": "A subreddit dedicated to NES enthusiasts, where you can discuss games, seek advice, and share your NES-related experiences."
                 },
                 {
-                    "community_name": "Nnintendolife",
+                    "community_name": "Nintendolife",
                     "url": "https://www.nintendolife.com/",
                     "description": "A website that covers Nintendo news, including articles about NES games, reviews, and retrospectives."
                 },
@@ -62,7 +62,7 @@
                     "multiplayer_support": true,
                     "save_state_support": true,
                     "rom": "Super Mario Bros. + Duck Hunt (U) [!].nes",
-                    "box": "https://i.blogs.es/bff63e/smb_art/450_1000.jpeg",
+                    "box": "https://media.tenor.com/KMlauf8e0ekAAAAd/nes-super-mario-bros.gif",
                     "poster": "https://i.pinimg.com/originals/0f/0a/90/0f0a90dc7b31d6bfc6b9ab60abc2cd52.jpg",
                     "cartridge": "https://i.etsystatic.com/18453998/r/il/f2e2e7/2876090128/il_fullxfull.2876090128_iuys.jpg",
                     "screenshots": [
@@ -116,7 +116,7 @@
                     "multiplayer_support": true,
                     "save_state_support": true,
                     "rom": "MEGAMAN2.NES",
-                    "box": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOjcpzdRlMqaudqOTlHnabho-TCRhPC0_3TQc0iMN_IVOqTqqdsZZwtRxzT2XqIIur9aY&usqp=CAU",
+                    "box": "https://goombastomp.com/wp-content/uploads/2018/10/ezgif.com-video-to-gif-32.gif",
                     "poster": "https://upload.wikimedia.org/wikipedia/en/b/be/Megaman2_box.jpg",
                     "cartridge": "https://http2.mlstatic.com/D_NQ_NP_611375-MLM49961599013_052022-O.webp",
                     "screenshots": [
@@ -152,7 +152,7 @@
                     "multiplayer_support": true,
                     "save_state_support": true,
                     "rom": "Fantastic Adventures of Dizzy, The (Unl) [!].nes",
-                    "box": "https://i0.wp.com/www.arcadeattack.co.uk/wp-content/uploads/2016/11/Fantastic-Dizzy-NES-Banner.png?w=600&ssl=1",
+                    "box": "https://tcrf.net/images/2/2f/TFAoD-SkySkipping.gif",
                     "poster": "https://m.media-amazon.com/images/I/51s0AHl3vUL.jpg",
                     "cartridge": "https://m.media-amazon.com/images/I/51wzizjz19L._AC_UF1000,1000_QL80_.jpg",
                     "screenshots": [
@@ -208,7 +208,7 @@
                     "multiplayer_support": true,
                     "save_state_support": true,
                     "rom": "Super Mario Bros. 3 (U) (PRG1) [!].nes",
-                    "box": "https://cdn02.nintendo-europe.com/media/images/10_share_images/games_15/virtual_console_wii_u_7/H2x1_WiiUVC_SuperMarioBros3_image1600w.jpg",
+                    "box": "https://media.tenor.com/cFTJGFRU2ywAAAAd/super-mario-bros-super-mario-bros3.gif",
                     "poster": "https://commondatastorage.googleapis.com/images.pricecharting.com/AMIfv96pkx_1CLdpo4ramwFSypnxD0S-B0cujK82bGHcS-H7cXgpzqmNWW_SN-2ahqsq7IRMdjkSAu12KE3MTA54w5Yl41sPvWvkfkdkqKR2sbfmqs5IJ7Alrt2QwrD7r3r8kL1s3ywDPFt1XMbGToG6taMoP9r22w/240.jpg",
                     "cartridge": "https://www.nesfiles.com/NES/Super_Mario_Bros_3/Super_Mario_Bros_3_cart.jpg",
                     "screenshots": [
@@ -329,7 +329,7 @@
                     "multiplayer_support": true,
                     "save_state_support": true,
                     "rom": "Excitebike (Japan, USA).nes",
-                    "box": "https://p4.wallpaperbetter.com/wallpaper/666/817/196/video-game-excitebike-hd-wallpaper-preview.jpg",
+                    "box": "https://64.media.tumblr.com/tumblr_m672r7i1bU1r9cjqxo1_500.gif",
                     "poster": "https://m.media-amazon.com/images/I/51sWMGiayBL._AC_.jpg",
                     "cartridge": "https://www.nerdgasm.ca/wp-content/uploads/2022/04/excitebike-nes-cart-compress.jpg",
                     "screenshots": [
@@ -356,18 +356,18 @@
             "short_name": "SNES",
             "description": "The Super Nintendo Entertainment System (SNES), released in 1990, is a legendary 16-bit home video game console by Nintendo. It's renowned for its iconic game library, featuring classics like Super Mario World and The Legend of Zelda: A Link to the Past. The SNES remains cherished for its role in gaming history.",
             "console_logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/SNES_logo.svg/1200px-SNES_logo.svg.png",
-            "console_icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/SNES_US.png/1024px-SNES_US.png",
+            "console_icon": "https://upload.wikimedia.org/wikipedia/commons/0/0c/SNES-USA.png",
             "console_bgs": [
                 "https://i.pinimg.com/originals/36/b0/c7/36b0c77ae2bdc83ff3653543abd81da8.png"
             ],
-            "manufacturer": "Nintendo",
+            "manufacturer": "Nintendo of America Inc.",
             "release_year": "1990",
             "specs": {
                 "cpu": "Ricoh 5A22, a custom 16-bit processor running at 3.58 MHz.",
                 "memory": "128 KB (including both main and video RAM).",
                 "graphics": "Custom Picture Processing Unit (PPU) and a Sony S-SMP audio processor. The SNES could display 32,768 colors, although only 256 could be displayed simultaneously on-screen. The standard resolution for SNES games was 256x224 pixels, but some games could use a higher resolution mode.",
                 "audio": "8-channel Sony SPC700 sound processor, capable of producing stereo sound.",
-                "input": "",
+                "input": "Controller: The SNES came with a controller that featured a D-pad, Start and Select buttons, four action buttons (labeled A, B, X, and Y), and L and R shoulder buttons. The controller also had a cable for wired connections. Game Cartridges: Games for the SNES were released on cartridges that plugged into the top of the console.",
                 "media_format": "Cartridges.",
                 "media_format_capacity": "Ranging from 2MB to 48MB in capacity.",
                 "operating_system": "",
@@ -411,7 +411,7 @@
                     "multiplayer_support": true,
                     "save_state_support": true,
                     "rom": "Donkey Kong Country (E) (V1.0) [!].smc.7z",
-                    "box": "https://elrincondelretrogamer.files.wordpress.com/2016/07/69847-donkey-kong-country-snes-front-cover.jpg",
+                    "box": "https://media.tenor.com/t3gV8BT1C7AAAAAC/donkey-kong-country-snes.gif",
                     "poster": "https://m.media-amazon.com/images/M/MV5BOTc1MDc1MGYtYWEwNS00YTRjLWI3MmItYmRhODQ3NjQxZGY4XkEyXkFqcGdeQXVyMTA3NjAwMDc4._V1_.jpg",
                     "cartridge": "https://m.media-amazon.com/images/I/71Bmt2idqmL.jpg",
                     "screenshots": [
@@ -419,6 +419,61 @@
                         "https://www.gamegrin.com/assets/Uploads/2019/12/04/screenshot-45.jpg",
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxbY9W7wu35UGtxgTvPcATLIc6tqVl6xPSdp1Ucczn4ruiJfDq8Fz1p8XMyisTIdsScLY&usqp=CAU",
                         "https://retrogameman.files.wordpress.com/2018/01/donkey-kong-country-screen-shot-2017-12-17-7-19-pm-2.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 2,
+                    "title": "Super Mario World",
+                    "release_year": "1990",
+                    "publisher": "Nintendo",
+                    "genres": [
+                        {
+                            "name": "platform",
+                            "description": "The game is a classic 2D side-scrolling platformer where players control Mario, or his brother Luigi, as they traverse various levels filled with platforms, enemies, and obstacles."
+                        },
+                        {
+                            "name": "action",
+                            "description": "\"Super Mario World\" features fast-paced action, with players jumping on enemies, collecting power-ups, and engaging in various challenges throughout the game."
+                        },
+                        {
+                            "name": "adventure",
+                            "description": "While primarily a platformer, the game also includes adventure elements, such as exploring different areas of the Mushroom Kingdom, finding secret paths, and completing quests."
+                        },
+                        {
+                            "name": "puzzle",
+                            "description": "Some levels in the game involve solving puzzles to progress, such as finding keys or manipulating objects to open new paths."
+                        },
+                        {
+                            "name": "exploration",
+                            "description": "The game encourages exploration, as players can discover hidden secrets, shortcuts, and bonus levels by thoroughly exploring the game's various maps."
+                        }
+                    ],
+                    "description": "\"Super Mario World\" for the SNES is a timeless classic that takes players on a vibrant and enchanting adventure through the Mushroom Kingdom. As Mario or Luigi, players navigate a colorful, 2D side-scrolling world filled with platforming challenges, quirky enemies, and imaginative power-ups. The game combines action and puzzle-solving as you stomp on foes, collect coins, and unlock secret pathways. With its iconic level design and memorable characters, it remains a cornerstone of the Super Mario franchise. The game's appeal lies in its delightful simplicity, encouraging players to explore and uncover hidden treasures, making it a beloved masterpiece in the platformer genre.",
+                    "rating": "0.98",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Super Mario World (E) (V1.0).smc.7z",
+                    "box": "https://media.tenor.com/sBjreYGHbAUAAAAd/super-mario-world-snes.gif",
+                    "poster": "https://m.media-amazon.com/images/M/MV5BMGVlOGI0OTctZGZmOC00ZGE5LWE4YzUtOGVjZjVkYTcyY2Q3XkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_.jpg",
+                    "cartridge": "https://i.ebayimg.com/images/g/UeoAAOSw0RZj~71R/s-l1200.webp",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/2804296-super-mario-world-snes-some-platforms-expand-and-contract.png",
+                        "https://cdn.mobygames.com/screenshots/2803954-super-mario-world-snes-yoshis-talented-tongue.png",
+                        "https://cdn.mobygames.com/screenshots/2801618-super-mario-world-snes-title-screen.png",
+                        "https://i.pinimg.com/originals/90/dd/5f/90dd5fddbe7d57b2adf47041884b0bca.jpg",
+                        "https://cdn.mobygames.com/screenshots/15799690-super-mario-world-snes-what-the-hell-is-that.png",
+                        "https://i0.wp.com/www.arcadeattack.co.uk/wp-content/uploads/2019/07/super-mario-world-snes-screenshot-iggy-koopa.png?fit=256%2C224&ssl=1",
+                        "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2fd55a55-7eaf-4b7b-bba1-eb6106f8a503/dbfvzey-ad002c6f-9862-4d58-a808-a55a70b431b0.png/v1/fill/w_1024,h_887,q_80,strp/super_mario_world_beta__screenshot_2_by_raffine52_dbfvzey-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9ODg3IiwicGF0aCI6IlwvZlwvMmZkNTVhNTUtN2VhZi00YjdiLWJiYTEtZWI2MTA2ZjhhNTAzXC9kYmZ2emV5LWFkMDAyYzZmLTk4NjItNGQ1OC1hODA4LWE1NWE3MGI0MzFiMC5wbmciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.5mO97uje7lxFFS2L8IeD7NeZ6qmFYCpVnQt05eDo1Pk",
+                        "https://i0.wp.com/gamingrespawn.com/wp-content/uploads/2021/09/Super-Mario-World-V.jpg?resize=800%2C640&ssl=1",
+                        "https://www.sm128c.com/media/snes/smw/screenshots/smw-luigi3.png"
                     ],
                     "bookmark_status": false,
                     "play_count": 0,
@@ -437,7 +492,7 @@
             "short_name": "Arcade",
             "description": "Arcade games are coin-operated video games typically found in public spaces like arcades and amusement centers. They offer short, exciting gameplay experiences, often focused on high scores and quick reflexes. These games range from classic titles like Pac-Man to modern cabinets with immersive graphics and multiplayer options, providing entertainment for gamers of all ages.",
             "console_logo": "https://assets.jumpseller.com/store/g5-arcade-classics/themes/521683/options/88512538/lgogo%20transparente%201920.png?1672330510",
-            "console_icon": "https://icon-library.com/images/arcade-icon-png/arcade-icon-png-6.jpg",
+            "console_icon": "https://freepngimg.com/save/113185-machine-game-arcade-free-clipart-hd/900x1290",
             "console_bgs": [
                 "https://p4.wallpaperbetter.com/wallpaper/654/236/982/black-and-white-blur-dark-equipment-wallpaper-preview.jpg"
             ],
@@ -463,7 +518,7 @@
                 {
                     "community_name": "Online Arcade Game High Score Competitions",
                     "url": "https://www.twingalaxies.com/",
-                    "description": "Websites like Twin Galaxies (https://www.twingalaxies.com/) host high score competitions and leaderboards for classic arcade games, where players can submit their scores and compete for recognition."
+                    "description": "Websites like Twin Galaxies host high score competitions and leaderboards for classic arcade games, where players can submit their scores and compete for recognition."
                 }
             ],
             "options": {},
@@ -500,8 +555,8 @@
                     "multiplayer_support": true,
                     "save_state_support": true,
                     "rom": "pacman.zip",
-                    "box": "https://www.lavanguardia.com/files/image_449_220/uploads/2020/05/23/5fa91d0150f0b.png",
-                    "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqw40BL6goKOjWM1GXLlfiBFAxpZDb8cYKFiUs9ELUpI9V4iXa2y1-mF9nNLSdVHk6q-w&usqp=CAU",
+                    "box": "https://i.pinimg.com/originals/15/ce/b5/15ceb576be59fda3d7878cae4b04396b.gif",
+                    "poster": "https://i.ebayimg.com/images/g/68MAAOSwRr5ZrVAi/s-l1600.jpg",
                     "cartridge": "https://www.arcade-museum.com/images/118/118124217732.jpg",
                     "screenshots": [
                         "https://www.researchgate.net/profile/Petter-Ogland/publication/326319846/figure/fig1/AS:647164153827336@1531307366681/Detail-from-a-Pac-Man-screenshot.png",
@@ -571,13 +626,113 @@
                     "multiplayer_support": true,
                     "save_state_support": true,
                     "rom": "Digdug.bin",
-                    "box": "https://retrotip.com/games/atari_2600/dig-dug/dig-dug.png",
+                    "box": "https://skunkworx.org/goa/games/d/dig-dug/atari-2600/screenshots/fygar.gif",
                     "poster": "https://i.pinimg.com/originals/45/8b/d3/458bd3e6769480fa733f12bc5a457dad.jpg",
                     "cartridge": "https://i.pinimg.com/736x/b9/19/21/b91921d45663f92037bc787cbbd9f2b9.jpg",
                     "screenshots": [
                         "https://atariage.com/2600/screenshots/s_DigDug_2.png",
                         "https://atariage.com/2600/screenshots/s_DigDug_1.png",
                         "https://www.pixelatedarcade.com/screenshots/57/2512/screenshot_61d-dig-dug-running-from-the-last-few-enemies.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 2,
+                    "title": "Adventure",
+                    "release_year": "1980",
+                    "publisher": "Atari, Inc.",
+                    "genres": [
+                        {
+                            "name": "action",
+                            "description": "\"Adventure\" features action elements in the form of combat and interaction with various creatures and objects. Players must wield a sword to defeat enemies such as dragons and ducks while navigating the game's world."
+                        },
+                        {
+                            "name": "adventure",
+                            "description": "The game is named after this genre, and it's a pioneering example of early adventure gaming. Players explore a vast, interconnected world, searching for objects and solving puzzles to achieve their goals. This genre includes elements of exploration, puzzle-solving, and storytelling."
+                        },
+                        {
+                            "name": "maze-game",
+                            "description": "A significant portion of \"Adventure\" takes place in maze-like environments, where players must navigate a series of interconnected rooms and corridors to find keys, hidden objects, and the game's ultimate goal."
+                        },
+                        {
+                            "name": "fantasy",
+                            "description": "The game is set in a fantasy world filled with mythical creatures and magical items. Players encounter dragons, chalices, bridges, and other fantastical elements as they embark on their quest."
+                        },
+                        {
+                            "name": "exploration",
+                            "description": "Exploration is a fundamental aspect of \"Adventure.\" Players must traverse a large, open game world, discovering secrets and hidden passages as they progress. This exploration adds depth to the gameplay."
+                        }
+                    ],
+                    "description": "\"Adventure\" (1980) for the Atari 2600 is a pioneering action-adventure game that thrusts players into a fantastical realm. As an intrepid hero, your mission is to retrieve a coveted chalice hidden deep within a complex, maze-like world. Armed with a sword, you encounter dragons, ducks, and other obstacles while exploring various interconnected screens. The game's groundbreaking open-world design and combination of action, adventure, and puzzle-solving elements set the stage for the future of video game genres. \"Adventure\" is celebrated for its role in shaping the gaming landscape and remains a beloved classic in the history of gaming.",
+                    "rating": "0.92",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "ADVNTURE.BIN",
+                    "box": "https://i.imgur.com/dYbvnnX.gif",
+                    "poster": "https://m.media-amazon.com/images/M/MV5BNWYyOTFhYzUtMWU0Ni00ZjI4LWE2MmItYjljYmIyNjA2YTYwXkEyXkFqcGdeQXVyNzg5OTk2OA@@._V1_.jpg",
+                    "cartridge": "https://grumpybobsonline.com/cdn/shop/products/adventure_large.jpg?v=1498788337",
+                    "screenshots": [
+                        "https://www.retrogamer.net/wp-content/uploads/2013/10/adventure.png",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEW7j3cmzTGCNgA0HfB09Ao3fZ18mlXL9LBF_yrAQxo_PxS0A1LnU0nQrrQdr1R_3Cwco&usqp=CAU",
+                        "https://upload.wikimedia.org/wikipedia/it/6/6d/Adventure-Atari_2600.png",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRloTS0cOmKzDg1YX5uU30wgupfIrs2PQOIZAOWxA8QSIQYf5nppnyjZ8pfswygoivtAGA&usqp=CAU"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 3,
+                    "title": "Missile Command",
+                    "release_year": "1980",
+                    "publisher": "Atari, Inc.",
+                    "genres": [
+                        {
+                            "name": "shoot-em-up",
+                            "description": "\"Missile Command\" falls under the shoot 'em up category, where players must defend cities from incoming ballistic missiles by shooting down the enemy projectiles with anti-missile batteries. It's a classic example of this genre."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "The game embodies the arcade gaming experience, with fast-paced action and a simple yet addictive gameplay style designed to keep players engaged and entertained."
+                        },
+                        {
+                            "name": "strategy",
+                            "description": "While the core gameplay involves shooting down incoming missiles, it also requires strategic planning and resource management as players need to decide where to deploy their limited anti-missile resources to protect cities effectively."
+                        },
+                        {
+                            "name": "simulation",
+                            "description": "\"Missile Command\" simulates the scenario of a missile defense system during a time of crisis. Players must make decisions and take actions as if they were in charge of a real-world defense network."
+                        },
+                        {
+                            "name": "retro",
+                            "description": "As one of the early Atari 2600 games, \"Missile Command\" is considered a classic retro game, with simple graphics and gameplay that capture the essence of early video gaming."
+                        }
+                    ],
+                    "description": "\"Missile Command\" (1980) for the Atari 2600 is an iconic shoot 'em up arcade game. Players become missile defense commanders, tasked with safeguarding cities from relentless enemy missile strikes. The objective is to intercept and destroy incoming missiles using limited anti-missile batteries strategically placed across the cities. The game blends action and strategy, requiring quick reflexes and smart resource allocation. As waves of missiles intensify, the pressure builds, creating an intense gaming experience. With its simple yet addictive gameplay, \"Missile Command\" is a quintessential classic of the early video game era, providing a thrilling and challenging test of a player's missile defense skills.",
+                    "rating": "0.89",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "MISSCOMM.BIN",
+                    "box": "https://i0.wp.com/www.techsavvyed.net/wp-content/uploads/2012/12/missile-command.gif?fit=640%2C475&ssl=1",
+                    "poster": "https://myhotposters.com/cdn/shop/products/mQ0376_5a091cab-b0c3-4ee8-a9cc-2cf6f7cb181c_1024x1024.jpg?v=1571444624",
+                    "cartridge": "https://thisisgameroom.com/cdn/shop/products/ca3dac10-2cf1-4a7c-955f-abe254cc7498_8b0c1144-498c-4603-8cf9-6d88e851ae5c.png?v=1668518139",
+                    "screenshots": [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSlFO6ME7uN7pU7Hv0RoSacfuR59BWW_k9uhH48GwLxw33-MINBIFMMKS6_TS8Wc79jL4&usqp=CAU",
+                        "https://cdn.mobygames.com/screenshots/2062733-missile-command-atari-2600-defending-your-cities.png",
+                        "https://upload.wikimedia.org/wikipedia/en/8/86/A5200_Missile_Command.png",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRc8GNI-XTWnXacbk4fNFX0-PtEGnG_47P8fxgyCFAyuVLso3fpaXhIjq_1oTATZF3AzAk&usqp=CAU"
                     ],
                     "bookmark_status": false,
                     "play_count": 0,
@@ -594,13 +749,13 @@
             "id": 5,
             "long_name": "MS-DOS",
             "short_name": "PC",
-            "description": "MS-DOS, a vintage operating system, played a pivotal role in the early days of gaming. Released in the 1980s, it provided a platform for classic games like \"Doom\" and \"Prince of Persia\". Its text-based interface and limited graphics capabilities challenged developers to create innovative gameplay, paving the way for the gaming industry's evolution.",
+            "description": "MS-DOS, a vintage operating system, played a pivotal role in the early days of gaming. Released in the 1980s, it provided a platform for classic games like \"Doom\" and \"Prince of Persia\". Its text-based interface and limited graphics capabilities challenged developers to create innovative gameplay, paving the way for the gaming industry's evolution. Plug your USB game pad and start enjoying.",
             "console_logo": "https://hyperspin-fe.com/siteuploads/downloads/screenshots/monthly_2018_02/5a95f7aa58e76_MicrosoftMS-DOS.thumb.png.55d7a7f3d0b5ab178001fd76ed08cb04.png",
-            "console_icon": "images/games/classic_pc.png",
+            "console_icon": "https://ouch-cdn2.icons8.com/SqhYE1KH01d03IIZCzGlv9GnRQyfqNXUsmGd00K4lIk/rs:fit:683:456/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9wbmcvMzU4/LzNlZjRiZDE0LTU5/NmItNDRlZS04Nzc3/LWM0OTg1MTVmMDUw/My5wbmc.png",
             "console_bgs": [
                 "https://previews.123rf.com/images/atmosphere1/atmosphere11712/atmosphere1171200005/92122905-old-dirty-retro-keyboard-of-a-vintage-computer-from-1990s.jpg"
             ],
-            "manufacturer": "Microsoft",
+            "manufacturer": "Microsoft Corp.",
             "release_year": "1981",
             "specs": {
                 "cpu": "MS-DOS itself did not have strict CPU requirements, but it was compatible with early x86 processors like the Intel 8086 and 8088.",
@@ -622,7 +777,7 @@
                 {
                     "community_name": "DOSBox",
                     "url": "https://www.dosbox.com/",
-                    "description": "DOSBox is an emulator that allows you to run MS-DOS programs on modern hardware. The official website (https://www.dosbox.com/) provides downloads, documentation, and a user forum where you can find help and discussions related to MS-DOS gaming and applications."
+                    "description": "DOSBox is an emulator that allows you to run MS-DOS programs on modern hardware. The official website provides downloads, documentation, and a user forum where you can find help and discussions related to MS-DOS gaming and applications."
                 }
             ],
             "options": {},

@@ -6,10 +6,46 @@
     display: none;
 }
 
-.fade-hero {
-    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#111827+0,111827+100&0+0,0.25+0,1+100 */
-    background: linear-gradient(to bottom,  rgba(17,24,39,0.25) 0%,rgba(17,24,39,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+.link {
+    @apply dark:text-cod-gray-100 underline underline-offset-2 dark:decoration-cod-gray-500 dark:hover:text-rose-300 dark:hover:decoration-rose-900 transition duration-500 ease-in-out;
 }
+
+.btn-small {
+    @apply w-6 h-6 p-[0.2rem] rounded dark:bg-cod-gray-800 dark:hover:bg-rose-700 dark:hover:text-cod-gray-50 transition duration-300 ease-in-out cursor-pointer shadow shadow-black;
+}
+
+.fade-hero {
+    /* cod-gray */
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#111827+0,111827+100&0+0,0.25+0,1+100 */
+    background: linear-gradient(to bottom,  rgba(17,24,39,0.25) 0%,rgba(17,24,39,1) 100%);
+
+    /* dark-blue */
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#2700d0+0,2700d0+100&0+0,0.25+0,1+100 */
+    /* background: linear-gradient(to bottom,  rgba(39,0,208,0.25) 0%,rgba(39,0,208,1) 100%); */
+}
+
+.fade {
+    /* cod-gray */
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#181818+0,181818+100&0+0,0.85+0,0.85+100 */
+    background: linear-gradient(to bottom,  rgba(24,24,24,0.85) 0%,rgba(24,24,24,0.85) 100%);
+    
+    /* dark-blue */
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#2700d0+0,2700d0+100&0+0,0.85+0,0.85+100 */
+    /* background: linear-gradient(to bottom,  rgba(39,0,208,0.85) 0%,rgba(39,0,208,0.85) 100%); */
+}
+
+
+.fade-nav {
+    /* cod-gray */
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#181818+0,181818+100&0.85+95,0+100 */
+    background: linear-gradient(to bottom,  rgba(24,24,24,0.85) 0%,rgba(24,24,24,0.85) 95%,rgba(24,24,24,0) 100%);
+    
+    /* dark-blue */
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#2700d0+0,2700d0+100&0.85+96,0+100 */
+    /* background: linear-gradient(to bottom,  rgba(39,0,208,0.85) 0%,rgba(39,0,208,0.85) 96%,rgba(39,0,208,0) 100%); */
+
+}
+
 
 /* width */
 ::-webkit-scrollbar {
@@ -19,17 +55,17 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #1f2937;
+    background: #181818;
     border-radius: 6px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #334155;
+    background: #404040;
     border-radius: 6px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #475569;
+    background: #4a4a4a;
 }
