@@ -1,5 +1,5 @@
 <button {{ $attributes->merge(['class' => 'text-left w-full cursor-pointer']) }}>
-    <span class=" text-rose-300 hover:text-cod-gray-100 transition duration-500 ease-in-out">
+    <span class=" text-rose-300 hover:text-cod-gray-100 smooth-500">
         {{ $title ?? '' }} 
     </span>
     @if ($toggler)

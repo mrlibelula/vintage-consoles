@@ -6,16 +6,14 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Accordion extends Component
+class TabContent extends Component
 {
-    public bool $toggler;
-
     /**
      * Create a new component instance.
      */
-    public function __construct(bool $toggler)
+    public function __construct()
     {
-        $this->toggler = filter_var($toggler, FILTER_VALIDATE_BOOLEAN);
+        //
     }
 
     /**
@@ -23,6 +21,6 @@ class Accordion extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.accordion');
+        return view('components.tab-content');
     }
 }

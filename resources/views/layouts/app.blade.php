@@ -52,7 +52,7 @@
     
             <div class="min-h-screen">
 
-                @livewire('navigation-menu')
+                <livewire:navigation />
 
                 <x-top-spacer />
     

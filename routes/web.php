@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Dashboard;
+use App\Livewire\Play;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,14 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('landing');
-});
+// Route::get('/', function () {
+//     return view('landing');
+// });
+
+Route::get('/', Dashboard::class)->name('home');
+Route::get('/dashboard', Dashboard::class)->name('dashboard');
+Route::get('{enc_game_id}/play/{console_short_name}/{game_title}', Play::class)->name('play');
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    // 
 });

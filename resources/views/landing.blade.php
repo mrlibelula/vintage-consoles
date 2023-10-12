@@ -23,7 +23,7 @@
 
     </head>
     <body class="sepia_">
-        <div class="isolate bg-black antialiased overflow-hidden overflow-y-auto cursor-default transition duration-500 ease-in-out">
+        <div class="isolate bg-black antialiased overflow-hidden overflow-y-auto cursor-default smooth-500">
             <div class="flex flex-col gap-y-8 h-screen">
                 <div class="absolute h-full inset-x-0 -z-10 transform-gpu overflow-hidden blur-3xl">
                     <svg class="relative animate-pulse left-[calc(50%-11rem)] -z-10 h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]" viewBox="0 0 1155 678" xmlns="http://www.w3.org/2000/svg">
@@ -67,10 +67,10 @@
                             </div> --}}
                             <div class="hidden sm:flex sm:flex-1 sm:justify-end items-center gap-x-8">
                                 @if (Route::has('login'))
-                                <a wire:navigate href="{{ route('register') }}" class="leading-6 text-gray-200 whitespace-nowrap hover:text-rose-500 transition duration-500 ease-in-out">
+                                <a wire:navigate href="{{ route('register') }}" class="leading-6 text-gray-200 whitespace-nowrap hover:text-rose-500 smooth-500">
                                     Register for free
                                 </a>
-                                <a wire:navigate href="{{ route('login') }}" class="leading-6 text-gray-200 whitespace-nowrap hover:text-rose-500 transition duration-500 ease-in-out">
+                                <a wire:navigate href="{{ route('login') }}" class="leading-6 text-gray-200 whitespace-nowrap hover:text-rose-500 smooth-500">
                                     Log in <span aria-hidden="true">&rarr;</span>
                                 </a>
                                 @endif
@@ -135,7 +135,7 @@
                                         ]) }}
                                     </p>
                                     <div class="mt-10 flex items-center justify-center gap-x-6 whitespace-nowrap">
-                                        <a wire:navigate href="{{ route('dashboard') }}" class="rounded-md bg-gradient-to-br from-rose-950/10 to-rose-600 hover:from-gray-600 hover:to-rose-500 transition duration-500 ease-in-out px-3.5 py-1.5 leading-7 text-white shadow shadow-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 cursor-pointer">
+                                        <a wire:navigate href="{{ route('dashboard') }}" class="rounded-md bg-gradient-to-br from-rose-950/10 to-rose-600 hover:from-gray-600 hover:to-rose-500 smooth-500 px-3.5 py-1.5 leading-7 text-white shadow shadow-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 cursor-pointer">
                                             Start Playing Now!
                                         </a>
                                         {{-- <a wire:navigate href="#" class="  leading-7 text-gray-200">
@@ -144,10 +144,10 @@
                                     </div>
                                     <div class="flex flex-col gap-y-4 sm:gap-y-0 sm:flex-row sm:hidden mt-10 sm:flex-1 justify-center items-center gap-x-6">
                                         @if (Route::has('login'))
-                                        <a wire:navigate href="{{ route('register') }}" class="leading-6 text-gray-200 whitespace-nowrap hover:text-rose-500 transition duration-500 ease-in-out">
+                                        <a wire:navigate href="{{ route('register') }}" class="leading-6 text-gray-200 whitespace-nowrap hover:text-rose-500 smooth-500">
                                             Register for free
                                         </a>
-                                        <a wire:navigate href="{{ route('login') }}" class="leading-6 text-gray-200 whitespace-nowrap hover:text-rose-500 transition duration-500 ease-in-out">
+                                        <a wire:navigate href="{{ route('login') }}" class="leading-6 text-gray-200 whitespace-nowrap hover:text-rose-500 smooth-500">
                                             Log in <span aria-hidden="true">&rarr;</span>
                                         </a>
                                         @endif

@@ -100,7 +100,7 @@
                 
                 <!-- right panel -->
                 <div class="w-full xl:w-[30%] flex flex-col gap-y-4 items-start justify-start dark:shadow-md shadow-black border dark:border-cod-gray-900 bg-gradient-to-tr dark:from-cod-gray-800 dark:via-cod-gray-700/30 dark:to-cod-gray-600/80 rounded-md p-5">
-                    <div class="flex items-center justify-center w-full scale-[1.35] hover:scale-[1.45] transition duration-300 ease-in-out">
+                    <div class="flex items-center justify-center w-full scale-[1.35] hover:scale-[1.45] hover:-translate-y-2 smooth-300">
                         <img class="my-6" src="{{ $selected_console['console_icon'] }}" alt="{{ $selected_console['short_name'] }}">
                     </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Service\GameSession;
 use App\Service\Tool;
 use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
@@ -116,11 +117,17 @@ class Dashboard extends Component
         $this->randomHeroImage();
         $this->loadConsoles();
         $this->setConsole(1);
+        
+        $this->initGameSessionEnviro();
     }
     
+    public function initGameSessionEnviro()
+    {
+        new GameSession;
+    }
+
     public function render()
     {
-        return view('livewire.dashboard')
-            ->layout('layouts.app');
+        return view('livewire.dashboard');
     }
 }

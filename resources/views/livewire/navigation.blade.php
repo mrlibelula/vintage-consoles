@@ -10,7 +10,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 xl:-my-px xl:ml-10 xl:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard') || request()->routeIs('home')">
                         {{ __('Vintage Consoles') }}
                     </x-nav-link>
 
@@ -25,9 +25,9 @@
 
             <!-- search bar -->
             <div class="relative w-full flex gap-x-2 items-center justify-between">
-                <x-input class="absolute h-[2.2rem] w-full text-xl px-8" placeholder="Search games" />
-                <x-icons.magnify class=" absolute mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-500" />
-                <x-icons.x class="absolute right-0 mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-500 cursor-pointer" />
+                <x-input wire:model.live.lazy="search" class="absolute h-[2.2rem] w-full text-xl px-8" placeholder="Search games" />
+                <x-icons.magnify class=" absolute mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-300" />
+                <x-icons.x wire:click="clearSearchResults" class="absolute right-0 mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-300 cursor-pointer" />
             </div>
 
             <div class="hidden xl:flex xl:items-center xl:ml-6">
@@ -85,6 +85,7 @@
                 
                 <!-- Settings Dropdown -->
                 <div class="ml-3 relative">
+                    @auth
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
@@ -133,6 +134,11 @@
                             </form>
                         </x-slot>
                     </x-dropdown>
+                    @else
+                    <a wire:navigate href="{{ route('login') }}" class=" text-cod-gray-400 hover:text-rose-300 smooth-300">
+                        Login
+                    </a>
+                    @endauth
                 </div>
 
             </div>
@@ -149,10 +155,41 @@
         </div>
     </div>
 
+    <!-- search results -->
+    @if ($search_results)
+    <div class="fixed top-[4.1rem] z-40 flex items-center justify-center w-full px-2">
+        <div wire:click.away="clearSearchResults" class="flex flex-col gap-y-2 fade max-w-[28rem] _max-w-fit w-full rounded-md border-4 border-cod-gray-600 min-h-fit min-h-[10rem]_ sm:min-h-[13rem]_ max-h-[10rem] sm:max-h-[13rem] py-2 px-2 shadow-md shadow-black leading-tight overflow-hidden overflow-y-auto">
+            {{-- <div>
+                Search results
+            </div> --}}
+            @foreach ($search_results as $result)
+            <a wire:navigate href="{{ $this->gameRoute(['short_name' => $result['console_short_name']], ['id' => $result['game_id'], 'title' => $result['game_title']]) }}" class="group flex items-center gap-x-3 justify-start text-left rounded-md hover:bg-cod-gray-700 smooth-300 cursor-pointer pr-2">
+                <div class=" w-12 h-[4.4rem] overflow-hidden rounded-md">
+                    <img class=" w-full h-full brightness-75 group-hover:brightness-100 smooth-300" src="{{ $result['game_poster'] }}" alt="{{ $result['game_title'] }}">
+                </div>
+
+                <div class="flex flex-col">
+                    <div class=" text-rose-300 leading-none">
+                        #{{ strtolower($result['console_short_name']) }}
+                    </div>
+                    <div class=" leading-none text-cod-gray-50">
+                        {{ $result['game_title'] }}
+                    </div>
+                    <div class=" leading-none text-cod-gray-300/90">
+                        {{ number_format($result['game_rating'] * 100, 0) }}%
+                    </div>
+                </div>
+
+            </a>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden xl:hidden bg-white dark:bg-cod-gray-900">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard') || request()->routeIs('home')">
                 {{ __('Vintage Consoles') }}
             </x-responsive-nav-link>
         </div>
@@ -166,10 +203,14 @@
                     </div>
                 @endif
 
+                @auth
                 <div>
                     <div class="font-medium text-base text-cod-gray-800 dark:text-cod-gray-200">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-2xl text-cod-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="font-medium text-2xl text-cod-gray-500">
+                        {{ Auth::user()->email }}
+                    </div>
                 </div>
+                @endauth
             </div>
 
             <div class="mt-3 space-y-1">
@@ -194,7 +235,7 @@
                 <form method="POST" action="{{ route('logout') }}" x-data>
                     @csrf
 
-                    <a href="{{ route('logout') }}" class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-lg text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-800 dark:hover:text-cod-gray-200 hover:bg-cod-gray-50 dark:hover:bg-rose-900/50 hover:border-cod-gray-300 dark:hover:border-rose-600 focus:outline-none focus:text-cod-gray-800 dark:focus:text-cod-gray-200 focus:bg-cod-gray-50 dark:focus:bg-cod-gray-700 focus:border-cod-gray-300 dark:focus:border-cod-gray-600 transition duration-300 ease-in-out"
+                    <a href="{{ route('logout') }}" class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-lg text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-800 dark:hover:text-cod-gray-200 hover:bg-cod-gray-50 dark:hover:bg-rose-900/50 hover:border-cod-gray-300 dark:hover:border-rose-600 focus:outline-none focus:text-cod-gray-800 dark:focus:text-cod-gray-200 focus:bg-cod-gray-50 dark:focus:bg-cod-gray-700 focus:border-cod-gray-300 dark:focus:border-cod-gray-600 smooth-300"
                         @click.prevent="$root.submit();">
                         {{ __('Log Out') }}
                     </a>

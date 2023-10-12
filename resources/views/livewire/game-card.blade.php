@@ -200,24 +200,20 @@
         }
     </style>
     <div class="group contenedorCards">
-        <button class="card">
+        <div class="card">
             <div class="wrapper rounded-md overflow-hidden">
                 <div class="colorProd rounded-md" 
                     style="background-image: url({{ $game['box'] }})"
                 ></div>
                 <div class="imgProd" 
-                    {{-- style="background-image: url(https://firebasestorage.googleapis.com/v0/b/fotos-3cba1.appspot.com/o/batman.png?alt=media&token=bcce964a-7224-4e47-b619-265e93b5311e);" --}}
                     style="background-image: url({{ $game['poster'] }});"
                 ></div>
-                {{-- <div class="infoProd">
-                    <p class="leading-none text-xl text-cod-gray-100">
+                <div class="infoProd">
+                    <p class="mt-6 leading-none text-xl text-cod-gray-100">
                         {{ $game['title'] }}
                     </p>
-                    <p class="extraInfo font-mono text-sm">
-                        {{ $game['release_year'] }}
-                    </p>
-                </div> --}}
+                </div>
             </div>
-        </button>
+        </div>
     </div>
 </div>

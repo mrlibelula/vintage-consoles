@@ -142,4 +142,21 @@ class Tool
         }
         return [];
     }
+    
+    /**
+     * Returns game route
+     *
+     * @param array $console
+     * @param array $game
+     * @return string
+     */
+    public static function gameRoute(array $console, array $game): string
+    {
+        return route('play', [
+            self::encode($game['id']), 
+            $console['short_name'], 
+            $game['title'],
+        ]);
+    }
+
 }
