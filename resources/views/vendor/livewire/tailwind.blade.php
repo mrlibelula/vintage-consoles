@@ -29,14 +29,14 @@
 
             <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
-                    <p class="text-sm_ text-cod-gray-300 leading-5">
+                    <p class="text-sm_ text-cod-gray-500 leading-5 tracking-tight">
                         <span>{!! __('Showing') !!}</span>
                         <span class="font-medium_">{{ $paginator->firstItem() }}</span>
                         <span>{!! __('-') !!}</span>
                         <span class="font-medium_">{{ $paginator->lastItem() }}</span>
                         <span>{!! __('out of') !!}</span>
                         <span class="font-medium_">{{ $paginator->total() }}</span>
-                        <span>{!! __('results') !!}</span>
+                        <span>{!! __('games') !!}</span>
                     </p>
                 </div>
 

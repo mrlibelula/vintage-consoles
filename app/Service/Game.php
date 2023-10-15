@@ -31,6 +31,11 @@ class Game
 
     private function console(string $console_short_name): array
     {
+        // search for Session data
+        // if not found, create new Session data
+        if (!Session::has('consoles')) {
+            new GameSession;
+        }
         return Tool::findItemByKey(Session::get('consoles'), 'short_name', $console_short_name);
     }
 

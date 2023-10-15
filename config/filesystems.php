@@ -42,6 +42,12 @@ return [
             'throw' => false,
         ],
 
+        'games' => [
+            'driver' => 'local',
+            'root' => storage_path('games'),
+            'throw' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

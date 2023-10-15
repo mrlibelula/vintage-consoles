@@ -413,7 +413,7 @@
                     "rom": "Donkey Kong Country (E) (V1.0) [!].smc.7z",
                     "box": "https://media.tenor.com/t3gV8BT1C7AAAAAC/donkey-kong-country-snes.gif",
                     "poster": "https://m.media-amazon.com/images/M/MV5BOTc1MDc1MGYtYWEwNS00YTRjLWI3MmItYmRhODQ3NjQxZGY4XkEyXkFqcGdeQXVyMTA3NjAwMDc4._V1_.jpg",
-                    "cartridge": "https://m.media-amazon.com/images/I/71Bmt2idqmL.jpg",
+                    "cartridge": "https://i.ebayimg.com/images/g/y4EAAOSw~jtjmKcy/s-l1200.webp",
                     "screenshots": [
                         "https://cdn.mobygames.com/screenshots/10168670-donkey-kong-country-snes-riding-a-rhinoceros-watch-out-pesky-fro.jpg",
                         "https://www.gamegrin.com/assets/Uploads/2019/12/04/screenshot-45.jpg",
@@ -474,6 +474,110 @@
                         "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2fd55a55-7eaf-4b7b-bba1-eb6106f8a503/dbfvzey-ad002c6f-9862-4d58-a808-a55a70b431b0.png/v1/fill/w_1024,h_887,q_80,strp/super_mario_world_beta__screenshot_2_by_raffine52_dbfvzey-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9ODg3IiwicGF0aCI6IlwvZlwvMmZkNTVhNTUtN2VhZi00YjdiLWJiYTEtZWI2MTA2ZjhhNTAzXC9kYmZ2emV5LWFkMDAyYzZmLTk4NjItNGQ1OC1hODA4LWE1NWE3MGI0MzFiMC5wbmciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.5mO97uje7lxFFS2L8IeD7NeZ6qmFYCpVnQt05eDo1Pk",
                         "https://i0.wp.com/gamingrespawn.com/wp-content/uploads/2021/09/Super-Mario-World-V.jpg?resize=800%2C640&ssl=1",
                         "https://www.sm128c.com/media/snes/smw/screenshots/smw-luigi3.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 3,
+                    "title": "Super Mario Kart",
+                    "release_year": "1992",
+                    "publisher": "Nintendo",
+                    "genres": [
+                        {
+                            "name": "racing",
+                            "description": "At its core, \"Super Mario Kart\" is a racing game where players compete against each other and computer-controlled opponents in a series of kart races. The objective is to complete laps on various tracks as quickly as possible."
+                        },
+                        {
+                            "name": "kart-racing",
+                            "description": "This is a sub-genre of racing games that features go-karts or small vehicles. In \"Super Mario Kart,\" players control characters from the Mario franchise in go-karts and compete on tracks filled with obstacles and power-ups."
+                        },
+                        {
+                            "name": "multiplayer",
+                            "description": "\"Super Mario Kart\" is known for its strong multiplayer element, allowing up to two players to compete head-to-head on a split-screen. This adds a social and competitive aspect to the game."
+                        },
+                        {
+                            "name": "battle",
+                            "description": "In addition to traditional racing, \"Super Mario Kart\" features a battle mode where players can engage in combat on specialized arenas. The objective is to pop opponents' balloons while protecting your own, creating a more strategic and competitive gameplay experience."
+                        },
+                        {
+                            "name": "action",
+                            "description": "The game incorporates elements of action as players can use items and power-ups to attack opponents, defend themselves, or gain advantages during races. These items add an action-oriented twist to the standard racing gameplay."
+                        },
+                        {
+                            "name": "platformer",
+                            "description": "While not the primary genre, \"Super Mario Kart\" also includes platformer elements in the form of jumps and obstacles on the tracks. Players must navigate these elements skillfully to maintain their speed and avoid hazards."
+                        },
+                        {
+                            "name": "party-game",
+                            "description": "Due to its accessible gameplay and multiplayer options, \"Super Mario Kart\" has often been considered a party game. It's designed for fun group play and can lead to competitive and entertaining experiences during gatherings."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "The game has an arcade-like feel, with simple controls, fast-paced races, and a focus on fun and excitement. It captures the spirit of classic arcade racing games."
+                        }
+                    ],
+                    "description": "\"Super Mario Kart\" for the SNES is a beloved classic that combines racing and action with a playful Mario twist. Players control characters from the Mario franchise in go-karts, competing on imaginative tracks filled with obstacles, power-ups, and platforming elements. It features both traditional racing and intense battle modes where players pop each other's balloons. With a strong multiplayer focus, it's perfect for competitive split-screen play. Known for its accessible gameplay and addictive charm, \"Super Mario Kart\" is a timeless party game that has captivated players for decades, offering a thrilling and fun-filled racing experience.",
+                    "rating": "0.94",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Super Mario Kart (E) [!].7z",
+                    "box": "https://media.tenor.com/WlM_XRslAjIAAAAC/mario-kart-snes.gif",
+                    "poster": "https://m.media-amazon.com/images/M/MV5BMWI3YWRhZjAtMmQzMy00ODZlLWEzYjQtNDlkZWExZGQxZWFhXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_.jpg",
+                    "cartridge": "https://i.ebayimg.com/images/g/qw0AAOSwQeRibIdn/s-l1200.jpg",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/5165661-super-mario-kart-snes-mario-makes-a-tight-turn.png",
+                        "https://images.nintendolife.com/screenshots/16703/large.jpg",
+                        "https://i.ytimg.com/vi/B1fUD1LVxNg/maxresdefault.jpg",
+                        "https://i.ytimg.com/vi/6KzhEGPUNIk/sddefault.jpg",
+                        "https://i0.wp.com/sindrelf.com/wp-content/uploads/2018/08/super-mario-kart.png?resize=736%2C644&ssl=1",
+                        "https://pbs.twimg.com/tweet_video_thumb/DwjfJ7fXcAYd3E_.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 4,
+                    "title": "The Legend of Zelda: A Link to the Past",
+                    "release_year": "1991",
+                    "publisher": "Nintendo",
+                    "genres": [
+                        {
+                            "name": "action-adventure",
+                            "description": "\"A Link to the Past\" is a quintessential action-adventure game. It combines elements of action, exploration, puzzle-solving, and narrative to create an immersive gaming experience. Players control Link as they venture through the vast and richly detailed land of Hyrule, battling enemies, collecting items, and solving puzzles to progress. The game's emphasis on a grand overworld, dungeons, and a compelling storyline exemplifies the action-adventure genre."
+                        },
+                        {
+                            "name": "fantasy",
+                            "description": "This genre encompasses games set in fantastical realms, often featuring magic, mythical creatures, and epic quests. \"A Link to the Past\" is firmly situated in a fantasy world, with a captivating storyline centered around the struggle between good and evil, magical items, and a wide range of fantastical characters and environments."
+                        }
+                    ],
+                    "description": "\"The Legend of Zelda: A Link to the Past,\" a timeless classic for the SNES, immerses players in a captivating fantasy world. Embarking on an epic quest as Link, you'll journey through the enchanting land of Hyrule, battling foes, uncovering secrets, and solving intricate puzzles. The game expertly combines action, exploration, and narrative to deliver an unparalleled action-adventure experience. With a grand overworld and challenging dungeons, you'll collect iconic items, such as the Master Sword, and confront dark forces threatening the kingdom. Its masterful storytelling, deep lore, and memorable characters make \"A Link to the Past\" an enduring masterpiece, defining the action-adventure genre.",
+                    "rating": "0.96",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Legend of Zelda, The - A Link to the Past (E) [!].7z",
+                    "box": "https://64.media.tumblr.com/2d844874c8230b91070afcdbc1403143/tumblr_nu3zivpR0I1qd4q8ao1_500.gif",
+                    "poster": "https://i.etsystatic.com/8078437/r/il/72da3a/2906968650/il_fullxfull.2906968650_motj.jpg",
+                    "cartridge": "https://i.ebayimg.com/images/g/yIoAAOSwU3dhCKv4/s-l1600.jpg",
+                    "screenshots": [
+                        "https://i.pinimg.com/originals/78/a3/0f/78a30f90ee24311e239e543fd7dd6498.png",
+                        "https://cdn.mobygames.com/screenshots/15794909-the-legend-of-zelda-a-link-to-the-past-snes-fighting-against-a-f.png",
+                        "https://cdn.mobygames.com/screenshots/16096059-the-legend-of-zelda-a-link-to-the-past-snes-picture-picture-on-t.png",
+                        "https://cdn.mobygames.com/screenshots/15797105-the-legend-of-zelda-a-link-to-the-past-snes-boss-fight-against-m.png",
+                        "https://cdn.mobygames.com/screenshots/15639954-the-legend-of-zelda-a-link-to-the-past-snes-tower-of-hera-strike.png",
+                        "https://cdn.mobygames.com/1f9860ea-bf71-11ed-9521-02420a000152.webp"
                     ],
                     "bookmark_status": false,
                     "play_count": 0,
@@ -557,10 +661,123 @@
                     "rom": "pacman.zip",
                     "box": "https://i.pinimg.com/originals/15/ce/b5/15ceb576be59fda3d7878cae4b04396b.gif",
                     "poster": "https://i.ebayimg.com/images/g/68MAAOSwRr5ZrVAi/s-l1600.jpg",
-                    "cartridge": "https://www.arcade-museum.com/images/118/118124217732.jpg",
+                    "cartridge": "",
                     "screenshots": [
                         "https://www.researchgate.net/profile/Petter-Ogland/publication/326319846/figure/fig1/AS:647164153827336@1531307366681/Detail-from-a-Pac-Man-screenshot.png",
                         "https://i.redd.it/ujjg6ga3ufd81.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 2,
+                    "title": "Robocop",
+                    "release_year": "1988",
+                    "publisher": "Data East Corporation",
+                    "genres": [
+                        {
+                            "name": "beat-em-up",
+                            "description": "\"RoboCop\" is a side-scrolling beat 'em up game where players control the titular character, RoboCop, as he takes on waves of enemies. The gameplay involves hand-to-hand combat, shooting, and melee attacks to defeat adversaries and progress through levels."
+                        },
+                        {
+                            "name": "action",
+                            "description": "This game is fast-paced and action-packed, featuring intense combat sequences, gunfire, and explosions. Players engage in various action scenarios while pursuing the game's objectives."
+                        },
+                        {
+                            "name": "shooter",
+                            "description": "As RoboCop, players use firearms and weapons to eliminate opponents, combining elements of both traditional beat 'em up and shooter gameplay. Precise aiming and shooting are essential to success."
+                        },
+                        {
+                            "name": "sci-fi",
+                            "description": "The game is set in a dystopian, futuristic Detroit, which falls into the science fiction genre. The presence of advanced technology, cyborgs, and a futuristic atmosphere contributes to this classification."
+                        },
+                        {
+                            "name": "licensed-game",
+                            "description": "\"RoboCop\" is based on the popular movie franchise of the same name, allowing players to step into the shoes of the iconic character from the films."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "True to its arcade origins, the game features straightforward, action-packed gameplay designed to entertain players with quick, exciting encounters and challenges."
+                        }
+                    ],
+                    "description": "\"RoboCop\" (1988) is an iconic arcade game that brings the action-packed world of the popular movie franchise to the gaming realm. Players assume the role of the eponymous cyborg law enforcer, RoboCop, as he navigates through a dystopian Detroit. The game blends side-scrolling beat 'em up and shooter elements, providing intense combat sequences where players use both hand-to-hand combat and powerful firearms to take down waves of adversaries. With its fast-paced action, faithful representation of the sci-fi movie's atmosphere, and straightforward arcade-style gameplay, \"RoboCop\" immerses players in the gritty, high-tech world of the film, offering a thrilling and memorable gaming experience.",
+                    "rating": "0.91",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "robocop.zip",
+                    "box": "https://i.pinimg.com/originals/cc/52/5f/cc525fe3603cd073449534f3e80f360f.gif",
+                    "poster": "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/RoboCop_arcade_flyer.jpg/220px-RoboCop_arcade_flyer.jpg",
+                    "cartridge": "",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/16406651-robocop-arcade-beat-them-up.png",
+                        "https://cdn.mobygames.com/screenshots/15634808-robocop-arcade-the-junkyard.png",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUaESHLY62hBi666xBRLEHf_TeYM89uCSpaxzcRCRLsTUBOzD7GZrdT0I6BhmK6Dp79lg&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdily4RdxceUTpbHU0OxGPvwWE3b4dWlZOD8V3sEbCoWPj1RDFNtqi5-z1wJqfaPiXI3o&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXChk2W-TxAMjXIIG4uSrVVKCrYo044b7cPJIuvTMMWTTIBcnqDMOpWWyiGhAjBKRv7do&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7uHLR98pRO6duon2MwIUfiII_PI8SZQk55XpvMabZYtRbnEDxHIqHOvw5t0Wp_WnYqKk&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUfXSUXzLEM0aYmRYETcRRWy1yVdtFbUqNP_MRNutra9bLI1fVfs5oY9ykcULysCLdPfw&usqp=CAU"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 3,
+                    "title": "Toki",
+                    "release_year": "1988",
+                    "publisher": "TAD Corporation",
+                    "genres": [
+                        {
+                            "name": "platformer",
+                            "description": "\"Toki\" is a side-scrolling platformer that follows the adventures of the titular character, Toki. Players navigate various levels, jumping between platforms, avoiding obstacles, and defeating enemies along the way."
+                        },
+                        {
+                            "name": "run-and-gun",
+                            "description": "The game features both running and shooting elements, as Toki can spit projectiles at enemies. This genre combines platforming with action-packed shooting sequences."
+                        },
+                        {
+                            "name": "action",
+                            "description": "\"Toki\" is known for its fast-paced and action-packed gameplay, involving constant movement, enemy encounters, and boss battles."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "As a classic arcade game, \"Toki\" offers straightforward, skill-based gameplay designed for short, intense gaming sessions with the goal of achieving high scores."
+                        },
+                        {
+                            "name": "fantasy",
+                            "description": "The game is set in a fantastical world filled with unusual creatures and environments, contributing to its classification within the fantasy genre."
+                        },
+                        {
+                            "name": "adventure",
+                            "description": "While the primary focus is on platforming and action, \"Toki\" also features adventure elements as players progress through a series of levels, each with its own unique challenges."
+                        }
+                    ],
+                    "description": "\"Toki\" (1988) is a classic arcade game that invites players into a vibrant and whimsical fantasy world. You assume the role of Toki, a character transformed into a monkey, embarking on a quest to rescue your kidnapped sweetheart. The game combines elements of platforming and action, as you traverse side-scrolling levels, navigating treacherous terrain, and battling quirky foes with your unique projectile-spitting abilities. \"Toki\" is known for its fast-paced, action-packed gameplay, characterized by challenging obstacles and memorable boss battles. As a quintessential arcade title, it captivates players with its skill-based challenges, encouraging repeat plays to achieve high scores and save Toki's love.",
+                    "rating": "0.89",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "toki.zip",
+                    "box": "https://www.cinepremiere.com.mx/wp-content/uploads/2019/02/tokiold.gif",
+                    "poster": "https://cdn11.bigcommerce.com/s-60z4za/images/stencil/1280x1280/products/167/859/tokisa__87396.1691070403.jpg?c=2",
+                    "cartridge": "",
+                    "screenshots": [
+                        "https://media.retroachievements.org/Images/035637.png",
+                        "https://4.bp.blogspot.com/-VN-wg9wReBw/VJWwn8QrywI/AAAAAAAAVJo/_XYZJdBlEY0/s1600/to05.png",
+                        "https://4.bp.blogspot.com/-mEML77tW-mE/VJWwr-k8MsI/AAAAAAAAVKg/F4fh3iglQ14/s1600/to16.png",
+                        "https://1.bp.blogspot.com/-rjghiypGZmA/VJWwqdRfKOI/AAAAAAAAVKI/0816hLNO8a8/s1600/to12.png",
+                        "https://2.bp.blogspot.com/-23WafDbflTM/VJWwo-GqtBI/AAAAAAAAVJ4/bnCVvamH5tM/s1600/to08.png",
+                        "https://i.ytimg.com/vi/wv02dkUKZA4/sddefault.jpg"
                     ],
                     "bookmark_status": false,
                     "play_count": 0,
@@ -576,7 +793,7 @@
         {
             "id": 4,
             "long_name": "Atari 2600",
-            "short_name": "Atari",
+            "short_name": "atari2600",
             "description": "The Atari 2600, released in 1977, is a legendary home video game console known for popularizing gaming in the late 1970s and early 1980s. It featured a diverse library of games played using cartridges and simple joystick controllers. The Atari 2600 holds a special place in gaming history as one of the first mass-market consoles.",
             "console_logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Atari_2600_Logo.png/1024px-Atari_2600_Logo.png",
             "console_icon": "images/games/Atari_2600.png",
@@ -628,7 +845,7 @@
                     "rom": "Digdug.bin",
                     "box": "https://skunkworx.org/goa/games/d/dig-dug/atari-2600/screenshots/fygar.gif",
                     "poster": "https://i.pinimg.com/originals/45/8b/d3/458bd3e6769480fa733f12bc5a457dad.jpg",
-                    "cartridge": "https://i.pinimg.com/736x/b9/19/21/b91921d45663f92037bc787cbbd9f2b9.jpg",
+                    "cartridge": "https://assets.lastdodo.com/image/ld_large/plain/assets/catalog/assets/2011/3/28/f/8/5/pdf_f85ccf20-3b93-012e-98a5-0050569439b1.jpg",
                     "screenshots": [
                         "https://atariage.com/2600/screenshots/s_DigDug_2.png",
                         "https://atariage.com/2600/screenshots/s_DigDug_1.png",
@@ -676,7 +893,7 @@
                     "save_state_support": true,
                     "rom": "ADVNTURE.BIN",
                     "box": "https://i.imgur.com/dYbvnnX.gif",
-                    "poster": "https://m.media-amazon.com/images/M/MV5BNWYyOTFhYzUtMWU0Ni00ZjI4LWE2MmItYjljYmIyNjA2YTYwXkEyXkFqcGdeQXVyNzg5OTk2OA@@._V1_.jpg",
+                    "poster": "https://now.estarland.com/images/products/4/27204/AT2600-Adventure-large-image.jpg",
                     "cartridge": "https://grumpybobsonline.com/cdn/shop/products/adventure_large.jpg?v=1498788337",
                     "screenshots": [
                         "https://www.retrogamer.net/wp-content/uploads/2013/10/adventure.png",
@@ -733,6 +950,55 @@
                         "https://cdn.mobygames.com/screenshots/2062733-missile-command-atari-2600-defending-your-cities.png",
                         "https://upload.wikimedia.org/wikipedia/en/8/86/A5200_Missile_Command.png",
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRc8GNI-XTWnXacbk4fNFX0-PtEGnG_47P8fxgyCFAyuVLso3fpaXhIjq_1oTATZF3AzAk&usqp=CAU"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 4,
+                    "title": "Keystone Kapers",
+                    "release_year": "1983",
+                    "publisher": "Atari, Inc.",
+                    "genres": [
+                        {
+                            "name": "action",
+                            "description": "\"Keystone Kapers\" is an action game where players take on the role of a police officer, Officer Keystone Kelly, tasked with apprehending a thief, Harry Hooligan. The game's action revolves around chasing the criminal through various environments, dodging obstacles, and collecting power-ups."
+                        },
+                        {
+                            "name": "platformer",
+                            "description": "This game is also considered a platformer, as players navigate multiple levels of a shopping mall, jumping over obstacles and using elevators and escalators to progress. Precision in timing and movement is key to success."
+                        },
+                        {
+                            "name": "chase-game",
+                            "description": "The core gameplay revolves around the chase, with Officer Kelly pursuing Harry Hooligan through the different levels of the shopping mall. Players need to strategize their pursuit and avoid collisions with obstacles to catch the thief."
+                        },
+                        {
+                            "name": "score-attack",
+                            "description": "Like many classic arcade-style games, \"Keystone Kapers\" encourages players to achieve high scores by capturing the burglar as quickly and efficiently as possible. Success in the game is measured by your score."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "The game follows the arcade tradition of offering straightforward, action-packed gameplay with the primary objective of achieving high scores, making it well-suited for short, intense gaming sessions."
+                        }
+                    ],
+                    "description": "\"Keystone Kapers,\" a classic Atari 2600 game from 1983, places players in the shoes of Officer Keystone Kelly, a relentless cop chasing the elusive burglar, Harry Hooligan, through a bustling shopping mall. This action-packed adventure combines elements of platforming and chasing, requiring precision in jumping over obstacles and clever use of elevators and escalators to catch the criminal. With a focus on achieving high scores, players engage in intense, score-boosting pursuits as they navigate various levels. \"Keystone Kapers\" captures the spirit of arcade gaming with its addictive simplicity and remains a cherished part of video game history, delivering timeless excitement in short gaming sessions.",
+                    "rating": "0.89",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Keystone.bin",
+                    "box": "https://www.retrogames.cz/games/097/A26_03.gif",
+                    "poster": "https://www.retrogamecases.com/wp-content/uploads/a2600_keystonekapers_front.png",
+                    "cartridge": "https://i.pinimg.com/474x/a6/2e/da/a62eda7879e91eca339a16e727316604.jpg",
+                    "screenshots": [
+                        "https://atariage.com/2600/screenshots/s_KeystoneKapers_2.png",
+                        "https://i.pinimg.com/736x/a6/25/3e/a6253e0bdcae9b5665f60b9733b0edb6.jpg",
+                        "https://i.ytimg.com/vi/jeY1ML0d3CI/hqdefault.jpg"
                     ],
                     "bookmark_status": false,
                     "play_count": 0,
@@ -835,6 +1101,169 @@
                         "https://upload.wikimedia.org/wikipedia/commons/5/56/Prince_of_Persia_1_-_MS-DOS_-_Level_13.png",
                         "https://static.wikia.nocookie.net/princeofpersia/images/b/b6/Prince_of_Persia_1989.jpg/revision/latest?cb=20140327030227&path-prefix=en",
                         "https://upload.wikimedia.org/wikipedia/commons/5/5c/Prince_of_Persia_1_-_MS-DOS_-_Gameplay_-_Game_over_%281%29.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 2,
+                    "title": "Tapper",
+                    "release_year": "1984",
+                    "publisher": "Sega/Gremlin",
+                    "genres": [
+                        {
+                            "name": "arcade",
+                            "description": "Arcade games are characterized by their fast-paced and exciting gameplay. They often involve simple controls and aim to provide immediate, adrenaline-pumping entertainment. \"Tapper\" fits this category as it challenges players to serve customers by sliding drinks down a bar while dealing with increasingly demanding and quick-paced customer orders. The primary focus is on achieving high scores and surviving as long as possible, typically in a level-based or endless gameplay format."
+                        },
+                        {
+                            "name": "action",
+                            "description": "Action games emphasize physical challenges, hand-eye coordination, and player reflexes. In \"Tapper\", the action is evident as you control the bartender who must rapidly serve drinks to customers while avoiding obstacles and maintaining the order and flow of the bar. The game's fast-paced nature and time-based challenges make it a quintessential action game, demanding quick thinking and precision to succeed."
+                        }
+                    ],
+                    "description": "\"Tapper\" (1984) for DOS is a classic arcade action game. Players step into the shoes of a bartender, tasked with serving drinks to demanding patrons. The game's fast-paced action requires quick reflexes and precision to slide drinks down the bar while avoiding obstacles. As the game progresses, the challenge intensifies with an ever-growing crowd and escalating demands. \"Tapper\" provides an addictive and challenging experience with simple controls, making it a timeless favorite for gamers who enjoy high-energy, score-based arcade gameplay. It remains a nostalgic gem from the early days of PC gaming.",
+                    "rating": "0.85",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "https://libe.dev/bundles/tapper.jsdos",
+                    "box": "https://archive.org/serve/msdos_Tapper_1983/Tapper_1983_screenshot.gif",
+                    "poster": "https://cdn.mobygames.com/covers/4042308-tapper-commodore-64-front-cover.jpg",
+                    "cartridge": "https://www.picclickimg.com/2pQAAOSwwrpjOO61/Apple-II-TAPPER-1984-Sega-Game-by-Bally.webp",
+                    "screenshots": [
+                        "https://archive.org/download/tapper_dos/tapper_dos.gif",
+                        "https://www.freegameempire.com/Img/Cache/Games/Tapper/Screenshot-4.png",
+                        "https://www.freegameempire.com/Img/Cache/Games/Tapper/Screenshot-6.png",
+                        "https://playold.games/wp-content/uploads/2021/08/Tapper-screenshot-8.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 3,
+                    "title": "Doom 2",
+                    "release_year": "1994",
+                    "publisher": "id Software",
+                    "genres": [
+                        {
+                            "name": "first-person-shooter",
+                            "description": "\"Doom 2\" is a classic first-person shooter known for pioneering the genre. In this game, players take on the role of a space marine fighting against hordes of demonic creatures on a variety of levels. The player views the game world from the protagonist's perspective and must use an array of weapons to eliminate enemies, explore levels, and accomplish objectives. FPS games emphasize fast-paced action, precise shooting, and immersive gameplay."
+                        },
+                        {
+                            "name": "action",
+                            "description": "\"Doom 2\" is also classified as an action game due to its intense combat, exploration, and problem-solving elements. Players navigate through complex levels, solve puzzles, collect resources, and face a wide range of hostile enemies. The action is relentless, with constant engagement, making quick reflexes and decision-making crucial for success."
+                        }
+                    ],
+                    "description": "\"Doom 2,\" released in 1994, is a legendary first-person shooter that took the gaming world by storm. In this iconic DOS game, players assume the role of a space marine battling against the forces of hell on a series of nightmarish levels. As a pioneer of the first-person shooter genre, \"Doom 2\" offers relentless action, intense combat, and atmospheric gameplay. Armed with a variety of weapons, players traverse intricate levels, solving puzzles, collecting power-ups, and confronting an array of demonic foes. Its fast-paced, heart-pounding gameplay and iconic level design have made \"Doom 2\" an enduring classic, leaving an indelible mark on the gaming industry.",
+                    "rating": "0.95",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "https://libe.dev/bundles/doom2.jsdos",
+                    "box": "https://j.gifs.com/KrjprY.gif",
+                    "poster": "https://juegosabiertos.com/wp-content/uploads/doom-2.jpg",
+                    "cartridge": "https://i.ebayimg.com/00/s/NTY0WDY1NA==/z/uZEAAOSwsFpgkhMh/$_12.JPG?set_id=880000500F",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/1905270-doom-ii-dos-cyberdemon-vs-hell-barons.png",
+                        "https://cdn.mobygames.com/screenshots/1906354-doom-ii-dos-the-original-games-two-endboss-monsters-fight-it-out.png",
+                        "https://ip.trueachievements.com/remote/download.xbox.com/content/images/66acd000-77fe-1000-9115-d802584109b6/1033/screenlg4.jpg?width=900",
+                        "https://cdn.mobygames.com/screenshots/1904501-doom-ii-dos-battling-the-oh-so-annoying-arch-vile.png",
+                        "https://cdn.vox-cdn.com/thumbor/JiPmjmXwsOrI-SiDoziRXFg2ar8=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/18338619/Switch_DOOM_1993_04.jpg",
+                        "https://ip.trueachievements.com/remote/download.xbox.com/content/images/66acd000-77fe-1000-9115-d802584109b6/1033/screenlg10.jpg?width=900",
+                        "https://img.youtube.com/vi/irNoHfnLXRM/maxresdefault.jpg",
+                        "https://www.retrogames.cz/games/462/DOS_04.gif"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 4,
+                    "title": "Wolfenstein 3D",
+                    "release_year": "1992",
+                    "publisher": "id Software",
+                    "genres": [
+                        {
+                            "name": "first-person-shooter",
+                            "description": "\"Wolfenstein 3D\" is one of the pioneering first-person shooters, setting the standard for the genre. Players take on the role of B.J. Blazkowicz as they navigate through a series of Nazi-controlled mazes and fortresses, engaging in intense combat with enemies. The game is known for its fast-paced, action-packed shooting gameplay and the player's perspective being from the first-person view."
+                        },
+                        {
+                            "name": "action",
+                            "description": "\"Wolfenstein 3D\" falls under the action game genre due to its focus on fast-paced, reflex-driven gameplay. It requires players to explore labyrinthine levels, solve puzzles, gather items, and engage in combat with enemy soldiers and supernatural threats. The action in the game is relentless, with an emphasis on skill and strategy."
+                        }
+                    ],
+                    "description": "\"Wolfenstein 3D,\" unleashed in 1992, is a groundbreaking first-person shooter set during World War II. Playing as B.J. Blazkowicz, you infiltrate Nazi strongholds, battling soldiers, mutants, and evil bosses. It's a pioneer of the FPS genre, offering fast-paced action, maze-like levels, and intense combat. The game's visceral first-person perspective immerses players in heart-pounding gunfights as they collect weapons, secrets, and navigate treacherous terrain. \"Wolfenstein 3D\" is a classic, known for its relentless action, iconic level design, and setting the stage for the FPS genre's future. It's a timeless masterpiece in the history of video games, cementing its place as a beloved classic.",
+                    "rating": "0.92",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "https://libe.dev/bundles/wolf3d.jsdos",
+                    "box": "https://media0.giphy.com/media/3o85xyFuIzQQ2NmIBW/giphy.gif",
+                    "poster": "https://upload.wikimedia.org/wikipedia/en/0/05/Wolfenstein-3d.jpg",
+                    "cartridge": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqw1xIQ4WC8U6itq_GMk_kffMahKnhCI4x63XGwvQIiquT_ZdMS-l_Z5ijiO5bJa4aTY4&usqp=CAU",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/3089571-wolfenstein-3d-dos-episode-5.png",
+                        "https://cdn.mobygames.com/screenshots/3089880-wolfenstein-3d-dos-episode-6.png",
+                        "https://cdn.mobygames.com/screenshots/16079607-wolfenstein-3d-macintosh-close-up-view-of-the-pain-animation-the.png",
+                        "https://static.wikia.nocookie.net/wl6/images/9/9c/98D9E6B4-CE9D-4CDA-A7F6-2160BA32F085.jpeg/revision/latest?cb=20190621224114",
+                        "https://media.moddb.com/images/games/1/1/67/wolfenstein_3D_01.gif",
+                        "https://i.ytimg.com/vi/2JdvoXnv6w4/maxresdefault.jpg",
+                        "https://cf.geekdo-images.com/DuoMeZIjB-5bzwVN93GoPg__original/img/rDrlP8_8aBTWlKwn9Fh0EKRBqBM=/0x0/filters:format(jpeg)/pic337855.jpg",
+                        "https://gpstatic.com/acache/59/01/1/us/s2-233963a893abcdfd92f9b50630d3af9e.jpg",
+                        "https://gpstatic.com/acache/59/01/1/us/s3-f3f82786ce6bc1ff8bb8f60560cf2cfe.jpg",
+                        "https://m.media-amazon.com/images/M/MV5BNWUyY2RlMGUtYzc5Yi00OWZiLWFiYmYtZDJmNDg5M2UxZDc3XkEyXkFqcGdeQXVyNDI2MDA5Mg@@._V1_.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 5,
+                    "title": "Alley Cat",
+                    "release_year": "1984",
+                    "publisher": "Synapse Software",
+                    "genres": [
+                        {
+                            "name": "action",
+                            "description": "\"Alley Cat\" is an action game that combines a variety of action-based challenges. Players take on the role of a mischievous alley cat and navigate through different scenarios, which include tasks such as climbing drainpipes, avoiding obstacles, and interacting with other characters in the game. The gameplay requires quick reflexes and problem-solving skills."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "\"Alley Cat\" falls under the arcade genre as it provides a series of mini-games and challenges that need to be completed in rapid succession. Each level presents a unique arcade-style puzzle or obstacle course, often with a time limit. The game's focus on scoring points and achieving objectives aligns it with the arcade gaming experience."
+                        }
+                    ],
+                    "description": "\"Alley Cat,\" a charming DOS game from 1984, invites players into the paws of an adventurous feline on a quest for fun and mischief. As the alley cat, you'll navigate a series of entertaining scenarios, each presenting a unique challenge. Climb drainpipes, sneak past fierce dogs, and pounce on amorous lady cats to win their favor in a series of quirky mini-games. The game's whimsical atmosphere and lighthearted humor make it a joy to explore. \"Alley Cat\" combines action, puzzle-solving, and arcade-style challenges, delivering a delightful and nostalgic experience that has cemented its place as a beloved classic in the world of retro gaming.",
+                    "rating": "0.84",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "https://libe.dev/bundles/cat.jsdos",
+                    "box": "https://1.bp.blogspot.com/-EHruCv-ng0o/Xhccq6tz4oI/AAAAAAAAsAc/CLS6HR1gM_I-HEaCka4d_4Hl2KCaNKKjQCLcBGAsYHQ/w1200-h630-p-k-no-nu/3b0a36a77cc4ae432b44616c0bddce0a.jpg",
+                    "poster": "https://www.giantbomb.com/a/uploads/scale_small/7/73970/2754200-alley_cat_c64_1_1.jpg",
+                    "cartridge": "https://www.oldgames.sk/images/oldgames/action/Alley.Cat/Covers/alley-cat-pc-booter-media.jpg",
+                    "screenshots": [
+                        "https://www.myabandonware.com/media/screenshots/a/alley-cat-1q/alley-cat_9.gif",
+                        "https://retrofreakreviews.files.wordpress.com/2016/11/741-alley-cat-pc-booter-screenshot-go-for-the-fish-cga.gif?w=678&h=424",
+                        "https://gamefaqs.gamespot.com/a/faqs/04/13404-9.png",
+                        "https://dosgames.com/screens/alleycat.gif",
+                        "https://1.bp.blogspot.com/-5p4yd-rePB0/XhcdGd8IjVI/AAAAAAAAsAw/iC62WYj1hHIttw8HTfGpdLdGUVox1inGwCLcBGAsYHQ/s1600/741-alley-cat-pc-booter-screenshot-go-for-the-fish-cga.gif"
                     ],
                     "bookmark_status": false,
                     "play_count": 0,

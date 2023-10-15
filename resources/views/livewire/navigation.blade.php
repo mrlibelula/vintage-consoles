@@ -11,7 +11,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 xl:-my-px xl:ml-10 xl:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard') || request()->routeIs('home')">
-                        {{ __('Vintage Consoles') }}
+                        {{ __('Consoles') }}
                     </x-nav-link>
 
                     <x-nav-link href="#" 
@@ -190,7 +190,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden xl:hidden bg-white dark:bg-cod-gray-900">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard') || request()->routeIs('home')">
-                {{ __('Vintage Consoles') }}
+                {{ __('Consoles') }}
             </x-responsive-nav-link>
         </div>
 
@@ -221,16 +221,29 @@
                     {{ __('HOF') }}
                 </x-responsive-nav-link>
 
+                @guest
+                <x-responsive-nav-link href="{{ route('login') }}" 
+                    {{-- :active="request()->routeIs('profile.show')" --}}
+                    >
+                    {{ __('Login') }}
+                </x-responsive-nav-link>
+                @endguest
+
+                @auth
                 <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
+                @endauth
 
+                @auth
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                     <x-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
                         {{ __('API Tokens') }}
                     </x-responsive-nav-link>
                 @endif
+                @endauth
 
+                @auth
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}" x-data>
                     @csrf
@@ -273,6 +286,7 @@
                         @endforeach
                     @endif
                 @endif
+                @endauth
             </div>
         </div>
     </div>

@@ -1,8 +1,8 @@
 <div class="flex flex-col gap-y-4 mt-4">
     @foreach ($games as $game)
-    <a wire:navigate href="{{ $this->gameRoute($game) }}" class="group flex items-center text-left justify-start gap-x-4 lg:gap-x-6 cursor-pointer rounded-md dark:hover:bg-cod-gray-800/60 hover:shadow-md shadow-black smooth-300">
+    <a _wire:navigate.hover_ href="{{ $this->gameRoute($game) }}" class="group flex items-center text-left justify-start gap-x-4 lg:gap-x-6 cursor-pointer rounded-md dark:hover:bg-cod-gray-800/60 hover:shadow-md shadow-black smooth-300">
         <!-- game poster -->
-        <div class="w-[5rem] h-[5.5rem] rounded-md border-[3px] border-cod-gray-600 shadow-md shadow-black overflow-hidden group-hover:brightness-125 group-hover:scale-110 smooth-300">
+        <div class="w-[5rem] h-[5.5rem] rounded-md border-[3px] border-cod-gray-600 shadow-md shadow-black overflow-hidden brightness-75 group-hover:brightness-100 group-hover:scale-110 smooth-300">
             <img class="w-full h-full" src="{{ $game['poster'] }}" alt="{{ $game['title'] }}">
         </div>
         <!-- game data -->

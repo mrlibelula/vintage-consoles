@@ -3,7 +3,7 @@
     <div class="flex py-4 overflow-hidden overflow-x-auto flex-col">
         <div class="flex flex-no-wrap gap-x-10">
             @foreach ($selected_console['games'] as $game)
-            <a wire:navigate href="{{ $this->gameRoute($game) }}">
+            <a _wire:navigate.hover_ href="{{ $this->gameRoute($game) }}">
                 <livewire:game-card :game="$game" :key="$game['id']" />
             </a>
             @endforeach

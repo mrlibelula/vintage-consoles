@@ -6,6 +6,10 @@
     display: none;
 }
 
+.game-arena {
+    @apply w-full h-[30vh] sm:h-[35vh] md:h-[36vh] lg:h-[37vh] xl:h-[50vh] border-0 m-0 p-0 overflow-hidden;
+}
+
 .smooth-300 {
     @apply transition duration-300 ease-in-out;
 }
@@ -23,9 +27,13 @@
 }
 
 .fade-hero {
+    /* fedora */
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#151515+1,151515+100&0+0,0.25+0,1+100 */
+    background: linear-gradient(to bottom,  rgba(21,21,21,0.25) 0%,rgba(21,21,21,0.26) 1%,rgba(21,21,21,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
     /* cod-gray */
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#111827+0,111827+100&0+0,0.25+0,1+100 */
-    background: linear-gradient(to bottom,  rgba(17,24,39,0.25) 0%,rgba(17,24,39,1) 100%);
+    /* background: linear-gradient(to bottom,  rgba(17,24,39,0.25) 0%,rgba(17,24,39,1) 100%); */
 
     /* dark-blue */
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#2700d0+0,2700d0+100&0+0,0.25+0,1+100 */

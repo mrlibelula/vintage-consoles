@@ -34,6 +34,12 @@ class SelectedConsole extends Component
         $this->$accordion_prop = !$this->$accordion_prop;
     }
 
+    // public function resetGameConsole()
+    // {
+    //     $this->selected_console = [];
+    //     dd('cleared');
+    // }
+
     public function render()
     {
         // session order by list of games
