@@ -7,7 +7,7 @@
 }
 
 .game-arena {
-    @apply w-full h-[30vh] sm:h-[35vh] md:h-[36vh] lg:h-[37vh] xl:h-[50vh] border-0 m-0 p-0 overflow-hidden;
+    @apply w-full h-[30vh] sm:h-[35vh] md:h-[36vh] lg:h-[37vh] xl:h-[47vh] border-0 m-0 p-0 overflow-hidden;
 }
 
 .smooth-300 {
@@ -85,4 +85,101 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #4a4a4a;
+}
+
+/* SPINNER */
+.spinner {
+    -webkit-animation: rotate 2s linear infinite;
+    animation: rotate 2s linear infinite;
+    z-index: 2;
+    position: absolute;
+}
+
+.spinner .path {
+    stroke: #0ea5e9;
+    /* stroke: #8f967f; */
+    stroke-linecap: round;
+    -webkit-animation: dash 1.5s ease-in-out infinite;
+    animation: dash 1.5s ease-in-out infinite;
+}
+
+@-webkit-keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes dash {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
+}
+
+.loader-71 {
+    width: 100%;
+    height: 4.8px;
+    overflow: hidden;
+}
+
+.loader-71::after {
+    content: "";
+    width: 192px;
+    height: 4.8px;
+    background: #e11d48;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-animation: animloader71 1.5s linear infinite;
+            animation: animloader71 1.5s linear infinite;
+}
+
+@-webkit-keyframes animloader71 {
+    0% {
+        left: 0;
+        transform: translateX(-100%);
+    }
+    100% {
+        left: 100%;
+        transform: translateX(0%);
+    }
+}
+@keyframes animloader71 {
+    0% {
+        left: 0;
+        transform: translateX(-100%);
+    }
+    100% {
+        left: 100%;
+        transform: translateX(0%);
+    }
 }

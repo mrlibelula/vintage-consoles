@@ -34,7 +34,11 @@
                 <div class="flex flex-col gap-y-4 sm:gap-y-0 justify-between items-center text-center h-full w-full">
                     <img class="hidden xl:block h-[2.8rem] {{ $selected_console_id !== $console['id'] ? 'grayscale' : '' }} group-hover:grayscale-0 smooth-500" src="{{ $console['console_logo'] }}" alt="{{ $console['short_name'] }}">
                     <div class="block xl:hidden whitespace-nowrap text-base md:text-xl {{ $selected_console_id !== $console['id'] ? 'text-cod-gray-600' : 'text-cod-gray-200' }}">
+                        @if (strtoupper($console['short_name']) === 'ATARI2600')
+                        ATARI
+                        @else
                         {{ strtoupper($console['short_name']) }}
+                        @endif
                     </div>
                 </div>
             </button>

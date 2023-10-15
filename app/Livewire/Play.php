@@ -14,12 +14,15 @@ class Play extends Component
     public array $game;
     public string $game_url;
     public string $player_route;
+    public int $current_screenshot_key = -1;
 
     public array $accordion_toggler = [
         'description' => false, 
         'genres' => false, 
-        'screenshots' => false, 
+        'screenshots' => true, 
     ];
+
+    protected $listeners = ['fixedModalClosed', 'keydownLeft', 'keydownRight'];
 
     /**
      * 'game_title' intended for SEO purposes only
@@ -42,6 +45,44 @@ class Play extends Component
             Tool::encode(json_encode($this->game)),
             strtolower($this->console['short_name']),
         ]);
+    }
+
+    public function keydownLeft()
+    {
+        $this->changeScreenShot('left');
+    }
+
+    public function keydownRight()
+    {
+        $this->changeScreenShot('right');
+    }
+
+    public function changeScreenShot(string $direction)
+    {
+        $limit_left = 0;
+        $limit_right = count($this->game['screenshots']) - 1;
+        $current = $this->current_screenshot_key;
+
+        switch ($direction) {
+            case 'left':
+                $current--;
+                $this->current_screenshot_key = $current <= $limit_left ? $limit_left : $current;
+                break;
+            case 'right':
+                $current++;
+                $this->current_screenshot_key = $current >= $limit_right ? $limit_right : $current;
+                break;
+        }
+    }
+
+    public function fixedModalClosed()
+    {
+        $this->current_screenshot_key = -1;
+    }
+
+    public function screenshot(int $screenshot_key)
+    {
+        $this->current_screenshot_key = $screenshot_key;
     }
 
     public function toggle(string $accordion_name)
