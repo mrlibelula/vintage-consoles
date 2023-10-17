@@ -18,12 +18,13 @@ class Dashboard extends Component
         'nes' => true,
         'snes' => false,
         'arcade' => false,
-        'atari' => false,
+        'atari2600' => false,
         'pc' => false,
     ];
 
     public function setConsole(int $console_id)
     {
+        $this->selected_console = [];
         $this->selected_console_id = $console_id;
         $this->selected_console = Tool::findItemByKey($this->consoles, 'id', $console_id);
     }

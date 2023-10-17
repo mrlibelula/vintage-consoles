@@ -23,6 +23,11 @@ class OrderByLista extends Component
     {
         return Tool::gameRoute($this->selected_console, $game);
     }
+    
+    public function updatedPage()
+    {
+        Tool::loadersOff($this);
+    }
 
     public function render()
     {

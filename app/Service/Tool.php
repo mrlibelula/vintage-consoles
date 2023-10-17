@@ -158,5 +158,21 @@ class Tool
             $game['title'],
         ]);
     }
-
+    
+    /**
+     * Dispatches a Livewire event to turn off all loaders
+     *
+     * @param \Livewire\Component $dispatch_component
+     * @return void
+     */
+    public static function loadersOff(\Livewire\Component $dispatch_component): void
+    {
+        $dispatch_component->dispatch('loader-off');
+        $dispatch_component->dispatch('loader-top-off');
+        
+        // skeletons off
+        $dispatch_component->dispatch('skeleton-group-off');
+        $dispatch_component->dispatch('skeleton-lista-off');
+        $dispatch_component->dispatch('skeleton-square-off');
+    }
 }

@@ -8,7 +8,7 @@
                             {!! __('pagination.previous') !!}
                         </span>
                     @else
-                        <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" wire:loading.attr="disabled" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.before" class="relative inline-flex items-center px-4 py-2 text-sm_ font-medium_ text-cod-gray-200 bg-cod-gray-800 border border-cod-gray-700 leading-5 rounded-md hover:text-cod-gray-100 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-cod-gray-500 transition ease-in-out duration-150">
+                        <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-lista-on')" type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" wire:loading.attr="disabled" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.before" class="relative inline-flex items-center px-4 py-2 text-sm_ font-medium_ text-cod-gray-200 bg-cod-gray-800 border border-cod-gray-700 leading-5 rounded-md hover:text-cod-gray-100 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-cod-gray-500 transition ease-in-out duration-150">
                             {!! __('pagination.previous') !!}
                         </button>
                     @endif
@@ -16,7 +16,7 @@
 
                 <span>
                     @if ($paginator->hasMorePages())
-                        <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" wire:loading.attr="disabled" dusk="nextPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.before" class="relative inline-flex items-center px-4 py-2 ml-3 text-sm_ font-medium_ text-cod-gray-200 bg-cod-gray-800 border border-cod-gray-700 leading-5 rounded-md hover:text-cod-gray-100 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-cod-gray-500 transition ease-in-out duration-150">
+                        <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-lista-on')" type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" wire:loading.attr="disabled" dusk="nextPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.before" class="relative inline-flex items-center px-4 py-2 ml-3 text-sm_ font-medium_ text-cod-gray-200 bg-cod-gray-800 border border-cod-gray-700 leading-5 rounded-md hover:text-cod-gray-100 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-cod-gray-500 transition ease-in-out duration-150">
                             {!! __('pagination.next') !!}
                         </button>
                     @else
@@ -53,7 +53,7 @@
                                     </span>
                                 </span>
                             @else
-                                <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.after" rel="prev" class="relative inline-flex items-center px-2 py-2 text-sm_ font-medium_ text-cod-gray-100 bg-cod-gray-800 border border-cod-gray-700 rounded-l-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-cod-gray-100 transition ease-in-out duration-150" aria-label="{{ __('pagination.previous') }}">
+                                <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-lista-on')" type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.after" rel="prev" class="relative inline-flex items-center px-2 py-2 text-sm_ font-medium_ text-cod-gray-100 bg-cod-gray-800 border border-cod-gray-700 rounded-l-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-cod-gray-100 transition ease-in-out duration-150" aria-label="{{ __('pagination.previous') }}">
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                                     </svg>
@@ -79,7 +79,7 @@
                                                 <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm_ font-medium_ text-cod-gray-100 bg-cod-gray-800 border border-cod-gray-700 cursor-default leading-5 select-none">{{ $page }}</span>
                                             </span>
                                         @else
-                                            <button type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm_ font-medium_ text-cod-gray-500 bg-cod-gray-800 border border-cod-gray-700 leading-5 hover:text-cod-gray-100 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-cod-gray-500 transition ease-in-out duration-150" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
+                                            <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-lista-on')" type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm_ font-medium_ text-cod-gray-500 bg-cod-gray-800 border border-cod-gray-700 leading-5 hover:text-cod-gray-100 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-cod-gray-500 transition ease-in-out duration-150" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
                                                 {{ $page }}
                                             </button>
                                         @endif
@@ -91,7 +91,7 @@
                         <span>
                             {{-- Next Page Link --}}
                             @if ($paginator->hasMorePages())
-                                <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" dusk="nextPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.after" rel="next" class="relative inline-flex items-center px-2 py-2 -ml-px text-sm_ font-medium_ text-cod-gray-100 bg-cod-gray-800 border border-cod-gray-700 rounded-r-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-cod-gray-100 transition ease-in-out duration-150" aria-label="{{ __('pagination.next') }}">
+                                <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-lista-on')" type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" dusk="nextPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.after" rel="next" class="relative inline-flex items-center px-2 py-2 -ml-px text-sm_ font-medium_ text-cod-gray-100 bg-cod-gray-800 border border-cod-gray-700 rounded-r-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-cod-gray-100 transition ease-in-out duration-150" aria-label="{{ __('pagination.next') }}">
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                                     </svg>

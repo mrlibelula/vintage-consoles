@@ -5,6 +5,10 @@
             "long_name": "Nintendo Entertainment System",
             "short_name": "NES",
             "description": "The Nintendo Entertainment System (NES), often referred to as the NES, is a landmark home video game console released by Nintendo. It was first introduced in North America in 1985, marking a significant turning point in the history of video games. The NES played a pivotal role in revitalizing the video game industry, which had experienced a downturn in the early 1980s due to a saturation of poor-quality games.",
+            "emulator": {
+                "name": "EmulatorJS",
+                "version": "4.0"
+            },
             "console_logo": "https://logodownload.org/wp-content/uploads/2017/04/nintendo-logo-1-1.png",
             "console_icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/NES-Console-Set.png/1280px-NES-Console-Set.png",
             "console_bgs": [
@@ -355,6 +359,10 @@
             "long_name": "Super Nintendo Entertainment System",
             "short_name": "SNES",
             "description": "The Super Nintendo Entertainment System (SNES), released in 1990, is a legendary 16-bit home video game console by Nintendo. It's renowned for its iconic game library, featuring classics like Super Mario World and The Legend of Zelda: A Link to the Past. The SNES remains cherished for its role in gaming history.",
+            "emulator": {
+                "name": "EmulatorJS",
+                "version": "4.0"
+            },
             "console_logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/SNES_logo.svg/1200px-SNES_logo.svg.png",
             "console_icon": "https://upload.wikimedia.org/wikipedia/commons/0/0c/SNES-USA.png",
             "console_bgs": [
@@ -595,6 +603,10 @@
             "long_name": "Arcade",
             "short_name": "Arcade",
             "description": "Arcade games are coin-operated video games typically found in public spaces like arcades and amusement centers. They offer short, exciting gameplay experiences, often focused on high scores and quick reflexes. These games range from classic titles like Pac-Man to modern cabinets with immersive graphics and multiplayer options, providing entertainment for gamers of all ages.",
+            "emulator": {
+                "name": "EmulatorJS",
+                "version": "4.0"
+            },
             "console_logo": "https://assets.jumpseller.com/store/g5-arcade-classics/themes/521683/options/88512538/lgogo%20transparente%201920.png?1672330510",
             "console_icon": "https://freepngimg.com/save/113185-machine-game-arcade-free-clipart-hd/900x1290",
             "console_bgs": [
@@ -787,6 +799,119 @@
                     "additional_notes": "",
                     "hof": [],
                     "options": {}
+                },
+                {
+                    "id": 4,
+                    "title": "Outrun",
+                    "release_year": "1986",
+                    "publisher": "Sega",
+                    "genres": [
+                        {
+                            "name": "racing",
+                            "description": "As the core genre, \"OutRun\" offers players the opportunity to engage in high-speed, arcade-style races. Players control a red Ferrari Testarossa convertible and navigate through a series of diverse landscapes, including deserts, beaches, and cityscapes, all while trying to reach various checkpoints before the time runs out."
+                        },
+                        {
+                            "name": "driving",
+                            "description": "Within the racing genre, \"OutRun\" also features driving elements. Players can accelerate, brake, and steer their vehicle as they strive to reach the next checkpoint in a limited amount of time. Precise driving skills are essential to success in the game."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "\"OutRun\" is firmly rooted in the arcade genre, emphasizing quick and exciting gameplay. It's designed to be accessible and enjoyable for players of all skill levels, making it a classic example of an arcade-style game."
+                        },
+                        {
+                            "name": "action",
+                            "description": "While \"OutRun\" may not be as intense as some modern action games, it incorporates action elements through its fast-paced, obstacle-filled races. Players must dodge other cars, avoid collisions, and make split-second decisions to navigate the course successfully."
+                        },
+                        {
+                            "name": "simulation",
+                            "description": "(to a limited extent). While not a full-fledged racing simulation, \"OutRun\" provides a simplified driving experience with elements of real-world physics. Players need to handle their vehicle carefully, especially when navigating sharp turns and avoiding obstacles."
+                        }
+                    ],
+                    "description": "\"OutRun,\" a 1986 arcade classic by Sega, is an iconic racing game that puts players behind the wheel of a red Ferrari Testarossa convertible. Set against a backdrop of picturesque landscapes, including deserts, beaches, and cities, players must race against the clock to reach checkpoints. The game features high-speed, action-packed driving, demanding precision and reflexes. It combines arcade-style simplicity with elements of driving simulation, providing an exhilarating and accessible gaming experience. \"OutRun\" has become synonymous with the golden era of arcade gaming and is remembered for its memorable music, iconic Ferrari, and thrilling, genre-blending gameplay.",
+                    "rating": "0.96",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "outrun.zip",
+                    "box": "https://media.tenor.com/owuf52Db8U4AAAAM/outrun-race.gif",
+                    "poster": "https://m.media-amazon.com/images/M/MV5BODA5YTIzOTctNmI1Ni00YzY0LWI2YWEtM2NjOTc0NWM1MTU3XkEyXkFqcGdeQXVyNzg5OTk2OA@@._V1_.jpg",
+                    "cartridge": "",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/16417574-outrun-arcade-overtake-the-truck.png",
+                        "https://cdn.mobygames.com/screenshots/16092048-outrun-sega-saturn-speedn.png",
+                        "https://media.moddb.com/cache/images/games/1/74/73897/thumb_620x2000/outrun-remake-from-1986-for-pc-official-trailer.1.mp4.jpg",
+                        "https://media.wired.co.uk/photos/6171295d677a4aac4121f313/master/w_1600%2Cc_limit/OR_003.jpg",
+                        "https://wallpapercave.com/wp/wp11763759.jpg",
+                        "https://www.honestgamers.com/images/games/29/O/8895/2.jpg",
+                        "https://3.bp.blogspot.com/-FWYRy6uOB_g/UFnBbTsHrZI/AAAAAAAAI3o/yFQp_cicGz4/s1600/outrun13.png",
+                        "https://i.ytimg.com/vi/QHaLmLbrGQ0/maxresdefault.jpg",
+                        "https://www.topgear.com/sites/default/files/images/news-article/carousel/2020/10/c1522faf2dd7b6cb89a58e914c2b80fc/out_run_2.jpg",
+                        "https://www.giantbomb.com/a/uploads/original/12/129563/3075328-outrunarcade-02.png",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHUx1kxfdTPdX8gzgl_5FQ5Lsmj0vGgaQxbw&usqp=CAU"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 5,
+                    "title": "Double Dragon",
+                    "release_year": "1987",
+                    "publisher": "Taito",
+                    "genres": [
+                        {
+                            "name": "beat-em-up",
+                            "description": "\"Double Dragon\" is a quintessential beat 'em up game. Players control martial artists, Billy and Jimmy Lee, as they battle through hordes of street thugs and gang members using a variety of punches, kicks, and special moves."
+                        },
+                        {
+                            "name": "fighting",
+                            "description": "As a fighting game, \"Double Dragon\" places a strong emphasis on hand-to-hand combat. Players engage in one-on-one and group fights against enemies, employing different fighting techniques to overcome their adversaries."
+                        },
+                        {
+                            "name": "action",
+                            "description": "At its core, \"Double Dragon\" is an action game, known for its fast-paced, action-packed gameplay. It offers intense, continuous combat sequences that keep players engaged and on the edge of their seats."
+                        },
+                        {
+                            "name": "cooperative-play",
+                            "description": "One of the notable features of \"Double Dragon\" is its cooperative gameplay. It allows two players to team up and work together to defeat enemies, adding a cooperative element to the action."
+                        },
+                        {
+                            "name": "side-scrolling",
+                            "description": "The game is presented in a side-scrolling format, where players move from left to right through a series of levels, facing various challenges and foes."
+                        }
+                    ],
+                    "description": "\"Double Dragon,\" released in 1987 and published by Taito, is a legendary arcade game that defined the beat 'em up genre. Players step into the roles of martial artists Billy and Jimmy Lee on a mission to rescue Marian, Billy's kidnapped girlfriend. As they traverse gritty urban landscapes, they engage in relentless hand-to-hand combat, battling a multitude of street thugs and gang members. The game's cooperative multiplayer mode allows two players to join forces in this side-scrolling action-packed adventure. With its iconic characters, intense fights, and memorable gameplay, \"Double Dragon\" remains a classic, serving as a cornerstone in arcade gaming history.",
+                    "rating": "0.93",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "ddragonu.zip",
+                    "box": "https://media.tenor.com/IwAHG_1VZGsAAAAd/double-dragon-game.gif",
+                    "poster": "https://m.media-amazon.com/images/M/MV5BMzQ5ZDQ0NjgtMzMwMi00MDZkLWJiYzQtOTQ1MWU1YzFmZWUzXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_.jpg",
+                    "cartridge": "",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/16418099-double-dragon-arcade-4-enemies-big-troubles.png",
+                        "https://assets.nintendo.com/image/upload/ar_16:9,b_auto:border,c_lpad/b_white/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/en_US/games/switch/a/arcade-archives-double-dragon-switch/screenshot-gallery/screenshot01",
+                        "https://gaminghistory101.files.wordpress.com/2012/07/ddarcade.png",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTBFVbAFa2KB9RCxcR_6kBAD7hHvIwGGmN7o_yxn1CCChi_Be5ShKofXxUvlR7xgIyUWk&usqp=CAU",
+                        "https://i0.wp.com/1.bp.blogspot.com/-qQ74WGDhkq8/XycDliot5aI/AAAAAAAAG8Q/7TG67AAnID4nLaQjaTXk4Me_lar_Tol2wCLcBGAsYHQ/s958/double%2Buppercut.png?resize=671%2C500&ssl=1",
+                        "https://ww1.prweb.com/prfiles/2020/05/22/17143670/Double%20Dragon1-2.png",
+                        "https://cdn.mobygames.com/screenshots/10912724-double-dragon-xbox-360-enter-the-dominatrix.jpg",
+                        "https://i.987967.xyz/previews/ddragon.png",
+                        "https://tinfoil.media/i/0100F25001DD0000/0/0/b8d7b513427dffb9d02a0b5906ba7d9f48cd077c2a768a3f3612a82b9a98ed38",
+                        "https://tinfoil.media/i/0100F25001DD0000/0/0/73f8601a0f49e68eed668216833e04e32ee7c44e7513113fa6dcc5d8d40cf73b"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
                 }
             ]
         },
@@ -795,6 +920,10 @@
             "long_name": "Atari 2600",
             "short_name": "atari2600",
             "description": "The Atari 2600, released in 1977, is a legendary home video game console known for popularizing gaming in the late 1970s and early 1980s. It featured a diverse library of games played using cartridges and simple joystick controllers. The Atari 2600 holds a special place in gaming history as one of the first mass-market consoles.",
+            "emulator": {
+                "name": "EmulatorJS",
+                "version": "4.0"
+            },
             "console_logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Atari_2600_Logo.png/1024px-Atari_2600_Logo.png",
             "console_icon": "images/games/Atari_2600.png",
             "console_bgs": [
@@ -989,8 +1118,8 @@
                     ],
                     "description": "\"Keystone Kapers,\" a classic Atari 2600 game from 1983, places players in the shoes of Officer Keystone Kelly, a relentless cop chasing the elusive burglar, Harry Hooligan, through a bustling shopping mall. This action-packed adventure combines elements of platforming and chasing, requiring precision in jumping over obstacles and clever use of elevators and escalators to catch the criminal. With a focus on achieving high scores, players engage in intense, score-boosting pursuits as they navigate various levels. \"Keystone Kapers\" captures the spirit of arcade gaming with its addictive simplicity and remains a cherished part of video game history, delivering timeless excitement in short gaming sessions.",
                     "rating": "0.89",
-                    "multiplayer_support": true,
-                    "save_state_support": true,
+                    "multiplayer_support": false,
+                    "save_state_support": false,
                     "rom": "Keystone.bin",
                     "box": "https://www.retrogames.cz/games/097/A26_03.gif",
                     "poster": "https://www.retrogamecases.com/wp-content/uploads/a2600_keystonekapers_front.png",
@@ -1016,6 +1145,10 @@
             "long_name": "MS-DOS",
             "short_name": "PC",
             "description": "MS-DOS, a vintage operating system, played a pivotal role in the early days of gaming. Released in the 1980s, it provided a platform for classic games like \"Doom\" and \"Prince of Persia\". Its text-based interface and limited graphics capabilities challenged developers to create innovative gameplay, paving the way for the gaming industry's evolution. Plug your USB game pad and start enjoying.",
+            "emulator": {
+                "name": "JS-DOS",
+                "version": "7.0"
+            },
             "console_logo": "https://hyperspin-fe.com/siteuploads/downloads/screenshots/monthly_2018_02/5a95f7aa58e76_MicrosoftMS-DOS.thumb.png.55d7a7f3d0b5ab178001fd76ed08cb04.png",
             "console_icon": "https://ouch-cdn2.icons8.com/SqhYE1KH01d03IIZCzGlv9GnRQyfqNXUsmGd00K4lIk/rs:fit:683:456/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9wbmcvMzU4/LzNlZjRiZDE0LTU5/NmItNDRlZS04Nzc3/LWM0OTg1MTVmMDUw/My5wbmc.png",
             "console_bgs": [

@@ -1,24 +1,22 @@
-@props(['width' => 60, 'height' => 50, 'rounded' => true, 'header' => true, 'icon', 'title', 'close_icon' => true, 'spinner' => 'top', 'actions', 'shadow' => true, 'loader' => true])
+@props(['width' => 60, 'height' => 50, 'rounded' => true, 'header' => true, 'icon', 'title', 'close_icon' => true, 'spinner' => 'top', 'actions', 'shadow' => true])
 <div 
     x-cloak 
     x-data="{
+        loader: true,
         fixedModalOpen: false,
         closeFixedModal() {
             this.fixedModalOpen = false
-            // Livewire.emit('fixedModalClosed')
             @this.dispatch('fixedModalClosed')
         }
     }"
-    @open-fixed-modal.window="
-        if ($event.detail != false) fixedModalOpen = true
-    "
-    @close-fixed-modal.window="
-        closeFixedModal()
-    "
     x-show="fixedModalOpen"
+    @fixed-modal-loader-off.window="loader = false"
+    @fixed-modal-loader-on.window="loader = true"
+    @open-fixed-modal.window="if ($event.detail != false) fixedModalOpen = true"
+    @close-fixed-modal.window="closeFixedModal()"
     @keydown.escape.window="closeFixedModal()"
-    @keydown.left.window="$dispatch('keydownLeft')"
-    @keydown.right.window="$dispatch('keydownRight')"
+    @keydown.left.window="$dispatch('keydownLeft'); $dispatch('fixed-modal-loader-on')"
+    @keydown.right.window="$dispatch('keydownRight'); $dispatch('fixed-modal-loader-on')"
     x-transition:enter="transition ease-out duration-[5ms]" x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100" x-transition:leave="transition ease-out duration-[5ms]"
     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
@@ -74,14 +72,9 @@
             @endif
 
             <!-- loader -->
-            @if (!$slot->isNotEmpty())
-            <span class="loader-71 absolute h-0"></span>
-            @endif
-
-            <!-- loader bool -->
-            @if ($loader)
-            <span class="loader-71 absolute h-0"></span>
-            @endif
+            <template x-if="loader">
+                <span class="loader-71 absolute h-0"></span>
+            </template>
             
             <div class="h-full overflow-hidden overflow-y-auto">
                 @if ($slot->isNotEmpty())

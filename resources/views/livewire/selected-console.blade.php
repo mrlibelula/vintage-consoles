@@ -2,34 +2,100 @@
     {{ $is_selected_tab_first ? 'rounded-b-xl rounded-tr-xl' : ($is_selected_tab_last ? 'rounded-b-xl rounded-tl-xl' : 'rounded-xl') }} 
 ">
     <div class="flex flex-col-reverse xl:flex-row items-start justify-between gap-x-10 w-full">
-        <!-- main content -->
+        <!-- main -->
         <div class="w-full flex flex-col gap-y-8 items-start justify-start p-4">
 
             <div class="w-full flex flex-col xl:flex-row gap-y-8 gap-x-[4rem] items-start justify-start">
                 
                 <!-- main content -->
-                <div class="flex flex-col gap-y-10 w-full xl:w-[70%]">
+                <div 
+                    x-data="{ 
+                        skeletonSquare: false,
+                        skeletonGroup: false,
+                        skeletonLista: false,
+                    }" 
+                    
+                    @skeleton-square-off.window="skeletonSquare = false"
+                    @skeleton-square-on.window="skeletonSquare = true"
+
+                    @skeleton-group-off.window="skeletonGroup = false"
+                    @skeleton-group-on.window="skeletonGroup = true"
+
+                    @skeleton-lista-off.window="skeletonLista = false"
+                    @skeleton-lista-on.window="skeletonLista = true"
+
+                    class="flex flex-col gap-y-10 w-full xl:w-[70%]">
+                    
                     <!-- game list display options -->
                     <div class="flex items-center justify-start gap-x-3 w-full dark:text-cod-gray-500 leading-none -mb-8">
-                        <button wire:click="orderBy('group')" class="btn-small"><x-icons.group class="{{ $order_by['group'] ? 'text-gray-200' : '' }}" /></button>
-                        <button wire:click="orderBy('squares')" class="btn-small"><x-icons.squares class="{{ $order_by['squares'] ? 'text-gray-200' : '' }}" /></button>
-                        <button wire:click="orderBy('lista')" class="btn-small"><x-icons.lista class="{{ $order_by['lista'] ? 'text-gray-200' : '' }}" /></button>
+                        <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-group-on')" wire:click="orderBy('group')" class="btn-small"><x-icons.group class="{{ $order_by['group'] ? 'text-gray-200' : '' }}" /></button>
+                        <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-square-on')" wire:click="orderBy('squares')" class="btn-small"><x-icons.squares class="{{ $order_by['squares'] ? 'text-gray-200' : '' }}" /></button>
+                        <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-lista-on')" wire:click="orderBy('lista')" class="btn-small"><x-icons.lista class="{{ $order_by['lista'] ? 'text-gray-200' : '' }}" /></button>
                     </div>
 
-                    @if ($order_by['group'])
-                    <livewire:order-by-group :selected_console="$selected_console" :key="uniqid()" />
-                    @elseif ($order_by['squares'])
-                    <livewire:order-by-squares :selected_console="$selected_console" :key="uniqid()" />
-                    @elseif ($order_by['lista'])
-                    <livewire:order-by-lista :selected_console="$selected_console" :key="uniqid()" />
-                    @endif
+                    <!-- skeleton group -->
+                    <template x-if="skeletonGroup">
+                        <div class="flex items-start gap-x-5">
+                            @for ($i = 0; $i <= 1; $i++)
+                            <div class=" w-[13rem] h-[16rem] skeleton mt-[1.2rem] flex flex-col items-center justify-between px-6 mb-5">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div class="flex bg-cod-gray-700 rounded-md w-[3.2rem] h-[4.5rem]"></div>
+                                <div class="flex mb-8 rounded-full bg-cod-gray-700 w-full h-4"></div>
+                            </div>
+                            @endfor
+                        </div>
+                    </template>
+
+                    <!-- skeleton square -->
+                    <template x-if="skeletonSquare">
+                        <div class="flex items-start gap-x-5 mt-[1.5rem]">
+                            @for ($i = 0; $i <= 2; $i++)
+                            <div class="flex flex-col justify-between items-center w-[8.5rem] h-[12rem] skeleton">
+                                <div></div>
+                                <div class="w-[80%]">
+                                    <div class="my-4 w-full rounded-full bg-cod-gray-700 h-3">&nbsp;</div>
+                                    <div class="my-4 w-full rounded-full bg-cod-gray-700 h-3">&nbsp;</div>
+                                </div>
+                            </div>
+                            @endfor
+                        </div>
+                    </template>
+
+                    <!-- skeleton lista -->
+                    <template x-if="skeletonLista">
+                        <div class="flex flex-col gap-y-3 mt-4 mb-[4rem]">
+                            @for ($i = 0; $i <= 2; $i++)
+                            <div class="flex items-center justify-start gap-x-6 w-full">
+                                <div class="w-[5rem] skeleton rounded-full h-[5.5rem]"></div>
+                                <div class="flex flex-col gap-y-3 w-full">
+                                    <div class=" w-[50%] skeleton h-5"></div>
+                                    <div class=" w-[50%] skeleton h-5"></div>
+                                </div>
+                            </div>
+                            @endfor
+                        </div>
+                    </template>
+
+                    <div :class="{ 'hidden': skeletonGroup || skeletonSquare || skeletonLista }">
+                        @if ($order_by['group'])
+                        <livewire:order-by-group :selected_console="$selected_console" :key="uniqid()" />
+                        @elseif ($order_by['squares'])
+                        <livewire:order-by-squares :selected_console="$selected_console" :key="uniqid()" />
+                        @elseif ($order_by['lista'])
+                        <livewire:order-by-lista :selected_console="$selected_console" :key="uniqid()" />
+                        @endif
+                    </div>
+
 
                     <div class="leading-tight rounded-md overflow-hidden">
                         {{ $selected_console['description'] }}
                     </div>
 
                     <!-- Specs -->
-                    <x-accordion 
+                    <x-accordion  
                         wire:click="toggleAccordion('specs_accordion')"
                         :toggler="$specs_accordion"
                     >
@@ -116,7 +182,7 @@
                                 <div class=" w-full dark:text-cod-gray-100 leading-none">
                                     Console name
                                 </div>
-                                <div class=" w-full leading-none">
+                                <div class=" w-full leading-none text-cod-gray-400">
                                     {{ $selected_console['long_name'] }} ({{ $selected_console['short_name'] }})
                                 </div>
                             </div>
@@ -126,7 +192,7 @@
                                 <div class=" w-full dark:text-cod-gray-100 leading-none">
                                     Manufacturer
                                 </div>
-                                <div class=" w-full leading-none">
+                                <div class=" w-full leading-none text-cod-gray-400">
                                     {{ $selected_console['manufacturer'] }}
                                 </div>
                             </div>
@@ -136,7 +202,7 @@
                                 <div class=" w-full dark:text-cod-gray-100 leading-none">
                                     Release year
                                 </div>
-                                <div class=" w-full leading-none">
+                                <div class=" w-full leading-none text-cod-gray-400">
                                     {{ $selected_console['release_year'] }}
                                 </div>
                             </div>
@@ -146,8 +212,8 @@
                                 <div class=" w-full dark:text-cod-gray-100 leading-none">
                                     Available games
                                 </div>
-                                <div class=" w-full leading-none">
-                                    {{ count($selected_console['games']) }}
+                                <div class=" w-full leading-none text-cod-gray-400">
+                                    Found {{ count($selected_console['games']) }} ROMs
                                 </div>
                             </div>
 
@@ -156,8 +222,8 @@
                                 <div class=" w-full dark:text-cod-gray-100 leading-none">
                                     Emulator
                                 </div>
-                                <div class=" w-full leading-none">
-                                    n/a
+                                <div class=" w-full leading-none text-cod-gray-400">
+                                    {{ $selected_console['emulator']['name'] }}
                                 </div>
                             </div>
 
@@ -166,8 +232,8 @@
                                 <div class=" w-full dark:text-cod-gray-100 leading-none">
                                     Emulator version
                                 </div>
-                                <div class=" w-full leading-none">
-                                    n/a
+                                <div class=" w-full leading-none text-cod-gray-400">
+                                    {{ $selected_console['emulator']['version'] }}
                                 </div>
                             </div>
             

@@ -1,4 +1,20 @@
-<nav x-data="{ open: false }" class="fixed fade-nav w-full top-0 z-[55]">
+<nav 
+    x-data="{ 
+        open: false, 
+        loaderTop: false
+    }" 
+    @loader-top-off.window="loaderTop = false"
+    @loader-top-on.window="loaderTop = true"
+    @loader-top-toggle.window="loaderTop = !loaderTop"
+    class="fixed fade-nav w-full top-0 z-[65]"
+>
+    <!-- loader-top -->
+    <template x-cloak x-if="loaderTop">
+        <div class="flex items-center justify-center z-50">
+            <span class="loader-71 absolute h-0"></span>
+        </div>
+    </template>
+
     <!-- Primary Navigation Menu -->
     <div class="max-w-5xl mx-auto px-4 xl:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -25,7 +41,7 @@
 
             <!-- search bar -->
             <div class="relative w-full flex gap-x-2 items-center justify-between">
-                <x-input wire:model.live.lazy="search" class="absolute h-[2.2rem] w-full text-xl px-8" placeholder="Search games" />
+                <x-input @keydown.enter="$dispatch('loader-top-on')" wire:model.live.lazy="search" class="absolute h-[2.2rem] w-full text-xl px-8" placeholder="Search game" />
                 <x-icons.magnify class=" absolute mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-300" />
                 <x-icons.x wire:click="clearSearchResults" class="absolute right-0 mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-300 cursor-pointer" />
             </div>

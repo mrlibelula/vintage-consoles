@@ -22,7 +22,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', Dashboard::class)->name('home');
 Route::get('/dashboard', Dashboard::class)->name('dashboard');
-Route::get('{enc_game_id}/play/{console_short_name}/{game_title}', Play::class)->name('play');
+// Route::get('/console/{console_short_name}', Console::class)->name('selected-console');
+Route::get('/{enc_game_id}/play/{console_short_name}/{game_title}', Play::class)->name('play');
 Route::get('/player/{enc_json_game}/{console_short_name}', JsPlayer::class)->name('player');
 
 Route::middleware([

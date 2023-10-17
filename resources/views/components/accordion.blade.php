@@ -1,4 +1,4 @@
-<button {{ $attributes->merge(['class' => 'text-left w-full cursor-pointer']) }}>
+<button @click="$dispatch('loader-top-on')" {{ $attributes->merge(['class' => 'text-left w-full cursor-pointer']) }}>
     <span class=" text-rose-300 hover:text-cod-gray-100 smooth-500">
         {{ $title ?? '' }} 
     </span>
@@ -10,7 +10,9 @@
 </button>
 
 @if ($toggler)
-<div class="flex flex-col w-full text-left gap-y-1">
+<div x-init="$dispatch('loader-top-off')" class="flex flex-col w-full text-left gap-y-1">
     {{ $slot }}
 </div>
+@else
+<div x-init="$dispatch('loader-top-off')" class="hidden"></div>
 @endif

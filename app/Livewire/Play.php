@@ -57,6 +57,12 @@ class Play extends Component
         $this->changeScreenShot('right');
     }
 
+    public function rendered()
+    {
+        Tool::loadersOff($this);
+        $this->dispatch('fixed-modal-loader-off');
+    }
+
     public function changeScreenShot(string $direction)
     {
         $limit_left = 0;
@@ -102,7 +108,7 @@ class Play extends Component
             $this->game_url = 'games/' . $console_short_name . '/' . $this->game['rom'];
         }
     }
-    
+
     public function render()
     {
         return view('livewire.play');

@@ -46,6 +46,8 @@ class Navigation extends Component
 
         $results = collect($results)->sortBy('game_title')->toArray();
         $this->search_results = $results;
+
+        $this->dispatch('loader-top-off');
     }
 
     public function clearSearchResults()
