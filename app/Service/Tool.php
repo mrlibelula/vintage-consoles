@@ -2,6 +2,9 @@
 
 namespace App\Service;
 
+use DateTime;
+use App\Models\User;
+
 class Tool
 {
     /**
@@ -175,4 +178,38 @@ class Tool
         $dispatch_component->dispatch('skeleton-lista-off');
         $dispatch_component->dispatch('skeleton-square-off');
     }
+    
+    /**
+     * Sort array by any key
+     *
+     * @param array $array
+     * @param string $key
+     * @return array
+     */
+    public static function sortBy(array $array, string $sort_by = 'timestamp', string $order_by = 'desc'): array
+    {
+        usort($array, function($a, $b) use($sort_by, $order_by) {
+            return strtolower($order_by) === 'asc' 
+                ? strtotime($a[$sort_by]) - strtotime($b[$sort_by])
+                : strtotime($b[$sort_by]) - strtotime($a[$sort_by]);
+        });
+        return $array;
+    }
+
+    /**
+     * Gets user name for chat
+     * Returns "Guest" if not found
+     *
+     * @param integer|string|null $user_id
+     * @return string
+     */
+    public static function userName(int|string|null $user_id): string
+    {
+        if ($user_id) {
+            $user = User::find($user_id);
+            if ($user) return $user->name;
+        }
+        return 'Guest';
+    }
+
 }

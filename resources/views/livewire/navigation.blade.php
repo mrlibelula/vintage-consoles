@@ -27,7 +27,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 xl:-my-px xl:ml-10 xl:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard') || request()->routeIs('home')">
-                        {{ __('Consoles') }}
+                        {{ __('Consoles & Games') }}
                     </x-nav-link>
 
                     <x-nav-link href="#" 

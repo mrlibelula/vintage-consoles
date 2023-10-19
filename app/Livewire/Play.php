@@ -5,6 +5,9 @@ namespace App\Livewire;
 use App\Service\Game;
 use App\Service\Tool;
 use Livewire\Component;
+use Illuminate\Support\Str;
+use App\Service\GameSession;
+use Illuminate\Support\Facades\Storage;
 
 class Play extends Component
 {
@@ -14,6 +17,7 @@ class Play extends Component
     public array $game;
     public string $game_url;
     public string $player_route;
+    public string $input = '';
     public int $current_screenshot_key = -1;
 
     public array $accordion_toggler = [
@@ -21,6 +25,13 @@ class Play extends Component
         'genres' => false, 
         'screenshots' => true, 
     ];
+
+    public array $tabs = [
+        'info' => true,
+        'chat' => false,
+    ];
+
+    private int $take = 20;
 
     protected $listeners = ['fixedModalClosed', 'keydownLeft', 'keydownRight'];
 
@@ -35,6 +46,8 @@ class Play extends Component
      */
     public function mount(string $enc_game_id, string $console_short_name, string $game_title)
     {
+        new GameSession;
+
         $game_obj = new Game($console_short_name, $enc_game_id);
         $this->console = $game_obj->getConsole();
         $this->game = $game_obj->getGame();
@@ -47,6 +60,88 @@ class Play extends Component
         ]);
     }
 
+    public function updatedInput()
+    {
+        if ($this->input) {
+            $user_id = auth()->user() ? auth()->user()->id : null;
+            $message = $this->input;
+            $timestamp = date('Y-m-d H:i:s');
+            $message_id = $this->generateNewMessageId();
+    
+            $message_object = [
+                "id" => $message_id, 
+                "user_id" => $user_id,
+                "user_color" => "amber",
+                "message" => $message,
+                "timestamp" => $timestamp,
+                "ip" => "",
+                "is_mobile" => false
+            ];
+    
+            $messages = $this->getMessages();
+            $messages[] = $message_object;
+            $this->updateMessagesFile($messages);
+            $messages = Tool::sortBy($messages, 'timestamp');
+            $messages = collect($messages)->take($this->take)->toArray();
+            $this->dispatch('updateChatMessages', $messages);
+            $this->input = '';
+        }
+    }
+
+    /**
+     * Saves json chat data file on storage
+     *
+     * @return void
+     */
+    public function updateMessagesFile(array $messages)
+    {
+        Storage::disk('data')->put($this->chatFilePath(), json_encode($messages));
+    }
+
+    public function chatFilePath(): string
+    {
+        return 'chat/' . $this->console['id'] . '.' . $this->game['id'] . '.json';
+    }
+
+    /**
+     * Gets last inserted ID in messages array
+     *
+     * @return integer|string
+     */
+    public function getLastInsertedMessageId(): int|string
+    {
+        $messages = $this->getMessages();
+        $messages = Tool::sortBy($messages, 'id', 'asc');
+        
+        // dd($messages);
+        
+        if (count($messages)) {
+            return end($messages)['id'];
+        }
+        return 0;
+    }
+    
+    public function getMessages(): array
+    {
+        $messages = [];
+        $disk = 'data';
+        if (Storage::disk($disk)->exists($this->chatFilePath())) {
+            $messages = json_decode(Storage::disk('data')->get($this->chatFilePath()), true);
+        }
+        return $messages;
+    }
+
+    /**
+     * Creates a new message ID for message
+     *
+     * @return integer|string
+     */
+    public function generateNewMessageId(): int|string
+    {
+        $last_id = $this->getLastInsertedMessageId();
+        return gettype($last_id) === 'integer' ? $last_id + 1 : Str::random(10);
+    }
+
     public function keydownLeft()
     {
         $this->changeScreenShot('left');
@@ -55,6 +150,15 @@ class Play extends Component
     public function keydownRight()
     {
         $this->changeScreenShot('right');
+    }
+    
+    public function changeTab(string $tab)
+    {
+        $this->tabs = array_map(function ($t) {
+            return $t = false;
+        }, $this->tabs);
+        
+        $this->tabs[$tab] = true;
     }
 
     public function rendered()
