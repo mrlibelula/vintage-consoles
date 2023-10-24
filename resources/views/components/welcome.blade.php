@@ -1,4 +1,4 @@
-<div class="p-6 lg:p-8 bg-white dark:bg-cod-gray-900 dark:bg-gradient-to-bl dark:from-cod-gray-700/50 dark:via-transparent border-b border-cod-gray-200 dark:border-cod-gray-700">
+<div class="p-6 lg:p-8 bg-cod-gray-100/60 dark:bg-cod-gray-900 dark:bg-gradient-to-bl dark:from-cod-gray-700/50 dark:via-transparent border-b border-cod-gray-200 dark:border-cod-gray-700">
     <x-application-logo class="block h-12 w-auto" />
 
     <h1 class="mt-8 text-2xl font-medium text-cod-gray-900 dark:text-white">

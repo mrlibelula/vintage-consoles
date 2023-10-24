@@ -135,7 +135,9 @@
                             <x-slot name="title">Genres</x-slot>
                             <div class="flex flex-col gap-y-4">
                                 @foreach ($game['genres'] as $genre)
-                                <x-tag>#{{ $genre['name'] }}</x-tag>
+                                <a href="{{ route('genres', $genre['name']) }}" target="_genres_{{ $genre['name'] }}_{{ $loop->index }}">
+                                    <x-tag class="text-left">#{{ $genre['name'] }}</x-tag>
+                                </a>
                                 {{ $genre['description'] }}
                                 @endforeach
                             </div>

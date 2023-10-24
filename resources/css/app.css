@@ -19,17 +19,28 @@
 }
 
 .link {
-    @apply dark:text-cod-gray-100 underline underline-offset-2 dark:decoration-cod-gray-500 dark:hover:text-rose-300 dark:hover:decoration-rose-900 transition duration-500 ease-in-out;
+    @apply text-cod-gray-700 dark:text-cod-gray-100 underline underline-offset-2 decoration-cod-gray-500/50 dark:decoration-cod-gray-500 hover:text-rose-600 dark:hover:text-rose-300 hover:decoration-cod-gray-300 dark:hover:decoration-rose-900 transition duration-500 ease-in-out;
 }
 
 .btn-small {
-    @apply w-6 h-6 p-[0.2rem] rounded dark:bg-cod-gray-800 dark:hover:bg-rose-700 dark:hover:text-cod-gray-50 transition duration-300 ease-in-out cursor-pointer shadow shadow-black;
+    @apply w-6 h-6 p-[0.2rem] rounded bg-cod-gray-400/70 dark:bg-cod-gray-800 hover:bg-cod-gray-400 dark:hover:bg-rose-700 hover:text-cod-gray-100 dark:hover:text-cod-gray-50 transition duration-300 ease-in-out cursor-pointer shadow shadow-cod-gray-500 dark:shadow-black;
+}
+
+.fade-hero-light {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#c2c5cc+0,c2c5cc+100&0+0,0.2+0,1+100 */
+    background: linear-gradient(to bottom,  rgba(194,197,204,0.2) 0%,rgba(194,197,204,1) 100%);
 }
 
 .fade-hero {
+
+    /* pale sky */
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e2024+0,1e2024+100&0+0,0.25+0,1+100 */
+    background: linear-gradient(to bottom,  rgba(30,32,36,0.25) 0%,rgba(30,32,36,1) 100%);
+
+
     /* fedora */
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#151515+1,151515+100&0+0,0.25+0,1+100 */
-    background: linear-gradient(to bottom,  rgba(21,21,21,0.25) 0%,rgba(21,21,21,0.26) 1%,rgba(21,21,21,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    /* background: linear-gradient(to bottom,  rgba(21,21,21,0.25) 0%,rgba(21,21,21,0.26) 1%,rgba(21,21,21,1) 100%); */
 
     /* cod-gray */
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#111827+0,111827+100&0+0,0.25+0,1+100 */
@@ -50,11 +61,15 @@
     /* background: linear-gradient(to bottom,  rgba(39,0,208,0.85) 0%,rgba(39,0,208,0.85) 100%); */
 }
 
+.fade-nav-light {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#c2c5cc+0,c2c5cc+100&0.85+0,0.85+100 */
+    background: linear-gradient(to bottom,  rgba(194,197,204,0.85) 0%,rgba(194,197,204,0.85) 100%); 
+}
 
 .fade-nav {
     /* cod-gray */
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#181818+0,181818+100&0.85+0,0.85+100 */
-    background: linear-gradient(to bottom,  rgba(24,24,24,0.85) 0%,rgba(24,24,24,0.85) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background: linear-gradient(to bottom,  rgba(24,24,24,0.85) 0%,rgba(24,24,24,0.85) 100%); 
 
     
     /* dark-blue */
@@ -63,29 +78,6 @@
 
 }
 
-
-/* width */
-::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #181818;
-    border-radius: 6px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #404040;
-    border-radius: 6px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #4a4a4a;
-}
 
 /* SPINNER */
 .spinner {
@@ -186,4 +178,28 @@
 
 .skeleton {
     @apply rounded-lg bg-gradient-to-br from-cod-gray-700 via-cod-gray-700/50 animate-pulse;
+}
+
+/* scrollbar */
+/* width */
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #181818;
+    border-radius: 6px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 6px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #4a4a4a;
 }

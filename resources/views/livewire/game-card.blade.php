@@ -198,7 +198,7 @@
     }
 </style>
 <div class="h-full flex items-start justify-start">
-    <div class="group contenedorCards rounded-xl overflow-hidden border-4 border-cod-gray-800 shadow-md shadow-black bg-gradient-to-b from-black via-black to-cod-gray-800 h-full">
+    <div class="group contenedorCards rounded-xl overflow-hidden border-4 border-cod-gray-300 dark:border-cod-gray-800 shadow-md shadow-cod-gray-500 dark:shadow-black bg-gradient-to-b from-white via-white to-cod-gray-600 dark:from-black dark:via-black dark:to-cod-gray-800 h-full">
         <div class="card h-full">
             <div class="wrapper rounded-md overflow-hidden">
                 <div class="colorProd rounded-md" 
@@ -208,7 +208,7 @@
                     style="background-image: url({{ $game['poster'] }});"
                 ></div>
                 <div class="infoProd">
-                    <p class="mt-6 mb-4 px-6 leading-none text-xl text-cod-gray-300 group-hover:text-cod-gray-100 smooth-300">
+                    <p class="mt-6 mb-4 px-6 leading-none text-xl text-cod-gray-800 group-hover:text-cod-gray-900 dark:text-cod-gray-300 dark:group-hover:text-cod-gray-100 smooth-300">
                         {{ $game['title'] }}
                     </p>
                 </div>

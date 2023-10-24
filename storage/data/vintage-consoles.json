@@ -912,6 +912,53 @@
                     "additional_notes": "",
                     "hof": [],
                     "options": {}
+                },
+                {
+                    "id": 6,
+                    "title": "Donkey Kong",
+                    "release_year": "1981",
+                    "publisher": "Nintendo",
+                    "genres": [
+                        {
+                            "name": "platformer",
+                            "description": "Donkey Kong is primarily a platform game. Players control the main character, known as Mario (or Jumpman in the game), as he navigates a series of platforms and ladders to reach the top of the level. The core gameplay involves running and jumping to avoid obstacles and reach Donkey Kong at the top."
+                        },
+                        {
+                            "name": "action",
+                            "description": "The game is also an action game, as it features elements like jumping over barrels, smashing objects with a hammer, and timing your moves to overcome obstacles. Quick reflexes and precision are required to succeed."
+                        },
+                        {
+                            "name": "puzzle-elements",
+                            "description": "While not a traditional puzzle game, Donkey Kong does incorporate puzzle-like elements. Players need to figure out the best way to navigate the platforms, predict the movement of barrels and other hazards, and strategize to rescue the damsel in distress, Pauline."
+                        },
+                        {
+                            "name": "high-score-challenge",
+                            "description": "Donkey Kong is also part of the high-score challenge genre. Players compete for the highest score by collecting items, defeating enemies, and reaching the top of the screen while avoiding hazards. The game's difficulty increases as you progress, adding to the challenge of achieving a high score."
+                        }
+                    ],
+                    "description": "\"Donkey Kong,\" a 1981 arcade classic by Nintendo, features Mario (formerly Jumpman) on a heroic quest to rescue Pauline from the clutches of the titular ape, Donkey Kong. The game consists of four distinct stages, each presenting unique challenges. Players must navigate platforms, dodge rolling barrels, contend with pies and fireballs in a factory setting, and strategically dismantle rivets to confront Donkey Kong himself. With its challenging gameplay and iconic characters, \"Donkey Kong\" not only laid the foundation for the Mario franchise but also left an indelible mark on the history of video games, making it a timeless and influential classic.",
+                    "rating": "0.91",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "dkong.zip",
+                    "box": "https://j.gifs.com/BgvMBX.gif",
+                    "poster": "https://i.ebayimg.com/images/g/VBIAAOSwP0Zd5FCH/s-l400.jpg",
+                    "cartridge": "",
+                    "screenshots": [
+                        "https://i0.wp.com/vrscout.com/wp-content/uploads/2021/06/DonkeyKongVR_1.png?fit=810%2C417&ssl=1",
+                        "https://media.wired.com/photos/5926ae95cefba457b079acf4/master/w_2560%2Cc_limit/DonkeyKong_TA.jpg",
+                        "https://www.arcadeur.com/wp-content/uploads/2021/07/donkey_kong_arcade-1024x576.jpg",
+                        "https://i.ytimg.com/vi/P2Lrm-zIx7E/hqdefault.jpg",
+                        "https://i.ytimg.com/vi/U24OcmpZ6fA/sddefault.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
                 }
             ]
         },
@@ -925,7 +972,7 @@
                 "version": "4.0"
             },
             "console_logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Atari_2600_Logo.png/1024px-Atari_2600_Logo.png",
-            "console_icon": "images/games/Atari_2600.png",
+            "console_icon": "/images/games/Atari_2600.png",
             "console_bgs": [
                 "https://img4.goodfon.com/wallpaper/nbig/2/2c/atari-controllers-atari-controllers-atari-dzhoistik-atari-dz.jpg"
             ],
@@ -1128,6 +1175,60 @@
                         "https://atariage.com/2600/screenshots/s_KeystoneKapers_2.png",
                         "https://i.pinimg.com/736x/a6/25/3e/a6253e0bdcae9b5665f60b9733b0edb6.jpg",
                         "https://i.ytimg.com/vi/jeY1ML0d3CI/hqdefault.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
+                },
+                {
+                    "id": 5,
+                    "title": "Defender",
+                    "release_year": "1981",
+                    "publisher": "Atari, Inc.",
+                    "genres": [
+                        {
+                            "name": "shoot-em-up",
+                            "description": "\"Defender\" is primarily a side-scrolling shoot 'em up game. In this genre, players control a spacecraft and navigate horizontally, blasting waves of enemy invaders while avoiding their attacks. The objective is to survive as long as possible and score points by shooting down enemy ships."
+                        },
+                        {
+                            "name": "horizontal-scrolling",
+                            "description": "\"Defender\" features horizontal scrolling, as the game world moves from right to left. Players need to fly their spacecraft across the game's expansive landscape, rescuing humans and defending against alien attackers."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "This game is a classic arcade-style title, known for its intense and often unforgiving gameplay. It's designed for short play sessions where players aim to achieve high scores."
+                        },
+                        {
+                            "name": "action",
+                            "description": "\"Defender\" is action-packed, requiring players to make split-second decisions, shoot enemies, and rescue humanoids. It's fast-paced and demands quick reflexes."
+                        },
+                        {
+                            "name": "space-themed",
+                            "description": "The game is set in outer space and features various types of alien spacecraft, making it a space-themed shooter."
+                        },
+                        {
+                            "name": "defender-of-the-earth",
+                            "description": "The title of the game suggests the role of a defender, and indeed, players are tasked with protecting humanoids from alien abduction. This adds an element of protection or defense gameplay to the action."
+                        }
+                    ],
+                    "description": "\"Defender,\" released for the Atari 2600 in 1981 by Atari, Inc., is a seminal arcade-style shoot 'em up game. In this high-intensity space-themed adventure, players pilot a spaceship horizontally across a scrolling landscape, tasked with protecting and rescuing humanoids from relentless alien attackers. With fast-paced action and ever-increasing challenges, \"Defender\" demands lightning-fast reflexes and precision shooting. Its iconic gameplay and memorable sound effects made it a classic in the early days of gaming, offering players an exhilarating experience as they battled hordes of alien foes and defended humanity against the imminent threat of abduction.",
+                    "rating": "0.93",
+                    "multiplayer_support": false,
+                    "save_state_support": false,
+                    "rom": "Defender.bin",
+                    "box": "https://www.skunkworx.org/goa/games/d/defender/atari-2600-atari/screenshots/pod.gif",
+                    "poster": "https://cdn.mobygames.com/covers/20445-defender-atari-2600-front-cover.jpg",
+                    "cartridge": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQWmTzoBqQ6Qi8A0s4d2l-PPauyoMqHan5icMvrisSgi58laBhrp-K8LOa-cZY9GTLKj0&usqp=CAU",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/1638703-defender-atari-2600-more-enemies-on-their-way-in.png",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTycUhN4N3a1EIrJmFYFaRzUmX3OLGiivg-wuvib330MEfBEAvA9E3um27XKCSXxDFUnLU&usqp=CAU",
+                        "https://i.ytimg.com/vi/HPWu9CwWcW4/sddefault.jpg",
+                        "https://www.8-bitcentral.com/images/reviews/atari2600/defenderM2600Screen.jpg"
                     ],
                     "bookmark_status": false,
                     "play_count": 0,

@@ -5,7 +5,7 @@
                 <x-authentication-card-logo />
             </div>
 
-            <div class="w-full sm:max-w-2xl mt-6 p-6 bg-white dark:bg-cod-gray-900 shadow-md overflow-hidden sm:rounded-lg prose dark:prose-invert">
+            <div class="w-full sm:max-w-2xl mt-6 p-6 bg-cod-gray-100/60 dark:bg-cod-gray-900 shadow-md overflow-hidden sm:rounded-lg prose dark:prose-invert">
                 {!! $terms !!}
             </div>
         </div>

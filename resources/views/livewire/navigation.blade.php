@@ -6,7 +6,8 @@
     @loader-top-off.window="loaderTop = false"
     @loader-top-on.window="loaderTop = true"
     @loader-top-toggle.window="loaderTop = !loaderTop"
-    class="fixed fade-nav w-full top-0 z-[65]"
+    class="fixed w-full top-0 z-[65]"
+    :class="!darkMode ? 'fade-nav-light' : 'fade-nav'"
 >
     <!-- loader-top -->
     <template x-cloak x-if="loaderTop">
@@ -26,14 +27,12 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 xl:-my-px xl:ml-10 xl:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard') || request()->routeIs('home')">
+                    <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home') || request()->routeIs('dashboard') || request()->routeIs('play')">
                         {{ __('Consoles & Games') }}
                     </x-nav-link>
 
-                    <x-nav-link href="#" 
-                        {{-- :active="request()->routeIs('hof')" --}}
-                    >
-                        {{ __('HOF') }}
+                    <x-nav-link href="{{ route('genres') }}" :active="request()->routeIs('genres')">
+                        {{ __('Genres') }}
                     </x-nav-link>
                     
                 </div>
@@ -46,14 +45,14 @@
                 <x-icons.x wire:click="clearSearchResults" class="absolute right-0 mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-300 cursor-pointer" />
             </div>
 
-            <div class="hidden xl:flex xl:items-center xl:ml-6">
+            <div class="hidden xl:flex xl:items-center xl:ml-6 xl:gap-x-4">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ml-3 relative">
                         <x-dropdown align="right" width="60">
                             <x-slot name="trigger">
                                 <span class="inline-flex rounded-md">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-2xl leading-4 font-medium rounded-md text-cod-gray-500 dark:text-cod-gray-400 bg-white dark:bg-cod-gray-900 hover:text-cod-gray-700 dark:hover:text-cod-gray-300 focus:outline-none focus:bg-cod-gray-50 dark:focus:bg-cod-gray-700 active:bg-cod-gray-50 dark:active:bg-cod-gray-700 transition ease-in-out duration-150">
+                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-2xl leading-4 font-medium rounded-md text-cod-gray-500 dark:text-cod-gray-400 bg-cod-gray-100/60 dark:bg-cod-gray-900 hover:text-cod-gray-700 dark:hover:text-cod-gray-300 focus:outline-none focus:bg-cod-gray-50 dark:focus:bg-cod-gray-700 active:bg-cod-gray-50 dark:active:bg-cod-gray-700 transition ease-in-out duration-150">
                                         {{ Auth::user()->currentTeam->name }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -110,7 +109,7 @@
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md mt-0.5">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-xl leading-4 font-medium rounded-md text-cod-gray-500 dark:text-cod-gray-400 bg-white dark:bg-cod-gray-900 hover:text-cod-gray-700 dark:hover:text-cod-gray-300 focus:outline-none focus:bg-cod-gray-50 dark:focus:bg-cod-gray-700 active:bg-cod-gray-50 dark:active:bg-cod-gray-700 transition ease-in-out duration-150 sepia_">
+                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-xl leading-4 font-medium rounded-md text-cod-gray-500 dark:text-cod-gray-400  hover:text-cod-gray-700 dark:hover:text-cod-gray-300 focus:outline-none focus:bg-cod-gray-50 dark:focus:bg-cod-gray-700 active:bg-cod-gray-50 dark:active:bg-cod-gray-700 transition ease-in-out duration-150 sepia_">
                                         {{ Auth::user()->name }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -139,6 +138,10 @@
 
                             <div class="border-t border-cod-gray-200 dark:border-cod-gray-600"></div>
 
+                            <x-dropdown-link href="{{ route('about') }}">
+                                {{ __('About') }}
+                            </x-dropdown-link>
+
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
@@ -156,6 +159,8 @@
                     </a>
                     @endauth
                 </div>
+                
+                <x-theme-switcher class="ml-2" />
 
             </div>
 
@@ -203,10 +208,13 @@
     @endif
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden xl:hidden bg-white dark:bg-cod-gray-900">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden xl:hidden bg-cod-gray-100/60 dark:bg-cod-gray-900">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard') || request()->routeIs('home')">
-                {{ __('Consoles') }}
+            <x-responsive-nav-link href="{{ route('home') }}" :active="request()->routeIs('home') || request()->routeIs('dashboard') || request()->routeIs('play')">
+                {{ __('Consoles & Games') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('genres') }}" :active="request()->routeIs('genres')">
+                {{ __('Genres') }}
             </x-responsive-nav-link>
         </div>
 
@@ -231,12 +239,6 @@
 
             <div class="mt-3 space-y-1">
                 <!-- Account Management -->
-                <x-responsive-nav-link href="#" 
-                    {{-- :active="request()->routeIs('profile.show')" --}}
-                    >
-                    {{ __('HOF') }}
-                </x-responsive-nav-link>
-
                 @guest
                 <x-responsive-nav-link href="{{ route('login') }}" 
                     {{-- :active="request()->routeIs('profile.show')" --}}
@@ -250,6 +252,12 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
                 @endauth
+
+                <x-responsive-nav-link href="{{ route('about') }}" 
+                    :active="request()->routeIs('about')"
+                    >
+                    {{ __('About') }}
+                </x-responsive-nav-link>
 
                 @auth
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())

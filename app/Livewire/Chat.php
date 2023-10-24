@@ -25,7 +25,7 @@ class Chat extends Component
         $file_name = $this->chatFilePath();
         if (Storage::disk($disk)->exists($file_name)) {
             $this->messages = json_decode(Storage::disk($disk)->get($file_name), true) ?? [];
-            $this->messages = Tool::sortBy($this->messages, 'timestamp');
+            $this->messages = Tool::sortByDate($this->messages, 'timestamp');
         } else {
             // create new empty json chat file
             Storage::disk($disk)->put($file_name, '[]');

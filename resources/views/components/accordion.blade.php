@@ -1,5 +1,5 @@
 <button @click="$dispatch('loader-top-on')" {{ $attributes->merge(['class' => 'text-left w-full cursor-pointer']) }}>
-    <span class=" text-rose-300 hover:text-cod-gray-100 smooth-500">
+    <span class="text-rose-700 dark:text-rose-300 hover:text-cod-gray-800 dark:hover:text-cod-gray-100 smooth-500">
         {{ $title ?? '' }} 
     </span>
     @if ($toggler)

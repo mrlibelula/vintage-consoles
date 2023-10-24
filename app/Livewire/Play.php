@@ -32,6 +32,10 @@ class Play extends Component
     ];
 
     private int $take = 20;
+    public array $modals = [
+        'screenshots' => false,
+        'genres' => false,
+    ];
 
     protected $listeners = ['fixedModalClosed', 'keydownLeft', 'keydownRight'];
 
@@ -81,7 +85,7 @@ class Play extends Component
             $messages = $this->getMessages();
             $messages[] = $message_object;
             $this->updateMessagesFile($messages);
-            $messages = Tool::sortBy($messages, 'timestamp');
+            $messages = Tool::sortByDate($messages, 'timestamp');
             $messages = collect($messages)->take($this->take)->toArray();
             $this->dispatch('updateChatMessages', $messages);
             $this->input = '';

@@ -16,18 +16,8 @@ class GameSession
      */
     public function __construct()
     {
-        // if (!Session::exists('consoles')) {
-        //     $this->createNewSession();
-        // } else {
-        //     !empty(Session::get('consoles'))
-        //         ? $this->consoles = Session::get('consoles')
-        //         : $this->createNewSession();
-        // }
-
         $this->createNewSession();
-
         return $this;
-
     }
 
     public function consoles(): array

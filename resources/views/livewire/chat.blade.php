@@ -6,19 +6,13 @@
             <x-chat-message :message="$message" />
             @endforeach
             <!-- welcome messages -->
-            <div class="flex flex-col">
-                <div class="flex gap-x-3">
-                    <div class="text-green-500 text-base leading-tight">
-                        Libe(bot): <span class="text-base text-cod-gray-300 leading-tight">
-                            @auth Hi {{ Auth::user()->name }}, @endauth welcome to the platform. @guest <span class=" text-rose-500 text-base leading-tight">
-                                You can sign in to have extra fun!
-                            </span> @endguest
-                        </span>
-                    </div>
-                </div>
+            <div class=" text-base text-green-600">
+                @auth Hi {{ Auth::user()->name }}, welcome to the platform.@endauth @guest <span class=" text-rose-500 text-base leading-tight">
+                    You can sign in to have extra fun!
+                </span> @endguest
             </div>
             <div class=" text-base leading-tight">
-                Welcome to "{{ $game['title'] }}" live chat.<br><br>
+                Welcome to "{{ $game['title'] }}" live chat room.
             </div>
         </div>
     </div>

@@ -32,7 +32,7 @@
         @endif
         
         <div
-            class="inline-flex flex-col align-middle bg-white dark:bg-black {{ $rounded ? 'rounded-lg' : 'rounded-none' }} text-left overflow-hidden {{ $shadow ? 'shadow-lg shadow-black' : '' }} transform transition-all sm:align-middle justify-between"
+            class="inline-flex flex-col align-middle bg-cod-gray-100/60 dark:bg-black {{ $rounded ? 'rounded-lg' : 'rounded-none' }} text-left overflow-hidden {{ $shadow ? 'shadow-lg shadow-black' : '' }} transform transition-all sm:align-middle justify-between"
             style="
                 width: {{ $width }}vw; 
                 height: {{ $height }}vh;

@@ -113,11 +113,23 @@ class Dashboard extends Component
         }
     }
 
-    public function mount()    
+    public function mount(string $console_short_name = 'nes')
     {
+        $console_short_name = strtolower($console_short_name);
+        
         $this->randomHeroImage();
         $this->loadConsoles();
-        $this->setConsole(1);
+        
+        $console_ids = [
+            'nes' => 1,
+            'snes' => 2,
+            'arcade' => 3,
+            'atari2600' => 4,
+            'pc' => 5,
+        ];
+        isset($console_ids[$console_short_name])
+            ? $this->setConsole($console_ids[$console_short_name])
+            : $this->setConsole($console_ids['nes']);
         
         $this->initGameSessionEnviro();
     }

@@ -4,6 +4,8 @@ namespace App\Service;
 
 use DateTime;
 use App\Models\User;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Session;
 
 class Tool
 {
@@ -180,18 +182,35 @@ class Tool
     }
     
     /**
+     * Sort array by date (strtotime)
+     *
+     * @param array $array
+     * @param string $key
+     * @return array
+     */
+    public static function sortByDate(array $array, string $sort_by = 'timestamp', string $order_by = 'desc'): array
+    {
+        usort($array, function($a, $b) use($sort_by, $order_by) {
+            return strtolower($order_by) === 'asc' 
+                ? strtotime($a[$sort_by]) - strtotime($b[$sort_by])
+                : strtotime($b[$sort_by]) - strtotime($a[$sort_by]);
+        });
+        return $array;
+    }
+
+    /**
      * Sort array by any key
      *
      * @param array $array
      * @param string $key
      * @return array
      */
-    public static function sortBy(array $array, string $sort_by = 'timestamp', string $order_by = 'desc'): array
+    public static function sortBy(array $array, string $sort_by, string $order_by = 'desc'): array
     {
         usort($array, function($a, $b) use($sort_by, $order_by) {
             return strtolower($order_by) === 'asc' 
-                ? strtotime($a[$sort_by]) - strtotime($b[$sort_by])
-                : strtotime($b[$sort_by]) - strtotime($a[$sort_by]);
+                ? $a[$sort_by] <=> $b[$sort_by]
+                : $b[$sort_by] <=> $a[$sort_by];
         });
         return $array;
     }
@@ -212,4 +231,23 @@ class Tool
         return 'Guest';
     }
 
+    /**
+     * List of all detected game genres
+     *
+     * @return array
+     */
+    public static function getGenres(): array
+    {
+        $genres = [];
+        $consoles = Session::get('consoles');
+        foreach ($consoles as $console) {
+            foreach ($console['games'] as $game) {
+                $genres[] = collect($game['genres'])->pluck('name')->toArray();
+            }
+        }
+        $genres = Arr::flatten($genres);
+        $genres = array_unique($genres);
+        sort($genres);
+        return $genres;
+    }
 }

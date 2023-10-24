@@ -4,6 +4,7 @@ import typography from '@tailwindcss/typography';
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode: 'class',
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './vendor/laravel/jetstream/**/*.blade.php',
@@ -231,7 +232,7 @@ export default {
                     // 900: '#090031',
                     // 950: '#040015'
 
-                    // bay-of-many
+                    // bay-of-many *
                     // DEFAULT: '#234B83',
                     // 50: '#C1D4EE',
                     // 100: '#B1C9EA',
@@ -245,33 +246,33 @@ export default {
                     // 900: '#0B182A',
                     // 950: '#050C14'
 
-                    // pale-sky
-                    // DEFAULT: '#6B7280',
-                    // 50: '#E3E5E8',
-                    // 100: '#D8DADF',
-                    // 200: '#C2C5CC',
-                    // 300: '#ACB0BA',
-                    // 400: '#969BA7',
-                    // 500: '#7F8694',
-                    // 600: '#6B7280',
-                    // 700: '#515761',
-                    // 800: '#383C43',
-                    // 900: '#1E2024',
-                    // 950: '#121315'
+                    // pale-sky *
+                    DEFAULT: '#6B7280',
+                    50: '#E3E5E8',
+                    100: '#D8DADF',
+                    200: '#C2C5CC',
+                    300: '#ACB0BA',
+                    400: '#969BA7',
+                    500: '#7F8694',
+                    600: '#6B7280',
+                    700: '#515761',
+                    800: '#383C43',
+                    900: '#1E2024',
+                    950: '#121315'
 
                     // fedora
-                    DEFAULT: '#6A686A',
-                    50: '#DAD9DA',
-                    100: '#CFCFCF',
-                    200: '#BBBABB',
-                    300: '#A7A5A7',
-                    400: '#939193',
-                    500: '#7F7C7F',
-                    600: '#6A686A',
-                    700: '#4E4C4E',
-                    800: '#313031',
-                    900: '#151515',
-                    950: '#070707'
+                    // DEFAULT: '#6A686A',
+                    // 50: '#DAD9DA',
+                    // 100: '#CFCFCF',
+                    // 200: '#BBBABB',
+                    // 300: '#A7A5A7',
+                    // 400: '#939193',
+                    // 500: '#7F7C7F',
+                    // 600: '#6A686A',
+                    // 700: '#4E4C4E',
+                    // 800: '#313031',
+                    // 900: '#151515',
+                    // 950: '#070707'
 
                     // cod-gray
                     // DEFAULT: '#181818',

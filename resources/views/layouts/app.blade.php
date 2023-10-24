@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+    x-cloak
+    x-data="{ darkMode: localStorage.getItem('dark') === 'true' }"
+    x-init="$watch('darkMode', val => localStorage.setItem('dark', val))"
+    x-bind:class="{ 'dark': darkMode }"
+>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +12,7 @@
         
         @stack('meta')
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Vintage Consoles') }}</title>
 
         <!-- Fonts -->
         {{-- <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,8 +22,12 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
-        <!-- Iconset from semantic ui -->
+        <!-- Iconset -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/icon.min.css" integrity="sha256-KyXPF3/VOPPst/NQOzCWr97QMfSfzJLyFT0o5lYJXiQ=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+        
+        <!-- favicon -->
+        <link rel="icon" type="image/png" href="{{ asset('images/games/nes.png') }}">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -35,8 +44,8 @@
 
         @livewireStyles
     </head>
-    <body>
-        <div class="isolate antialiased cursor-default text-2xl text-cod-gray-700 dark:text-cod-gray-200 bg-cod-gray-100 dark:bg-cod-gray-900">
+    <body>  
+        <div class="isolate antialiased cursor-default text-2xl text-cod-gray-700 dark:text-cod-gray-200 bg-cod-gray-200 dark:bg-cod-gray-900">
             
             {{-- <div class="absolute h-full inset-x-0 -z-10 transform-gpu overflow-hidden blur-3xl">
                 <svg class="relative animate-pulse left-[calc(50%-11rem)] -z-10 h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]" viewBox="0 0 1155 678" xmlns="http://www.w3.org/2000/svg">
@@ -60,7 +69,7 @@
     
                 <!-- Page Heading -->
                 @if (isset($header))
-                <header class="bg-white dark:bg-cod-gray-950/40">
+                <header class="bg-cod-gray-100 dark:bg-cod-gray-950/40">
                     <div class="max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
@@ -72,6 +81,21 @@
                     {{ $slot }}
                 </main>
             </div>
+
+            @if (request()->routeIs('play'))
+            <div></div>
+            @else
+            <footer>
+                <a href="https://libe.dev" target="_other_LIBEDEV_{{ uniqid() }}" class="group flex items-center justify-center gap-y-2 gap-x-2 pt-10 pb-6">
+                    <div class="h-4 w-4 opacity-30 group-hover:opacity-50 smooth-300 rounded-sm overflow-hidden">
+                        <img class="w-full h-full" src="{{ asset('images/libesoft.io_inv.png') }}" alt="">
+                    </div>
+                    <div class="text-base text-cod-gray-600/80 group-hover:text-cod-gray-500 smooth-300">
+                        libe.dev
+                    </div>
+                </a>
+            </footer>
+            @endif
     
             @stack('modals')
 
