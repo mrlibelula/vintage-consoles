@@ -250,7 +250,7 @@
             </div>
 
             <div class="space-y-1">
-                <div @click="darkMode = !darkMode" class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent hover:border-rose-600 hover:dark:border-rose-400 dark:border-rose-600 text-left text-lg text-cod-gray-600 dark:text-cod-gray-500 hover:text-rose-700 hover:dark:text-rose-300 hover:bg-rose-50 hover:dark:bg-rose-900/50 focus:outline-none focus:text-rose-800 dark:focus:text-rose-200 focus:bg-rose-100 dark:focus:bg-rose-900 focus:border-rose-700 dark:focus:border-rose-300 smooth-300 cursor-pointer">
+                <div @click="darkMode = !darkMode" class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent dark:border-transparent hover:border-rose-600 hover:dark:border-rose-400 dark:border-rose-600 text-left text-lg text-cod-gray-600 dark:text-cod-gray-500 hover:text-rose-700 hover:dark:text-rose-300 hover:bg-rose-50 hover:dark:bg-rose-900/50 focus:outline-none focus:text-rose-800 dark:focus:text-rose-200 focus:bg-rose-100 dark:focus:bg-rose-900 focus:border-rose-700 dark:focus:border-rose-300 smooth-300 cursor-pointer">
                     <div class="flex items-center">
                         <div x-cloak x-show="darkMode" class="text-lg">
                             {{ __('Light theme') }}
