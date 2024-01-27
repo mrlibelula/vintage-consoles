@@ -43,6 +43,12 @@
                     {{ __('Log in') }}
                 </x-button>
             </div>
+
+            <a a wire:navigate href="{{ route('register') }}">
+                <div class=" w-full pt-8 text-xl text-center text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-100">
+                    New? Sign up for free
+                </div>
+            </a>
         </form>
     </x-authentication-card>
 </x-guest-layout>
