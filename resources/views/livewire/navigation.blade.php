@@ -154,9 +154,14 @@
                         </x-slot>
                     </x-dropdown>
                     @else
-                    <a wire:navigate href="{{ route('login') }}" class=" text-cod-gray-400 hover:text-rose-300 smooth-300">
-                        Login
-                    </a>
+                    <div class="flex items-center gap-x-8">
+                        <a wire:navigate href="{{ route('login') }}" class="hidden sm:block text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-900 dark:hover:text-rose-300 smooth-300">
+                            Login
+                        </a>
+                        <a wire:navigate href="{{ route('about') }}" class=" text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-900 dark:hover:text-rose-300 smooth-300">
+                            About
+                        </a>
+                    </div>
                     @endauth
                 </div>
                 
@@ -219,7 +224,7 @@
         </div>
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-cod-gray-200 dark:border-cod-gray-600">
+        <div class="pt-4 pb-1 border-t border-cod-gray-400 dark:border-cod-gray-600">
             <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                     <div class="shrink-0 mr-3">
@@ -237,7 +242,17 @@
                 @endauth
             </div>
 
-            <div class="mt-3 space-y-1">
+            <div class="space-y-1">
+                <x-responsive-nav-link href="" @click="darkMode = !darkMode">
+                    <div class="flex items-center">
+                        <div x-cloak x-show="darkMode" class="text-lg">
+                            {{ __('Light theme') }}
+                        </div>
+                        <div x-cloak x-show="!darkMode" class="text-lg">
+                            {{ __('Dark theme') }}
+                        </div>
+                    </div>
+                </x-responsive-nav-link>
                 <!-- Account Management -->
                 @guest
                 <x-responsive-nav-link href="{{ route('login') }}" 

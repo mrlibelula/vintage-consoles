@@ -12,7 +12,7 @@ class Dashboard extends Component
     public array $consoles = [];
     public array $selected_console = [];
     public int $selected_console_id = 0;
-    public bool $show_hero = true;
+    public bool $show_hero = false;
     public string $hero_image;
     public array $console_tabs = [
         'nes' => true,

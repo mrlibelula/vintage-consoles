@@ -65,7 +65,7 @@
 
                     <div class="leading-tight rounded-md overflow-hidden">
                         {{ $selected_console['description'] }}
-                    </div>
+                    </div>  
 
                     <!-- Specs -->
                     <x-accordion  
