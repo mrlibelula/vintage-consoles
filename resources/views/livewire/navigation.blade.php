@@ -154,20 +154,36 @@
                         </x-slot>
                     </x-dropdown>
                     @else
-                    <div class="flex items-center gap-x-8">
+                    {{-- <div class="flex items-center gap-x-8">
                         <a wire:navigate href="{{ route('login') }}" class="hidden sm:block text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-900 dark:hover:text-rose-300 smooth-300">
                             Login
                         </a>
                         <a wire:navigate href="{{ route('about') }}" class=" text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-900 dark:hover:text-rose-300 smooth-300">
                             About
                         </a>
-                    </div>
+                    </div> --}}
                     @endauth
                 </div>
+
                 
-                <x-theme-switcher class="ml-2" />
+                {{-- <x-theme-switcher class="ml-2" /> --}}
+                
+            </div>
+
+            <div class="flex gap-x-8">
+                <x-nav-link href="{{ route('about') }}" :active="request()->routeIs('about')">
+                    {{ __('About') }}
+                </x-nav-link>
+                <x-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
+                    {{ __('Login') }}
+                </x-nav-link>
+                
+            </div>
+            <div class=" flex items-center">
+                <x-theme-switcher class="ml-6" />
 
             </div>
+            
 
             <!-- Hamburger -->
             <div class="ml-4 flex items-center xl:hidden">
