@@ -240,17 +240,17 @@
                 @endif
 
                 @auth
-                <div>
+                <a wire.navigate href="{{ route('profile.show') }}">
                     <div class="font-medium text-base text-cod-gray-800 dark:text-cod-gray-200">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-2xl text-cod-gray-500">
+                    <div class="font-medium text-xl text-cod-gray-500 mb-2">
                         {{ Auth::user()->email }}
                     </div>
-                </div>
+                </a>
                 @endauth
             </div>
 
             <div class="space-y-1">
-                <x-responsive-nav-link href="" @click="darkMode = !darkMode">
+                <x-responsive-nav-link @click="darkMode = !darkMode">
                     <div class="flex items-center">
                         <div x-cloak x-show="darkMode" class="text-lg">
                             {{ __('Light theme') }}
@@ -262,9 +262,7 @@
                 </x-responsive-nav-link>
                 <!-- Account Management -->
                 @guest
-                <x-responsive-nav-link href="{{ route('login') }}" 
-                    {{-- :active="request()->routeIs('profile.show')" --}}
-                    >
+                <x-responsive-nav-link href="{{ route('login') }}">
                     {{ __('Login') }}
                 </x-responsive-nav-link>
                 @endguest
