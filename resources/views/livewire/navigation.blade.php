@@ -109,7 +109,7 @@
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md mt-0.5">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-xl leading-4 font-medium rounded-md text-cod-gray-500 dark:text-cod-gray-400  hover:text-cod-gray-700 dark:hover:text-cod-gray-300 focus:outline-none focus:bg-cod-gray-50 dark:focus:bg-cod-gray-700 active:bg-cod-gray-50 dark:active:bg-cod-gray-700 transition ease-in-out duration-150 sepia_">
+                                    <button type="button" class="inline-flex mr-4 items-center px-3 py-2 border border-transparent text-xl leading-4 font-medium rounded-md text-cod-gray-500 dark:text-cod-gray-400  hover:text-cod-gray-700 dark:hover:text-cod-gray-300 focus:outline-none focus:bg-cod-gray-50 dark:focus:bg-cod-gray-700 active:bg-cod-gray-50 dark:active:bg-cod-gray-700 transition ease-in-out duration-150">
                                         {{ Auth::user()->name }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -153,20 +153,9 @@
                             </form>
                         </x-slot>
                     </x-dropdown>
-                    @else
-                    {{-- <div class="flex items-center gap-x-8">
-                        <a wire:navigate href="{{ route('login') }}" class="hidden sm:block text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-900 dark:hover:text-rose-300 smooth-300">
-                            Login
-                        </a>
-                        <a wire:navigate href="{{ route('about') }}" class=" text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-900 dark:hover:text-rose-300 smooth-300">
-                            About
-                        </a>
-                    </div> --}}
                     @endauth
                 </div>
 
-                
-                {{-- <x-theme-switcher class="ml-2" /> --}}
                 
             </div>
 
@@ -174,9 +163,11 @@
                 <x-nav-link href="{{ route('about') }}" :active="request()->routeIs('about')">
                     {{ __('About') }}
                 </x-nav-link>
+                @guest
                 <x-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
                     {{ __('Login') }}
                 </x-nav-link>
+                @endguest
                 
             </div>
             <div class=" hidden xl:flex items-center">
