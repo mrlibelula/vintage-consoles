@@ -56,47 +56,47 @@
                             <!-- game info -->
                             <div class="@if ($game['cartridge']) w-[62%] @else w-full @endif">
                                 <div class="flex flex-col gap-y-1">
-                                    <div class=" leading-none text-2xl text-cod-gray-50">
+                                    <div class=" leading-none text-2xl text-black dark:text-cod-gray-50">
                                         {{ $game['title'] }}
                                     </div>
-                                    <div class=" leading-none text-cod-gray-400">
+                                    <div class=" leading-none text-cod-gray-900 dark:text-cod-gray-400">
                                         {{ $game['publisher'] }}
                                     </div>
                                     <div class="flex items-center gap-x-1 justify-start">
-                                        <div class=" leading-none text-cod-gray-200">
+                                        <div class=" leading-none text-cod-gray-900 dark:text-cod-gray-200">
                                             {{ $game['release_year'] }}
                                         </div>
-                                        <div class=" text-cod-gray-500">
+                                        <div class=" text-cod-gray-900 dark:text-cod-gray-500">
                                             •
                                         </div>
-                                        <div class=" leading-none text-cod-gray-200">
+                                        <div class=" leading-none text-cod-gray-900 dark:text-cod-gray-200">
                                             {{ number_format($game['rating'] * 100, 0) }}%
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-x-1 justify-start">
-                                        <div class=" leading-none text-cod-gray-400">
+                                        <div class=" leading-none text-cod-gray-900 dark:text-cod-gray-400">
                                             State:
                                         </div>
                                         @if ($game['save_state_support'])
-                                        <div class=" leading-none text-green-500">
+                                        <div class=" leading-none text-green-700 dark:text-green-500">
                                             Yes
                                         </div>
                                         @else
-                                        <div class=" leading-none text-rose-500">
+                                        <div class=" leading-none text-rose-700 dark:text-rose-500">
                                             No
                                         </div>
                                         @endif
                                     </div>
                                     <div class="flex items-center gap-x-1 justify-start">
-                                        <div class=" leading-none text-cod-gray-400">
+                                        <div class=" leading-none text-cod-gray-900 dark:text-cod-gray-400">
                                             Multiplayer:
                                         </div>
                                         @if ($game['multiplayer_support'])
-                                        <div class=" leading-none text-green-500">
+                                        <div class=" leading-none text-green-700 dark:text-green-500">
                                             Yes
                                         </div>
                                         @else
-                                        <div class=" leading-none text-rose-500">
+                                        <div class=" leading-none text-rose-700 dark:text-rose-500">
                                             No
                                         </div>
                                         @endif
@@ -154,7 +154,7 @@
                         <!-- chat input -->
                         <div class="h-[10%] flex items-center justify-center py-1 rounded-b-md bg-cod-gray-950">
                             <div class="w-full px-0.5">
-                                <x-input wire:model.live.lazy="input" placeholder="New message here..." class="h-[1.7rem] w-full border-none dark:placeholder-cod-gray-600/70 dark:bg-cod-gray-600/25 focus:ring-2 rounded-b-md rounded-t-none text-base" />
+                                <x-input wire:model.live.lazy="input" placeholder="New message here..." class="h-[1.7rem] w-full border-none dark:placeholder-cod-gray-600/70 bg-cod-gray-300 dark:bg-cod-gray-600/25 focus:ring-2 rounded-b-md rounded-t-none text-base" />
                             </div>
                         </div>
                     </div>

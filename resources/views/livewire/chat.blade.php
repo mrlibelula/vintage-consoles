@@ -1,6 +1,6 @@
 <div class="h-full">
     <!-- chat box -->
-    <div class="flex flex-col h-full cursor-default bg-cod-gray-950 p-2">
+    <div class="flex flex-col h-full cursor-default bg-cod-gray-900 dark:bg-cod-gray-950 p-2">
         <div wire:poll="loadMessages" class="flex flex-col-reverse h-full overflow-scroll overflow-x-hidden">
             @foreach ($messages as $message)
             <x-chat-message :message="$message" />

@@ -66,10 +66,18 @@
 <div class="group cardy card0">
     <div class="border-card">
         <div class="icons rounded-lg group-hover:bg-black transition duration-1000 ease-in-out">
-            <i class="fa fa-facebook hover:text-gray-300 cursor-pointer" aria-hidden="true"></i>
-            <i class="fa fa-twitter hover:text-gray-300 cursor-pointer" aria-hidden="true"></i>
-            <i class="fa fa-github hover:text-gray-300 cursor-pointer" aria-hidden="true"></i>
-            <i class="fa fa-linkedin hover:text-gray-300 cursor-pointer" aria-hidden="true"></i>
+            <a href="https://facebook.com/mrlibelula/" target="_other_FB">
+                <i class="fa fa-facebook hover:text-gray-300 cursor-pointer" aria-hidden="true"></i>
+            </a>
+            <a href="https://twitter.com/mrlibelula/" target="_other_X">
+                <i class="fa fa-twitter hover:text-gray-300 cursor-pointer" aria-hidden="true"></i>
+            </a>
+            <a href="https://github.com/mrlibelula/" target="_other_github">
+                <i class="fa fa-github hover:text-gray-300 cursor-pointer" aria-hidden="true"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/mrlibelula/" target="_other_in">
+                <i class="fa fa-linkedin hover:text-gray-300 cursor-pointer" aria-hidden="true"></i>
+            </a>
         </div>
     </div>
 </div>
