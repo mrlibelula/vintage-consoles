@@ -7,7 +7,7 @@
             "description": "The Nintendo Entertainment System (NES), often referred to as the NES, is a landmark home video game console released by Nintendo. It was first introduced in North America in 1985, marking a significant turning point in the history of video games. The NES played a pivotal role in revitalizing the video game industry, which had experienced a downturn in the early 1980s due to a saturation of poor-quality games.",
             "emulator": {
                 "name": "EmulatorJS",
-                "version": "4.0"
+                "version": "4.0.7"
             },
             "console_logo": "https://logodownload.org/wp-content/uploads/2017/04/nintendo-logo-1-1.png",
             "console_icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/NES-Console-Set.png/1280px-NES-Console-Set.png",
@@ -361,7 +361,7 @@
             "description": "The Super Nintendo Entertainment System (SNES), released in 1990, is a legendary 16-bit home video game console by Nintendo. It's renowned for its iconic game library, featuring classics like Super Mario World and The Legend of Zelda: A Link to the Past. The SNES remains cherished for its role in gaming history.",
             "emulator": {
                 "name": "EmulatorJS",
-                "version": "4.0"
+                "version": "4.0.7"
             },
             "console_logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/SNES_logo.svg/1200px-SNES_logo.svg.png",
             "console_icon": "https://upload.wikimedia.org/wikipedia/commons/0/0c/SNES-USA.png",
@@ -605,7 +605,7 @@
             "description": "Arcade games are coin-operated video games typically found in public spaces like arcades and amusement centers. They offer short, exciting gameplay experiences, often focused on high scores and quick reflexes. These games range from classic titles like Pac-Man to modern cabinets with immersive graphics and multiplayer options, providing entertainment for gamers of all ages.",
             "emulator": {
                 "name": "EmulatorJS",
-                "version": "4.0"
+                "version": "4.0.7"
             },
             "console_logo": "https://assets.jumpseller.com/store/g5-arcade-classics/themes/521683/options/88512538/lgogo%20transparente%201920.png?1672330510",
             "console_icon": "https://freepngimg.com/save/113185-machine-game-arcade-free-clipart-hd/900x1290",
@@ -969,7 +969,7 @@
             "description": "The Atari 2600, released in 1977, is a legendary home video game console known for popularizing gaming in the late 1970s and early 1980s. It featured a diverse library of games played using cartridges and simple joystick controllers. The Atari 2600 holds a special place in gaming history as one of the first mass-market consoles.",
             "emulator": {
                 "name": "EmulatorJS",
-                "version": "4.0"
+                "version": "4.0.7"
             },
             "console_logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Atari_2600_Logo.png/1024px-Atari_2600_Logo.png",
             "console_icon": "/images/games/Atari_2600.png",
