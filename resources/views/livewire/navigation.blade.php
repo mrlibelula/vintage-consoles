@@ -170,7 +170,7 @@
                 
             </div>
 
-            <div class="flex gap-x-8">
+            <div class="hidden xl:flex gap-x-8">
                 <x-nav-link href="{{ route('about') }}" :active="request()->routeIs('about')">
                     {{ __('About') }}
                 </x-nav-link>
@@ -179,7 +179,7 @@
                 </x-nav-link>
                 
             </div>
-            <div class=" flex items-center">
+            <div class=" hidden xl:flex items-center">
                 <x-theme-switcher class="ml-6" />
 
             </div>
