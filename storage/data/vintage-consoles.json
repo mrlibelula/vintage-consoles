@@ -595,6 +595,42 @@
                     "additional_notes": "",
                     "hof": [],
                     "options": {}
+                },
+                {
+                    "id": 5,
+                    "title": "Pilotwings",
+                    "release_year": "1990",
+                    "publisher": "Nintendo",
+                    "genres": [],
+                    "description": "",
+                    "rating": "0.96",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Pilotwings (USA).zip",
+                    "box": "https://i.makeagif.com/media/12-24-2015/k_5ndH.gif",
+                    "poster": "https://bitz-buttons.com/cdn/shop/products/image_c243b213-fbf2-437b-9ce1-90f31f49bf92_436x436.jpg?v=1579739901",
+                    "cartridge": "https://images.launchbox-app.com/2e24fc8b-afb0-478c-b813-ef7f1b9a4e78.png",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/2224512-pilotwings-snes-light-plane-part-3-landing-landing-in-the-middle.png",
+                        "https://cdn.mobygames.com/screenshots/2224276-pilotwings-snes-light-plane-part-1-taking-off.png",
+                        "https://i0.wp.com/www.deadpark.com/wp-content/uploads/Pilotwings-SNES-43.png?resize=350%2C306",
+                        "https://i.ytimg.com/vi/c9k-0KBFzVQ/hqdefault.jpg",
+                        "https://i0.wp.com/www.deadpark.com/wp-content/uploads/Pilotwings-SNES-46.png?resize=350%2C306",
+                        "https://www.vizzed.com/videogames/snes/screenshot/Pilotwings-2.png",
+                        "https://assets2.ignimgs.com/2010/02/02/pilotwings-20100202040219739-3121841.jpg",
+                        "https://cdn.mobygames.com/screenshots/2223356-pilotwings-snes-skydiving-part-3-use-the-parachute-to-land-on-th.png",
+                        "https://www.destructoid.com/wp-content/uploads/2023/02/Screen_Pilotwings06.jpg?resize=640%2C480",
+                        "https://cdn.mobygames.com/screenshots/2223168-pilotwings-snes-skydiving-part-2-freefalling-through-a-series-of.png",
+                        "https://i.redd.it/8jg7gsxa5wu61.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
                 }
             ]
         },
