@@ -994,6 +994,34 @@
                     "additional_notes": "",
                     "hof": [],
                     "options": {}
+                },
+                {
+                    "id": 7,
+                    "title": "Kung-Fu Master",
+                    "release_year": "1984",
+                    "publisher": "Irem Arcade",
+                    "genres": [],
+                    "description": "",
+                    "rating": "0.87",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "kungfum.zip",
+                    "box": "https://i.makeagif.com/media/8-17-2016/pY3OHY.gif",
+                    "poster": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/6cbcca68-db09-48b9-a2ce-afb57ace8540/dc2ov9g-9d8c51b9-9ca5-4f38-ab9b-26e89f32fb2d.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzZjYmNjYTY4LWRiMDktNDhiOS1hMmNlLWFmYjU3YWNlODU0MFwvZGMyb3Y5Zy05ZDhjNTFiOS05Y2E1LTRmMzgtYWI5Yi0yNmU4OWYzMmZiMmQuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.w8SkrYUvWFgVbWiKHeH4tFr-2Tb5F-bHpmo0NmOFZYo",
+                    "cartridge": "",
+                    "screenshots": [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3JzelQyCFBD4QNLU9zll7mUBoMWXpYAUUx8jazOMghMfos5NbMXdsejL6r2JKox5Ao80&usqp=CAU",
+                        "https://i.pinimg.com/564x/ff/00/5b/ff005b825c963b8e91249a93bffe7e81.jpg",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5q2GBcrzzDMy59KMEZDtHsmbQmh2HbAAfCmXmd8ZO9Mq6f3ixm0Yp9Sy9bncAt1vkeaE&usqp=CAU"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
                 }
             ]
         },
