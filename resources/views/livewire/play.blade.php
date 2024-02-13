@@ -38,19 +38,19 @@
                         <div class="flex flex-row-reverse items-start justify-center gap-x-4">
                             <!-- console & game images -->
                             @if ($game['cartridge'])
-                            <div class="w-[38%] bg-black flex flex-col-reverse items-center justify-center overflow-hidden rounded-md shadow-md shadow-black">
+                            <a wire:navigate href="/{{ $console['short_name'] }}" class="w-[38%] bg-black flex flex-col-reverse items-center justify-center overflow-hidden rounded-md shadow-md shadow-black">
                                 <img class="w-full" src="{{ $game['cartridge'] }}" alt="{{ $game['title'] }}">
                                 <div class="my-2 flex justify-center">
                                     <img class=" w-[75%]" src="{{ $console['console_logo'] }}" alt="{{ $console['short_name'] }}">
                                 </div>
-                            </div>
+                            </a>
                             @else
-                            <div class="w-[38%] bg-black flex flex-col-reverse items-center justify-center overflow-hidden rounded-md shadow-md shadow-black">
+                            <a wire:navigate href="/{{ $console['short_name'] }}" class="w-[38%] bg-black flex flex-col-reverse items-center justify-center overflow-hidden rounded-md shadow-md shadow-black">
                                 <img class=" w-full " src="{{ $game['poster'] }}" alt="">
                                 <div class="my-2 flex justify-center">
                                     <img class=" w-[75%]" src="{{ $console['console_logo'] }}" alt="{{ $console['short_name'] }}">
                                 </div>
-                            </div>
+                            </a>
                             @endif
                             
                             <!-- game info -->
