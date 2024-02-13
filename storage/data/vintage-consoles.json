@@ -1358,6 +1358,34 @@
                     "additional_notes": "",
                     "hof": [],
                     "options": {}
+                },
+                {
+                    "id": 8,
+                    "title": "Pitfall",
+                    "release_year": "1982",
+                    "publisher": "Activision",
+                    "genres": [],
+                    "description": "n/a",
+                    "rating": "0.87",
+                    "multiplayer_support": false,
+                    "save_state_support": false,
+                    "rom": "Pitfall.bin",
+                    "box": "https://i.gifer.com/1nCZ.gif",
+                    "poster": "https://screamersretroflashbacks.files.wordpress.com/2018/06/post-63105-0-44420800-1515005590.png?w=593&h=932",
+                    "cartridge": "https://static.wikia.nocookie.net/atari/images/b/bb/Ataripitfall.jpg/revision/latest/scale-to-width-down/240?cb=20130602021252",
+                    "screenshots": [
+                        "https://atariage.com/2600/screenshots/s_Pitfall_3.png",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1M0lrFyTdgArYzRFiAgU6_h1rhdlOTrb8XVrt7TwKLr6GusoqCXaNI7b0fp2a0LTkrfM&usqp=CAU",
+                        "https://imgix.bustle.com/uploads/image/2022/8/18/88025d6a-a191-443b-9437-284de7f6e342-pitfall-tout_a.jpg?w=400&h=300&fit=crop&crop=faces&auto=format%2Ccompress"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": {}
                 }
             ]
         },
