@@ -14,9 +14,11 @@ class GameSession
     /**
      * Establish all json 'consoles' data on Session
      */
-    public function __construct()
+    public function __construct(array $consoles = null)
     {
-        $this->createNewSession();
+        $consoles 
+            ? Session::put('consoles', $consoles)
+            : $this->createNewSession();
         return $this;
     }
 

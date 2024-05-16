@@ -123,13 +123,13 @@
                                 </div>
                             </div>
                         </x-accordion>
-    
+
                         <!-- description -->
                         <x-accordion wire:click="toggle('description')" :toggler="$accordion_toggler['description']">
                             <x-slot name="title">Description</x-slot>
                             {{ $game['description'] }}
                         </x-accordion>
-    
+
                         <!-- genres -->
                         <x-accordion wire:click="toggle('genres')" :toggler="$accordion_toggler['genres']">
                             <x-slot name="title">Genres</x-slot>

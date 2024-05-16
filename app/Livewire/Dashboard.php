@@ -136,7 +136,7 @@ class Dashboard extends Component
     
     public function initGameSessionEnviro()
     {
-        new GameSession;
+        new GameSession($this->consoles);
     }
 
     public function render()
