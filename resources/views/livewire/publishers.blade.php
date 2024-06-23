@@ -3,11 +3,11 @@
         <div class="flex items-center gap-x-10 justify-between">
             <div>
                 @if ($publisher_name)
-                <div class=" tracking-wider text-2xl md:text-3xl text-lime-500">
+                <div class=" tracking-wider text-2xl md:text-3xl text-lime-600 dark:text-lime-500">
                     {{ $publisher_name ?? 'n/a' }} <span class="tracking-wider text-2xl md:text-3xl text-cod-gray-700 dark:text-cod-gray-200">games <span class=" text-md text-cod-gray-600">@if(count($filtered_games))({{ count($filtered_games) }})@endif</span></span>
                 </div>
                 @else
-                <div class=" text-2xl md:text-3xl">
+                <div class=" tracking-wider text-2xl md:text-3xl">
                     Publishers
                 </div>
                 @endif
