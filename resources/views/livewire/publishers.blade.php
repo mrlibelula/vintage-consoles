@@ -1,6 +1,6 @@
 <div>
     <x-slot name="header">
-        <div class="flex items-center gap-x-10 justify-between">
+        <div class="flex flex-col-reverse md:flex-row gap-y-4 md:gap-y-0 items-center gap-x-10 justify-between">
             <div>
                 @if ($publisher_name)
                 <div class=" tracking-wider text-2xl md:text-3xl text-lime-600 dark:text-lime-500">
