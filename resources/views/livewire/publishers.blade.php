@@ -69,7 +69,7 @@
 
             <!-- all publishers list -->
             <div>
-                Here are all the <span class=" text-lime-700 dark:text-lime-600">publishers</span> detected on the database:
+                Here are all the <span class=" text-lime-700 dark:text-lime-500">publishers</span> detected on the database:
             </div>
             <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-[0.2rem]">
                 <!-- publishers list -->
