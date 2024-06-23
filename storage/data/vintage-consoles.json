@@ -149,8 +149,12 @@
                     "publisher": "Codemasters",
                     "genres": [
                         {
-                            "name": "platform-adventure",
+                            "name": "platformer",
                             "description": "\"The Adventures of Dizzy\" combines platforming gameplay with adventure elements. Players control Dizzy, the egg-shaped protagonist, as they navigate various levels, solve puzzles, collect items, and interact with characters to progress through the game."
+                        },
+                        {
+                            "name": "adventure",
+                            "description": "\"Fantastic Adventures of Dizzy\" for the NES is an adventure game featuring Dizzy, an anthropomorphic egg. Players navigate through various environments, solve puzzles, and interact with characters to progress in the story. The game combines platforming elements with inventory-based puzzle solving, creating a rich and engaging adventure experience."
                         }
                     ],
                     "description": "Dizzy, the egg-shaped character, became popular through games developed by Codemasters on home computers but did not have an official NES release.",
@@ -516,7 +520,7 @@
                             "description": "At its core, \"Super Mario Kart\" is a racing game where players compete against each other and computer-controlled opponents in a series of kart races. The objective is to complete laps on various tracks as quickly as possible."
                         },
                         {
-                            "name": "kart-racing",
+                            "name": "kart",
                             "description": "This is a sub-genre of racing games that features go-karts or small vehicles. In \"Super Mario Kart,\" players control characters from the Mario franchise in go-karts and compete on tracks filled with obstacles and power-ups."
                         },
                         {
