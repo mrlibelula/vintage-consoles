@@ -1,4 +1,5 @@
 @push('styles')
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
 <style>
     .border-card {
         height: 259px;
@@ -12,7 +13,6 @@
     .cardy {
         height: 269px;
         width: 210px;
-        background: #808080;
         border-radius: 10px;
         transition: background 1s;
         overflow: hidden;
@@ -36,7 +36,7 @@
 
     .card0:hover {
         background: url("https://libe.dev/images/libe.jpg") left center no-repeat;
-        background-size: 400px;
+        background-size: 300px;
     }
 
     .card0:hover .fa {
@@ -52,7 +52,7 @@
         position: absolute;
         fill: #fff;
         color: #fff;
-        height: 170px;
+        height: 200px;
         top: 5px;
         left: 5px;
         width: 50px;
