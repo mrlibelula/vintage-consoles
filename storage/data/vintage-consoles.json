@@ -202,8 +202,12 @@
                             "description": "\"Super Mario Bros. 3\" introduces multiplayer gameplay, allowing two players to take turns or cooperate in completing levels and stages."
                         },
                         {
-                            "name": "puzzle-platformer",
+                            "name": "puzzle",
                             "description": "Certain levels and sections of the game involve puzzle-solving elements, requiring players to figure out how to advance by using items, switches, or platforms strategically."
+                        },
+                        {
+                            "name": "platformer",
+                            "description": "Players control Mario or Luigi through various themed worlds, navigating levels filled with platforms, enemies, and obstacles. The game features iconic power-ups like the Super Mushroom and Fire Flower, along with unique items such as the Super Leaf and Frog Suit, which provide special abilities. Known for its precise jumping mechanics and side-scrolling action, \"Super Mario Bros. 3\" is a defining title in the platformer genre, offering diverse challenges and creative level designs."
                         },
                         {
                             "name": "mini-games",
@@ -409,7 +413,7 @@
                     "publisher": "Nintendo",
                     "genres": [
                         {
-                            "name": "platform",
+                            "name": "platformer",
                             "description": "\"Donkey Kong Country\" is a classic 2D platformer known for its innovative pre-rendered 3D graphics. Players control Donkey Kong and Diddy Kong as they traverse a series of challenging levels, jumping on enemies, swinging from vines, and collecting items. The core gameplay involves precise platforming and timing to navigate obstacles."
                         },
                         {
@@ -452,7 +456,7 @@
                     "publisher": "Nintendo",
                     "genres": [
                         {
-                            "name": "platform",
+                            "name": "platformer",
                             "description": "The game is a classic 2D side-scrolling platformer where players control Mario, or his brother Luigi, as they traverse various levels filled with platforms, enemies, and obstacles."
                         },
                         {
@@ -862,7 +866,7 @@
                             "description": "\"Pac-Man\" is a classic maze game that challenges players to navigate a series of intricate mazes filled with dots, fruit, and four colorful ghosts. The goal is to control the titular character, Pac-Man, through the maze while eating all of the dots to advance to the next level."
                         },
                         {
-                            "name": "action-game",
+                            "name": "action",
                             "description": "\"Pac-Man\" incorporates action elements as players control Pac-Man's movement and must react quickly to avoid ghosts and eat dots. The game's fast-paced nature and real-time decision-making contribute to its action genre characteristics."
                         },
                         {
@@ -1144,7 +1148,7 @@
                             "description": "The game is also an action game, as it features elements like jumping over barrels, smashing objects with a hammer, and timing your moves to overcome obstacles. Quick reflexes and precision are required to succeed."
                         },
                         {
-                            "name": "puzzle-elements",
+                            "name": "puzzle",
                             "description": "While not a traditional puzzle game, Donkey Kong does incorporate puzzle-like elements. Players need to figure out the best way to navigate the platforms, predict the movement of barrels and other hazards, and strategize to rescue the damsel in distress, Pauline."
                         },
                         {
@@ -1298,7 +1302,7 @@
                             "description": "The game is named after this genre, and it's a pioneering example of early adventure gaming. Players explore a vast, interconnected world, searching for objects and solving puzzles to achieve their goals. This genre includes elements of exploration, puzzle-solving, and storytelling."
                         },
                         {
-                            "name": "maze-game",
+                            "name": "maze",
                             "description": "A significant portion of \"Adventure\" takes place in maze-like environments, where players must navigate a series of interconnected rooms and corridors to find keys, hidden objects, and the game's ultimate goal."
                         },
                         {
