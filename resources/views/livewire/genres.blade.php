@@ -69,7 +69,7 @@
 
             <!-- all genres list -->
             <div>
-                Here are all the <span class=" text-sky-600 dark:text-sky-500">genres</span> detected on the database:
+                Here are all the <span class=" text-sky-600 dark:text-sky-400">genres</span> detected on the database:
             </div>
             <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-[0.2rem]">
                 <!-- genres list -->
