@@ -1,7 +1,7 @@
 @props(['count' => 1])
 <div {{ $attributes->merge(['class' => 'flex items-start gap-x-5']) }}>
     @for ($i = 0; $i <= $count; $i++)
-    <div class=" w-[13rem] h-[16.5rem] skeleton mt-[1.2rem] flex flex-col items-center justify-between px-6 mb-5">
+    <div class=" w-[13rem] h-[16.5rem] rounded-lg bg-gradient-to-br from-cod-gray-700 via-cod-gray-700/50 animate-pulse mt-[1.2rem] flex flex-col items-center justify-between px-6 mb-5">
         <div></div>
         <div></div>
         <div></div>

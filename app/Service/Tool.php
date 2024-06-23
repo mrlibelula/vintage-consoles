@@ -165,20 +165,18 @@ class Tool
     }
     
     /**
-     * Dispatches a Livewire event to turn off all loaders
+     * Dispatches a Livewire event to turn off all loaders and skeletons
      *
      * @param \Livewire\Component $dispatch_component
      * @return void
      */
-    public static function loadersOff(\Livewire\Component $dispatch_component): void
+    public static function loadersOff(\Livewire\Component $dispatch_component, array $events = [
+        'loader-off', 'loader-top-off', 'skeleton-group-off', 'skeleton-lista-off', 'skeleton-square-off'
+    ]): void
     {
-        $dispatch_component->dispatch('loader-off');
-        $dispatch_component->dispatch('loader-top-off');
-        
-        // skeletons off
-        $dispatch_component->dispatch('skeleton-group-off');
-        $dispatch_component->dispatch('skeleton-lista-off');
-        $dispatch_component->dispatch('skeleton-square-off');
+        foreach ($events as $event) {
+            $dispatch_component->dispatch($event);
+        }
     }
     
     /**

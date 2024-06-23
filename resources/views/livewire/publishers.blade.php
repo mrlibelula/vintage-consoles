@@ -2,13 +2,13 @@
     <x-slot name="header">
         <div class="flex items-center gap-x-10 justify-between">
             <div>
-                @if ($genre_name)
-                <div class=" tracking-wider text-2xl md:text-3xl text-sky-500">
-                    #{{ $genre_name ?? 'n/a' }} <span class="tracking-wider text-2xl md:text-3xl text-cod-gray-700 dark:text-cod-gray-200">games <span class=" text-md text-cod-gray-600">@if(count($filtered_games))({{ count($filtered_games) }})@endif</span></span>
+                @if ($publisher_name)
+                <div class=" tracking-wider text-2xl md:text-3xl text-lime-500">
+                    {{ $publisher_name ?? 'n/a' }} <span class="tracking-wider text-2xl md:text-3xl text-cod-gray-700 dark:text-cod-gray-200">games <span class=" text-md text-cod-gray-600">@if(count($filtered_games))({{ count($filtered_games) }})@endif</span></span>
                 </div>
                 @else
                 <div class=" text-2xl md:text-3xl">
-                    Genres
+                    Publishers
                 </div>
                 @endif
             </div>
@@ -18,7 +18,7 @@
     </x-slot>
     <x-container class="mt-6">
         <div class="flex flex-col gap-y-10 text-cod-gray-700 dark:text-cod-gray-400">
-            @if ($genre_name)
+            @if ($publisher_name)
                 <!-- game list display options -->
                 <div class="flex items-center justify-start gap-x-3 w-full dark:text-cod-gray-500 leading-none -mb-8">
                     <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-group-on')" wire:click="orderBy('group')" class="btn-small"><x-icons.group class="{{ $order_by['group'] ? 'text-gray-200' : '' }}" /></button>
@@ -67,19 +67,19 @@
                 </x-ribbon>
             @endif
 
-            <!-- all genres list -->
+            <!-- all publishers list -->
             <div>
-                Here are all the <span class=" font-semibold text-gray-800 dark:text-gray-300">genres</span> detected on the database:
+                Here are all the <span class=" font-semibold text-gray-800 dark:text-gray-300">Publishers</span> detected on the database:
             </div>
             <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-[0.2rem]">
-                <!-- genres list -->
-                @forelse ($genres as $genre)
-                <a @click="$dispatch('loader-top-on')" wire:navigate href="{{ route('genres', $genre) }}" class="link">
-                    #{{ $genre }}
+                <!-- publishers list -->
+                @forelse ($publishers as $publisher)
+                <a @click="$dispatch('loader-top-on')" wire:navigate href="{{ route('publishers', $publisher) }}" class="link capitalize">
+                    {{ $publisher }}
                 </a>
                 @empty
                 <div>
-                    No genres found
+                    No Publishers found
                 </div>
                 @endforelse
             </div>

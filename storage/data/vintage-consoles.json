@@ -643,6 +643,170 @@
                     "hof": [],
                     "is_free": true,
                     "options": {}
+                },
+                {
+                    "id": 6,
+                    "title": "Ultimate Mortal Kombat 3",
+                    "release_year": "1995",
+                    "publisher": "Midway",
+                    "genres": [
+                        {
+                            "name": "fighting",
+                            "description": "\"Ultimate Mortal Kombat 3\" is a fast-paced fighting game where players choose from a diverse roster of characters, each with unique moves and brutal Fatalities. It features intense one-on-one combat, complex combos, special moves, and interactive stages. The game's competitive modes and strategic depth make it a classic in the fighting genre for the SNES."
+                        }
+                    ],
+                    "description": "Ultimate Mortal Kombat 3 is a fighting game in the Mortal Kombat series, developed and released by Midway to arcades in 1995. It is a standalone update of 1995's earlier Mortal Kombat 3 with an altered gameplay system, additional characters like the returning favorites Reptile, Kitana, Jade and Scorpion who were missing from Mortal Kombat 3, and some new features. Several home port versions of the game were soon released after the arcade original. Although none were completely identical to the arcade version, the Sega Saturn port came closest. Some later home versions followed the arcade original with more accuracy. Some versions were released under different titles: Mortal Kombat Advance for the Game Boy Advance in 2001 and Ultimate Mortal Kombat for the Nintendo DS in 2007. An iOS version recreating the game using a 3D graphics engine was released by Electronic Arts in 2010. Ultimate Mortal Kombat 3 was mostly well-received and has been considered a high point for the Mortal Kombat series. However, the iOS remake and some other home versions were received poorly. Ultimate Mortal Kombat 3 was updated to include more content from previous games in the series as Mortal Kombat Trilogy in 1996. The 2011 compilation Mortal Kombat Arcade Kollection includes an emulation of UMK3 as well as the first Mortal Kombat and Mortal Kombat II.",
+                    "rating": "0.70",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "ultimatemk3.7z",
+                    "box": "https://lh3.googleusercontent.com/proxy/duEafBe93axS29c_nG6Rtu8icwsIgzi2NME-l-GhTkjHUaxAGUVwcHzg2JYQKZc08rf5IhQi8hkbqm_6A8q3hdOykYsP_ZrovS5avFE7PEmBeIlxG6-sPUKER8c",
+                    "poster": "https://www.oldgamehermit.com/wp-content/uploads/2019/09/k6cFbuO.jpg",
+                    "cartridge": "https://d2ed948asmbmr8.cloudfront.net/static/media/products/Ultimate-Mortal-Kombat-3-snes-NTSC.jpg",
+                    "screenshots": [
+                        "https://d1lss44hh2trtw.cloudfront.net/assets/editorial/2022/02/35-04d.jpg",
+                        "https://i.ytimg.com/vi/aWLZXV7ZSUI/maxresdefault.jpg",
+                        "https://media.rawg.io/media/resize/420/-/screenshots/01a/01a127bf36575723c1b58b35fae6ab51.jpg",
+                        "https://vkplay.ru/hotbox/content_files/game/picture/a6/1382.jpeg",
+                        "https://www.fightersgeneration.com/np5/gm/umk-s12.png",
+                        "https://www.mksecrets.net/images/mk3/mk3-screenshot06.png",
+                        "https://www.fightersgeneration.com/np5/gm/mk3-s25.png",
+                        "https://dosgames.com/screens/mk3.gif",
+                        "https://i.redd.it/p9vl0d22p3c31.png",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMf3McCdUtG5igIyKEL6VsgNm02tmlS8ryi18TYgWfkDu5FxHAH7-eOQ6j9L4v8ooRaio&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShjyuuS4OoJpOpx9HqaUHTx2md6Xp0N9h-IwhqqraOkbV9xMWzJEYOG5EmwEYa1axkeBg&usqp=CAU"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 7,
+                    "title": "Super Tennis",
+                    "release_year": "1991",
+                    "publisher": "Nintendo",
+                    "genres": [
+                        {
+                            "name": "sports",
+                            "description": "As a tennis simulation game, \"Super Tennis\" captures the essential aspects of the sport, such as serving, rallying, and scoring"
+                        },
+                        {
+                            "name": "simulation",
+                            "description": "The game aims to recreate the experience of playing tennis with a focus on realistic physics and player movements"
+                        }
+                    ],
+                    "description": "\"Super Tennis\" for the Super Nintendo Entertainment System (SNES) is a classic sports simulation game that offers an authentic tennis experience. Released in 1991, it features various modes, including singles and doubles matches, and a diverse roster of characters with unique playing styles. The game is known for its smooth controls, realistic gameplay, and challenging AI opponents, making it a favorite among tennis and sports game enthusiasts.",
+                    "rating": "0.87",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Super Tennis.7z",
+                    "box": "https://64.media.tumblr.com/701410bbf85bc438f044e96567264a93/tumblr_nw31m0EXM71qfan9lo1_500.gif",
+                    "poster": "https://gamefaqs.gamespot.com/a/box/3/7/3/51373_front.jpg",
+                    "cartridge": "https://cdn.shopify.com/s/files/1/1592/0809/products/3270_599f2f39f0f2a7.20276864_SNES_20-_20Super_20Tennis_large_7bb68e88-6b65-4fe5-a013-49162ee00d49.jpg?v=1710610972",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/999537-super-tennis-snes-two-girls-are-playing-on-a-lawn.png",
+                        "https://i.ytimg.com/vi/PZpTFU2j6bQ/sddefault.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 8,
+                    "title": "Street Fighter II: The World Warrior",
+                    "release_year": "1991",
+                    "publisher": "Capcom",
+                    "genres": [
+                        {
+                            "name": "fighting",
+                            "description": "Games in the fighting genre involve close combat between characters, often in one-on-one battles. Players use a variety of punches, kicks, and special moves to deplete their opponent's health bar. \"Street Fighter II: The World Warrior\" exemplifies this genre with its strategic and skill-based gameplay."
+                        },
+                        {
+                            "name": "action",
+                            "description": "Action games emphasize physical challenges, including hand-eye coordination and reaction-time. These games often involve combat, movement through levels, and overcoming obstacles. \"Street Fighter II: The World Warrior\" incorporates action elements through its fast-paced fighting mechanics and dynamic character interactions."
+                        }
+                    ],
+                    "description": "\"Street Fighter II: The World Warrior\" for the SNES is a classic fighting game where players choose from a diverse roster of characters, each with unique moves and special abilities. Players compete in one-on-one combat against AI or friends in a bid to become the ultimate street fighter. Released in 1991, it's known for its engaging gameplay, vibrant graphics, and iconic character designs.",
+                    "rating": "0.84",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Street Fighter II - The World Warrior (U) [h1].7z",
+                    "box": "https://media.tenor.com/CFnEVWnfRJ4AAAAd/street-fighter2-chunli.gif",
+                    "poster": "https://i.ebayimg.com/images/g/eL0AAOSwov5c8esp/s-l1600.jpg",
+                    "cartridge": "https://i0.wp.com/crebbatech.com/wp-content/uploads/2022/04/cart.png?fit=3433%2C2250&ssl=1",
+                    "screenshots": [
+                        "https://i.pinimg.com/originals/64/76/61/647661b975b4a3908a1953c52d2d5252.jpg",
+                        "https://i.ytimg.com/vi/6OlenbCC4WI/maxresdefault.jpg",
+                        "https://i.ytimg.com/vi/0v1nPIEXV7w/maxresdefault.jpg",
+                        "https://i.ytimg.com/vi/Z-e_JLbiG-0/maxresdefault.jpg",
+                        "https://i.blogs.es/c3a65e/streetfighterii/450_1000.webp",
+                        "https://upload.wikimedia.org/wikipedia/en/thumb/4/46/Street_Fighter_II_%28arcade%29_screenshot.png/220px-Street_Fighter_II_%28arcade%29_screenshot.png",
+                        "https://bookfightpod.files.wordpress.com/2019/01/streetfighter.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 9,
+                    "title": "Super Mario All-Stars",
+                    "release_year": "1993",
+                    "publisher": "Nintendo",
+                    "genres": [
+                        {
+                            "name": "platformer",
+                            "description": "This genre involves navigating a character through various levels filled with obstacles, enemies, and pitfalls. The gameplay focuses on jumping between platforms, avoiding hazards, and collecting items. The \"Super Mario Bros.\" series is a quintessential example of the platformer genre, known for its precise controls, creative level design, and progressive difficulty."
+                        },
+                        {
+                            "name": "compilation",
+                            "description": "This genre refers to a collection of multiple games or versions of a game bundled together in a single package. \"Super Mario All-Stars\" is a compilation as it includes remakes of four different Super Mario games. This allows players to experience multiple titles, often with enhanced graphics and sound, from a single game cartridge."
+                        }
+                    ],
+                    "description": "\"Super Mario All-Stars\" for the SNES is a compilation of enhanced remakes of the classic NES Mario games. It includes \"Super Mario Bros.,\" \"Super Mario Bros.: The Lost Levels,\" \"Super Mario Bros. 2,\" and \"Super Mario Bros. 3.\" Each game features updated 16-bit graphics, improved sound, and new save features, offering a fresh experience while retaining the charm and gameplay of the originals.",
+                    "rating": "0.70",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Super Mario All-Stars (E) [!].7z",
+                    "box": "https://25.media.tumblr.com/tumblr_lmukxwmwMl1qfi975o1_500.gif",
+                    "poster": "https://live.staticflickr.com/3856/19225863645_20cfea1996_z.jpg",
+                    "cartridge": "https://m.media-amazon.com/images/I/41IE7GlU0HL._AC_UF1000,1000_QL80_.jpg",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/931511-super-mario-all-stars-super-mario-world-snes-while-lakitu-is-thr.png",
+                        "https://cdn.mobygames.com/screenshots/931402-super-mario-all-stars-snes-in-world-4-of-super-mario-bros-3-youl.png",
+                        "https://cdn.mobygames.com/screenshots/1185560-super-mario-all-stars-super-mario-world-snes-marios-hammer-bros-.png",
+                        "https://cdn.mos.cms.futurecdn.net/2875a1482866a39a4f7517a003152c68-480-80.jpg",
+                        "https://www.gamegrin.com/assets/Uploads/2023/07/10/_resampled/resizedimage640430-Was-Super-Mario-All-Stars-A-Faithful-Remake-2.jpg",
+                        "https://i.ytimg.com/vi/-Ziv2-0H-Rc/hqdefault.jpg",
+                        "https://i.ytimg.com/vi/oXdfFNPMYWk/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AG0BoAC0AWKAgwIABABGDggWihlMA8=&rs=AOn4CLA_ocZ6Ei3Pz5QvRUX85eObBkk9Dw",
+                        "https://i.ytimg.com/vi/DpyCclDUCcg/sddefault.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
                 }
             ]
         },
@@ -1524,7 +1688,7 @@
                     "id": 2,
                     "title": "Tapper",
                     "release_year": "1984",
-                    "publisher": "Sega/Gremlin",
+                    "publisher": "Sega-Gremlin",
                     "genres": [
                         {
                             "name": "arcade",

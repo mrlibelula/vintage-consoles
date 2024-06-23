@@ -28,11 +28,11 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 xl:-my-px xl:ml-10 xl:flex">
                     <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home') || request()->routeIs('dashboard') || request()->routeIs('play')">
-                        {{ __('Consoles & Games') }}
+                        {{ __('Consoles/Games') }}
                     </x-nav-link>
 
-                    <x-nav-link href="{{ route('genres') }}" :active="request()->routeIs('genres')">
-                        {{ __('Genres') }}
+                    <x-nav-link href="{{ route('genres') }}" :active="request()->routeIs('publishers') || request()->routeIs('genres')">
+                        {{ __('Explore') }}
                     </x-nav-link>
                     
                 </div>
