@@ -366,6 +366,83 @@
                     "hof": [],
                     "is_free": true,
                     "options": {}
+                },
+                {
+                    "id": 8,
+                    "title": "The Legend of Zelda",
+                    "release_year": "1986",
+                    "publisher": "Nintendo Inc.",
+                    "genres": [
+                        {
+                            "name": "action-adventure",
+                            "description": "This genre encompasses gameplay that combines elements of both action and adventure games. In The Legend of Zelda, players explore an open world, solve puzzles, and combat enemies in real-time."
+                        },
+                        {
+                            "name": "fantasy",
+                            "description": "As a fantasy game, The Legend of Zelda is set in a fictional world with magical elements, mythical creatures, and a narrative that involves saving a kingdom and overcoming various challenges."
+                        }
+                    ],
+                    "description": "The Legend of Zelda, released in 1986 for the NES (Nintendo Entertainment System), is a landmark action-adventure game set in the fantasy realm of Hyrule. Players control Link, the protagonist, on a quest to rescue Princess Zelda from the evil sorcerer Ganon by exploring dungeons, solving puzzles, battling enemies, and discovering powerful items such as the Master Sword. Known for its non-linear gameplay and open world design, The Legend of Zelda introduced innovative mechanics and laid the foundation for a legendary franchise in gaming history.",
+                    "rating": "0.96",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Legend of Zelda, The (U) (PRG1) [!].nes",
+                    "box": "https://i.pinimg.com/originals/39/a2/6f/39a26fa9939b22ffb36c84607c112569.gif",
+                    "poster": "https://i.ebayimg.com/images/g/WrEAAOSwCpRa~Knz/s-l1600.jpg",
+                    "cartridge": "https://gameovervideogames.com/cdn/shop/files/1620_5995c52fa2dcd0.60905905_NES_20-_20Zelda_2C_20The_20Legend_20of_20-_20Gold_large_b6f14acf-ef0a-4fb0-af94-7d99dec3288c_grande.jpg?v=1713897683",
+                    "screenshots": [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2C9RMzPFxmbTiYm6BFvUy-xBtZdRsDUHv80IdHYv900M6hIf8afS7YhyN_vsJZEIWng0&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmSLPt_xH4K56H9vrpQ9yOWA_V0UEnqq9drpcdYS-36NWdoAW-XFFV0BnN62oUnO9fZaM&usqp=CAU",
+                        "https://retrogamerjunction.weebly.com/uploads/8/0/7/6/80765120/published/teleporting-by-flute.png?1616259530"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 9,
+                    "title": "Contra",
+                    "release_year": "1987",
+                    "publisher": "Konami",
+                    "genres": [
+                        {
+                            "name": "run-and-gun",
+                            "description": "This genre emphasizes constant movement and shooting. Players control characters who run through levels while shooting enemies and dodging their attacks."
+                        },
+                        {
+                            "name": "platformer",
+                            "description": "While not strictly a platformer in the traditional sense, \"Contra\" involves significant platforming elements where players navigate platforms and structures within the levels."
+                        }
+                    ],
+                    "description": "\"Contra\", released in 1987 for the NES, is a classic run-and-gun platformer known for its intense action and cooperative gameplay. Set in a futuristic world invaded by aliens, players control commandos Bill Rizer and Lance Bean as they battle through hordes of enemies and challenging environments. With its iconic side-scrolling gameplay, precise shooting mechanics, and memorable power-ups like the Spread Gun, \"Contra\" became renowned for its difficulty and remains a beloved title in gaming history.",
+                    "rating": "0.83",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Contra (U).nes",
+                    "box": "https://i.pinimg.com/originals/84/1e/45/841e450f10a74db360a638289d6d4f77.gif",
+                    "poster": "https://m.media-amazon.com/images/M/MV5BZDg1MGU3NTItNmRkMi00NWI0LWE3MGUtNGI4NGFhZDhhYjc0L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyNjg3MTAzODM@._V1_.jpg",
+                    "cartridge": "https://i0.wp.com/crebbatech.com/wp-content/uploads/2021/03/71UimM8I5XL._AC_SL1500_1.jpg",
+                    "screenshots": [
+                        "https://i.pinimg.com/originals/75/e9/1e/75e91e6d43b2f45ce72ec7b309be01d9.jpg",
+                        "https://gamefaqs.gamespot.com/a/screen/full/9/3/5/72935.jpg",
+                        "https://images.igdb.com/igdb/image/upload/t_1080p/scf3ws.png",
+                        "https://149362454.v2.pressablecdn.com/previously/wp-content/uploads/2016/02/Contra-stage-1-bridge.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
                 }
             ]
         },
@@ -1418,7 +1495,7 @@
                     "description": "\"Keystone Kapers,\" a classic Atari 2600 game from 1983, places players in the shoes of Officer Keystone Kelly, a relentless cop chasing the elusive burglar, Harry Hooligan, through a bustling shopping mall. This action-packed adventure combines elements of platforming and chasing, requiring precision in jumping over obstacles and clever use of elevators and escalators to catch the criminal. With a focus on achieving high scores, players engage in intense, score-boosting pursuits as they navigate various levels. \"Keystone Kapers\" captures the spirit of arcade gaming with its addictive simplicity and remains a cherished part of video game history, delivering timeless excitement in short gaming sessions.",
                     "rating": "0.89",
                     "multiplayer_support": false,
-                    "save_state_support": false,
+                    "save_state_support": true,
                     "rom": "Keystone.bin",
                     "box": "https://www.retrogames.cz/games/097/A26_03.gif",
                     "poster": "https://www.retrogamecases.com/wp-content/uploads/a2600_keystonekapers_front.png",
@@ -1472,7 +1549,7 @@
                     "description": "\"Defender,\" released for the Atari 2600 in 1981 by Atari, Inc., is a seminal arcade-style shoot 'em up game. In this high-intensity space-themed adventure, players pilot a spaceship horizontally across a scrolling landscape, tasked with protecting and rescuing humanoids from relentless alien attackers. With fast-paced action and ever-increasing challenges, \"Defender\" demands lightning-fast reflexes and precision shooting. Its iconic gameplay and memorable sound effects made it a classic in the early days of gaming, offering players an exhilarating experience as they battled hordes of alien foes and defended humanity against the imminent threat of abduction.",
                     "rating": "0.93",
                     "multiplayer_support": false,
-                    "save_state_support": false,
+                    "save_state_support": true,
                     "rom": "Defender.bin",
                     "box": "https://www.skunkworx.org/goa/games/d/defender/atari-2600-atari/screenshots/pod.gif",
                     "poster": "https://cdn.mobygames.com/covers/20445-defender-atari-2600-front-cover.jpg",
@@ -1502,7 +1579,7 @@
                     "description": "n/a",
                     "rating": "0.82",
                     "multiplayer_support": false,
-                    "save_state_support": false,
+                    "save_state_support": true,
                     "rom": "raiders.a26",
                     "box": "https://i.imgur.com/kVFwevm.gif",
                     "poster": "https://www.retroplace.com/pics/atari2600/packshots/4984--raiders-of-the-lost-ark.png",
@@ -1533,7 +1610,7 @@
                     "description": "n/a",
                     "rating": "0.55",
                     "multiplayer_support": false,
-                    "save_state_support": false,
+                    "save_state_support": true,
                     "rom": "et.a26",
                     "box": "https://i.imgur.com/EZj2mPO.gif",
                     "poster": "https://i.ebayimg.com/images/g/OYkAAOSwMA5ddtnn/s-l1600.jpg",
@@ -1562,7 +1639,7 @@
                     "description": "n/a",
                     "rating": "0.87",
                     "multiplayer_support": false,
-                    "save_state_support": false,
+                    "save_state_support": true,
                     "rom": "Pitfall.bin",
                     "box": "https://i.gifer.com/1nCZ.gif",
                     "poster": "https://screamersretroflashbacks.files.wordpress.com/2018/06/post-63105-0-44420800-1515005590.png?w=593&h=932",
@@ -1571,6 +1648,310 @@
                         "https://atariage.com/2600/screenshots/s_Pitfall_3.png",
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1M0lrFyTdgArYzRFiAgU6_h1rhdlOTrb8XVrt7TwKLr6GusoqCXaNI7b0fp2a0LTkrfM&usqp=CAU",
                         "https://imgix.bustle.com/uploads/image/2022/8/18/88025d6a-a191-443b-9437-284de7f6e342-pitfall-tout_a.jpg?w=400&h=300&fit=crop&crop=faces&auto=format%2Ccompress"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 9,
+                    "title": "Popeye",
+                    "release_year": "1983",
+                    "publisher": "Parker Brothers",
+                    "genres": [
+                        {
+                            "name": "action",
+                            "description": "The game involves real-time player actions where quick reflexes and timely movements are essential."
+                        },
+                        {
+                            "name": "platformer",
+                            "description": "Players navigate Popeye across different platforms and levels to achieve the game's objectives."
+                        }
+                    ],
+                    "description": "Popeye for the Atari 2600 is a classic action-platform game released in 1983. Players control Popeye as he navigates through various levels, collecting items like hearts, musical notes, and letters while avoiding his enemies, primarily Bluto. The objective is to rescue Olive Oyl by gathering all the dropped items without getting caught or losing lives. The game is known for its simple yet engaging gameplay, reminiscent of its arcade roots.",
+                    "rating": "0.78",
+                    "multiplayer_support": false,
+                    "save_state_support": true,
+                    "rom": "Popeye.bin",
+                    "box": "https://www.skunkworx.org/goa/games/p/popeye/atari-2600/screenshots/screen1.gif",
+                    "poster": "https://www.atarimania.com/2600/boxes/hi_res/popeye_standard_cart_2.jpg",
+                    "cartridge": "https://midlifegamergeek.com/wp-content/uploads/2024/04/4966-popeye5854774916029616876.png",
+                    "screenshots": [
+                        "https://atariage.com/2600/screenshots/s_Popeye_1.png",
+                        "https://cdn.mobygames.com/screenshots/2245890-popeye-atari-2600-the-boat-level-on-atari-2600.png",
+                        "https://www.atariprotos.com/2600/software/popeye/popeye_3.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 10,
+                    "title": "Pacman",
+                    "release_year": "1980",
+                    "publisher": "Atari, Inc.",
+                    "genres": [
+                        {
+                            "name": "action",
+                            "description": "The game involves real-time gameplay where the player must navigate Pac-Man through a maze while evading enemies and collecting pellets."
+                        },
+                        {
+                            "name": "maze",
+                            "description": "The primary gameplay involves navigating through a maze, which is a key characteristic of this genre."
+                        }
+                    ],
+                    "description": "Pacman for Atari 2600 is a port of the popular arcade game. In this version, players control Pac-Man as he navigates a maze, eating pellets while avoiding four ghosts. The game features simplified graphics and sound compared to the arcade original but retains the core gameplay of accumulating points and advancing through levels. Despite being a best-seller, it received criticism for its poor adaptation and technical limitations.",
+                    "rating": "0.79",
+                    "multiplayer_support": false,
+                    "save_state_support": true,
+                    "rom": "Pacman.bin",
+                    "box": "https://www.retrogames.cz/games/017/A26-gameplay.gif",
+                    "poster": "https://i.ebayimg.com/images/g/gXQAAOSwNKxddtqL/s-l400.jpg",
+                    "cartridge": "https://i0.wp.com/www.freezenet.ca/wp-content/uploads/2015/02/Pac-Man_Atari2600_crop.png",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/15997356-pac-man-atari-2600-a-game-in-progress.png",
+                        "https://atariage.com/2600/screenshots/s_PacMan_1.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 11,
+                    "title": "Pole Position",
+                    "release_year": "1982",
+                    "publisher": "Namco",
+                    "genres": [
+                        {
+                            "name": "racing",
+                            "description": "\"Pole Position\" is one of the earliest examples of a racing video game. Players control a Formula 1 race car, aiming to complete laps in the fastest time possible while competing against other cars on the track."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "Originally an arcade game, \"Pole Position\" retains the fast-paced, high-score-chasing nature typical of arcade games even on the Atari 2600. The game emphasizes quick reflexes, precision driving, and achieving the best possible time."
+                        },
+                        {
+                            "name": "simulation",
+                            "description": "To a certain extent, \"Pole Position\" can be considered a rudimentary racing simulation. It attempts to replicate the experience of driving a high-speed race car, including steering, accelerating, and braking."
+                        }
+                    ],
+                    "description": "\"Pole Position\" for the Atari 2600 is a classic racing game where players control a Formula 1 car, navigating a race track to complete laps as quickly as possible. The game challenges players to achieve high scores by avoiding obstacles and other cars while racing against the clock.",
+                    "rating": "0.95",
+                    "multiplayer_support": false,
+                    "save_state_support": true,
+                    "rom": "Polepsn.bin",
+                    "box": "https://i.pinimg.com/originals/8f/d8/77/8fd877d21021ebb606dd517c42033e5b.gif",
+                    "poster": "https://www.retroplace.com/pics/atari2600/packshots/85602--pole-position.png",
+                    "cartridge": "https://atariage.com/2600/carts/c_PolePosition_Silver_positn_front.jpg",
+                    "screenshots": [
+                        "https://www.atarimania.com/2600/screens/pole_position_2.gif",
+                        "https://cdn.mobygames.com/screenshots/2239981-pole-position-atari-2600-racing.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 12,
+                    "title": "River Raid",
+                    "release_year": "1982",
+                    "publisher": "Activision",
+                    "genres": [
+                        {
+                            "name": "shoot-em-up",
+                            "description": "The game involves controlling a fighter jet, shooting enemies, and avoiding obstacles while navigating through a river. This type of gameplay, which focuses on shooting and combat, is a hallmark of the shoot 'em up genre."
+                        },
+                        {
+                            "name": "scrolling-shooter",
+                            "description": "\"River Raid\" features vertical scrolling, where the screen continuously moves to simulate the flight of the jet over a river, requiring the player to react to incoming threats and navigate the environment."
+                        }
+                    ],
+                    "description": "\"River Raid\" for the Atari 2600 is a classic vertical scrolling shooter game where players pilot a fighter jet over a treacherous river. The objective is to navigate through enemy territory, destroy enemy ships, helicopters, and bridges, and avoid obstacles while managing fuel levels by collecting fuel tanks scattered throughout the river. Known for its challenging gameplay and innovative design, \"River Raid\" remains a beloved title in the Atari 2600 library.",
+                    "rating": "0.93",
+                    "multiplayer_support": false,
+                    "save_state_support": true,
+                    "rom": "Riveraid.bin",
+                    "box": "https://i.imgflip.com/6f4zy9.gif",
+                    "poster": "https://i.pinimg.com/originals/6b/0b/6a/6b0b6a4eb7564a06e05a15e52786e6f9.jpg",
+                    "cartridge": "https://www.atarimania.com/2600/boxes/hi_res/river_raid_cart.jpg",
+                    "screenshots": [
+                        "https://atariage.com/2600/screenshots/s_RiverRaid_1.png",
+                        "https://www.atarimania.com/2600/screens/river_raid_6.gif"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 13,
+                    "title": "Space Invaders",
+                    "release_year": "1978",
+                    "publisher": "Atari, Inc.",
+                    "genres": [
+                        {
+                            "name": "shooter",
+                            "description": "As a classic shooter game, Space Invaders involves the player controlling a laser cannon and shooting down waves of aliens. The main objective is to destroy all the invaders before they reach the bottom of the screen."
+                        },
+                        {
+                            "name": "action",
+                            "description": "The game is action-packed, requiring quick reflexes and strategic movements. Players need to dodge enemy fire while simultaneously aiming and shooting at the invaders."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "Originating as an arcade game before being adapted for the Atari 2600, Space Invaders retains its arcade-style gameplay. It focuses on achieving high scores and progressing through increasingly difficult levels."
+                        }
+                    ],
+                    "description": "Space Invaders for the Atari 2600 is a pioneering arcade-style shooter where players control a laser cannon at the bottom of the screen, tasked with defending against descending waves of aliens. The goal is to shoot down as many aliens as possible while avoiding their return fire and preventing them from reaching the bottom of the screen. With simple controls and increasingly challenging levels, it's a classic game known for its addictive gameplay and role in popularizing the shooter genre on home gaming consoles.",
+                    "rating": "0.78",
+                    "multiplayer_support": false,
+                    "save_state_support": true,
+                    "rom": "SPCINVAD.BIN",
+                    "box": "https://production-media.paperswithcode.com/datasets/Arcade_Learning_Environment-0000003337-6b3cb00a.gif",
+                    "poster": "https://i.ebayimg.com/images/g/WHcAAOSwhN1dgoOo/s-l400.jpg",
+                    "cartridge": "https://atariage.com/2600/carts/c_SpaceInvaders_Silver_front.jpg",
+                    "screenshots": [
+                        "https://atariage.com/2600/screenshots/s_SpaceInvaders_2.png",
+                        "https://atariage.com/2600/screenshots/s_SpaceInvaders_1.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 14,
+                    "title": "Galaxian",
+                    "release_year": "1979",
+                    "publisher": "Namco",
+                    "genres": [
+                        {
+                            "name": "shoot-em-up",
+                            "description": "This is the primary genre for \"Galaxian\". The gameplay involves controlling a spaceship and shooting down waves of alien enemies that descend towards the player."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "Like its arcade counterpart, the Atari 2600 version of \"Galaxian\" focuses on quick, action-packed gameplay typical of arcade-style games."
+                        }
+                    ],
+                    "description": "\"Galaxian\" for the Atari 2600 is a classic arcade-style shooter released in 1983. Players control a spaceship at the bottom of the screen, tasked with shooting down waves of alien enemies that swoop down in formations. It features simple yet challenging gameplay, typical of early console adaptations of arcade games, and is known for its retro charm and addictive gameplay loop of shooting and dodging enemy fire.",
+                    "rating": "0.78",
+                    "multiplayer_support": false,
+                    "save_state_support": true,
+                    "rom": "Galaxian.bin",
+                    "box": "https://gymnasium.farama.org/_images/galaxian.gif",
+                    "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBPGSVz_xkfTzA_xH6xWhTPQRoyG239QslGQIzTdrlJII9VBGYQWu9-4GDdDmLYgwPZ_k&usqp=CAU",
+                    "cartridge": "https://www.atarimania.com/2600/boxes/hi_res/galaxian_silver_cart.jpg",
+                    "screenshots": [
+                        "https://atariage.com/2600/screenshots/s_Galaxian_2.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 15,
+                    "title": "Demon Attack",
+                    "release_year": "1982",
+                    "publisher": "Imagic",
+                    "genres": [
+                        {
+                            "name": "shoot-em-up",
+                            "description": "The game involves shooting at waves of enemies that appear on the screen. Players control a spaceship at the bottom of the screen and must dodge enemy fire while shooting back at the demons."
+                        },
+                        {
+                            "name": "fixed-shooter",
+                            "description": "In this genre, the player's ship is fixed at the bottom of the screen, and enemies move in predefined patterns or formations. The player's objective is to shoot down these enemies before they reach the bottom of the screen or collide with the player's ship."
+                        }
+                    ],
+                    "description": "\"Demon Attack\" for the Atari 2600 is a classic shoot 'em up game where players control a spaceship defending against waves of demonic enemies. It features fast-paced action, strategic shooting, and challenging gameplay as players aim to survive successive waves of attackers. The game is known for its colorful graphics and engaging, arcade-style mechanics that were popular during the early days of home gaming consoles.",
+                    "rating": "0.94",
+                    "multiplayer_support": false,
+                    "save_state_support": true,
+                    "rom": "Demonatk.bin",
+                    "box": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c0/Demon-Attack-Atari-2600-gameplay.gif/220px-Demon-Attack-Atari-2600-gameplay.gif",
+                    "poster": "https://www.retroplace.com/pics/atari2600/packshots/4692--demon-attack.png",
+                    "cartridge": "https://www.dialupgames.com/cdn/shop/products/24e689ff-26ba-4c67-9a35-f2bda28b6694_0ea7b013-5efe-4315-8367-f9ba8f6ac908.png?v=1684253127",
+                    "screenshots": [
+                        "https://atariage.com/2600/screenshots/s_DemonAttack_2.png",
+                        "https://cdn.mobygames.com/536ee9ee-ab70-11ed-9505-02420a00019c.webp"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 16,
+                    "title": "Centiped",
+                    "release_year": "1981",
+                    "publisher": "Atari, Inc.",
+                    "genres": [
+                        {
+                            "name": "shoot-em-up",
+                            "description": "This genre involves controlling a character or vehicle that shoots enemies while dodging their attacks. In \"Centipede\", players control a shooter at the bottom of the screen, aiming to destroy a centipede that descends from the top, along with other insects."
+                        },
+                        {
+                            "name": "fixed-shooter",
+                            "description": "This subgenre of shoot 'em ups typically involves stationary or horizontally limited movement for the player's character or avatar, who defends against incoming enemies moving in various patterns. In \"Centipede\", the player's movement is limited to the bottom area of the screen, shooting vertically at the descending centipede and other obstacles."
+                        }
+                    ],
+                    "description": "\"Centipede\" for the Atari 2600 is a classic arcade-style shooter where players control a shooter at the bottom of the screen, aiming to destroy a descending centipede and other insects. The game features fast-paced action, strategic shooting, and challenging gameplay as players navigate through increasingly difficult levels while avoiding obstacles and enemies.",
+                    "rating": "0.95",
+                    "multiplayer_support": false,
+                    "save_state_support": true,
+                    "rom": "Centiped.bin",
+                    "box": "https://www.gymlibrary.dev/_images/centipede.gif",
+                    "poster": "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/016f09153264603.632c5fc54285b.jpg",
+                    "cartridge": "https://now.estarland.com/images/products/72/27272/AT2600-Centipede-large-image.jpg",
+                    "screenshots": [
+                        "https://atariage.com/2600/screenshots/s_Centipede_2.png",
+                        "https://atariage.com/2600/screenshots/s_Centipede_1.png"
                     ],
                     "bookmark_status": false,
                     "play_count": 0,
