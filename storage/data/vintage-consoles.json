@@ -931,10 +931,6 @@
                             "description": "The game is set in a dystopian, futuristic Detroit, which falls into the science fiction genre. The presence of advanced technology, cyborgs, and a futuristic atmosphere contributes to this classification."
                         },
                         {
-                            "name": "licensed-game",
-                            "description": "\"RoboCop\" is based on the popular movie franchise of the same name, allowing players to step into the shoes of the iconic character from the films."
-                        },
-                        {
                             "name": "arcade",
                             "description": "True to its arcade origins, the game features straightforward, action-packed gameplay designed to entertain players with quick, exciting encounters and challenges."
                         }
