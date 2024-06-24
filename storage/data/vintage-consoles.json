@@ -697,8 +697,25 @@
                     "title": "Pilotwings",
                     "release_year": "1990",
                     "publisher": "Nintendo Inc.",
-                    "genres": [],
-                    "description": "",
+                    "genres": [
+                        {
+                            "name": "flight-simulation",
+                            "description": "At its core, \"Pilotwings\" is a flight simulation game. Players control various aerial vehicles, including light aircraft, hang gliders, and jetpacks, experiencing realistic flight physics and controls."
+                        },
+                        {
+                            "name": "action",
+                            "description": "Although not a traditional action game, \"Pilotwings\" incorporates action elements through challenges such as landing on moving platforms, navigating through obstacles, and performing precise maneuvers under time constraints."
+                        },
+                        {
+                            "name": "sports",
+                            "description": "The game also includes elements of sports simulation, particularly with activities like skydiving and hang gliding, which involve competitive scoring based on performance and precision."
+                        },
+                        {
+                            "name": "puzzle",
+                            "description": "Some segments of \"Pilotwings\" can be considered puzzle-like, where players must figure out the best approach to complete objectives, such as landing a plane in a confined space or achieving a perfect score on a skydiving course."
+                        }
+                    ],
+                    "description": "\"Pilotwings\" for the SNES, released in 1990, is a pioneering flight simulation game that challenges players with a series of aerial missions using various aircraft. It utilizes the SNES's Mode 7 graphics for impressive visual effects, offering a blend of precision flying tasks, such as landing and skydiving, set against a backdrop of diverse environments. The game encourages exploration and skill mastery while showcasing the technical capabilities of the SNES console during its early years.",
                     "rating": "0.94",
                     "multiplayer_support": true,
                     "save_state_support": true,
@@ -1263,8 +1280,21 @@
                     "title": "Kung-Fu Master",
                     "release_year": "1984",
                     "publisher": "Irem Arcade",
-                    "genres": [],
-                    "description": "",
+                    "genres": [
+                        {
+                            "name": "action",
+                            "description": "The game involves intense combat and fighting sequences where the player must defeat enemies using martial arts techniques."
+                        },
+                        {
+                            "name": "beat-em-up",
+                            "description": "It falls into the classic beat 'em up category, where the player controls a martial artist protagonist who must progress through levels by fighting multiple opponents."
+                        },
+                        {
+                            "name": "platformer",
+                            "description": "It also incorporates platforming elements, as the player navigates the protagonist through various levels, jumping over obstacles and platforms while engaging in combat."
+                        }
+                    ],
+                    "description": "\"Kung-Fu Master\", released in 1984 by Irem, is an influential arcade game where players control a martial artist named Thomas who must fight through waves of enemies to rescue his kidnapped girlfriend Sylvia. The game is a blend of action, beat 'em up, and platforming genres, featuring intense combat and challenging obstacles across multiple levels. Known for its innovative gameplay and difficulty, \"Kung-Fu Master\" became a classic in the arcade era, setting standards for future martial arts-themed video games.",
                     "rating": "0.87",
                     "multiplayer_support": true,
                     "save_state_support": true,
@@ -1575,9 +1605,34 @@
                     "title": "Raiders of the Lost Ark",
                     "release_year": "1982",
                     "publisher": "Atari, Inc.",
-                    "genres": [],
-                    "description": "n/a",
-                    "rating": "0.82",
+                    "genres": [
+                        {
+                            "name": "action-adventure",
+                            "description": "This genre typically involves a mix of action elements (such as combat or traversal challenges) with exploration and puzzle-solving. In \"Raiders of the Lost Ark\", players navigate Indiana Jones through various screens, solve puzzles, and avoid traps."
+                        },
+                        {
+                            "name": "platformer",
+                            "description": "Although not strictly a platformer in the traditional sense, \"Raiders of the Lost Ark\" involves platform-like elements where players must navigate Indiana Jones across different types of terrain and obstacles."
+                        },
+                        {
+                            "name": "exploration",
+                            "description": "A significant part of the gameplay involves exploring different environments, finding items, and interacting with NPCs (non-playable characters) to progress through the game."
+                        },
+                        {
+                            "name": "puzzle",
+                            "description": "The game features puzzles that players must solve to advance. These puzzles often involve finding and using items in the right sequence or location, reflecting the adventure aspect of the game."
+                        },
+                        {
+                            "name": "action",
+                            "description": "While not as focused on combat as modern action games, \"Raiders of the Lost Ark\" includes action sequences where players must avoid enemies and hazards, adding tension and challenge to the gameplay."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "Given its release on the Atari 2600, the game also fits within the broader arcade genre, emphasizing quick reflexes, high scores, and simple mechanics suitable for short play sessions."
+                        }
+                    ],
+                    "description": "\"Raiders of the Lost Ark\" for the Atari 2600 is an early action-adventure game based on the iconic Indiana Jones film. Players control Indiana Jones as he navigates various environments, solves puzzles, and avoids traps in a quest to find the Ark of the Covenant. The game is notable for its pioneering use of multiple screens and interconnected gameplay elements, offering a challenging blend of exploration and action within the constraints of early 1980s video game technology.",
+                    "rating": "0.77",
                     "multiplayer_support": false,
                     "save_state_support": true,
                     "rom": "raiders.a26",
@@ -1606,8 +1661,21 @@
                     "title": "E.T. the Extra-Terrestrial",
                     "release_year": "1982",
                     "publisher": "Atari, Inc.",
-                    "genres": [],
-                    "description": "n/a",
+                    "genres": [
+                        {
+                            "name": "action-adventure",
+                            "description": "This genre typically involves exploring environments, solving puzzles, and engaging in various challenges. In \"E.T. the Extra-Terrestrial\", players control E.T. as he navigates different screens, collects items, and interacts with characters to achieve objectives."
+                        },
+                        {
+                            "name": "platformer",
+                            "description": "While not a traditional platformer in the sense of jumping between platforms, \"E.T.\" involves E.T. moving across different levels and screens, which can be considered a basic form of platforming where the player navigates obstacles and terrain."
+                        },
+                        {
+                            "name": "sci-fi",
+                            "description": "As a genre, \"E.T. the Extra-Terrestrial\" is firmly rooted in science fiction. It follows the story of E.T., an alien trying to escape Earth, and incorporates elements like spaceships, government agents, and telekinesis, all typical of the science fiction theme."
+                        }
+                    ],
+                    "description": "\"E.T. the Extra-Terrestrial\" for the Atari 2600 is a pioneering action-adventure game where players control E.T. as he searches Earth's environments, avoids government agents, and gathers the necessary items to phone home and escape.",
                     "rating": "0.55",
                     "multiplayer_support": false,
                     "save_state_support": true,
@@ -1632,11 +1700,32 @@
                 },
                 {
                     "id": 8,
-                    "title": "Pitfall",
+                    "title": "Pitfall!",
                     "release_year": "1982",
                     "publisher": "Activision",
-                    "genres": [],
-                    "description": "n/a",
+                    "genres": [
+                        {
+                            "name": "action-adventure",
+                            "description": "\"Pitfall!\" involves exploring a jungle environment filled with hazards like pits, snakes, and scorpions. Players navigate through various screens, swinging on vines and jumping over obstacles to collect treasures within a time limit."
+                        },
+                        {
+                            "name": "platformer",
+                            "description": "As one of the early platform games, \"Pitfall!\" focuses heavily on precise jumping and timing. The main goal is to move from left to right across the screen, overcoming environmental obstacles and enemies."
+                        },
+                        {
+                            "name": "exploration",
+                            "description": "The game encourages exploration of its side-scrolling world. Players are incentivized to discover hidden treasures scattered throughout the jungle, adding an exploratory aspect to the gameplay."
+                        },
+                        {
+                            "name": "action",
+                            "description": "Quick reflexes are crucial to avoid falling into traps and to navigate dangerous terrain. Players must react swiftly to obstacles and enemies that appear on-screen."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "\"Pitfall!\" embodies the arcade spirit with its straightforward yet challenging gameplay mechanics. It emphasizes high scores and replayability, characteristic of classic arcade games."
+                        }
+                    ],
+                    "description": "\"Pitfall!\" for the Atari 2600 is a pioneering action-adventure platformer where players navigate a perilous jungle landscape, swinging over hazards, jumping across pits, and collecting treasures within a challenging time limit.",
                     "rating": "0.87",
                     "multiplayer_support": false,
                     "save_state_support": true,
