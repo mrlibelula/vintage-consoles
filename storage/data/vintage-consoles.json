@@ -50,7 +50,7 @@
                     "id": 1,
                     "title": "Super Mario Bros. + Duck Hunt",
                     "release_year": "1985",
-                    "publisher": "Nintendo",
+                    "publisher": "Nintendo Inc.",
                     "genres": [
                         {
                             "name": "platformer",
@@ -187,7 +187,7 @@
                     "id": 4,
                     "title": "Super Mario Bros. 3",
                     "release_year": "1988",
-                    "publisher": "Nintendo",
+                    "publisher": "Nintendo Inc.",
                     "genres": [
                         {
                             "name": "platformer",
@@ -295,7 +295,7 @@
                     "id": 6,
                     "title": "Snake Rattle 'n' Roll",
                     "release_year": "1990",
-                    "publisher": "Nintendo",
+                    "publisher": "Nintendo Inc.",
                     "genres": [
                         {
                             "name": "action-adventure",
@@ -331,7 +331,7 @@
                     "id": 7,
                     "title": "Excitebike",
                     "release_year": "1984",
-                    "publisher": "Nintendo",
+                    "publisher": "Nintendo Inc.",
                     "genres": [
                         {
                             "name": "racing",
@@ -414,7 +414,7 @@
                     "id": 1,
                     "title": "Donkey Kong Country",
                     "release_year": "1994",
-                    "publisher": "Nintendo",
+                    "publisher": "Nintendo Inc.",
                     "genres": [
                         {
                             "name": "platformer",
@@ -457,7 +457,7 @@
                     "id": 2,
                     "title": "Super Mario World",
                     "release_year": "1990",
-                    "publisher": "Nintendo",
+                    "publisher": "Nintendo Inc.",
                     "genres": [
                         {
                             "name": "platformer",
@@ -513,7 +513,7 @@
                     "id": 3,
                     "title": "Super Mario Kart",
                     "release_year": "1992",
-                    "publisher": "Nintendo",
+                    "publisher": "Nintendo Inc.",
                     "genres": [
                         {
                             "name": "racing",
@@ -578,7 +578,7 @@
                     "id": 4,
                     "title": "The Legend of Zelda: A Link to the Past",
                     "release_year": "1991",
-                    "publisher": "Nintendo",
+                    "publisher": "Nintendo Inc.",
                     "genres": [
                         {
                             "name": "action-adventure",
@@ -619,7 +619,7 @@
                     "id": 5,
                     "title": "Pilotwings",
                     "release_year": "1990",
-                    "publisher": "Nintendo",
+                    "publisher": "Nintendo Inc.",
                     "genres": [],
                     "description": "",
                     "rating": "0.94",
@@ -698,7 +698,7 @@
                     "id": 7,
                     "title": "Super Tennis",
                     "release_year": "1991",
-                    "publisher": "Nintendo",
+                    "publisher": "Nintendo Inc.",
                     "genres": [
                         {
                             "name": "sports",
@@ -777,7 +777,7 @@
                     "id": 9,
                     "title": "Super Mario All-Stars",
                     "release_year": "1993",
-                    "publisher": "Nintendo",
+                    "publisher": "Nintendo Inc.",
                     "genres": [
                         {
                             "name": "platformer",
@@ -1141,7 +1141,7 @@
                     "id": 6,
                     "title": "Donkey Kong",
                     "release_year": "1981",
-                    "publisher": "Nintendo",
+                    "publisher": "Nintendo Inc.",
                     "genres": [
                         {
                             "name": "platformer",
