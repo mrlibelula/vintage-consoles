@@ -192,9 +192,6 @@
     @if ($search_results)
     <div class="fixed top-[4.1rem] z-40 flex items-center justify-center w-full px-2">
         <div wire:click.away="clearSearchResults" class="flex flex-col gap-y-2 fade max-w-[28rem] _max-w-fit w-full rounded-md border-4 border-cod-gray-600 min-h-fit min-h-[10rem]_ sm:min-h-[13rem]_ max-h-[10rem] sm:max-h-[13rem] py-2 px-2 shadow-md shadow-black leading-tight overflow-hidden overflow-y-auto">
-            {{-- <div>
-                Search results
-            </div> --}}
             @foreach ($search_results as $result)
             <a wire:navigate href="{{ $this->gameRoute(['short_name' => $result['console_short_name']], ['id' => $result['game_id'], 'title' => $result['game_title']]) }}" class="group flex items-center gap-x-3 justify-start text-left rounded-md hover:bg-cod-gray-700 smooth-300 cursor-pointer pr-2">
                 <div class=" w-12 h-[4.4rem] overflow-hidden rounded-md">
@@ -220,18 +217,20 @@
     @endif
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden xl:hidden bg-cod-gray-100/60 dark:bg-cod-gray-900">
-        <div class="pt-2 pb-3 space-y-1">
+    <div :class="{ 'block': open, 'hidden': !open }" 
+        class="hidden xl:hidden bg-white dark:bg-cod-gray-800 m-2 rounded-md shadow overflow-hidden"
+    >
+        <div>
             <x-responsive-nav-link href="{{ route('home') }}" :active="request()->routeIs('home') || request()->routeIs('dashboard') || request()->routeIs('play')">
                 {{ __('Consoles & Games') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('genres') }}" :active="request()->routeIs('genres')">
+            <x-responsive-nav-link href="{{ route('genres') }}" :active="request()->routeIs('genres') || request()->routeIs('publishers')">
                 {{ __('Explore') }}
             </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-cod-gray-400 dark:border-cod-gray-600">
+        <div>
             <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                     <div class="shrink-0 mr-3">
@@ -249,8 +248,8 @@
                 @endauth
             </div>
 
-            <div class="space-y-1">
-                <div @click="darkMode = !darkMode" class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent dark:border-transparent hover:border-rose-600 hover:dark:border-rose-400 dark:border-rose-600 text-left text-lg text-cod-gray-600 dark:text-cod-gray-500 hover:text-rose-700 hover:dark:text-rose-300 hover:bg-rose-50 hover:dark:bg-rose-900/50 focus:outline-none focus:text-rose-800 dark:focus:text-rose-200 focus:bg-rose-100 dark:focus:bg-rose-900 focus:border-rose-700 dark:focus:border-rose-300 smooth-300 cursor-pointer">
+            <div>
+                <div @click="darkMode = !darkMode" class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent dark:border-transparent hover:border-cod-gray-300 hover:dark:border-rose-600 dark:border-cod-gray-600 text-left text-lg text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-700 hover:dark:text-cod-gray-300 hover:bg-cod-gray-50 hover:dark:bg-rose-900/50 focus:outline-none focus:text-cod-gray-800 dark:focus:text-cod-gray-200 focus:bg-cod-gray-100 dark:focus:bg-cod-gray-900 focus:border-cod-gray-700 dark:focus:border-cod-gray-300 smooth-300 cursor-pointer">
                     <div class="flex items-center">
                         <div x-cloak x-show="darkMode" class="text-lg">
                             {{ __('Light theme') }}
