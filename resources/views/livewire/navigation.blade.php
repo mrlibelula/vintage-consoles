@@ -226,7 +226,7 @@
                 {{ __('Consoles & Games') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('genres') }}" :active="request()->routeIs('genres')">
-                {{ __('Genres') }}
+                {{ __('Explore') }}
             </x-responsive-nav-link>
         </div>
 
