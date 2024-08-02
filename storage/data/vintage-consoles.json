@@ -2287,6 +2287,57 @@
                 },
                 {
                     "id": 5,
+                    "title": "Leisure Suit Larry 1 - In the Land of the Lounge Lizards (VGA Remake)",
+                    "release_year": "1991",
+                    "publisher": "Sierra On-Line",
+                    "genres": [
+                        {
+                            "name": "adventure",
+                            "description": "The game is a point-and-click adventure where players navigate the protagonist, Larry Laffer, through various scenarios, solving puzzles and interacting with different characters to progress the story."
+                        },
+                        {
+                            "name": "comedy",
+                            "description": "The game is known for its humorous and often risqué content, with jokes, puns, and adult humor woven throughout the narrative."
+                        },
+                        {
+                            "name": "puzzle",
+                            "description": "Players must solve various puzzles to advance in the game, often requiring them to find and use items in creative ways or figure out the right dialogue options to move forward."
+                        },
+                        {
+                            "name": "interactive-fiction",
+                            "description": "The game incorporates elements of interactive fiction, where the story is driven by the player's choices and interactions within the game world."
+                        }
+                    ],
+                    "description": "Leisure Suit Larry 1: In the Land of the Lounge Lizards (VGA Remake) is a comedic adventure game where players control Larry Laffer, a hapless, middle-aged bachelor on a quest to find love in the fictional city of Lost Wages. The game features point-and-click gameplay, humorous dialogue, and puzzle-solving as players navigate various scenarios and interact with quirky characters. Originally released in 1987 and remade in 1991 with improved VGA graphics, the game is known for its lighthearted, risqué humor and has become a cult classic in the adventure game genre.",
+                    "rating": "0.94",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "https://libe.dev/bundles/LSL1VGA.jsdos",
+                    "box": "https://64.media.tumblr.com/3ec0a2b7c397026cb541531d0e57b696/tumblr_nwuf11m0aQ1skasmxo1_540.gif",
+                    "poster": "https://m.media-amazon.com/images/M/MV5BY2ZmYTViY2ItZDM0NS00ZmM2LTllYjAtNzUzM2QzNTQwNDQxXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_.jpg",
+                    "cartridge": "https://i.ebayimg.com/images/g/yEcAAOSwWGZkV6AC/s-l400.jpg",
+                    "screenshots": [
+                        "https://lh3.googleusercontent.com/proxy/s93naHzLpEI4muWP1nruOZ2pvymqWojFJUbiw2_M7NUayRCYFvNcdr2GLLaZ21MyvZERtsVVmwBxDiY-vG9BfcM0dBjF03ALVthIxaETHj4N",
+                        "https://lh3.googleusercontent.com/proxy/_EnsbHYZUwgLwGqcYoalEUETbveJs1qmdCPT4MHKFOoZE_qMFT9jaQYt0qQkIji3i6_kILRrgvr7FQxAjcdxygirjh2P3XRXJh1naX9R1xLq",
+                        "https://lh3.googleusercontent.com/proxy/A0r-sQP99TvoG1o4eqMMGLA4I6vnsisHGsBDyvvKjdTrFUDKEb0L0x2FxDvGhfbKFJp_ZMfBnKl3y2QfHdfJecWpbMlA6md5Jmertm-acdRu",
+                        "https://lh3.googleusercontent.com/proxy/JjqTg4qjWg6CJ_c7i6zTHXCLv25VdP-NGoORYAs95Zb7ymFxIIwUfnPxbayTLNSgftuihj4f1DwuFnlF2fuufa6QY-aH4m8Axpz0cqYjjxjz",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRreSMbpyG2HCupvuYr5qgvuUvysEFr0Ddif0BvssL6WFk7f0wXAhHhmEqREE7en7Fb_0k&usqp=CAU",
+                        "https://i.pinimg.com/736x/6b/36/76/6b3676fa99709ac94f0d4f678827a1a5.jpg",
+                        "https://minirevver.weebly.com/uploads/8/6/9/1/8691987/7153735.png",
+                        "https://cdn.thegamesdb.net/images/medium/screenshot/25302-1.jpg"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 6,
                     "title": "Alley Cat",
                     "release_year": "1984",
                     "publisher": "Synapse Software",
@@ -2314,6 +2365,116 @@
                         "https://gamefaqs.gamespot.com/a/faqs/04/13404-9.png",
                         "https://dosgames.com/screens/alleycat.gif",
                         "https://1.bp.blogspot.com/-5p4yd-rePB0/XhcdGd8IjVI/AAAAAAAAsAw/iC62WYj1hHIttw8HTfGpdLdGUVox1inGwCLcBGAsYHQ/s1600/741-alley-cat-pc-booter-screenshot-go-for-the-fish-cga.gif"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 7,
+                    "title": "Maniac Mansion: Day of the Tentacle",
+                    "release_year": "1993",
+                    "publisher": "LucasArts",
+                    "genres": [
+                        {
+                            "name": "adventure",
+                            "description": "Day of the Tentacle is a classic point-and-click adventure game where players interact with the environment, solve puzzles, and progress through the story by clicking on objects and choosing dialogue options."
+                        },
+                        {
+                            "name": "comedy",
+                            "description": "The game is filled with humorous dialogue, eccentric characters, and absurd situations, making comedy a core part of the experience."
+                        },
+                        {
+                            "name": "puzzle",
+                            "description": "Players need to solve a variety of puzzles to progress, often involving time travel and interacting with different characters across multiple timelines."
+                        },
+                        {
+                            "name": "sci-fi",
+                            "description": "The game's plot revolves around a mad scientist, sentient tentacles, and time machines, all elements of classic science fiction."
+                        },
+                        {
+                            "name": "time-travel",
+                            "description": "A key gameplay element involves time travel, where players switch between three different time periods, influencing past, present, and future to solve puzzles."
+                        },
+                        {
+                            "name": "retro",
+                            "description": "A key gameplay element involves time travel, where players switch As a game originally released in the early 90s, it represents a significant part of gaming history and is a favorite among fans of retro and classic games."
+                        }
+                    ],
+                    "description": "Maniac Mansion: Day of the Tentacle is a quirky point-and-click adventure game where players control three characters who must stop an evil, mutated tentacle from taking over the world. The game is set in a bizarre mansion and features time travel as a key mechanic, allowing players to switch between different time periods to solve puzzles. Known for its sharp humor, creative puzzles, and iconic art style, Day of the Tentacle is a beloved classic in the adventure game genre.",
+                    "rating": "0.93",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "https://libe.dev/bundles/dottbundle.jsdos",
+                    "box": "https://i.imgur.com/Ko8LM0B.gif",
+                    "poster": "https://i.ebayimg.com/images/g/pDUAAOSwoGli46an/s-l400.jpg",
+                    "cartridge": "https://dosdays.co.uk/media/games/dott/floppy_35_5.jpg",
+                    "screenshots": [
+                        "https://assetsio.gnwcdn.com/day-of-the-tentacle-remastered-debuts-screenshots-1445639393828.jpg?width=1200&height=1200&fit=bounds&quality=70&format=jpg&auto=webp",
+                        "https://mixnmojo.com/galleries/full/full20100721154412.jpg",
+                        "https://cdn.nivoli.com/adventuregamers/images/screenshots/29449/green_tentacle_2.jpg",
+                        "https://pbs.twimg.com/media/GL0H_DxWMAAG2Sf.png",
+                        "https://http2.mlstatic.com/D_NQ_NP_730070-MLA43115026156_082020-O.webp",
+                        "https://cdn.mobygames.com/screenshots/9628344-maniac-mansion-day-of-the-tentacle-dos-funny-animation-hoagie-pe.png",
+                        "https://mixnmojo.com/galleries/full/full20100721161559.jpg",
+                        "https://thekingofgrabs.com/wp-content/uploads/2019/09/day-of-the-tentacle-pc-16.png?w=1038&h=576&crop=1",
+                        "https://cdromance.org/wp-content/uploads/2017/11/17872-maniac-mansion-day-of-the-tentacle-dos-screenshot-using-an.gif"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
+                },
+                {
+                    "id": 8,
+                    "title": "Maniac Mansion",
+                    "release_year": "1987",
+                    "publisher": "LucasArts",
+                    "genres": [
+                        {
+                            "name": "adventure",
+                            "description": "A genre where players interact with the game world by pointing and clicking with a mouse to solve puzzles and progress through the story. \"Maniac Mansion\" is a classic example, featuring an interactive environment and a variety of puzzles."
+                        },
+                        {
+                            "name": "comedy",
+                            "description": "Includes humorous elements and situations designed to entertain and amuse players. \"Maniac Mansion\" is known for its quirky characters, funny dialogue, and absurd scenarios."
+                        },
+                        {
+                            "name": "puzzle",
+                            "description": "Focuses on problem-solving and requires players to solve various challenges and riddles to advance. The game includes numerous puzzles that must be solved to escape the mansion and rescue the kidnapped friend."
+                        },
+                        {
+                            "name": "horror",
+                            "description": "While not intensely scary, the game features a spooky atmosphere with a mysterious mansion, eerie characters, and unsettling events. This genre adds a sense of suspense and intrigue to the gameplay."
+                        },
+                        {
+                            "name": "interactive-fiction",
+                            "description": "Emphasizes narrative and player choices, often with a focus on storytelling. \"Maniac Mansion\" provides a rich story with multiple paths and endings based on player decisions."
+                        }
+                    ],
+                    "description": "\"Maniac Mansion\" is a classic point-and-click adventure game originally released in 1987 by Lucasfilm Games (now known as LucasArts). The MS-DOS version, which followed the original Commodore 64 release, allows players to control a group of teenagers as they explore a creepy mansion to rescue their kidnapped friend. The game is notable for its humor, multiple endings, and the introduction of the SCUMM engine, which became the foundation for many other adventure games by LucasArts.",
+                    "rating": "0.83",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "https://libe.dev/bundles/maniac.jsdos",
+                    "box": "https://i.gifer.com/embedded/download/3iFC.gif",
+                    "poster": "https://cdromance.org/wp-content/uploads/2017/11/102454-maniac-mansion-dos-front-cover.jpg",
+                    "cartridge": "https://images.launchbox-app.com/c49dbe93-3ccf-4956-9054-deaa1b867ab8.jpg",
+                    "screenshots": [
+                        "https://www.mobygames.com/images/shots/l/30500-maniac-mansion-dos-screenshot-the-edisons-are-now-blue-enhanced.gif",
+                        "https://www.lemonamiga.com/games/media/screens/full/maniac_mansion/maniac_mansion_11.png",
+                        "https://www.lemonamiga.com/games/media/screens/full/maniac_mansion/maniac_mansion_10.png"
                     ],
                     "bookmark_status": false,
                     "play_count": 0,
