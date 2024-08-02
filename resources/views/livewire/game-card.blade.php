@@ -201,18 +201,23 @@
     <div class="group contenedorCards rounded-xl overflow-hidden border-4 border-cod-gray-300 dark:border-cod-gray-800 shadow-md shadow-cod-gray-500 dark:shadow-black bg-gradient-to-b from-white via-white to-cod-gray-600 dark:from-black dark:via-black dark:to-cod-gray-800 h-full">
         <div class="card h-full">
             <div class="wrapper rounded-md overflow-hidden h-full justify-between">
-                <div class="colorProd rounded-md" 
-                    style="background-image: url({{ $game['box'] }})"
-                ></div>
-                <div class="imgProd flex items-center justify-center" 
-                    style="background-image: url({{ $game['poster'] }});"
-                ></div>
+                <!-- Placeholder for the box background -->
+                <div class="colorProd rounded-md lazy-load-bg" 
+                    data-bg-url="{{ $game['box'] }}" 
+                    style="background-image: url({{ asset('images/placeholder-wide-dark.jpg') }});"
+                >
+                </div>
+                <!-- Placeholder for the poster background -->
+                <div class="imgProd flex items-center justify-center lazy-load-bg" 
+                    data-bg-url="{{ $game['poster'] }}" 
+                    style="background-image: url({{ asset('images/placeholder-poster-homer.jpg') }});">
+                </div>
                 <div class="infoProd_ flex flex-col justify-between text-center h-full">
                     <p class="mt-6 mb-4 px-6 leading-none text-xl text-cod-gray-800 group-hover:text-cod-gray-900 dark:text-cod-gray-300 dark:group-hover:text-cod-gray-100 smooth-300">
                         {{ $game['title'] }}
                     </p>
                     @isset($game['console_short_name'])
-                    <div class=" dark:bg-cod-gray-800 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400 dark:opacity-80">
+                    <div class="dark:bg-cod-gray-800 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400 dark:opacity-80">
                         {{ $game['console_short_name'] }}
                     </div>
                     @endisset

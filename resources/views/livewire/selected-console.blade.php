@@ -24,7 +24,7 @@
                     @skeleton-lista-off.window="skeletonLista = false"
                     @skeleton-lista-on.window="skeletonLista = true"
 
-                    class="flex flex-col gap-y-8 w-full xl:w-[70%]">
+                    class="flex flex-col gap-y-8 w-full xl:w-[70%] main-container">
                     
                     <!-- game list display options -->
                     <div class="flex items-center justify-start gap-x-3 w-full dark:text-cod-gray-500 leading-none -mb-8">

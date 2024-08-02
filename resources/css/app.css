@@ -203,3 +203,12 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #4a4a4a;
 }
+
+.lazy-load-container[data-loaded="false"] img {
+    filter: blur(10px); /* Optional: Blur the image until it's fully loaded */
+}
+
+.lazy-load-container[data-loaded="true"] img {
+    filter: none;
+    transition: filter 0.3s ease; /* Optional: Smooth transition */
+}

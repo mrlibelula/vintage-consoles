@@ -53,6 +53,7 @@
                                 $game['console_short_name'], 
                                 $game['title'],
                             ]) }}"
+                            class="lazy-load-container" data-loaded="false"
                         >
                             <div :class="{ 'hidden': skeletonGroup || skeletonSquare }" class=" h-full">
                                 @if ($order_by['group'])

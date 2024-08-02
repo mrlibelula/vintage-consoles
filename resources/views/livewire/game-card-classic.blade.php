@@ -1,5 +1,6 @@
-<button class="group rounded-lg overflow-hidden bg-center bg-cover bg-no-repeat border-[3px] shadow-md shadow-cod-gray-500 dark:shadow-black  border-cod-gray-500 dark:border-cod-gray-700 opacity-75 hover:brightness-110 smooth-300 cursor-pointer" 
-    style="background-image: url({{ $game['poster'] }})"
+<button class="lazy-load-bg group rounded-lg overflow-hidden bg-center bg-cover bg-no-repeat border-[3px] shadow-md shadow-cod-gray-500 dark:shadow-black  border-cod-gray-500 dark:border-cod-gray-700 opacity-75 hover:brightness-110 smooth-300 cursor-pointer" 
+    data-bg-url="{{ $game['poster'] }}" 
+    style="background-image: url({{ asset('images/placeholder-poster-homer.jpg') }});"
 >
     <div class="flex items-end justify-center w-[8.5rem] h-[12rem] overflow-hidden">
         @isset($game['console_short_name'])
