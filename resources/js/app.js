@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(initializeLazyLoad, 200)
         setTimeout(initializeLazyLoad, 500)
         setTimeout(initializeLazyLoad, 1000)
+        setTimeout(initializeLazyLoad, 2000)
     })
 
     // General MutationObserver on a higher-level container
