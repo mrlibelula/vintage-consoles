@@ -49,11 +49,11 @@
 
                         @foreach ($filtered_games as $game)
                         <div 
-                            {{-- wire:navigate href="{{ route('play', [
+                            data-url="{{ route('play', [
                                 \App\Service\Tool::encode($game['id']),
                                 $game['console_short_name'], 
                                 $game['title'],
-                            ]) }}" --}}
+                            ]) }}"
                             class="lazy-load-container" data-loaded="false"
                         >
                             <div :class="{ 'hidden': skeletonGroup || skeletonSquare }" class=" h-full">

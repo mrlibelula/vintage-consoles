@@ -81,16 +81,17 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 document.addEventListener('DOMContentLoaded', function () {
     function initializeScroll(container) {
-        console.log(1)
         if (!container) return;
-        console.log(2)
 
         let isDragging = false;
         let startX, scrollLeft;
+        let dragThreshold = 5; // Adjust as needed to control sensitivity
+        let dragDistance = 0;
 
         function startDrag(e) {
             e.preventDefault();
             isDragging = true;
+            dragDistance = 0;
             container.classList.add('cursor-grabbing');
             container.classList.remove('cursor-grab');
             startX = e.pageX - container.offsetLeft;
@@ -102,8 +103,9 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             const x = e.pageX - container.offsetLeft;
             const walk = (x - startX) * 2; // Scroll speed multiplier
-            // Add a threshold to avoid too much sensitivity
-            if (Math.abs(x - startX) > 5) { // Change to a different value as needed
+            dragDistance = Math.abs(x - startX); // Track drag distance
+
+            if (dragDistance > dragThreshold) {
                 container.scrollLeft = scrollLeft - walk;
             }
         }
@@ -114,19 +116,32 @@ document.addEventListener('DOMContentLoaded', function () {
             container.classList.remove('cursor-grabbing');
         }
 
+        function handleClick(e) {
+            if (dragDistance > dragThreshold) {
+                e.preventDefault(); // Prevent click if drag threshold is exceeded
+            } else {
+                const target = e.target.closest('[data-url]');
+                if (target) {
+                    // Navigate to the URL
+                    window.location.href = target.getAttribute('data-url');
+                }
+            }
+        }
+
         container.addEventListener('mousedown', startDrag);
         container.addEventListener('mousemove', drag);
         container.addEventListener('mouseup', endDrag);
         container.addEventListener('mouseleave', endDrag);
+        container.addEventListener('click', handleClick);
 
         // Adding touch event listeners
         container.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Prevent scrolling on touch
+            e.preventDefault(); 
             startDrag(e.touches[0]);
         });
 
         container.addEventListener('touchmove', (e) => {
-            e.preventDefault(); // Prevent scrolling on touch
+            e.preventDefault();
             drag(e.touches[0]);
         });
 
@@ -136,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function () {
         container.classList.add('cursor-grab');
     }
 
-    // Initialize scroll functionality on page load
     document.querySelectorAll('.ribbon-container').forEach(container => {
         initializeScroll(container);
     });
@@ -149,161 +163,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.addEventListener('livewire:update', () => {
-        console.log('update')
         document.querySelectorAll('.ribbon-container').forEach(container => {
             initializeScroll(container);
         });
     });
-
-    document.addEventListener('dom-updated', () => {
-        console.log('dom-updated')
-        document.querySelectorAll('.ribbon-container').forEach(container => {
-            initializeScroll(container);
-        });
-    });
-
-    // Livewire.hook('message.processed', (message, component) => {
-    //     document.querySelectorAll('.ribbon-container').forEach(container => {
-    //         initializeScroll(container);
-    //     });
-    // });    
 
     document.addEventListener('livewire:navigated', () => {
-        console.log('navigated')
         document.querySelectorAll('.ribbon-container').forEach(container => {
             initializeScroll(container);
-        });
-    });
-
-    // Keyboard navigation with focus check
-    window.addEventListener('keydown', (e) => {
-        document.querySelectorAll('.ribbon-container').forEach(container => {
-            if (document.activeElement === container) { // Check if the container is focused
-                if (e.key === 'ArrowLeft') {
-                    container.scrollBy({
-                        left: -200,
-                        behavior: 'smooth'
-                    });
-                } else if (e.key === 'ArrowRight') {
-                    container.scrollBy({
-                        left: 200,
-                        behavior: 'smooth'
-                    });
-                }
-            }
         });
     });
 });
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     let throttleTimeout;
-
-//     function initDraggableRibbon() {
-//         console.log('Initializing draggable ribbons');
-//         document.querySelectorAll('.draggable-ribbon').forEach(ribbon => {
-//             console.log('Attaching event listeners');
-
-//             // Remove previous event listeners
-//             ribbon.removeEventListener('mousedown', handleMouseDown);
-//             ribbon.removeEventListener('mouseleave', handleMouseLeave);
-//             ribbon.removeEventListener('mouseup', handleMouseUp);
-//             ribbon.removeEventListener('mousemove', handleMouseMove);
-
-//             let isDown = false;
-//             let startX;
-//             let scrollLeft;
-//             let isDragging = false;
-//             let startTime;
-
-//             function handleMouseDown(e) {
-//                 isDown = true;
-//                 ribbon.classList.add('active');
-//                 startX = e.pageX - ribbon.offsetLeft;
-//                 scrollLeft = ribbon.scrollLeft;
-//                 startTime = new Date().getTime();
-//                 isDragging = false;
-//             }
-
-//             function handleMouseLeave() {
-//                 isDown = false;
-//                 ribbon.classList.remove('active');
-//             }
-
-//             function handleMouseUp(e) {
-//                 isDown = false;
-//                 ribbon.classList.remove('active');
-//                 const endTime = new Date().getTime();
-//                 const timeDiff = endTime - startTime;
-
-//                 if (isDragging || timeDiff > 200) {
-//                     e.preventDefault();
-//                     e.stopPropagation();
-//                 }
-//             }
-
-//             function handleMouseMove(e) {
-//                 if (!isDown) return;
-//                 e.preventDefault();
-//                 const x = e.pageX - ribbon.offsetLeft;
-//                 const walk = (x - startX) * 2;
-//                 ribbon.scrollLeft = scrollLeft - walk;
-//                 isDragging = true;
-//             }
-
-//             function handleClick(e) {
-//                 if (isDragging) {
-//                     e.preventDefault();
-//                     e.stopPropagation();
-//                 }
-//             }
-
-//             ribbon.addEventListener('mousedown', handleMouseDown);
-//             ribbon.addEventListener('mouseleave', handleMouseLeave);
-//             ribbon.addEventListener('mouseup', handleMouseUp);
-//             ribbon.addEventListener('mousemove', handleMouseMove);
-
-//             ribbon.querySelectorAll('a').forEach(anchor => {
-//                 anchor.addEventListener('click', handleClick);
-//             });
-//         });
-//     }
-
-//     function initDraggableRibbonThrottled() {
-//         if (throttleTimeout) return;
-
-//         throttleTimeout = setTimeout(() => {
-//             initDraggableRibbon();
-//             throttleTimeout = null;
-//         }, 100); // Adjust the delay as needed
-//     }
-
-//     // Initial call
-//     initDraggableRibbon();
-
-//     // Set up a MutationObserver to watch for changes in the document
-//     const observer = new MutationObserver(mutations => {
-//         let needsReinitialize = false;
-//         mutations.forEach(mutation => {
-//             if (mutation.type === 'childList' || mutation.type === 'attributes') {
-//                 needsReinitialize = true;
-//             }
-//         });
-
-//         if (needsReinitialize) {
-//             initDraggableRibbonThrottled(); // Use the throttled function
-//         }
-//     });
-
-//     // Start observing the document body for changes
-//     observer.observe(document.body, {
-//         childList: true,
-//         subtree: true,
-//         attributes: true
-//     });
-
-//     // Livewire events to reinitialize
-//     document.addEventListener('livewire:load', initDraggableRibbon);
-//     document.addEventListener('livewire:update', initDraggableRibbonThrottled);
-//     document.addEventListener('livewire:render', initDraggableRibbonThrottled);
-//     document.addEventListener('livewire:navigated', initDraggableRibbonThrottled);
-// });
