@@ -2,33 +2,28 @@
 
 namespace App\Livewire;
 
-use App\Service\GameSession;
 use App\Service\Tool;
-use Illuminate\Support\Facades\Session;
 use Livewire\Component;
+use App\Service\GameSession;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class Genres extends Component
 {
     public string $genre_name;
     public array $genres = [];
     public array $filtered_games = [];
-    public array $order_by = [
-        'group' => true,
-        'squares' => false,
-    ];
+    public string $ob = 'group';
 
-    public function orderBy(string $list_type)
+    public function mount(string $genre_name = '', Request $request)
     {
-        $this->order_by = array_map(function ($by) {
-            return $by = false;
-        }, $this->order_by);
-        
-        $this->order_by[strtolower($list_type)] = true;
-        Session::put('genres_sort', $this->order_by);
-    }
+        if ($request->has('ob')) {
+            $this->ob = $request->query('ob');
+        } else {
+            $this->ob = Session::has('ob') ? Session::get('ob') : 'group';
+        }
+        Session::put('ob', $this->ob);
 
-    public function mount(string $genre_name = '')
-    {
         new GameSession;
 
         // verify if genre exists in db
@@ -88,10 +83,10 @@ class Genres extends Component
 
     public function render()
     {
-        if (Session::exists('genres_sort')) {
-            $this->order_by = Session::get('genres_sort');
+        if (Session::exists('ob')) {
+            $ob = Session::get('ob');
+            $this->ob = $ob === 'lista' ? 'group' : $ob;
         }
-        
         return view('livewire.genres');
     }
 }

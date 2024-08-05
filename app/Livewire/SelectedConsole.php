@@ -14,21 +14,7 @@ class SelectedConsole extends Component
     public bool $console_data_accordion = true;
     public bool $specs_accordion = false;
     public bool $community_accordion = true;
-    public array $order_by = [];
-
-    public function orderBy(string $order_by)
-    {
-        $this->clearOrderByExcept($order_by);
-        Session::put('game_order_by', $this->order_by);
-    }
-
-    public function clearOrderByExcept(string $except)
-    {
-        $order_by = $this->order_by;
-        foreach ($order_by as $key => $value) {
-            $this->order_by[$key] = $except === $key ? true : false;
-        }
-    }
+    public string $ob = 'group';
 
     public function toggleAccordion(string $accordion_prop)
     {
@@ -42,18 +28,12 @@ class SelectedConsole extends Component
 
     public function mount()
     {
-        // session order by list of games
-        $this->order_by = Session::exists('game_order_by')
-        ? Session::get('game_order_by')
-        : [
-            'group' => false,
-            'squares' => false,
-            'lista' => true,
-        ];
+        //
     }
 
     public function render()
     {
+        $this->ob = Session::exists('ob') ? Session::get('ob') : 'group';
         return view('livewire.selected-console');
     }
 }

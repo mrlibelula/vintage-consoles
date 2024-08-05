@@ -28,9 +28,9 @@
                     
                     <!-- game list display options -->
                     <div class="flex items-center justify-start gap-x-3 w-full dark:text-cod-gray-500 leading-none -mb-8">
-                        <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-group-on')" wire:click="orderBy('group')" class="btn-small"><x-icons.group class="{{ $order_by['group'] ? ' text-rose-700 dark:text-gray-200' : '' }}" /></button>
-                        <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-square-on')" wire:click="orderBy('squares')" class="btn-small"><x-icons.squares class="{{ $order_by['squares'] ? ' text-rose-700 dark:text-gray-200' : '' }}" /></button>
-                        <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-lista-on')" wire:click="orderBy('lista')" class="btn-small"><x-icons.lista class="{{ $order_by['lista'] ? ' text-rose-700 dark:text-gray-200' : '' }}" /></button>
+                        <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-group-on');"  wire:navigate href="/{{ $selected_console['short_name'] }}?ob=group" class="btn-small"><x-icons.group class="{{ $ob === 'group' ? ' text-rose-700 dark:text-gray-200' : '' }}" /></a>
+                        <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-square-on');"  wire:navigate href="/{{ $selected_console['short_name'] }}?ob=squares" class="btn-small"><x-icons.squares class="{{ $ob === 'squares' ? ' text-rose-700 dark:text-gray-200' : '' }}" /></a>
+                        <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-lista-on');"  wire:navigate href="/{{ $selected_console['short_name'] }}?ob=lista" class="btn-small"><x-icons.lista class="{{ $ob === 'lista' ? ' text-rose-700 dark:text-gray-200' : '' }}" /></a>
                     </div>
 
                     <!-- skeleton group -->
@@ -53,11 +53,11 @@
                     </template>
 
                     <div :class="{ 'hidden': skeletonGroup || skeletonSquare || skeletonLista }">
-                        @if ($order_by['group'])
+                        @if ($ob === 'group')
                         <livewire:order-by-group :selected_console="$selected_console" :key="uniqid()" />
-                        @elseif ($order_by['squares'])
+                        @elseif ($ob === 'squares')
                         <livewire:order-by-squares :selected_console="$selected_console" :key="uniqid()" />
-                        @elseif ($order_by['lista'])
+                        @elseif ($ob === 'lista')
                         <livewire:order-by-lista :selected_console="$selected_console" :key="uniqid()" />
                         @endif
                     </div>

@@ -2,9 +2,11 @@
 
 namespace App\Livewire;
 
-use App\Service\GameSession;
 use App\Service\Tool;
 use Livewire\Component;
+use App\Service\GameSession;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class Dashboard extends Component
@@ -14,6 +16,7 @@ class Dashboard extends Component
     public int $selected_console_id = 0;
     public bool $show_hero = false;
     public string $hero_image;
+    public string $ob = 'group';
     public array $console_tabs = [
         'nes' => true,
         'snes' => false,
@@ -113,8 +116,15 @@ class Dashboard extends Component
         }
     }
 
-    public function mount(string $console_short_name = 'nes')
+    public function mount(string $console_short_name = 'nes', Request $request)
     {
+        if ($request->has('ob')) {
+            $this->ob = $request->query('ob');
+        } else {
+            $this->ob = Session::has('ob') ? Session::get('ob') : 'group';
+        }
+        Session::put('ob', $this->ob);
+        
         $console_short_name = strtolower($console_short_name);
         
         $this->randomHeroImage();

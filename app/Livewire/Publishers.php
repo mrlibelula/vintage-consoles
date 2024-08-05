@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Service\Tool;
 use Livewire\Component;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class Publishers extends Component
@@ -11,23 +12,17 @@ class Publishers extends Component
     public array $publishers = [];
     public string $publisher_name;
     public array $filtered_games = [];
-    public array $order_by = [
-        'group' => true,
-        'squares' => false,
-    ];
-
-    public function orderBy(string $list_type)
-    {
-        $this->order_by = array_map(function ($by) {
-            return $by = false;
-        }, $this->order_by);
-        
-        $this->order_by[strtolower($list_type)] = true;
-        Session::put('genres_sort', $this->order_by);
-    }
+    public string $ob = 'group';
     
-    public function mount(string $publisher_name = '')
+    public function mount(string $publisher_name = '', Request $request)
     {
+        if ($request->has('ob')) {
+            $this->ob = $request->query('ob');
+        } else {
+            $this->ob = Session::has('ob') ? Session::get('ob') : 'group';
+        }
+        Session::put('ob', $this->ob);
+
         // new GameSession;
         $this->publishers();
         $this->filterGames($publisher_name);
@@ -83,10 +78,10 @@ class Publishers extends Component
 
     public function render()
     {
-        if (Session::exists('genres_sort')) {
-            $this->order_by = Session::get('genres_sort');
+        if (Session::exists('ob')) {
+            $ob = Session::get('ob');
+            $this->ob = $ob === 'lista' ? 'group' : $ob;
         }
-
         return view('livewire.publishers');
     }
 }

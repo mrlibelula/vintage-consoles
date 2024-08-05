@@ -21,8 +21,8 @@
             @if ($genre_name)
                 <!-- game list display options -->
                 <div class="flex items-center justify-start gap-x-3 w-full dark:text-cod-gray-500 leading-none -mb-8">
-                    <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-group-on')" wire:click="orderBy('group')" class="btn-small"><x-icons.group class="{{ $order_by['group'] ? 'text-gray-200' : '' }}" /></button>
-                    <button @click="$dispatch('loader-top-on'); $dispatch('skeleton-square-on')" wire:click="orderBy('squares')" class="btn-small"><x-icons.squares class="{{ $order_by['squares'] ? 'text-gray-200' : '' }}" /></button>
+                    <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-group-on')" wire:navigate href="/game/genres/{{ $genre_name }}?ob=group" class="btn-small"><x-icons.group class="{{ $ob === 'group' ? 'text-gray-200' : '' }}" /></a>
+                    <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-square-on')" wire:navigate href="/game/genres/{{ $genre_name }}?ob=squares" class="btn-small"><x-icons.squares class="{{ $ob === 'squares' ? 'text-gray-200' : '' }}" /></a>
                 </div>
                 <!-- filtered results ribbon -->
                 <x-ribbon 
@@ -48,21 +48,22 @@
                         </template>
 
                         @foreach ($filtered_games as $game)
-                        <a wire:navigate href="{{ route('play', [
+                        <div 
+                            {{-- wire:navigate href="{{ route('play', [
                                 \App\Service\Tool::encode($game['id']),
                                 $game['console_short_name'], 
                                 $game['title'],
-                            ]) }}"
+                            ]) }}" --}}
                             class="lazy-load-container" data-loaded="false"
                         >
                             <div :class="{ 'hidden': skeletonGroup || skeletonSquare }" class=" h-full">
-                                @if ($order_by['group'])
+                                @if ($ob === 'group')
                                 <livewire:game-card :game="$game" :key="$game['id']" :key="uniqid()" />
-                                @elseif($order_by['squares'])
+                                @elseif($ob === 'squares')
                                 <livewire:game-card-classic :game="$game" :key="$game['id']" class="p-4" :key="uniqid()" />
                                 @endif
                             </div>
-                        </a>
+                        </div>
                         @endforeach
                     </div>
                 </x-ribbon>
