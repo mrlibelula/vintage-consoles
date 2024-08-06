@@ -87,21 +87,23 @@ document.addEventListener('DOMContentLoaded', function () {
         let startX, scrollLeft;
         let dragThreshold = 5; // Adjust as needed to control sensitivity
         let dragDistance = 0;
+        let isTouching = false;
 
         function startDrag(e) {
             e.preventDefault();
             isDragging = true;
+            isTouching = e.type === 'touchstart'; // Check if touch event
             dragDistance = 0;
             container.classList.add('cursor-grabbing');
             container.classList.remove('cursor-grab');
-            startX = e.pageX - container.offsetLeft;
+            startX = isTouching ? e.touches[0].pageX - container.offsetLeft : e.pageX - container.offsetLeft;
             scrollLeft = container.scrollLeft;
         }
 
         function drag(e) {
             if (!isDragging) return;
             e.preventDefault();
-            const x = e.pageX - container.offsetLeft;
+            const x = isTouching ? e.touches[0].pageX - container.offsetLeft : e.pageX - container.offsetLeft;
             const walk = (x - startX) * 2; // Scroll speed multiplier
             dragDistance = Math.abs(x - startX); // Track drag distance
 
@@ -128,23 +130,16 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        // Desktop event listeners
         container.addEventListener('mousedown', startDrag);
         container.addEventListener('mousemove', drag);
         container.addEventListener('mouseup', endDrag);
         container.addEventListener('mouseleave', endDrag);
         container.addEventListener('click', handleClick);
 
-        // Adding touch event listeners
-        container.addEventListener('touchstart', (e) => {
-            e.preventDefault(); 
-            startDrag(e.touches[0]);
-        });
-
-        container.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            drag(e.touches[0]);
-        });
-
+        // Mobile event listeners
+        container.addEventListener('touchstart', startDrag);
+        container.addEventListener('touchmove', drag);
         container.addEventListener('touchend', endDrag);
 
         // Set initial cursor state
