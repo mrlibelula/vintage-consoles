@@ -143,9 +143,9 @@ document.addEventListener('DOMContentLoaded', function () {
         container.addEventListener('mouseleave', endDrag);
 
         // Event listeners for mobile
-        container.addEventListener('touchstart', startDrag);
-        container.addEventListener('touchmove', drag);
-        container.addEventListener('touchend', endDrag);
+        // container.addEventListener('touchstart', startDrag, { passive: true });
+        // container.addEventListener('touchmove', drag, { passive: true });
+        // container.addEventListener('touchend', endDrag);
 
         // Set initial cursor state
         container.classList.add('cursor-grab');
@@ -164,6 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.addEventListener('livewire:update', () => {
+        console.log('update')
         document.querySelectorAll('.ribbon-container').forEach(container => {
             initializeScroll(container);
         });
