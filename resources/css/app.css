@@ -204,29 +204,6 @@
     background: #4a4a4a;
 }
 
-.ribbon-container {
-    cursor: grab;
-    scroll-behavior: smooth; 
-    
-    scroll-snap-type: x mandatory; 
-  }
-  
-  .ribbon-container.cursor-grabbing {
-    cursor: grabbing;
-  }
-/*   
-  .ribbon-container button {
-    pointer-events: auto; 
-  } */
-
-  .ribbon-container {
-    pointer-events: auto; /* Ensure it's interactable */
-}
-  
-  /* .ribbon-container > * {
-    scroll-snap-align: start;
-  } */
-
 /* .draggable-ribbon {
     cursor: grab;
 }

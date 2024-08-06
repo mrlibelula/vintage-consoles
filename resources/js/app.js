@@ -87,23 +87,32 @@ document.addEventListener('DOMContentLoaded', function () {
         let startX, scrollLeft;
         let dragThreshold = 5; // Adjust as needed to control sensitivity
         let dragDistance = 0;
-        let isTouching = false;
+        let touchStartX = 0;
 
         function startDrag(e) {
             e.preventDefault();
             isDragging = true;
-            isTouching = e.type === 'touchstart'; // Check if touch event
             dragDistance = 0;
             container.classList.add('cursor-grabbing');
             container.classList.remove('cursor-grab');
-            startX = isTouching ? e.touches[0].pageX - container.offsetLeft : e.pageX - container.offsetLeft;
+            if (e.type === 'touchstart') {
+                touchStartX = e.touches[0].pageX;
+                startX = touchStartX - container.offsetLeft;
+            } else {
+                startX = e.pageX - container.offsetLeft;
+            }
             scrollLeft = container.scrollLeft;
         }
 
         function drag(e) {
             if (!isDragging) return;
             e.preventDefault();
-            const x = isTouching ? e.touches[0].pageX - container.offsetLeft : e.pageX - container.offsetLeft;
+            let x;
+            if (e.type === 'touchmove') {
+                x = e.touches[0].pageX - container.offsetLeft;
+            } else {
+                x = e.pageX - container.offsetLeft;
+            }
             const walk = (x - startX) * 2; // Scroll speed multiplier
             dragDistance = Math.abs(x - startX); // Track drag distance
 
@@ -112,16 +121,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        function endDrag() {
+        function endDrag(e) {
             isDragging = false;
             container.classList.add('cursor-grab');
             container.classList.remove('cursor-grabbing');
-        }
 
-        function handleClick(e) {
-            if (dragDistance > dragThreshold) {
-                e.preventDefault(); // Prevent click if drag threshold is exceeded
-            } else {
+            // If dragging distance is below the threshold, handle click
+            if (dragDistance <= dragThreshold) {
                 const target = e.target.closest('[data-url]');
                 if (target) {
                     // Navigate to the URL
@@ -130,14 +136,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // Desktop event listeners
+        // Event listeners for desktop
         container.addEventListener('mousedown', startDrag);
         container.addEventListener('mousemove', drag);
         container.addEventListener('mouseup', endDrag);
         container.addEventListener('mouseleave', endDrag);
-        container.addEventListener('click', handleClick);
 
-        // Mobile event listeners
+        // Event listeners for mobile
         container.addEventListener('touchstart', startDrag);
         container.addEventListener('touchmove', drag);
         container.addEventListener('touchend', endDrag);
@@ -146,6 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
         container.classList.add('cursor-grab');
     }
 
+    // Initialize scroll functionality on page load
     document.querySelectorAll('.ribbon-container').forEach(container => {
         initializeScroll(container);
     });
