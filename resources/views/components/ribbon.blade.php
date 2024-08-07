@@ -53,7 +53,6 @@
         "https://e1.pxfuel.com/desktop-wallpaper/519/336/desktop-wallpaper-98-game-all-game.jpg",
         "https://c4.wallpaperflare.com/wallpaper/502/710/388/8-bit-super-mario-minimalism-video-games-wallpaper-preview.jpg",
         "https://wallpapers.com/images/hd/hd-pacman-qtm4064qk559tkc7.jpg",
-        "https://www.giantbomb.com/a/uploads/square_small/1/17172/1677778-troopas.png",
         "https://wallpapercrafter.com/desktop/100935-pixel-art-8-bit-Aqua-Teen-Hunger-Force-blue-dots-humor.png",
         "https://c4.wallpaperflare.com/wallpaper/25/7/700/pixel-art-pixels-super-mario-kart-wallpaper-preview.jpg",
         "https://wallpaper.forfun.com/fetch/61/61c5d7a4c561c7a363421e1877018e62.jpeg",
