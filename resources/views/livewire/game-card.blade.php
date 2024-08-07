@@ -55,7 +55,8 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 157px;
+            /* height: 157px; */
+            height: 177px;
             background-size: cover;
             background-position: center bottom;
             background-repeat: no-repeat;
@@ -194,7 +195,7 @@
             transform: scale(0);
         }
     </style>
-    <div class="group relative containerCards rounded-xl overflow-hidden border-4 border-cod-gray-300 dark:border-cod-gray-800 bg-cod-gray-200/70 dark:bg-cod-gray-900/80 h-full">
+    <div class="group relative containerCards rounded-xl overflow-hidden bg-cod-gray-200/80 dark:bg-cod-gray-900/90 h-full">
         <div class="card h-full">
             @isset($game['console_short_name'])
             <div class="absolute z-20 text-center w-full dark:bg-cod-gray-800 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400 dark:opacity-80">
@@ -203,10 +204,13 @@
             @endisset
             <div class="wrapper overflow-hidden h-full justify-between">
                 <!-- Placeholder for the box background -->
-                <div class="colorProd lazy-load-bg" 
+                <div class="colorProd relative lazy-load-bg" 
                     data-bg-url="{{ $game['box'] }}" 
                     style="background-image: url({{ asset('images/placeholder-wide-dark.jpg') }});"
                 >
+                </div>
+                <div class=" absolute top-0 w-full h-[177px] bg-gradient-to-b from-transparent/30 via-transparent/50 to-cod-gray-200 dark:from-transparent/30 dark:via-transparent/50 dark:to-cod-gray-900">
+                    &nbsp;
                 </div>
                 <!-- Placeholder for the poster background -->
                 <div class="imgProd flex items-center justify-center lazy-load-bg" 

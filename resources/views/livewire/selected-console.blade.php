@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-y-6 w-full bg-cod-gray-600/20_ bg-[#3f3f3f]_ bg-cod-gray-50 dark:bg-black/80 p-0 lg:p-2  
+<div class="flex flex-col gap-y-6 w-full bg-cod-gray-600/20_ bg-[#3f3f3f]_ bg-cod-gray-50 dark:bg-black/50 p-0 lg:p-2  
     {{ $is_selected_tab_first ? 'rounded-b-xl rounded-tr-xl' : ($is_selected_tab_last ? 'rounded-b-xl rounded-tl-xl' : 'rounded-xl') }} 
 ">
     <div class="flex flex-col-reverse xl:flex-row items-start justify-between gap-x-10 w-full">
@@ -140,7 +140,7 @@
                 </div>
                 
                 <!-- right panel -->
-                <div class="w-full xl:w-[30%] flex flex-col gap-y-4 items-start justify-start shadow-md shadow-cod-gray-400 dark:shadow-black border-[3.5px] border-cod-gray-200 dark:border-cod-gray-900 rounded-xl p-6 bg-cod-gray-100 dark:bg-cod-gray-950">
+                <div class="w-full xl:w-[30%] flex flex-col gap-y-4 items-start justify-start shadow-md shadow-cod-gray-400 dark:shadow-black border-[3.5px] border-cod-gray-200 dark:border-cod-gray-900 rounded-xl p-6 bg-cod-gray-100 dark:bg-cod-gray-900/60">
                     <div class="flex items-center justify-center w-full hover:scale-[1.4] xl:scale-[1.7] xl:hover:scale-[1.8] xl:hover:-translate-y-2 smooth-300">
                         <img class="my-6 w-full" src="{{ $selected_console['console_icon'] }}" alt="{{ $selected_console['short_name'] }}">
                     </div>
