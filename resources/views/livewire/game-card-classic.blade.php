@@ -1,4 +1,4 @@
-<button class="lazy-load-bg group rounded-lg overflow-hidden bg-center bg-cover bg-no-repeat border-[3px] shadow-md shadow-cod-gray-500 dark:shadow-black  border-cod-gray-500 dark:border-cod-gray-700 opacity-75 hover:brightness-110 hover:opacity-100 smooth-300 cursor-pointer" 
+<button class="lazy-load-bg group rounded-lg overflow-hidden bg-center bg-cover bg-no-repeat border-[3px] shadow-md shadow-cod-gray-500 dark:shadow-black  border-cod-gray-500 dark:border-cod-gray-700 opacity-75 hover:opacity-100 smooth-300 cursor-pointer" 
     data-bg-url="{{ $game['poster'] }}" 
     style="background-image: url({{ asset('images/placeholder-poster-homer.jpg') }});"
 >
