@@ -40,7 +40,7 @@
                 {{-- @click="loader = true"  --}}
                 @click="$dispatch('loader-top-on')" 
                 wire:navigate href="{{ '/' . $console['short_name'] }}"
-                class="z-40 group flex cursor-pointer {{ $selected_console_id !== $console['id'] ? '' : 'bg-cod-gray-600/20_ bg-cod-gray-50 dark:bg-black/50 rounded-t-lg md:rounded-t-xl' }} px-4 py-2 xl:py-6 items-center justify-center w-full text-xl md:text-2xl overflow-hidden"
+                class="z-40 group flex cursor-pointer {{ $selected_console_id !== $console['id'] ? '' : 'bg-cod-gray-600/20_ bg-white/50 dark:bg-black/50 rounded-t-lg md:rounded-t-xl' }} px-4 py-2 xl:py-6 items-center justify-center w-full text-xl md:text-2xl overflow-hidden"
             >
                 <div class="flex flex-col gap-y-4 sm:gap-y-0 justify-between items-center text-center h-full w-full">
                     <img class="hidden xl:block h-[2.8rem] {{ $selected_console_id !== $console['id'] ? 'grayscale' : '' }} group-hover:grayscale-0 smooth-500" src="{{ $console['console_logo'] }}" alt="{{ $console['short_name'] }}">

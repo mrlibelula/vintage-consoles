@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-y-6 w-full bg-cod-gray-600/20_ bg-[#3f3f3f]_ bg-cod-gray-50 dark:bg-black/50 p-0 lg:p-2  
+<div class="flex flex-col gap-y-6 w-full bg-cod-gray-600/20_ bg-[#3f3f3f]_ bg-white/50 dark:bg-black/50 p-0 lg:p-2  
     {{ $is_selected_tab_first ? 'rounded-b-xl rounded-tr-xl' : ($is_selected_tab_last ? 'rounded-b-xl rounded-tl-xl' : 'rounded-xl') }} 
 ">
     <div class="flex flex-col-reverse xl:flex-row items-start justify-between gap-x-10 w-full">
