@@ -1,208 +1,209 @@
-<style>
-    :root {
-        --currencyPrefix: "$";
-    }
-    .contenedorCards {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        align-content: center;
-        box-sizing: border-box;
-    }
-
-    .contenedorCards .card {
-        width: 270px;
-        transition: ease all 0.3s;
-    }
-
-    .contenedorCards .card.esFav .wrapper .infoProd .actions .action.aFavs {
-        transform: rotateX(360deg) scale(1.2);
-    }
-
-    .contenedorCards .card.esFav .wrapper .infoProd .actions .action.aFavs svg path,
-    .contenedorCards .card.esFav .wrapper .infoProd .actions .action.aFavs svg circle {
-        fill: #fff;
-        transition-delay: 0.2s;
-    }
-
-    .contenedorCards .card.enCarrito .wrapper .infoProd .actions .action.alCarrito .inCart {
-        transform: scale(1);
-    }
-
-    .contenedorCards .card.enCarrito .wrapper .infoProd .actions .action.alCarrito .outCart {
-        transform: scale(0);
-    }
-
-    .contenedorCards .card .wrapper {
-        margin: 0px 0px 0px 0px;
-        padding-top: 260px;
-        box-sizing: border-box;
-        position: relative;
-        transition: ease all 0.3s;
-    }
-
-    .contenedorCards .card .wrapper:hover {
-        transform: translateY(-10px);
-    }
-
-    .contenedorCards .card .wrapper:hover .imgProd {
-        height: 165px;
-    }
-
-    .contenedorCards .card .wrapper .colorProd {
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 200px;
-        /* background-color: #b82d44; */
-        background-color: #181818;
-        background-size: cover;
-        background-position: center bottom;
-        background-repeat: no-repeat;
-    }
-
-    .contenedorCards .card .wrapper .imgProd {
-        background-size: contain;
-        background-position: center bottom;
-        background-repeat: no-repeat;
-        position: absolute;
-        bottom: calc(100% - 265px);
-        width: 100%;
-        height: 120px;
-        transition: ease all 0.3s;
-    }
-
-    .contenedorCards .card .wrapper .infoProd {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: center;
-        align-content: center;
-        /* height: 170px; */
-        /* padding: 20px; */
-        box-sizing: border-box;
-    }
-
-    .contenedorCards .card .wrapper .infoProd p {
-        width: 100%;
-        /* font-size: 14px; */
-        text-align: center;
-    }
-
-    .contenedorCards .card .wrapper .infoProd .nombreProd {
-        /* font-family: "Roboto", sans-serif; */
-        /* margin-bottom: 10px; */
-        /* font-size: 16px; */
-        /* font-weight: 600; */
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-    }
-
-    .contenedorCards .card .wrapper .infoProd .extraInfo {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-
-    .contenedorCards .card .wrapper .infoProd .actions {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        align-content: center;
-        width: 100%;
-        margin-top: auto;
-        padding-top: 10px;
-    }
-
-    .contenedorCards .card .wrapper .infoProd .actions .preciosGrupo {
-        flex-grow: 1;
-        position: relative;
-    }
-
-    .contenedorCards .card .wrapper .infoProd .actions .preciosGrupo .precio {
-        /* font-family: "Roboto", sans-serif; */
-        color: #1d1d1d;
-        /* font-size: 25px; */
-        font-weight: 600;
-        text-align: left;
-    }
-
-    .contenedorCards .card .wrapper .infoProd .actions .preciosGrupo .precio.precioOferta {
-        position: absolute;
-        left: 0;
-        top: -15px;
-        color: red;
-        /* font-size: 15px; */
-        text-decoration: line-through;
-    }
-
-    .contenedorCards .card .wrapper .infoProd .actions .preciosGrupo .precio.precioOferta:before {
-        /* font-size: 12px; */
-    }
-
-    .contenedorCards .card .wrapper .infoProd .actions .preciosGrupo .precio:before {
-        content: var(--currencyPrefix);
-        /* font-size: 20px; */
-    }
-
-    .contenedorCards .card .wrapper .infoProd .actions .action {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        align-content: center;
-        margin-left: 15px;
-        width: 35px;
-        height: 35px;
-        position: relative;
-        transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) all 0.3s;
-        cursor: pointer;
-        color: #1d1d1d;
-    }
-
-    .contenedorCards .card .wrapper .infoProd .actions .action svg {
-        position: absolute;
-        transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) all 0.3s;
-    }
-
-    .contenedorCards .card .wrapper .infoProd .actions .action svg path,
-    .contenedorCards .card .wrapper .infoProd .actions .action svg circle {
-        stroke: currentColor;
-        fill: transparent;
-        transition: ease all 0.3s;
-    }
-
-    .contenedorCards .card .wrapper .infoProd .actions .action.aFavs {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        z-index: 1;
-        width: 25px;
-        height: 25px;
-        color: #fff;
-    }
-
-    .contenedorCards .card .wrapper .infoProd .actions .action.alCarrito svg.inCart {
-        transform: scale(0);
-    }
-</style>
-<div class="h-full flex items-start justify-start">
-    <div class="group contenedorCards rounded-xl overflow-hidden border-4 border-cod-gray-300 dark:border-cod-gray-800 shadow-md shadow-cod-gray-500 dark:shadow-black bg-gradient-to-b from-white via-white to-cod-gray-600 dark:from-black dark:via-black dark:to-cod-gray-800 h-full">
+<div class="h-full_ h-[17rem] flex items-start justify-start py-4">
+    <style>
+        .containerCards {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            align-content: center;
+            box-sizing: border-box;
+        }
+    
+        .containerCards .card {
+            width: 230px;
+            transition: ease all 0.3s;
+        }
+    
+        .containerCards .card.esFav .wrapper .infoProd .actions .action.aFavs {
+            transform: rotateX(360deg) scale(1.2);
+        }
+    
+        .containerCards .card.esFav .wrapper .infoProd .actions .action.aFavs svg path,
+        .containerCards .card.esFav .wrapper .infoProd .actions .action.aFavs svg circle {
+            fill: #fff;
+            transition-delay: 0.2s;
+        }
+    
+        .containerCards .card.enCarrito .wrapper .infoProd .actions .action.alCarrito .inCart {
+            transform: scale(1);
+        }
+    
+        .containerCards .card.enCarrito .wrapper .infoProd .actions .action.alCarrito .outCart {
+            transform: scale(0);
+        }
+    
+        .containerCards .card .wrapper {
+            margin: 0px 0px 0px 0px;
+            padding-top: 260px;
+            box-sizing: border-box;
+            position: relative;
+            transition: ease all 0.3s;
+        }
+    
+        .containerCards .card .wrapper:hover {
+            transform: translateY(-10px);
+        }
+    
+        .containerCards .card .wrapper:hover .imgProd {
+            height: 165px;
+        }
+    
+        .containerCards .card .wrapper .colorProd {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 157px;
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            border-radius: 0px;
+        }
+    
+        .containerCards .card .wrapper .imgProd {
+            background-size: contain;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            position: absolute;
+            bottom: calc(100% - 225px);
+            width: 100%;
+            height: 100px;
+            transition: ease all 0.3s;
+        }
+    
+        .containerCards .card .wrapper .infoProd {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+            align-content: center;
+            /* height: 170px; */
+            /* padding: 20px; */
+            box-sizing: border-box;
+        }
+    
+        .containerCards .card .wrapper .infoProd p {
+            width: 100%;
+            /* font-size: 14px; */
+            text-align: center;
+        }
+    
+        .containerCards .card .wrapper .infoProd .nombreProd {
+            /* font-family: "Roboto", sans-serif; */
+            /* margin-bottom: 10px; */
+            /* font-size: 16px; */
+            /* font-weight: 600; */
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+        }
+    
+        .containerCards .card .wrapper .infoProd .extraInfo {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    
+        .containerCards .card .wrapper .infoProd .actions {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            align-content: center;
+            width: 100%;
+            margin-top: auto;
+            padding-top: 10px;
+        }
+    
+        .containerCards .card .wrapper .infoProd .actions .preciosGrupo {
+            flex-grow: 1;
+            position: relative;
+        }
+    
+        .containerCards .card .wrapper .infoProd .actions .preciosGrupo .precio {
+            /* font-family: "Roboto", sans-serif; */
+            color: #1d1d1d;
+            /* font-size: 25px; */
+            font-weight: 600;
+            text-align: left;
+        }
+    
+        .containerCards .card .wrapper .infoProd .actions .preciosGrupo .precio.precioOferta {
+            position: absolute;
+            left: 0;
+            top: -15px;
+            color: red;
+            /* font-size: 15px; */
+            text-decoration: line-through;
+        }
+    
+        .containerCards .card .wrapper .infoProd .actions .preciosGrupo .precio.precioOferta:before {
+            /* font-size: 12px; */
+        }
+    
+        .containerCards .card .wrapper .infoProd .actions .preciosGrupo .precio:before {
+            content: var(--currencyPrefix);
+            /* font-size: 20px; */
+        }
+    
+        .containerCards .card .wrapper .infoProd .actions .action {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            align-content: center;
+            margin-left: 15px;
+            width: 35px;
+            height: 35px;
+            position: relative;
+            transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) all 0.3s;
+            cursor: pointer;
+            color: #1d1d1d;
+        }
+    
+        .containerCards .card .wrapper .infoProd .actions .action svg {
+            position: absolute;
+            transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) all 0.3s;
+        }
+    
+        .containerCards .card .wrapper .infoProd .actions .action svg path,
+        .containerCards .card .wrapper .infoProd .actions .action svg circle {
+            stroke: currentColor;
+            fill: transparent;
+            transition: ease all 0.3s;
+        }
+    
+        .containerCards .card .wrapper .infoProd .actions .action.aFavs {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1;
+            width: 25px;
+            height: 25px;
+            color: #fff;
+        }
+    
+        .containerCards .card .wrapper .infoProd .actions .action.alCarrito svg.inCart {
+            transform: scale(0);
+        }
+    </style>
+    <div class="group relative containerCards rounded-xl overflow-hidden border-4 border-cod-gray-300 dark:border-cod-gray-800 bg-cod-gray-200/70 dark:bg-cod-gray-900/80 h-full">
         <div class="card h-full">
-            <div class="wrapper rounded-md overflow-hidden h-full justify-between">
+            @isset($game['console_short_name'])
+            <div class="absolute z-20 text-center w-full dark:bg-cod-gray-800 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400 dark:opacity-80">
+                {{ $game['console_short_name'] === 'atari2600' ? 'Atari 2600' : $game['console_short_name'] }}
+            </div>
+            @endisset
+            <div class="wrapper overflow-hidden h-full justify-between">
                 <!-- Placeholder for the box background -->
-                <div class="colorProd rounded-md lazy-load-bg" 
+                <div class="colorProd lazy-load-bg" 
                     data-bg-url="{{ $game['box'] }}" 
                     style="background-image: url({{ asset('images/placeholder-wide-dark.jpg') }});"
                 >
@@ -213,14 +214,10 @@
                     style="background-image: url({{ asset('images/placeholder-poster-homer.jpg') }});">
                 </div>
                 <div class="infoProd_ flex flex-col justify-between text-center h-full">
-                    <p class="mt-6 mb-4 px-6 leading-none text-xl text-cod-gray-800 group-hover:text-cod-gray-900 dark:text-cod-gray-300 dark:group-hover:text-cod-gray-100 smooth-300">
-                        {{ $game['title'] }}
+                    <p class="-mt-4 px-6 leading-none text-xl text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
+                        {{ Str::limit($game['title'], 25) }}
                     </p>
-                    @isset($game['console_short_name'])
-                    <div class="dark:bg-cod-gray-800 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400 dark:opacity-80">
-                        {{ $game['console_short_name'] }}
-                    </div>
-                    @endisset
+                    
                 </div>
             </div>
         </div>

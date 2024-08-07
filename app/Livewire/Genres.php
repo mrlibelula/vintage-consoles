@@ -13,14 +13,14 @@ class Genres extends Component
     public string $genre_name;
     public array $genres = [];
     public array $filtered_games = [];
-    public string $ob = 'group';
+    public string $ob = 'squares';
 
     public function mount(string $genre_name = '', Request $request)
     {
         if ($request->has('ob')) {
             $this->ob = $request->query('ob');
         } else {
-            $this->ob = Session::has('ob') ? Session::get('ob') : 'group';
+            $this->ob = Session::has('ob') ? Session::get('ob') : 'squares';
         }
         Session::put('ob', $this->ob);
 
@@ -85,7 +85,7 @@ class Genres extends Component
     {
         if (Session::exists('ob')) {
             $ob = Session::get('ob');
-            $this->ob = $ob === 'lista' ? 'group' : $ob;
+            $this->ob = $ob === 'lista' ? 'squares' : $ob;
         }
         return view('livewire.genres');
     }

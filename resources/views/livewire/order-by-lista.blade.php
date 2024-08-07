@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-y-4 mt-4">
+<div class="flex flex-col gap-y-4 py-8">
     @foreach ($games as $game)
     <a wire:navigate href="{{ $this->gameRoute($game) }}" class="group flex items-center text-left justify-start gap-x-4 lg:gap-x-6 cursor-pointer rounded-md dark:hover:bg-cod-gray-800/60 hover:shadow-md shadow-cod-gray-300 dark:shadow-black smooth-300">
         <!-- game poster -->

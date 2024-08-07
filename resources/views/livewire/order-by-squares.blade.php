@@ -1,9 +1,14 @@
 <div class="overflow-x-auto">
-    <x-ribbon>
+    <x-ribbon ob="squares">
         @foreach ($selected_console['games'] as $game)
-        <div class="h-[12rem] flex my-2 justify-center w-full lazy-load-container mr-4" data-loaded="false" data-url="{{ $this->gameRoute($game) }}">
-            <livewire:game-card-classic :game="$game" :key="$game['id']" />
-        </div>
+        <swiper-slide>
+            <a href="{{ $this->gameRoute($game) }}"
+                class="h-[12rem] flex my-2 justify-center w-full lazy-load-container" 
+                data-loaded="false" 
+            >
+                <livewire:game-card-classic :game="$game" :key="$game['id']" />
+            </a>
+        </swiper-slide>
         @endforeach
     </x-ribbon>
 

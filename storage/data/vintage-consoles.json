@@ -672,7 +672,7 @@
                     "save_state_support": true,
                     "rom": "Legend of Zelda, The - A Link to the Past (E) [!].7z",
                     "box": "https://64.media.tumblr.com/2d844874c8230b91070afcdbc1403143/tumblr_nu3zivpR0I1qd4q8ao1_500.gif",
-                    "poster": "https://i.etsystatic.com/8078437/r/il/72da3a/2906968650/il_fullxfull.2906968650_motj.jpg",
+                    "poster": "https://preview.redd.it/alttp-i-found-this-image-online-and-wanted-to-use-it-as-my-v0-l6uwd8pivg4b1.png?auto=webp&s=1dee1b85a6f0851ee4075f60ddc80eaf24b2d803",
                     "cartridge": "https://i.ebayimg.com/images/g/yIoAAOSwU3dhCKv4/s-l1600.jpg",
                     "screenshots": [
                         "https://i.pinimg.com/originals/78/a3/0f/78a30f90ee24311e239e543fd7dd6498.png",
@@ -721,7 +721,7 @@
                     "save_state_support": true,
                     "rom": "Pilotwings (USA).zip",
                     "box": "https://i.makeagif.com/media/12-24-2015/k_5ndH.gif",
-                    "poster": "https://bitz-buttons.com/cdn/shop/products/image_c243b213-fbf2-437b-9ce1-90f31f49bf92_436x436.jpg?v=1579739901",
+                    "poster": "/images/games/pilotwings-poster.png",
                     "cartridge": "https://images.launchbox-app.com/2e24fc8b-afb0-478c-b813-ef7f1b9a4e78.png",
                     "screenshots": [
                         "https://cdn.mobygames.com/screenshots/2224512-pilotwings-snes-light-plane-part-3-landing-landing-in-the-middle.png",
@@ -809,7 +809,7 @@
                     "save_state_support": true,
                     "rom": "Super Tennis.7z",
                     "box": "https://64.media.tumblr.com/701410bbf85bc438f044e96567264a93/tumblr_nw31m0EXM71qfan9lo1_500.gif",
-                    "poster": "https://gamefaqs.gamespot.com/a/box/3/7/3/51373_front.jpg",
+                    "poster": "/images/games/super-tennis-poster.png",
                     "cartridge": "https://cdn.shopify.com/s/files/1/1592/0809/products/3270_599f2f39f0f2a7.20276864_SNES_20-_20Super_20Tennis_large_7bb68e88-6b65-4fe5-a013-49162ee00d49.jpg?v=1710610972",
                     "screenshots": [
                         "https://cdn.mobygames.com/screenshots/999537-super-tennis-snes-two-girls-are-playing-on-a-lawn.png",
@@ -846,7 +846,7 @@
                     "save_state_support": true,
                     "rom": "Street Fighter II - The World Warrior (U) [h1].7z",
                     "box": "https://media.tenor.com/CFnEVWnfRJ4AAAAd/street-fighter2-chunli.gif",
-                    "poster": "https://i.ebayimg.com/images/g/eL0AAOSwov5c8esp/s-l1600.jpg",
+                    "poster": "/images/games/street-fighter-ii-poster.png",
                     "cartridge": "https://i0.wp.com/crebbatech.com/wp-content/uploads/2022/04/cart.png?fit=3433%2C2250&ssl=1",
                     "screenshots": [
                         "https://i.pinimg.com/originals/64/76/61/647661b975b4a3908a1953c52d2d5252.jpg",
@@ -986,7 +986,7 @@
                     "save_state_support": true,
                     "rom": "pacman.zip",
                     "box": "https://i.pinimg.com/originals/15/ce/b5/15ceb576be59fda3d7878cae4b04396b.gif",
-                    "poster": "https://i.ebayimg.com/images/g/68MAAOSwRr5ZrVAi/s-l1600.jpg",
+                    "poster": "https://cdn.europosters.eu/image/750/telas-pac-man-vintage-i102935.jpg",
                     "cartridge": "",
                     "screenshots": [
                         "https://www.researchgate.net/profile/Petter-Ogland/publication/326319846/figure/fig1/AS:647164153827336@1531307366681/Detail-from-a-Pac-Man-screenshot.png",
@@ -1093,7 +1093,7 @@
                     "save_state_support": true,
                     "rom": "toki.zip",
                     "box": "https://www.cinepremiere.com.mx/wp-content/uploads/2019/02/tokiold.gif",
-                    "poster": "https://cdn11.bigcommerce.com/s-60z4za/images/stencil/1280x1280/products/167/859/tokisa__87396.1691070403.jpg?c=2",
+                    "poster": "https://www.giantbomb.com/a/uploads/scale_small/7/73970/3159561-toki_ami_1_1.jpg",
                     "cartridge": "",
                     "screenshots": [
                         "https://media.retroachievements.org/Images/035637.png",
@@ -1204,7 +1204,7 @@
                     "save_state_support": true,
                     "rom": "ddragonu.zip",
                     "box": "https://media.tenor.com/IwAHG_1VZGsAAAAd/double-dragon-game.gif",
-                    "poster": "https://m.media-amazon.com/images/M/MV5BMzQ5ZDQ0NjgtMzMwMi00MDZkLWJiYzQtOTQ1MWU1YzFmZWUzXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_.jpg",
+                    "poster": "/images/games/ddragon-poster.png",
                     "cartridge": "",
                     "screenshots": [
                         "https://cdn.mobygames.com/screenshots/16418099-double-dragon-arcade-4-enemies-big-troubles.png",
@@ -1300,7 +1300,7 @@
                     "save_state_support": true,
                     "rom": "kungfum.zip",
                     "box": "https://i.makeagif.com/media/8-17-2016/pY3OHY.gif",
-                    "poster": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/6cbcca68-db09-48b9-a2ce-afb57ace8540/dc2ov9g-9d8c51b9-9ca5-4f38-ab9b-26e89f32fb2d.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzZjYmNjYTY4LWRiMDktNDhiOS1hMmNlLWFmYjU3YWNlODU0MFwvZGMyb3Y5Zy05ZDhjNTFiOS05Y2E1LTRmMzgtYWI5Yi0yNmU4OWYzMmZiMmQuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.w8SkrYUvWFgVbWiKHeH4tFr-2Tb5F-bHpmo0NmOFZYo",
+                    "poster": "/images/games/kung-fu-master-poster.jpg",
                     "cartridge": "",
                     "screenshots": [
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3JzelQyCFBD4QNLU9zll7mUBoMWXpYAUUx8jazOMghMfos5NbMXdsejL6r2JKox5Ao80&usqp=CAU",
@@ -1769,7 +1769,7 @@
                     "save_state_support": true,
                     "rom": "Popeye.bin",
                     "box": "https://www.skunkworx.org/goa/games/p/popeye/atari-2600/screenshots/screen1.gif",
-                    "poster": "https://www.atarimania.com/2600/boxes/hi_res/popeye_standard_cart_2.jpg",
+                    "poster": "https://cdn.mall.adeptmind.ai/https%3A%2F%2Fmedia.vintagestock.com%2Fmedia%2Fproducts%2Fgame%2Fatari-2600%2F4966--popeye_NirDs0c.png_large.webp",
                     "cartridge": "https://midlifegamergeek.com/wp-content/uploads/2024/04/4966-popeye5854774916029616876.png",
                     "screenshots": [
                         "https://atariage.com/2600/screenshots/s_Popeye_1.png",
@@ -2036,8 +2036,8 @@
                     "save_state_support": true,
                     "rom": "Centiped.bin",
                     "box": "https://www.gymlibrary.dev/_images/centipede.gif",
-                    "poster": "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/016f09153264603.632c5fc54285b.jpg",
-                    "cartridge": "https://now.estarland.com/images/products/72/27272/AT2600-Centipede-large-image.jpg",
+                    "poster": "https://now.estarland.com/images/products/72/27272/AT2600-Centipede-large-image.jpg",
+                    "cartridge": "https://m.media-amazon.com/images/I/81Pl9JgjU-L._AC_UF894,1000_QL80_.jpg",
                     "screenshots": [
                         "https://atariage.com/2600/screenshots/s_Centipede_2.png",
                         "https://atariage.com/2600/screenshots/s_Centipede_1.png"
@@ -2140,7 +2140,7 @@
                     "save_state_support": true,
                     "rom": "https://libe.dev/bundles/prince.jsdos",
                     "box": "https://upload.wikimedia.org/wikipedia/commons/2/28/Prince_of_Persia_1_-_MS-DOS_-_Gameplay_-_Potion.gif",
-                    "poster": "https://i.pinimg.com/originals/e8/23/b1/e823b1a0423d6f163c9cb97b4d951969.jpg",
+                    "poster": "https://www.dosdays.co.uk/media/games/prince/_cover.jpg",
                     "cartridge": "https://static1.squarespace.com/static/54ff650ae4b0fe7485c80e63/55019f0ae4b03037fd15b908/61d2df1fba06661d78c1db0e/1641210578215/Pop_02.jpg?format=1500w",
                     "screenshots": [
                         "https://upload.wikimedia.org/wikipedia/commons/0/06/Prince_of_Persia_1_-_MS-DOS_-_Level_3.png",
@@ -2179,7 +2179,7 @@
                     "save_state_support": true,
                     "rom": "https://libe.dev/bundles/tapper.jsdos",
                     "box": "https://archive.org/serve/msdos_Tapper_1983/Tapper_1983_screenshot.gif",
-                    "poster": "https://cdn.mobygames.com/covers/4042308-tapper-commodore-64-front-cover.jpg",
+                    "poster": "/images/games/tapper-poster.jpg",
                     "cartridge": "https://www.picclickimg.com/2pQAAOSwwrpjOO61/Apple-II-TAPPER-1984-Sega-Game-by-Bally.webp",
                     "screenshots": [
                         "https://archive.org/download/tapper_dos/tapper_dos.gif",
@@ -2261,7 +2261,7 @@
                     "save_state_support": true,
                     "rom": "https://libe.dev/bundles/wolf3d.jsdos",
                     "box": "https://media0.giphy.com/media/3o85xyFuIzQQ2NmIBW/giphy.gif",
-                    "poster": "https://upload.wikimedia.org/wikipedia/en/0/05/Wolfenstein-3d.jpg",
+                    "poster": "https://archive.org/serve/WOLF3D-MS-DOS/MV5BMmM1MjQyNDAtOWI1Yi00MzdhLWIxNDMtOTdiMGZhZDA4ZmU4L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
                     "cartridge": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqw1xIQ4WC8U6itq_GMk_kffMahKnhCI4x63XGwvQIiquT_ZdMS-l_Z5ijiO5bJa4aTY4&usqp=CAU",
                     "screenshots": [
                         "https://cdn.mobygames.com/screenshots/3089571-wolfenstein-3d-dos-episode-5.png",
@@ -2357,7 +2357,7 @@
                     "save_state_support": true,
                     "rom": "https://libe.dev/bundles/cat.jsdos",
                     "box": "https://i.makeagif.com/media/3-31-2017/CBy-2T.gif",
-                    "poster": "https://www.giantbomb.com/a/uploads/scale_small/7/73970/2754200-alley_cat_c64_1_1.jpg",
+                    "poster": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co7u78.jpg",
                     "cartridge": "https://www.oldgames.sk/images/oldgames/action/Alley.Cat/Covers/alley-cat-pc-booter-media.jpg",
                     "screenshots": [
                         "https://www.myabandonware.com/media/screenshots/a/alley-cat-1q/alley-cat_9.gif",

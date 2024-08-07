@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-y-6 w-full bg-cod-gray-600/20 p-0 lg:p-2  
+<div class="flex flex-col gap-y-6 w-full bg-cod-gray-600/20_ bg-[#3f3f3f]_ bg-cod-gray-50 dark:bg-black/80 p-0 lg:p-2  
     {{ $is_selected_tab_first ? 'rounded-b-xl rounded-tr-xl' : ($is_selected_tab_last ? 'rounded-b-xl rounded-tl-xl' : 'rounded-xl') }} 
 ">
     <div class="flex flex-col-reverse xl:flex-row items-start justify-between gap-x-10 w-full">
@@ -35,24 +35,26 @@
 
                     <!-- skeleton group -->
                     <template x-if="skeletonGroup">
-                        <x-ribbon>
-                            <x-skeleton-group :count="20" />
-                        </x-ribbon>
+                        <div class="p-4 mb-[1rem]">
+                            <x-skeleton-group :count="3" />
+                        </div>
                     </template>
                     
                     <!-- skeleton square -->
                     <template x-if="skeletonSquare">                        
-                        <x-ribbon>
-                            <x-skeleton-square :count="20" />
-                        </x-ribbon>
+                        <div class="px-4 mb-10">
+                            <x-skeleton-square :count="3" />
+                        </div>
                     </template>
                     
                     <!-- skeleton lista -->
                     <template x-if="skeletonLista">
-                        <x-skeleton-lista  />
+                        <div class="py-4 mb-[0.9rem]">
+                            <x-skeleton-lista  />
+                        </div>
                     </template>
 
-                    <div :class="{ 'hidden': skeletonGroup || skeletonSquare || skeletonLista }">
+                    <div :class="{ 'hidden': skeletonGroup || skeletonSquare || skeletonLista }" class="py-4">
                         @if ($ob === 'group')
                         <livewire:order-by-group :selected_console="$selected_console" :key="uniqid()" />
                         @elseif ($ob === 'squares')
@@ -72,7 +74,7 @@
                         wire:click="toggleAccordion('specs_accordion')"
                         :toggler="$specs_accordion"
                     >
-                        <x-slot name="title">Specifications</x-slot>
+                        <x-slot name="title">Console Specifications</x-slot>
                         <div class="-mt-6">
                             <div class="w-full dark:text-cod-gray-100 leading-normal uppercase">
                                 CPU
@@ -138,8 +140,8 @@
                 </div>
                 
                 <!-- right panel -->
-                <div class="w-full xl:w-[30%] flex flex-col gap-y-4 items-start justify-start shadow-md shadow-cod-gray-400 dark:shadow-black border border-cod-gray-400 dark:border-cod-gray-900 bg-gradient-to-tr from-cod-gray-400/20 via-cod-gray-300/50 to-cod-gray-100 dark:from-cod-gray-800 dark:via-cod-gray-700/30 dark:to-cod-gray-600/80 rounded-md p-5">
-                    <div class="flex items-center justify-center w-full xl:scale-[1.35] xl:hover:scale-[1.45] xl:hover:-translate-y-2 smooth-300">
+                <div class="w-full xl:w-[30%] flex flex-col gap-y-4 items-start justify-start shadow-md shadow-cod-gray-400 dark:shadow-black border-[3.5px] border-cod-gray-200 dark:border-cod-gray-900 rounded-xl p-6 bg-cod-gray-100 dark:bg-cod-gray-950">
+                    <div class="flex items-center justify-center w-full hover:scale-[1.4] xl:scale-[1.7] xl:hover:scale-[1.8] xl:hover:-translate-y-2 smooth-300">
                         <img class="my-6 w-full" src="{{ $selected_console['console_icon'] }}" alt="{{ $selected_console['short_name'] }}">
                     </div>
 

@@ -25,7 +25,7 @@
         <!-- Iconset -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/icon.min.css" integrity="sha256-KyXPF3/VOPPst/NQOzCWr97QMfSfzJLyFT0o5lYJXiQ=" crossorigin="anonymous" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
-        
+
         <!-- favicon -->
         <link rel="icon" type="image/png" href="{{ asset('images/games/nes.png') }}">
 
@@ -45,7 +45,7 @@
         @livewireStyles
     </head>
     <body>  
-        <div class="isolate antialiased cursor-default text-2xl text-cod-gray-700 dark:text-cod-gray-200 bg-cod-gray-200 dark:bg-cod-gray-900">
+        <div class="isolate antialiased cursor-default text-2xl text-cod-gray-700 dark:text-cod-gray-600 bg-cod-gray-200 dark:bg-cod-gray-950/95 ">
             
             <!-- bg shadow -->
             {{-- <div class="absolute h-full inset-x-0 -z-10 transform-gpu overflow-hidden blur-3xl">

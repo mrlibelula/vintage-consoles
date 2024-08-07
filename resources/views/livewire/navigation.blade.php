@@ -6,8 +6,8 @@
     @loader-top-off.window="loaderTop = false"
     @loader-top-on.window="loaderTop = true"
     @loader-top-toggle.window="loaderTop = !loaderTop"
-    class="fixed w-full top-0 z-[65]"
-    :class="!darkMode ? 'fade-nav-light' : 'fade-nav'"
+    class="fixed w-full top-0 z-[65] bg-cod-gray-200 dark:bg-cod-gray-900"
+    {{-- :class="!darkMode ? 'fade-nav-light' : 'fade-nav'" --}}
 >
     <!-- loader-top -->
     <template x-cloak x-if="loaderTop">

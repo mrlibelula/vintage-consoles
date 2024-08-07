@@ -16,7 +16,7 @@ class Dashboard extends Component
     public int $selected_console_id = 0;
     public bool $show_hero = false;
     public string $hero_image;
-    public string $ob = 'group';
+    public string $ob = 'squares';
     public array $console_tabs = [
         'nes' => true,
         'snes' => false,
@@ -121,7 +121,7 @@ class Dashboard extends Component
         if ($request->has('ob')) {
             $this->ob = $request->query('ob');
         } else {
-            $this->ob = Session::has('ob') ? Session::get('ob') : 'group';
+            $this->ob = Session::has('ob') ? Session::get('ob') : 'squares';
         }
         Session::put('ob', $this->ob);
         

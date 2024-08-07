@@ -25,7 +25,7 @@
                     <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-square-on')" wire:navigate href="/game/publishers/{{ $publisher_name }}?ob=squares" class="btn-small"><x-icons.squares class="{{ $ob === 'squares' ? 'text-gray-200' : '' }}" /></a>
                 </div>
                 <!-- filtered results ribbon -->
-                <x-ribbon 
+                <div 
                     x-data="{ 
                         skeletonSquare: false,
                         skeletonGroup: false,
@@ -39,34 +39,42 @@
                     <div class="flex flex-no-wrap gap-x-4">
                         <!-- skeleton group -->
                         <template x-if="skeletonGroup">
-                            <x-skeleton-group :count="20" />
+                            <x-skeleton-group :count="4" />
                         </template>
                         
                         <!-- skeleton square -->
                         <template x-if="skeletonSquare">                        
-                            <x-skeleton-square :count="20" />
+                            <x-skeleton-square :count="4" />
                         </template>
 
-                        @foreach ($filtered_games as $game)
-                        <div 
-                            data-url="{{ route('play', [
-                                \App\Service\Tool::encode($game['id']),
-                                $game['console_short_name'], 
-                                $game['title'],
-                            ]) }}"
-                            class="lazy-load-container" data-loaded="false"
-                        >
-                            <div :class="{ 'hidden': skeletonGroup || skeletonSquare }" class=" h-full">
-                                @if ($ob === 'group')
-                                <livewire:game-card :game="$game" :key="$game['id']" :key="uniqid()" />
-                                @elseif($ob === 'squares')
-                                <livewire:game-card-classic :game="$game" :key="$game['id']" class="p-4" :key="uniqid()" />
-                                @endif
-                            </div>
-                        </div>
-                        @endforeach
+                        <x-ribbon :customSlidesPerView="[
+                            'sm' => 2,
+                            'md' => 3,
+                            'xl' => 4,
+                        ]">
+                            @foreach ($filtered_games as $game)
+                            <swiper-slide class="py-4">
+                                <a 
+                                    href="{{ route('play', [
+                                        \App\Service\Tool::encode($game['id']),
+                                        $game['console_short_name'], 
+                                        $game['title'],
+                                    ]) }}"
+                                    class="lazy-load-container" data-loaded="false"
+                                >
+                                    <div :class="{ 'hidden': skeletonGroup || skeletonSquare }" class=" h-full">
+                                        @if ($ob === 'group')
+                                        <livewire:game-card :game="$game" :key="$game['id']" :key="uniqid()" />
+                                        @elseif($ob === 'squares')
+                                        <livewire:game-card-classic :game="$game" :key="$game['id']" class="p-4" :key="uniqid()" />
+                                        @endif
+                                    </div>
+                                </a>
+                            </swiper-slide>
+                            @endforeach
+                        </x-ribbon>
                     </div>
-                </x-ribbon>
+                </div>
             @endif
 
             <!-- all publishers list -->

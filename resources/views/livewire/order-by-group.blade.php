@@ -1,10 +1,14 @@
 <div class="overflow-x-auto">
-    <!-- games ribbon (group) -->
-    <x-ribbon>
+    <x-ribbon ob="group">
     @foreach ($selected_console['games'] as $game)
-        <div class="lazy-load-container mr-4" data-loaded="false" data-url="{{ $this->gameRoute($game) }}">
-            <livewire:game-card :game="$game" :key="$game['id']" />
-        </div>
+        <swiper-slide>
+            <a href="{{ $this->gameRoute($game) }}" 
+                class="lazy-load-container" 
+                data-loaded="false" 
+            >
+                <livewire:game-card :game="$game" :key="$game['id']" />
+            </a>
+        </swiper-slide>
     @endforeach
     </x-ribbon>
 </div>
