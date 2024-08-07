@@ -1,4 +1,4 @@
-<svg {{ $attributes->merge(['class' => 'block rounded text-black dark:text-gray-900 bg-[#dcdcdc] dark:bg-[#dcdcdc] hover:bg-black dark:hover:bg-cod-gray-100/60 group-hover:bg-black dark:group-hover:bg-cod-gray-100/60 smooth-500 focus:bg-cod-gray-100/60 focus:text-black']) }}
+<svg {{ $attributes->merge(['class' => 'block rounded text-black dark:text-gray-900 bg-[#dcdcdc] dark:bg-[#dcdcdc] group-hover:bg-white group-dark:hover:bg-cod-gray-100/60 smooth-500 focus:bg-cod-gray-100/60 focus:text-black']) }}
     version="1.0" xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 172.000000 171.000000"
   preserveAspectRatio="xMidYMid meet">
