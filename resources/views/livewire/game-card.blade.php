@@ -42,11 +42,11 @@
         }
     
         .containerCards .card .wrapper:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px);
         }
     
         .containerCards .card .wrapper:hover .imgProd {
-            height: 165px;
+            height: 120px;
         }
     
         .containerCards .card .wrapper .colorProd {
@@ -55,7 +55,6 @@
             top: 0;
             left: 0;
             width: 100%;
-            /* height: 157px; */
             height: 177px;
             background-size: cover;
             background-position: center bottom;
@@ -81,22 +80,15 @@
             align-items: center;
             justify-content: center;
             align-content: center;
-            /* height: 170px; */
-            /* padding: 20px; */
             box-sizing: border-box;
         }
     
         .containerCards .card .wrapper .infoProd p {
             width: 100%;
-            /* font-size: 14px; */
             text-align: center;
         }
     
         .containerCards .card .wrapper .infoProd .nombreProd {
-            /* font-family: "Roboto", sans-serif; */
-            /* margin-bottom: 10px; */
-            /* font-size: 16px; */
-            /* font-weight: 600; */
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
@@ -195,10 +187,10 @@
             transform: scale(0);
         }
     </style>
-    <div class="group relative containerCards rounded-xl overflow-hidden bg-cod-gray-200/80 dark:bg-cod-gray-900/90 h-full border-2 border-white dark:border-black shadow">
+    <div class="group relative containerCards rounded-xl overflow-hidden bg-cod-gray-200/80 dark:bg-cod-gray-900/90 h-full border-2 border-cod-gray-300 dark:border-cod-gray-950 shadow">
         <div class="card h-full">
             @isset($game['console_short_name'])
-            <div class="absolute z-20 text-center w-full dark:bg-cod-gray-800 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400 dark:opacity-80">
+            <div class="absolute z-20 text-center w-full bg-cod-gray-500/70 dark:bg-cod-gray-800/70 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400">
                 {{ $game['console_short_name'] === 'atari2600' ? 'Atari 2600' : $game['console_short_name'] }}
             </div>
             @endisset
@@ -213,7 +205,7 @@
                     &nbsp;
                 </div>
                 <!-- Placeholder for the poster background -->
-                <div class="imgProd flex items-center justify-center lazy-load-bg" 
+                <div class="imgProd flex items-center justify-center lazy-load-bg opacity-50 group-hover:opacity-100 smooth-300" 
                     data-bg-url="{{ $game['poster'] }}" 
                     style="background-image: url({{ asset('images/placeholder-poster-homer.jpg') }});">
                 </div>
