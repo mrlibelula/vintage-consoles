@@ -102,8 +102,8 @@
 >
     <div slot="container-start" class="parallax-bg"
         :style="darkMode 
-            ? 'background-image: url({{ $dark_wallpaper }}); opacity: 0.2;'
-            : 'background-image: url({{ $light_wallpaper }}); opacity: 0.2;'
+            ? 'background-image: url({{ $dark_wallpaper }}); opacity: 0.05;'
+            : 'background-image: url({{ $light_wallpaper }}); opacity: 0.05;'
         " 
         data-swiper-parallax="-23%"
     ></div>
