@@ -81,7 +81,7 @@
             <div>
                 Here are all the <span class=" text-lime-700 dark:text-lime-500">publishers</span> detected on the database:
             </div>
-            <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-[0.2rem]">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-[0.2rem]">
                 <!-- publishers list -->
                 @forelse ($publishers as $publisher)
                 <a @click="$dispatch('loader-top-on')" wire:navigate href="{{ route('publishers', $publisher) }}" class="link capitalize">

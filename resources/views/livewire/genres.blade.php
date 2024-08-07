@@ -87,7 +87,7 @@
             <div>
                 Here are all the <span class=" text-sky-600 dark:text-sky-400">genres</span> detected on the database:
             </div>
-            <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-[0.2rem]">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-[0.2rem]">
                 <!-- genres list -->
                 @forelse ($genres as $genre)
                 <a @click="$dispatch('loader-top-on')" wire:navigate href="{{ route('genres', $genre) }}" class="link">
