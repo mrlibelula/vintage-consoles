@@ -1,5 +1,5 @@
 @props(['count' => 2])
-<div class="flex flex-col gap-y-3 mt-4 mb-[4rem]">
+<div class="flex flex-col gap-y-4 mt-[1.9rem] mb-[4.6rem]">
     @for ($i = 0; $i <= $count; $i++)
     <div class="flex items-center justify-start gap-x-6 w-full">
         <div class="w-[5rem] skeleton rounded-full h-[5.5rem]"></div>
