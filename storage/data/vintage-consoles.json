@@ -2051,6 +2051,39 @@
                     "hof": [],
                     "is_free": true,
                     "options": {}
+                },
+                {
+                    "id": 17,
+                    "title": "Boxing",
+                    "release_year": "1980",
+                    "publisher": "Activision",
+                    "genres": [
+                        {
+                            "name": "sports",
+                            "description": "Boxing is a classic sports game where players step into the ring to engage in fast-paced, one-on-one boxing matches. The game features a simple but engaging boxing simulation where players control their fighters with a joystick and buttons to throw punches, dodge, and block their opponent's attacks. The objective is to defeat your opponent by knocking them out or scoring more points through effective punches and defense. With its straightforward controls and competitive gameplay, Boxing captures the excitement of the sport in a nostalgic, pixelated format."
+                        }
+                    ],
+                    "description": "Boxing is a vintage sports video game released for the Atari 2600 in 1980. In this game, players take on the role of a boxer in a ring, aiming to outmaneuver and outpunch their opponent. The gameplay involves using the joystick to move and the buttons to throw punches, block, and dodge. The game features two-player mode where players can challenge a friend or play against a computer-controlled opponent. The objective is to knock out your opponent or score more points by landing punches and avoiding hits. With its simple controls and fast-paced action, Boxing offers a fun and competitive experience for fans of retro sports games.",
+                    "rating": "0.89",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "rom": "Boxing-USA.a26",
+                    "box": "https://24.media.tumblr.com/35150d1c7b2fa3d85601d9aee0633009/tumblr_n46kstIRJb1tooympo1_400.gif",
+                    "poster": "/images/games/boxing-atari.png",
+                    "cartridge": "https://static.wikia.nocookie.net/thegameroom/images/f/f4/Boxing_2600_Cart.jpg",
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/1273379-boxing-atari-2600-the-game-in-black-and-white-mode.png",
+                        "https://atariage.com/2600/screenshots/s_Boxing_1.png"
+                    ],
+                    "bookmark_status": false,
+                    "play_count": 0,
+                    "last_played": "",
+                    "metadata": {},
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "is_free": true,
+                    "options": {}
                 }
             ]
         },

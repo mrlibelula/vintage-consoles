@@ -49,16 +49,16 @@
 
                                     <!-- skeleton group -->
                                     <template x-if="skeletonGroup">
-                                        <x-skeleton-group :count="4" />
+                                        <x-skeleton-group :count="1" />
                                     </template>
                                     
                                     <!-- skeleton square -->
                                     <template x-if="skeletonSquare">                        
-                                        <x-skeleton-square :count="4" />
+                                        <x-skeleton-square :count="1" />
                                     </template>
                                 </div>
                                 @foreach ($filtered_games as $game)
-                                <swiper-slide class="py-8">
+                                <swiper-slide class="py-8_">
                                     <a 
                                         href="{{ route('play', [
                                             \App\Service\Tool::encode($game['id']),
