@@ -24,7 +24,7 @@
     }
 
     .card0 {
-        background: url("https://libe.dev/images/libe.jpg") center center no-repeat;
+        background: url("images/libe.jpg") center center no-repeat;
         background-size: 320px;
         filter: gray;
         /* IE6-9 */
@@ -35,7 +35,7 @@
     }
 
     .card0:hover {
-        background: url("https://libe.dev/images/libe.jpg") left center no-repeat;
+        background: url("images/libe.jpg") left center no-repeat;
         background-size: 300px;
     }
 
