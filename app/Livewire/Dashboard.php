@@ -116,7 +116,7 @@ class Dashboard extends Component
         }
     }
 
-    public function mount(string $console_short_name = 'nes', Request $request)
+    public function mount(Request $request, string $console_short_name = 'nes')
     {
         if ($request->has('ob')) {
             $this->ob = $request->query('ob');
