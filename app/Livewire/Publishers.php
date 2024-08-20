@@ -14,7 +14,7 @@ class Publishers extends Component
     public array $filtered_games = [];
     public string $ob = 'squares';
     
-    public function mount(string $publisher_name = '', Request $request)
+    public function mount(Request $request, string $publisher_name = '')
     {
         if ($request->has('ob')) {
             $this->ob = $request->query('ob');

@@ -15,7 +15,7 @@ class Genres extends Component
     public array $filtered_games = [];
     public string $ob = 'squares';
 
-    public function mount(string $genre_name = '', Request $request)
+    public function mount(Request $request, string $genre_name = '')
     {
         if ($request->has('ob')) {
             $this->ob = $request->query('ob');
