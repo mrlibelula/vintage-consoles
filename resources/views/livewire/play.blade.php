@@ -6,7 +6,11 @@
             <div class="w-full xl:w-[70%] bg-black h-full rounded-lg overflow-hidden">
                 <iframe class="game-arena" frameborder="0"
                     @if (strtolower($console['short_name']) === 'pc')
-                    src="https://dos.zone/player/?bundleUrl={{ $game['rom'] }}&anonymous=1"
+                    {{-- src="https://dos.zone/player/?bundleUrl={{ $game['rom'] }}&anonymous=1" --}}
+                    src="{{ route('dosplayer', [
+                        \App\Service\Tool::encode(json_encode($game)),
+                        strtolower($console['short_name']),
+                    ]) }}"
                     @else
                     src="{{ $player_route }}"
                     @endif

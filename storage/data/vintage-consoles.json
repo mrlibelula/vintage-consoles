@@ -1962,7 +1962,7 @@
                     "multiplayer_support": false,
                     "save_state_support": true,
                     "rom": "Galaxian.bin",
-                    "box": "https://gymnasium.farama.org/_images/galaxian.gif",
+                    "box": "https://media.tenor.com/r9o9NhAMcMEAAAAM/q-tum-qtum-space-qtum-new.gif",
                     "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBPGSVz_xkfTzA_xH6xWhTPQRoyG239QslGQIzTdrlJII9VBGYQWu9-4GDdDmLYgwPZ_k&usqp=CAU",
                     "cartridge": "https://www.atarimania.com/2600/boxes/hi_res/galaxian_silver_cart.jpg",
                     "screenshots": [
@@ -2211,7 +2211,7 @@
                     "multiplayer_support": true,
                     "save_state_support": true,
                     "rom": "https://play.libe.dev/games/bundles/tapper.jsdos",
-                    "box": "https://archive.org/serve/msdos_Tapper_1983/Tapper_1983_screenshot.gif",
+                    "box": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSW1AiJXnxk26tuc0GKsVNSbTRTxb-HgfABOiPGikuU9LJBpkWEOzFKpmbqoA0HZT9Eo2c&usqp=CAU",
                     "poster": "/images/games/tapper-poster.jpg",
                     "cartridge": "https://www.picclickimg.com/2pQAAOSwwrpjOO61/Apple-II-TAPPER-1984-Sega-Game-by-Bally.webp",
                     "screenshots": [
@@ -2294,7 +2294,7 @@
                     "save_state_support": true,
                     "rom": "https://play.libe.dev/games/bundles/wolf3d.jsdos",
                     "box": "https://media0.giphy.com/media/3o85xyFuIzQQ2NmIBW/giphy.gif",
-                    "poster": "https://archive.org/serve/WOLF3D-MS-DOS/MV5BMmM1MjQyNDAtOWI1Yi00MzdhLWIxNDMtOTdiMGZhZDA4ZmU4L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
+                    "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6rBchw5kMQt8pHZWbBAsZxSc1ip2y9m9cuA&s",
                     "cartridge": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqw1xIQ4WC8U6itq_GMk_kffMahKnhCI4x63XGwvQIiquT_ZdMS-l_Z5ijiO5bJa4aTY4&usqp=CAU",
                     "screenshots": [
                         "https://cdn.mobygames.com/screenshots/3089571-wolfenstein-3d-dos-episode-5.png",
