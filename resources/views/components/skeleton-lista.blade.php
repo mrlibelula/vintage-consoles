@@ -7,6 +7,7 @@
             <div class=" w-[50%] skeleton h-5"></div>
             <div class=" w-[50%] skeleton h-5"></div>
         </div>
+        <div class="w-[10%] skeleton h-5 -mt-6"></div>
     </div>
     @endfor
 </div>
