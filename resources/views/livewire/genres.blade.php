@@ -36,49 +36,45 @@
                     @skeleton-group-off.window="skeletonGroup = false"
                     @skeleton-group-on.window="skeletonGroup = true"
                 >
-                    <div class="_flex _flex-no-wrap _gap-x-4">
-                        
+                    <div class="overflow-x-auto py-4">
+                        <x-ribbon :customSlidesPerView="[
+                            'sm' => 2,
+                            'md' => 3,
+                            'xl' => 4,
+                        ]">
+                            <div class="py-4">
 
-                        <div class="overflow-x-auto py-4">
-                            <x-ribbon :customSlidesPerView="[
-                                'sm' => 2,
-                                'md' => 3,
-                                'xl' => 4,
-                            ]">
-                                <div class="py-4">
-
-                                    <!-- skeleton group -->
-                                    <template x-if="skeletonGroup">
-                                        <x-skeleton-group :count="1" />
-                                    </template>
-                                    
-                                    <!-- skeleton square -->
-                                    <template x-if="skeletonSquare">                        
-                                        <x-skeleton-square :count="1" />
-                                    </template>
-                                </div>
-                                @foreach ($filtered_games as $game)
-                                <swiper-slide class="py-8_">
-                                    <a 
-                                        href="{{ route('play', [
-                                            \App\Service\Tool::encode($game['id']),
-                                            $game['console_short_name'], 
-                                            $game['title'],
-                                        ]) }}"
-                                        class="lazy-load-container" data-loaded="false"
-                                    >
-                                        <div :class="{ 'hidden': skeletonGroup || skeletonSquare }" class=" h-full">
-                                            @if ($ob === 'group')
-                                            <livewire:game-card :game="$game" :key="$game['id']" :key="uniqid()" />
-                                            @elseif($ob === 'squares')
-                                            <livewire:game-card-classic :game="$game" :key="$game['id']" class="p-4" :key="uniqid()" />
-                                            @endif
-                                        </div>
-                                    </a>
-                                </swiper-slide>
-                                @endforeach
-                            </x-ribbon>
-                        </div>
+                                <!-- skeleton group -->
+                                <template x-if="skeletonGroup">
+                                    <x-skeleton-group :count="1" />
+                                </template>
+                                
+                                <!-- skeleton square -->
+                                <template x-if="skeletonSquare">                        
+                                    <x-skeleton-square :count="1" />
+                                </template>
+                            </div>
+                            @foreach ($filtered_games as $game)
+                            <swiper-slide class="py-8_">
+                                <a 
+                                    href="{{ route('play', [
+                                        \App\Service\Tool::encode($game['id']),
+                                        $game['console_short_name'], 
+                                        $game['title'],
+                                    ]) }}"
+                                    class="lazy-load-container" data-loaded="false"
+                                >
+                                    <div :class="{ 'hidden': skeletonGroup || skeletonSquare }" class=" h-full">
+                                        @if ($ob === 'group')
+                                        <livewire:game-card :game="$game" :key="$game['id']" :key="uniqid()" />
+                                        @elseif($ob === 'squares')
+                                        <livewire:game-card-classic :game="$game" :key="$game['id']" class="p-4" :key="uniqid()" />
+                                        @endif
+                                    </div>
+                                </a>
+                            </swiper-slide>
+                            @endforeach
+                        </x-ribbon>
                     </div>
                 </div>
             @endif

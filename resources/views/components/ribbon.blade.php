@@ -49,17 +49,17 @@
 
     $dark_wallps = [
         "https://images.alphacoders.com/461/461092.jpg",
-        "https://getwallpapers.com/wallpaper/full/1/5/d/1067757-space-invaders-wallpaper-1920x1080-for-android-tablet.jpg",
-        "https://e1.pxfuel.com/desktop-wallpaper/519/336/desktop-wallpaper-98-game-all-game.jpg",
-        "https://c4.wallpaperflare.com/wallpaper/502/710/388/8-bit-super-mario-minimalism-video-games-wallpaper-preview.jpg",
-        "https://wallpapers.com/images/hd/hd-pacman-qtm4064qk559tkc7.jpg",
-        "https://wallpapercrafter.com/desktop/100935-pixel-art-8-bit-Aqua-Teen-Hunger-Force-blue-dots-humor.png",
+        // "https://getwallpapers.com/wallpaper/full/1/5/d/1067757-space-invaders-wallpaper-1920x1080-for-android-tablet.jpg",
+        // "https://e1.pxfuel.com/desktop-wallpaper/519/336/desktop-wallpaper-98-game-all-game.jpg",
+        // "https://c4.wallpaperflare.com/wallpaper/502/710/388/8-bit-super-mario-minimalism-video-games-wallpaper-preview.jpg",
+        // "https://wallpapers.com/images/hd/hd-pacman-qtm4064qk559tkc7.jpg",
+        // "https://wallpapercrafter.com/desktop/100935-pixel-art-8-bit-Aqua-Teen-Hunger-Force-blue-dots-humor.png",
         "https://wallpaper.forfun.com/fetch/61/61c5d7a4c561c7a363421e1877018e62.jpeg",
     ];
 
     $light_wallps = [
         "https://c.wallhere.com/photos/b1/40/controllers_Nintendo_Nintendo_Entertainment_System_simple_retro_games_white_background_simple_background-161079.jpg!d",
-        "https://static.vecteezy.com/system/resources/previews/027/420/048/non_2x/gamepad-icon-on-light-background-vintage-game-console-joystick-symbol-oldschool-retro-gaming-sign-outline-flat-and-colored-style-flat-design-illustration-vector.jpg",
+        // "https://static.vecteezy.com/system/resources/previews/027/420/048/non_2x/gamepad-icon-on-light-background-vintage-game-console-joystick-symbol-oldschool-retro-gaming-sign-outline-flat-and-colored-style-flat-design-illustration-vector.jpg",
     ];
 
     $dark_wallpaper = $dark_wallps[rand(0, count($dark_wallps) - 1)] ?? '';
