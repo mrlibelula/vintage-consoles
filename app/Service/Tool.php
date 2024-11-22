@@ -2,10 +2,11 @@
 
 namespace App\Service;
 
-use DateTime;
 use App\Models\User;
+use DateTime;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class Tool
 {
@@ -90,7 +91,6 @@ class Tool
         'https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/ed1d1599264417.5f00bef985e86.jpg',
         'https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/0f45f999264417.5f00bef98701f.jpg',
         'https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/8c3c7c100736353.5f282083bca00.jpg',
-        'https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/eda317102944637.5f4260ee8c0e1.jpg',
         'https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/88e6b1106082287.5f8f0fcf6804f.jpg',
         'https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/662e79106082287.5f8f0fcf668df.jpg',
         'https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/da368a106082287.5f8f0fce33692.jpg',
@@ -247,5 +247,159 @@ class Tool
         $genres = array_unique($genres);
         sort($genres);
         return $genres;
+    }
+
+    /**
+     * Checks if all image urls exist and also checks for redirects
+     * Must be run in terminal
+     *
+     * @return mixed
+     */
+    public static function checkIfDBImageUrlsExist()
+    {
+        // check if terminal
+        if (php_sapi_name() !== 'cli') {
+            echo "This script must be run in the terminal.\n";
+            return;
+        }
+        
+        echo "\n📋 Starting URL check process...\n\n";
+        
+        // Obtain all image urls from db
+        $imageUrls = [];
+        $consolesJson = 'vintage-consoles.json';
+        $consoles = collect(Storage::disk('data')->exists($consolesJson) 
+            ? (json_decode(Storage::disk('data')->get($consolesJson), true)['consoles'] ?? []) 
+            : []);
+        
+        // Get all image urls
+        $consoles->each(function($console) use(&$imageUrls) {
+            $imageUrls[] = url($console['console_logo']);
+            $imageUrls[] = url($console['console_icon']);
+            $imageUrls = array_merge($imageUrls, array_map(function($bg) {
+                return url($bg);
+            }, ($console['console_bgs'] ? $console['console_bgs'] : [])));
+            foreach ($console['games'] as $game) {
+                $imageUrls[] = url($game['box']);
+                $imageUrls[] = url($game['poster']);
+                $imageUrls[] = url($game['cartridge']);
+                $imageUrls = array_merge($imageUrls, array_map(function($screenshot) {
+                    return url($screenshot);
+                }, ($game['screenshots'] ? $game['screenshots'] : [])));
+            }
+        });
+
+        $totalUrls = count($imageUrls);
+        echo "🔍 Found {$totalUrls} URLs to check\n\n";
+        
+        // Check if they exist
+        $report = [];
+        $processed = 0;
+        $failed = 0;
+        $failedUrls = [];
+        
+        foreach ($imageUrls as $imageUrl) {
+            $processed++;
+            
+            // Clear line and show progress
+            echo "\r\033[K"; // Clear the current line
+            echo "⏳ Progress: {$processed}/{$totalUrls} (" . round(($processed/$totalUrls)*100, 1) . "%)";
+            
+            $headers = @get_headers($imageUrl, 1);
+            if ($headers === false) {
+                $report[$imageUrl] = 'failed_to_connect';
+                $failed++;
+                $failedUrls[] = $imageUrl;
+                echo "\r\033[K"; // Clear the current line
+                echo "❌ Failed to connect: " . $imageUrl . "\n";
+                continue;
+            }
+
+            // Check status line
+            $statusLine = is_array($headers) && isset($headers[0]) ? (string)$headers[0] : '';
+            
+            if (empty($statusLine)) {
+                $report[$imageUrl] = 'invalid_response';
+                $failed++;
+                $failedUrls[] = $imageUrl;
+                continue;
+            }
+
+            // Determine status
+            if (str_contains($statusLine, '200')) {
+                $report[$imageUrl] = 'ok';
+            } 
+            else if (str_contains($statusLine, '301')) {
+                $finalLocation = $headers['Location'] ?? $headers['location'] ?? null;
+                $report[$imageUrl] = 'redirect_301' . ($finalLocation ? " -> {$finalLocation}" : '');
+                $failed++;
+                $failedUrls[] = $imageUrl;
+                echo "\r\033[K"; // Clear the current line
+                echo "↪️ Permanent Redirect: {$imageUrl} -> {$finalLocation}\n";
+            }
+            else if (str_contains($statusLine, '302')) {
+                $finalLocation = $headers['Location'] ?? $headers['location'] ?? null;
+                $report[$imageUrl] = 'redirect_302' . ($finalLocation ? " -> {$finalLocation}" : '');
+                $failed++;
+                $failedUrls[] = $imageUrl;
+                echo "\r\033[K"; // Clear the current line
+                echo "↪️ Temporary Redirect: {$imageUrl} -> {$finalLocation}\n";
+            }
+            else if (str_contains($statusLine, '404')) {
+                $report[$imageUrl] = 'not_found';
+                $failed++;
+                echo "\r\033[K"; // Clear the current line
+                echo "❌ Not Found: " . $imageUrl . "\n";
+            }
+            else if (str_contains($statusLine, '403')) {
+                $report[$imageUrl] = 'forbidden';
+                $failed++;
+                echo "\r\033[K"; // Clear the current line
+                echo "🚫 Forbidden: " . $imageUrl . "\n";
+            }
+            else {
+                $report[$imageUrl] = 'unknown_status: ' . $statusLine;
+                $failed++;
+                $failedUrls[] = $imageUrl;
+                echo "\r\033[K"; // Clear the current line
+                echo "❓ Unknown Status: " . $imageUrl . " (" . $statusLine . ")\n";
+            }
+        }
+
+        // Final Summary
+        echo "\n\n📊 URL Check Complete!\n";
+        echo str_repeat("=", 50) . "\n";
+        echo "✓ Total processed: {$processed}\n";
+        echo "✗ Failed URLs: {$failed}\n";
+        echo "📈 Success rate: " . round((($processed - $failed) / $processed) * 100, 2) . "%\n";
+        echo str_repeat("=", 50) . "\n\n";
+        
+        if ($failed > 0) {
+            echo "❌ Failed URLs Summary:\n";
+            echo str_repeat("-", 100) . "\n";
+            
+            foreach ($report as $url => $status) {
+                if ($status !== 'ok') {
+                    echo "• {$url}\n  └─ Status: {$status}\n";
+                }
+            }
+            
+            echo str_repeat("-", 100) . "\n\n";
+        }
+        
+        // Save report in json file
+        $reportJson = [
+            'timestamp' => date('Y-m-d H:i:s'),
+            'total_urls' => $totalUrls,
+            'processed' => $processed,
+            'failed' => $failed,
+            'success_rate' => round((($processed - $failed) / $processed) * 100, 2) . "%",
+            'report' => $report,
+            'failed_urls' => array_filter($report, fn($status) => $status !== 'ok'),
+        ];
+        
+        Storage::disk('data')->put('url-check-report.json', json_encode($reportJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+        // return;
     }
 }
