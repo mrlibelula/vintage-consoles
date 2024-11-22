@@ -142,7 +142,7 @@
                 <!-- right panel -->
                 <div class="w-full xl:w-[30%] flex flex-col gap-y-4 items-start justify-start shadow-md shadow-cod-gray-400 dark:shadow-black border-[3.5px] border-cod-gray-200 dark:border-cod-gray-900 rounded-xl p-6 bg-cod-gray-100 dark:bg-cod-gray-900/60">
                     <div class="flex items-center justify-center w-full hover:scale-[1.4] xl:scale-[1.7] xl:hover:scale-[1.8] xl:hover:-translate-y-2 smooth-300">
-                        <img class="my-6 w-full" src="{{ $selected_console['console_icon'] }}" alt="{{ $selected_console['short_name'] }}">
+                        <img class="my-6 w-full" src="{{ url($selected_console['console_icon']) }}" alt="{{ $selected_console['short_name'] }}">
                     </div>
 
                     <x-accordion

@@ -921,7 +921,7 @@
                 "version": "4.0.7"
             },
             "console_logo": "https://assets.jumpseller.com/store/g5-arcade-classics/themes/521683/options/88512538/lgogo%20transparente%201920.png?1672330510",
-            "console_icon": "https://freepngimg.com/download/machine/113185-machine-game-arcade-free-clipart-hd.png",
+            "console_icon": "/images/games/arcade.png",
             "console_bgs": [
                 "https://p4.wallpaperbetter.com/wallpaper/654/236/982/black-and-white-blur-dark-equipment-wallpaper-preview.jpg"
             ],
