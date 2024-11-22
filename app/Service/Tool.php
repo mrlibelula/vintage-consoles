@@ -303,7 +303,7 @@ class Tool
             
             // Clear line and show progress
             echo "\r\033[K"; // Clear the current line
-            echo "⏳ Progress: {$processed}/{$totalUrls} (" . round(($processed/$totalUrls)*100, 1) . "%)";
+            echo "⏳ Progress: {$processed}/{$totalUrls} (" . round(($processed / $totalUrls) * 100, 1) . "%)";
             
             $headers = @get_headers($imageUrl, 1);
             if ($headers === false) {
