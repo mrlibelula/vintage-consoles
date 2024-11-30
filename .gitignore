@@ -18,3 +18,4 @@ yarn-error.log
 /.idea
 /.vscode
 /storage/data/chat/
+/storage/data/url-check-report.json
