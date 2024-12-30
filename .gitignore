@@ -21,5 +21,14 @@ yarn-error.log
 /storage/data/url-check-report.json
 !*.nes
 !public/games/nes/*.nes
+!public/games/snes/*.7z
 !*.a26
 !public/games/atari2600/*.a26
+
+# Track all game ROMs
+!public/games/atari2600/
+!public/games/atari2600/*
+!public/games/nes/
+!public/games/nes/*
+!public/games/snes/
+!public/games/snes/*
