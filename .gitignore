@@ -21,3 +21,5 @@ yarn-error.log
 /storage/data/url-check-report.json
 !*.nes
 !public/games/nes/*.nes
+!*.a26
+!public/games/atari2600/*.a26
