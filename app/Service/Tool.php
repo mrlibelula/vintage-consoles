@@ -7,6 +7,7 @@ use DateTime;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Tool
 {
@@ -158,9 +159,8 @@ class Tool
     public static function gameRoute(array $console, array $game): string
     {
         return route('play', [
-            self::encode($game['id']), 
-            $console['short_name'], 
-            $game['title'],
+            'console_short_name' => $console['short_name'], 
+            'game_title_slug' => $game['slug'] ?? Str::slug($game['title']),
         ]);
     }
     

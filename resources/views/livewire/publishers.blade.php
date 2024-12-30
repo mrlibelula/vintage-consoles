@@ -56,9 +56,8 @@
                             <swiper-slide class="py-4">
                                 <a 
                                     href="{{ route('play', [
-                                        \App\Service\Tool::encode($game['id']),
-                                        $game['console_short_name'], 
-                                        $game['title'],
+                                        'console_short_name' => $game['console_short_name'],
+                                        'game_title_slug' => $game['slug']
                                     ]) }}"
                                     class="lazy-load-container" data-loaded="false"
                                 >

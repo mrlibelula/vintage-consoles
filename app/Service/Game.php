@@ -13,15 +13,27 @@ class Game
     protected array $game;
 
     /**
-     * Obtains Game data from Session
-     *
-     * @param string $console_short_name
-     * @param string $enc_game_id
+     * Modified constructor to only require console name initially
      */
-    public function __construct(string $console_short_name, string $enc_game_id)
+    public function __construct(string $console_short_name)
     {
-        $this->console = $this->console($console_short_name);
-        $this->game = $this->game($enc_game_id);
+        $this->loadConsole($console_short_name);
+    }
+
+    /**
+     * Get the console data
+     */
+    public function getConsole(): array
+    {
+        return $this->console;
+    }
+
+    /**
+     * Get the game data
+     */
+    public function getGame(): array
+    {
+        return $this->game;
     }
 
     private function game(string $enc_game_id): array
@@ -39,13 +51,8 @@ class Game
         return Tool::findItemByKey(Session::get('consoles'), 'short_name', $console_short_name);
     }
 
-    public function getConsole(): array
+    private function loadConsole(string $console_short_name)
     {
-        return $this->console;
-    }
-    
-    public function getGame(): array
-    {
-        return $this->game;
+        $this->console = $this->console($console_short_name);
     }
 }

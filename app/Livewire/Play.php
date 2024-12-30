@@ -48,14 +48,24 @@ class Play extends Component
      * @param string $game_title
      * @return void
      */
-    public function mount(string $enc_game_id, string $console_short_name, string $game_title)
+    public function mount(string $console_short_name, string $game_title_slug)
     {
         new GameSession;
 
-        $game_obj = new Game($console_short_name, $enc_game_id);
+        // Find the game by slug in the console's games array
+        $game_obj = new Game($console_short_name);
         $this->console = $game_obj->getConsole();
-        $this->game = $game_obj->getGame();
+        
+        // Find the game with matching slug
+        $game = collect($this->console['games'])->first(function($game) use ($game_title_slug) {
+            return $game['slug'] === $game_title_slug;
+        });
 
+        if (!$game) {
+            abort(404);
+        }
+
+        $this->game = $game;
         $this->loadGameUrl();
         
         $this->player_route = route('player', [
