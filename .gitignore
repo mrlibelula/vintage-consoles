@@ -19,16 +19,7 @@ yarn-error.log
 /.vscode
 /storage/data/chat/
 /storage/data/url-check-report.json
-!*.nes
-!public/games/nes/*.nes
-!public/games/snes/*.7z
-!*.a26
-!public/games/atari2600/*.a26
 
-# Track all game ROMs
-!public/games/atari2600/
-!public/games/atari2600/*
-!public/games/nes/
-!public/games/nes/*
-!public/games/snes/
-!public/games/snes/*
+# Track all game ROMs with simpler rules
+!public/games/
+!public/games/**
