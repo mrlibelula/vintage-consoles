@@ -20,3 +20,4 @@ yarn-error.log
 /storage/data/chat/
 /storage/data/url-check-report.json
 !*.nes
+!public/games/nes/*.nes
