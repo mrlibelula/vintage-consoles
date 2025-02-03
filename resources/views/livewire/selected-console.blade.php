@@ -145,8 +145,15 @@
                         <img class="my-6 w-full" src="{{ url($selected_console['console_icon']) }}" alt="{{ $selected_console['short_name'] }}">
                     </div>
 
+                    <!-- Available games -->
+                    <div class="mt-8 flex flex-col w-full text-left gap-y-1">
+                        <div class="flex items-center gap-x-2">
+                            <x-icons.joystick class=" w-[2.5rem] h-[2.5rem] opacity-50 text-cod-gray-700 dark:text-cod-gray-400" />
+                            <span class="text-[2.5rem] text-cod-gray-900 dark:text-cod-gray-200">{{ count($selected_console['games']) }}</span> {{ $selected_console['short_name'] === 'PC' ? 'games' : 'ROMs' }}
+                        </div>
+                    </div>
+
                     <x-accordion
-                        class="mt-8"
                         wire:click="toggleAccordion('console_data_accordion')"
                         :toggler="$console_data_accordion"
                     >
@@ -179,16 +186,6 @@
                                 </div>
                                 <div class=" w-full leading-none text-cod-gray-600 dark:text-cod-gray-400">
                                     {{ $selected_console['release_year'] }}
-                                </div>
-                            </div>
-
-                            <!-- Available games -->
-                            <div class="flex flex-col w-full text-left gap-y-1">
-                                <div class=" w-full dark:text-cod-gray-100 leading-none">
-                                    Available games
-                                </div>
-                                <div class=" w-full leading-none text-cod-gray-600 dark:text-cod-gray-400">
-                                    Found {{ count($selected_console['games']) }} ROMs
                                 </div>
                             </div>
 
