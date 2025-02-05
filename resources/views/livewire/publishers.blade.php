@@ -21,8 +21,8 @@
             @if ($publisher_name)
                 <!-- game list display options -->
                 <div class="flex items-center justify-start gap-x-3 w-full dark:text-cod-gray-500 leading-none -mb-8">
-                    <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-group-on')" wire:navigate href="/game/publishers/{{ $publisher_name }}?ob=group" class="btn-small"><x-icons.group class="{{ $ob === 'group' ? 'text-gray-200' : '' }}" /></a>
-                    <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-square-on')" wire:navigate href="/game/publishers/{{ $publisher_name }}?ob=squares" class="btn-small"><x-icons.squares class="{{ $ob === 'squares' ? 'text-gray-200' : '' }}" /></a>
+                    <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-group-on')" wire:navigate href="/games/publishers/{{ $publisher_name }}?ob=group" class="btn-small"><x-icons.group class="{{ $ob === 'group' ? 'text-gray-200' : '' }}" /></a>
+                    <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-square-on')" wire:navigate href="/games/publishers/{{ $publisher_name }}?ob=squares" class="btn-small"><x-icons.squares class="{{ $ob === 'squares' ? 'text-gray-200' : '' }}" /></a>
                 </div>
                 <!-- filtered results ribbon -->
                 <div 
