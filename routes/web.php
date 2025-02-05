@@ -30,8 +30,8 @@ Route::get('/dashboard/{console_short_name?}', Dashboard::class)->name('dashboar
 Route::get('/emulator/{console_short_name}/{game_title_slug}', Play::class)->name('play');
 Route::get('/player/{enc_json_game}/{console_short_name}', JsPlayer::class)->name('player');
 Route::get('/dosplayer/{enc_json_game}/{console_short_name}', DosPlayer::class)->name('dosplayer');
-Route::get('/game/genres/{genre_name?}', Genres::class)->name('genres');
-Route::get('/game/publishers/{publisher_name?}', Publishers::class)->name('publishers');
+Route::get('/games/genres/{genre_name?}', Genres::class)->name('genres');
+Route::get('/games/publishers/{publisher_name?}', Publishers::class)->name('publishers');
 Route::get('/pages/about', About::class)->name('about');
 
 Route::middleware([
