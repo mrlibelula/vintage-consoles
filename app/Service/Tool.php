@@ -250,7 +250,7 @@ class Tool
     }
 
     /**
-     * Checks if all image urls exist and also checks for redirects
+     * Checks if all db image urls exist and also checks for redirects
      * Must be run in terminal
      *
      * @return mixed
