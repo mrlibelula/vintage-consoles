@@ -268,8 +268,9 @@ class Tool
         // Obtain all image urls from db
         $imageUrls = [];
         $consolesJson = 'vintage-consoles.json';
-        $consoles = collect(Storage::disk('data')->exists($consolesJson) 
-            ? (json_decode(Storage::disk('data')->get($consolesJson), true)['consoles'] ?? []) 
+        $storage = Storage::disk('data');
+        $consoles = collect($storage->exists($consolesJson) 
+            ? (json_decode($storage->get($consolesJson), true)['consoles'] ?? []) 
             : []);
         
         // Get all image urls
@@ -398,7 +399,7 @@ class Tool
             'failed_urls' => array_filter($report, fn($status) => $status !== 'ok'),
         ];
         
-        Storage::disk('data')->put('url-check-report.json', json_encode($reportJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        $storage->put('url-check-report.json', json_encode($reportJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
         // return;
     }
