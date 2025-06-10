@@ -32,7 +32,7 @@ Route::get('/player/{enc_json_game}/{console_short_name}', JsPlayer::class)->nam
 Route::get('/dosplayer/{enc_json_game}/{console_short_name}', DosPlayer::class)->name('dosplayer');
 Route::get('/games/genres/{genre_name?}', Genres::class)->name('genres');
 Route::get('/games/publishers/{publisher_name?}', Publishers::class)->name('publishers');
-Route::get('/pages/about', About::class)->name('about');
+Route::get('/creator/about', About::class)->name('about');
 
 Route::middleware([
     'auth:sanctum',

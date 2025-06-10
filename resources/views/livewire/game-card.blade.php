@@ -211,7 +211,7 @@
                 </div>
                 <div class="infoProd_ flex flex-col justify-between text-center h-full">
                     <p class="-mt-4 px-6 leading-none text-xl text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
-                        {{ Str::limit($game['title'], 25) }}
+                        {{ Str::limit($game['title'], 21) }}
                     </p>
                     
                 </div>

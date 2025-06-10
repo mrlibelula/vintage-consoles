@@ -858,7 +858,7 @@
           "rating": "0.84",
           "multiplayer_support": true,
           "save_state_support": true,
-          "rom": "Street Fighter II - The World Warrior (U) [h1].7z",
+          "rom": "Street Fighter II - The World Warrior (U) [!].zip",
           "box": "https://media.tenor.com/CFnEVWnfRJ4AAAAd/street-fighter2-chunli.gif",
           "poster": "/images/games/street-fighter-ii-poster.png",
           "cartridge": "https://i.ebayimg.com/thumbs/images/g/eMEAAOSwxNRkpxhK/s-l1200.jpg",
@@ -902,7 +902,7 @@
           "multiplayer_support": true,
           "save_state_support": true,
           "rom": "Super Mario All-Stars (E) [!].7z",
-          "box": "https://64.media.tumblr.com/tumblr_lmukxwmwMl1qfi975o1_500.gif",
+          "box": "https://64.media.tumblr.com/9aaa155ce49f13407d6083824fa6ce93/tumblr_oe824h8RjK1qd4q8ao1_500.gif",
           "poster": "https://live.staticflickr.com/3856/19225863645_20cfea1996_z.jpg",
           "cartridge": "https://m.media-amazon.com/images/I/41IE7GlU0HL._AC_UF1000,1000_QL80_.jpg",
           "screenshots": [
@@ -924,13 +924,56 @@
           "hof": [],
           "is_free": true,
           "options": {}
+        },
+        {
+          "id": 10,
+          "title": "Earthworm Jim",
+          "slug": "earthworm-jim",
+          "release_year": "1994",
+          "publisher": "Playmates Interactive & Shiny Entertainment",
+          "genres": [
+            {
+              "name": "platformer",
+              "description": "Gameplay focuses on navigating levels filled with obstacles, enemies, and environmental hazards, requiring timing, precision, and reflexes."
+            },
+            {
+              "name": "run-and-gun",
+              "description": "A subgenre of shooter games where players move through levels while continuously shooting at enemies, often combining shooting mechanics with platforming."
+            },
+            {
+              "name": "comedy",
+              "description": "The game incorporates absurd humor, satirical references, and cartoon-like visuals, parodying superhero and sci-fi tropes common in the 1990s."
+            }
+          ],
+          "description": "Earthworm Jim is a 2D side-scrolling platformer released in 1994 for the Super Nintendo Entertainment System (SNES). The game stars Jim, an ordinary earthworm who gains superpowers after donning a robotic spacesuit. Players battle bizarre enemies across surreal levels in a mix of action, humor, and cartoonish chaos.",
+          "rating": "0.86",
+          "multiplayer_support": false,
+          "save_state_support": true,
+          "rom": "Earthworm Jim (USA).zip",
+          "box": "https://i.pinimg.com/originals/5f/8a/9a/5f8a9a1dbcdc0d6d77a6643852291d73.gif",
+          "poster": "https://m.media-amazon.com/images/M/MV5BODBhYzYyZmMtYzYxZC00ZjQ4LTlhMjUtNTQzNTM3Y2E3NDhlXkEyXkFqcGc@._V1_.jpg",
+          "cartridge": "https://cdn11.bigcommerce.com/s-ymgqt/images/stencil/1000w/products/25927/33563/Earthworm-Jim-2---SNES-Game__41312.1712937656.jpg?c=2",
+          "screenshots": [
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwUOn9LXRBBN7JuWKRIN3CeBi4sCS-5m6xAA&s",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBMUnJxQdFv7wLskYuzBQvuzxYL5CMN_e45A&s",
+            "https://cdn.mobygames.com/screenshots/611944-earthworm-jim-snes-futuristic-level.png"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
         }
       ]
     },
     {
       "id": 3,
       "long_name": "Arcade",
-      "short_name": "Arcade",
+      "short_name": "arcade",
       "description": "Arcade games are coin-operated video games typically found in public spaces like arcades and amusement centers. They offer short, exciting gameplay experiences, often focused on high scores and quick reflexes. These games range from classic titles like Pac-Man to modern cabinets with immersive graphics and multiplayer options, providing entertainment for gamers of all ages.",
       "emulator": {
         "name": "EmulatorJS",
@@ -942,7 +985,7 @@
         "https://p4.wallpaperbetter.com/wallpaper/654/236/982/black-and-white-blur-dark-equipment-wallpaper-preview.jpg"
       ],
       "manufacturer": "Various companies",
-      "release_year": "1909",
+      "release_year": "1971",
       "specs": {
         "cpu": "Arcade machines use various CPUs, ranging from older processors like the Z80 and 68000 to more modern ones like the Intel Pentium series. Specific clock speeds and architecture can vary.",
         "memory": "Arcade machines have RAM ranging from a few kilobytes to several gigabytes, depending on the era and game complexity.",
@@ -1325,6 +1368,287 @@
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3JzelQyCFBD4QNLU9zll7mUBoMWXpYAUUx8jazOMghMfos5NbMXdsejL6r2JKox5Ao80&usqp=CAU",
             "https://i.pinimg.com/564x/ff/00/5b/ff005b825c963b8e91249a93bffe7e81.jpg",
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5q2GBcrzzDMy59KMEZDtHsmbQmh2HbAAfCmXmd8ZO9Mq6f3ixm0Yp9Sy9bncAt1vkeaE&usqp=CAU"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 8,
+          "title": "Double Dragon II: The Revenge",
+          "slug": "double-dragon-ii-the-revenge",
+          "release_year": "1988",
+          "publisher": "Technōs Japan",
+          "genres": [
+            {
+              "name": "beat-em-up",
+              "description": "This is the core genre of the game. Players move through urban-style levels, defeating waves of enemies using punches, kicks, grabs, throws, and weapons. The gameplay emphasizes hand-to-hand combat with multiple enemies appearing on screen simultaneously."
+            },
+            {
+              "name": "cooperative-multiplayer",
+              "description": "The game supports two-player co-op, allowing both players to fight enemies together. This encourages teamwork and synchronized attacks, a hallmark of classic arcade co-op games."
+            },
+            {
+              "name": "action",
+              "description": "Fast-paced, reflex-driven gameplay involving combat, dodging, and progressing through levels. The action elements include enemy variety, weapon pickups, and timed attacks."
+            },
+            {
+              "name": "side-scrolling",
+              "description": "The game uses a side-scrolling format, where players move from left to right (and sometimes vertically) across the screen to progress through stages."
+            }
+          ],
+          "description": "Double Dragon II: The Revenge is a classic 1988 arcade beat 'em up where brothers Billy and Jimmy Lee fight their way through gangs to avenge a brutal murder. Featuring intense side-scrolling action, cooperative multiplayer, and a variety of combat moves and weapons, the game delivers fast-paced, retro brawling fun in gritty urban environments.",
+          "rating": "0.73",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "ddragon2u.zip",
+          "box": "https://i.imgur.com/hyMGML1.gif",
+          "poster": "https://i.ebayimg.com/images/g/cAwAAOSw44VmOu5~/s-l400.jpg",
+          "cartridge": "",
+          "screenshots": [
+            "https://cdn.mobygames.com/screenshots/15871125-double-dragon-ii-the-revenge-amiga-and-we-are-ready-to-go-into-l.png",
+            "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSKo6Xq-Hn6sOUJQ1sZV5PUyMvWDbZQ4d7mSJPQG0gzNYZLYFnSF6aKToMbn24-lqbXv1nbBCTs3cgCvAxyZvGOC73uQ8cFv_jV7BoQXJoQBp-sfoheqaJTVlzG8I_hrtYckQlpyYAA14/s400/Double+Dragon+2+_001.gif",
+            "https://nintendoeverything.com/wp-content/uploads/double-dragon-ii.jpg",
+            "https://image.api.playstation.com/cdn/UP0571/CUSA03717_00/SH6Jsj8N2NSfsVfs2YGfAxfoBq5hWpUt.png"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 9,
+          "title": "P.O.W.: Prisoners of War",
+          "slug": "pow-prisoners-of-war",
+          "release_year": "1988",
+          "publisher": "SNK",
+          "genres": [
+            {
+              "name": "beat-em-up",
+              "description": "This genre involves hand-to-hand combat against multiple enemies in side-scrolling or fixed-screen environments. Players often face waves of enemies and use punches, kicks, grabs, and sometimes weapons to fight them off. In P.O.W., the player controls a soldier escaping from a military prison, battling guards using martial arts, knives, guns, and grenades — classic beat 'em up mechanics."
+            },
+            {
+              "name": "run-and-gun",
+              "description": "Run and gun games focus on fast-paced shooting and movement, typically in a side-scrolling or top-down perspective. They emphasize reflexes and offensive gameplay, often combining melee and ranged combat. P.O.W. incorporates this by allowing players to pick up firearms and grenades, adding shooting elements to the core beat 'em up gameplay."
+            }
+            
+          ],
+          "description": "",
+          "rating": "0.59",
+          "multiplayer_support": false,
+          "save_state_support": true,
+          "rom": "pow.zip",
+          "box": "https://i.ytimg.com/vi/VCSvHEDwWyc/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBSGIKrKW7X4U9vQ_2emQP_HzZ2hw",
+          "poster": "https://images.launchbox-app.com/20248966-8a1c-4a1d-9573-b3bd76b755aa.jpg",
+          "cartridge": "https://images.launchbox-app.com/ae415088-dfdd-4568-a612-2c6b2a09a923.png",
+          "screenshots": [
+            "https://cdn.mobygames.com/screenshots/16169107-pow-prisoners-of-war-arcade-machine-gun.png",
+            "https://cdn.mobygames.com/24f4798c-c1c6-11ed-ab6b-02420a000194.webp",
+            "https://i.ytimg.com/vi/VCSvHEDwWyc/maxresdefault.jpg",
+            "https://assets.nintendo.com/image/upload/ar_16:9,b_auto:border,c_lpad/b_white/f_auto/q_auto/dpr_1.5/ncom/software/switch/70010000027116/7e69d4111cff1145ae5e46bc14a2a2bd0f0962479c1f2d8ef1bdf0cdcfd12e57"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 10,
+          "title": "Metal Slug",
+          "slug": "metal-slug",
+          "release_year": "1996",
+          "publisher": "Nazca Corporation",
+          "genres": [
+            {
+              "name": "arcade-shooter",
+              "description": "Built for quick action and coin-operated arcade cabinets, focusing on score, reflexes, and fast-paced levels."
+            },
+            {
+              "name": "platformer",
+              "description": "Involves navigating terrain, jumping over obstacles, and scaling platforms while fighting enemies."
+            },
+            {
+              "name": "action",
+              "description": "General high-energy gameplay involving constant combat, explosions, and cinematic sequences."
+            },
+            {
+              "name": "military-war-themed",
+              "description": "Features a fictional war scenario, military weapons, tanks, helicopters, and soldier-based enemies."
+            },
+            {
+              "name": "co-op-multiplayer",
+              "description": "Designed for two players to enjoy the game simultaneously, sharing lives, power-ups, and chaos."
+            },
+            {
+              "name": "shoot-em-up",
+              "description": "While not a bullet-hell shmup, it shares many features with shoot ‘em ups: swarming enemies, projectile dodging, and screen-filling bosses."
+            },
+            {
+              "name": "side-scrolling",
+              "description": "Gameplay takes place on a two-dimensional plane, with characters moving left-to-right across the screen."
+            }
+            
+          ],
+          "description": "Metal Slug: Super Vehicle-001 is a fast-paced, side-scrolling run-and-gun shooter known for its explosive action, hand-drawn 2D sprites, and over-the-top military-themed gameplay. Players control elite soldiers—Marco Rossi and Tarma Roving—battling against the evil General Morden’s rebel forces. The game features intense gunfights, vehicle combat (notably the titular \"Metal Slug\" tank), creative level design, comedic enemy animations, and memorable boss fights. It supports two-player co-op and is renowned for its charm, challenge, and fluid animations.",
+          "rating": "0.89",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "mslug.zip",
+          "box": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjAAxpOMRVjSGufcnCf2PmQuxxqK8b4w1fsOSJ9tyoxifcMHKca4cw2CnJCYp8hcw-FIRFEhcwbXcTnkKirNXvQEa62P0oBuPOn5sN_7lLkxqY2W51WRFSPoVgqtBXFWn76z3_zW-uhFy0/s304/Metal_Slug_%2528Neo_Geo%2529_26.gif",
+          "poster": "https://static.wikia.nocookie.net/snk/images/5/56/Flyermssv001.png",
+          "cartridge": "https://upload.wikimedia.org/wikipedia/en/b/b2/Metal_Slug_arcade_flyer.jpg",
+          "screenshots": [
+            "https://www.oldgames.sk/images/oldgames/action/Metal.Slug/metalslug-005.png",
+            "https://cdn.mobygames.com/screenshots/16413431-metal-slug-super-vehicle-001-arcade-use-big-rock-to-smash.png",
+            "https://cdn.mobygames.com/screenshots/2035983-metal-slug-super-vehicle-001-neo-geo-mission-1.png",
+            "https://s.uvlist.net/l/y2006/2/12865.jpg"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 11,
+          "title": "Street Fighter II: Champion Edition",
+          "slug": "street-fighter-ii-champion-edition",
+          "release_year": "1992",
+          "publisher": "Capcom",
+          "genres": [
+            {
+              "name": "fighting",
+              "description": "A genre where players control characters who engage in close-range combat against opponents, typically in rounds. Movesets include punches, kicks, special attacks, and combos. Victory is achieved by depleting the opponent’s health bar within a time limit."
+            },
+            {
+              "name": "arcade",
+              "description": "Designed for coin-operated machines, arcade games emphasize quick gameplay, competitive scoring, and often feature colorful graphics and simple controls to attract players in public spaces. Arcade fighting games like Street Fighter II were particularly known for head-to-head competitive play."
+            }
+          ],
+          "description": "Street Fighter II: Champion Edition is a competitive fighting game developed and published by Capcom. It is an enhanced version of the original Street Fighter II: The World Warrior (1991), featuring all four boss characters—Balrog, Vega, Sagat, and M. Bison—as playable fighters for the first time. Players choose from a roster of 12 distinct characters, each with unique moves, and battle in one-on-one matches across global stages. The game refined the genre with balanced gameplay, responsive controls, and introduced true competitive multiplayer in arcades.",
+          "rating": "0.78",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "sf2ce.zip",
+          "box": "https://64.media.tumblr.com/cc5acdd1b71df6ba12e0293025638ab2/tumblr_p1ecv8bIOu1v4u49oo1_1280.gif",
+          "poster": "https://m.media-amazon.com/images/I/71PSl3smpzL.jpg",
+          "cartridge": "https://hyperspin-fe.com/siteuploads/downloads/screenshots/monthly_2018_05/5aeae86403cba_Desktop03-05-201807-37-39-648.thumb.jpg.6dbb5e7c706d8dfc17e287fafa8d1f31.jpg",
+          "screenshots": [
+            "https://cdn.mobygames.com/screenshots/6634567-street-fighter-ii-champion-edition-arcade-ryo-vs-ken.png",
+            "https://cdn.mobygames.com/screenshots/15721203-street-fighter-ii-champion-edition-sharp-x68000-ryu-vs-ken.png",
+            "https://cdn.mobygames.com/screenshots/15721221-street-fighter-ii-champion-edition-sharp-x68000-zangief-vs-vega-.png",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdC3eTWDpB0RJw6hdxDgPLdg81sVi_61DgyQTdyoS7sYtWuWJaZ4A5OCl2LOWj3JD-efk&usqp=CAU",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRekIc_KqLv3_J0xzSe-uBSI0aKnUQD0TztWg&s",
+            "https://www.arcade-museum.com/images-game/18/street-fighter-ii-champion-edition-18349.jpg"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 12,
+          "title": "Galaga '88",
+          "slug": "galaga-88",
+          "release_year": "1988",
+          "publisher": "Namco",
+          "genres": [
+            {
+              "name": "shoot-em-up",
+              "description": "A subgenre of action games where the player controls a lone character or vehicle (often a spaceship), constantly firing at waves of enemies while dodging their attacks. It emphasizes precision, quick reactions, and screen awareness."
+            },
+            {
+              "name": "fixed-shooter",
+              "description": "A type of shoot 'em up where the player’s movement is restricted to a single axis (usually the bottom of the screen), with enemies attacking from above in patterns or formations."
+            },
+            {
+              "name": "arcade",
+              "description": "Designed for quick, challenging gameplay in public arcade cabinets. Arcade games emphasize scoring, short sessions, and increasingly difficult levels to encourage replay."
+            }
+          ],
+          "description": "Galaga '88 is an enhanced sequel to the classic space shooter Galaga. Players pilot a starfighter and battle waves of alien enemies in deep space, using fast reflexes to shoot down formations, avoid enemy fire, and rescue captured ships. Featuring colorful graphics, multiple power-ups, and branching levels, it builds on the original with more depth and replayability.",
+          "rating": "0.82",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "galaga88.zip",
+          "box": "https://gifdb.com/images/high/galaga-nes-game-cover-vf5ny1ziet4mv4zt.gif",
+          "poster": "https://m.media-amazon.com/images/M/MV5BYTcyNjg2ZDYtYWU0Mi00MmQxLWE2MDgtNGYyNWJmODg4MmY1XkEyXkFqcGc@._V1_.jpg",
+          "cartridge": "https://static.wikia.nocookie.net/banapedia/images/8/8e/Galaga_%2788.png",
+          "screenshots": [
+            "https://cdn.mobygames.com/screenshots/15979492-galaga-88-turbografx-16-bonus-round-galactic-dancing.png",
+            "https://cdn.mobygames.com/screenshots/16467110-galaga-88-arcade-next-stage.png",
+            "https://www.arcade-history.com/images/game/899_2.png"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 13,
+          "title": "Arkanoid",
+          "slug": "arkanoid",
+          "release_year": "1986",
+          "publisher": "Taito",
+          "genres": [
+            {
+              "name": "action",
+              "description": "Requires quick reflexes and precise paddle control to deflect the ball and catch power-ups."
+            },
+            {
+              "name": "arcade",
+              "description": "Classic coin-operated arcade experience focused on high scores and progressively challenging levels."
+            },
+            {
+              "name": "block-breaker",
+              "description": "Directly evolved from Atari's \"Breakout\" (1976), defining the core mechanic of bouncing a ball off a paddle to destroy bricks."
+            },
+            {
+              "name": "puzzle",
+              "description": "Involves strategic brick destruction (especially silver bricks requiring multiple hits) and efficient use of power-ups to clear complex level layouts."
+            }
+          ],
+          "description": "A block-breaking arcade game where the player controls a paddle-shaped spaceship (\"Vaus\") along the bottom of the screen. The goal is to deflect a single ball upwards to destroy all colored bricks arranged in patterns at the top of the screen without letting the ball fall past the paddle. The game features distinctive power-up capsules that drop from broken bricks, granting abilities like laser fire, paddle expansion, ball-catching, multi-balls, and more. It culminates in a boss battle against \"Doh.\"",
+          "rating": "0.76",
+          "multiplayer_support": false,
+          "save_state_support": true,
+          "rom": "arkatayt.zip",
+          "box": "https://i.pinimg.com/originals/58/6b/c1/586bc152611eb838bbbeaf6f7329db7a.gif",
+          "poster": "https://cdn.thegamesdb.net/images/original/boxart/front/42105-1.jpg",
+          "cartridge": "https://cdn.thegamesdb.net/images/original/boxart/front/42105-1.jpg",
+          "screenshots": [
+            "https://www.oldgames.sk/images/oldgames/logic/Arkanoid/dj_4c923ce9d3042.png",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6a2wjzW1C0NVIP9vBDpYX0yKPZQB9lftsWQ&s"
           ],
           "bookmark_status": false,
           "play_count": 0,
@@ -2131,7 +2455,7 @@
         "version": "7.0"
       },
       "console_logo": "https://hyperspin-fe.com/siteuploads/downloads/screenshots/monthly_2018_02/5a95f7aa58e76_MicrosoftMS-DOS.thumb.png.55d7a7f3d0b5ab178001fd76ed08cb04.png",
-      "console_icon": "https://ouch-cdn2.icons8.com/SqhYE1KH01d03IIZCzGlv9GnRQyfqNXUsmGd00K4lIk/rs:fit:683:456/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9wbmcvMzU4/LzNlZjRiZDE0LTU5/NmItNDRlZS04Nzc3/LWM0OTg1MTVmMDUw/My5wbmc.png",
+      "console_icon": "/images/games/pc.png",
       "console_bgs": [
         "https://previews.123rf.com/images/atmosphere1/atmosphere11712/atmosphere1171200005/92122905-old-dirty-retro-keyboard-of-a-vintage-computer-from-1990s.jpg"
       ],
@@ -2283,7 +2607,7 @@
             }
           ],
           "description": "\"Doom 2,\" released in 1994, is a legendary first-person shooter that took the gaming world by storm. In this iconic DOS game, players assume the role of a space marine battling against the forces of hell on a series of nightmarish levels. As a pioneer of the first-person shooter genre, \"Doom 2\" offers relentless action, intense combat, and atmospheric gameplay. Armed with a variety of weapons, players traverse intricate levels, solving puzzles, collecting power-ups, and confronting an array of demonic foes. Its fast-paced, heart-pounding gameplay and iconic level design have made \"Doom 2\" an enduring classic, leaving an indelible mark on the gaming industry.",
-          "rating": "0.95",
+          "rating": "0.87",
           "multiplayer_support": true,
           "save_state_support": true,
           "rom": "https://play.libe.dev/games/bundles/doom2.jsdos",
@@ -2559,7 +2883,144 @@
           "hof": [],
           "is_free": true,
           "options": {}
+        },
+        {
+          "id": 9,
+          "title": "Prehistorik",
+          "slug": "prehistorik",
+          "release_year": "1991",
+          "publisher": "Titus Interactive",
+          "genres": [
+            {
+              "name": "platformer",
+              "description": "A genre where the player controls a character who jumps between platforms, avoids obstacles, and collects items. Prehistorik follows the classic 2D side-scrolling platformer format with multiple levels to explore and enemies to defeat."
+            },
+            {
+              "name": "action",
+              "description": "While not an official mechanical genre, Prehistorik uses humorous character design, animations, and silly situations (like clubbing over-the-top cartoon enemies and eating giant food) to create a lighthearted, funny experience."
+            }
+          ],
+          "description": "Prehistorik (1991) is a 2D side-scrolling platformer where you play as a hungry caveman on a quest to find food. Armed with a club, you explore prehistoric landscapes, battle quirky dinosaurs and other creatures, and collect giant snacks while avoiding hazards. The game combines action and humor with classic platforming challenges.",
+          "rating": "0.82",
+          "multiplayer_support": false,
+          "save_state_support": true,
+          "rom": "https://play.libe.dev/games/bundles/prehistorik.jsdos",
+          "box": "https://i.makeagif.com/media/10-25-2023/6kCRVR.gif",
+          "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKU1vH7Y6Ys3GOeSjz-KYERxhD7CzpayqFKQ&s",
+          "cartridge": "https://amiga.abime.net/disk_preview/1101-1200/1133_preview2.jpg",
+          "screenshots": [
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIcm90M-BCVn4anQMcEOju085hMfbPrkdtOw&s",
+            "https://lutris.net/media/games/screenshots/4_WQhnyNs.png",
+            "https://i.ytimg.com/vi/0C87vvSC52I/hq720.jpg"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 10,
+          "title": "Digger",
+          "slug": "digger",
+          "release_year": "1983",
+          "publisher": "Windmill Software",
+          "genres": [
+            {
+              "name": "arcade",
+              "description": "Features fast-paced gameplay focused on reflexes and timing."
+            },
+            {
+              "name": "action",
+              "description": "Involves real-time interaction, dodging enemies, and strategic movement."
+            },
+            {
+              "name": "single-player",
+              "description": "Designed for one player, focusing on high-score challenges."
+            }
+          ],
+          "description": "Digger is a classic 1983 arcade-style computer game developed by Windmill Software for DOS. Combining elements of Dig Dug and Mr. Do!, the player controls a small mining machine that tunnels through dirt to collect emeralds and gold while avoiding and defeating enemy creatures. The game is known for its catchy rendition of the \"Popcorn\" song and challenging gameplay that increases in difficulty with each level.",
+          "rating": "0.81",
+          "multiplayer_support": false,
+          "save_state_support": true,
+          "rom": "https://play.libe.dev/games/bundles/Digger.jsdos",
+          "box": "https://i.makeagif.com/media/12-24-2023/sjgiAe.gif",
+          "poster": "https://upload.wikimedia.org/wikipedia/en/7/71/Digger_video_game_cover.jpg",
+          "cartridge": "/images/games/digger-floppy-disk.png",
+          "screenshots": [
+            "https://archive.org/serve/msdos_Digger_1983_1983/Digger_1983_1983_screenshot.gif",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTns2SGBdvihFKWAf-31lmsqrr_r942aAd1QaPdKF97pWoWnOldG2Dn-8CuYimukI9gOU&usqp=CAU",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS4EtZezkGEwIZ5ryzrDYkL3dxzXJu1IcUPwKaUa4ph1YWxjc5XJd-wGVGgv9zLUZmfcI&usqp=CAU",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSu95iBfnHOcvLZbXY1YXQRKLbbmp5mr26nw&s",
+            "https://image.dosgamesarchive.com/screenshots/dgrremast-8.png"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 11,
+          "title": "DOOM",
+          "slug": "doom",
+          "release_year": "1993",
+          "publisher": "id Software",
+          "genres": [
+            {
+              "name": "first-person-shooter",
+              "description": "The game pioneered and defined the FPS genre, featuring real-time 3D rendering (using raycasting), fast-paced action, and a weapon arsenal viewed from the player's perspective."
+            },
+            {
+              "name": "action",
+              "description": "Relentless combat, quick reflexes, and constant movement are core to the gameplay."
+            },
+            {
+              "name": "horror",
+              "description": "Features grotesque demon enemies (Imps, Barons of Hell, Cacodemons, etc.), hellish environments, dark lighting, and a constant sense of dread and isolation."
+            },
+            {
+              "name": "sci-fi",
+              "description": "Set on futuristic Martian moons (Phobos & Deimos) and UAC (Union Aerospace Corporation) facilities."
+            },
+            {
+              "name": "arcade",
+              "description": "Emphasizes high scores, secret hunting, and fast, skill-based play."
+            }
+          ],
+          "description": "A seminal first-person shooter where players take the role of a lone space marine (\"Doomguy\") fighting through hordes of demonic invaders unleashed from Hell on the moons of Mars. Armed with an arsenal of powerful weapons, players navigate maze-like, tech-base levels filled with traps, secrets, and intense combat, aiming for survival and escape.",
+          "rating": "0.81",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "https://play.libe.dev/games/bundles/DOOM.jsdos",
+          "box": "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUycG13eWp4bXd1NGIwdGh3dDZtNmF5aWNjaWNtajJvaDcxeHdiZzVheiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/f46iWuMqIGuXe/source.gif",
+          "poster": "https://i.ebayimg.com/images/g/eHsAAOSwBahVFmBk/s-l400.jpg",
+          "cartridge": "/images/games/doom-disk.png",
+          "screenshots": [
+            "https://ip.trueachievements.com/remote/store-images.s-microsoft.com/image/apps.21438.13868795213002429.6ceae2ae-21ee-4bb3-88b5-3f7a874722d3.1b0fd352-5169-4037-8588-bc8af825f813?width=900",
+            "https://ip.trueachievements.com/remote/store-images.s-microsoft.com/image/apps.43055.14594377182731857.c2ce2a13-0fb2-4b48-adc9-547bb123d0bd.60be4654-6eaa-4113-989f-e5e306fecbc3?width=900",
+            "https://ip.trueachievements.com/remote/store-images.s-microsoft.com/image/apps.53145.14303655336501012.2beb08d9-395e-453b-b5e3-0d4ac24d9d15.b6447c5f-2ff2-4e53-a6cb-690c31966ba3?width=900",
+            "https://sm.ign.com/t/ign_sea/photo/default/doom-steam-01-1701871477087_qnmh.1080.jpg"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
         }
+        
       ]
     }
   ]
