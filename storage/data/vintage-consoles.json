@@ -967,6 +967,46 @@
           "hof": [],
           "is_free": true,
           "options": {}
+        },
+        {
+          "id": 11,
+          "title": "Final Fight",
+          "slug": "final-fight",
+          "release_year": "1991",
+          "publisher": "Capcom",
+          "genres": [
+            {
+              "name": "beat-em-up",
+              "description": "A subgenre of action games that emphasizes hand-to-hand combat against multiple enemies. Players typically move through levels from left to right, fighting waves of enemies with punches, kicks, and special moves."
+            },
+            {
+              "name": "side-scrolling-action",
+              "description": "A type of action game where gameplay is viewed from a side perspective and characters move horizontally across the screen. These games often involve platforming elements, combat, or both."
+            }
+          ],
+          "description": "Final Fight is a side-scrolling beat 'em up game where players choose between three characters—Cody, Guy, or Haggar—to battle through the crime-infested streets of Metro City. Their mission: rescue Haggar's daughter, Jessica, from the notorious Mad Gear Gang. The game features fast-paced melee combat, various enemy types, and gritty urban environments.",
+          "rating": "0.82",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "Final Fight (USA).zip",
+          "box": "https://www.fightersgeneration.com/nf6/char/cody-finalfight-infinite-on-damnd.gif",
+          "poster": "https://gamefaqs.gamespot.com/a/box/7/7/6/20776_front.jpg",
+          "cartridge": "/images/games/final-fight-snes.png",
+          "screenshots": [
+            "https://i0.wp.com/snesaday.com/wp-content/uploads/Final-Fight-FI.png?resize=1024%2C576&ssl=1",
+            "https://i.ytimg.com/vi/uD5593khP7k/sddefault.jpg",
+            "https://i.ytimg.com/vi/f8bkgEUdkcM/maxresdefault.jpg",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHO6cLITxmHq4q_Oy3XRohsnGg-232F8kCvQ&s"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
         }
       ]
     },
@@ -1649,6 +1689,47 @@
           "screenshots": [
             "https://www.oldgames.sk/images/oldgames/logic/Arkanoid/dj_4c923ce9d3042.png",
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6a2wjzW1C0NVIP9vBDpYX0yKPZQB9lftsWQ&s"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 14,
+          "title": "Final Fight",
+          "slug": "final-fight",
+          "release_year": "1989",
+          "publisher": "Capcom",
+          "genres": [
+            {
+              "name": "beat-em-up",
+              "description": "A subgenre of action games focused on close-quarters combat against waves of enemies. Players advance through levels using punches, kicks, grabs, and special attacks, often with co-op multiplayer."
+            },
+            {
+              "name": "side-scrolling-action",
+              "description": "A style of gameplay where the player moves primarily from left to right across the screen, engaging in combat and overcoming obstacles. These games combine movement with fast-paced action."
+            }
+          ],
+          "description": "Final Fight is a classic side-scrolling beat 'em up arcade game developed by Capcom. Set in the crime-ridden Metro City, players control one of three heroes—Haggar, Cody, or Guy—as they battle the brutal Mad Gear Gang to rescue Haggar’s kidnapped daughter, Jessica. Known for its intense action, colorful graphics, and cooperative multiplayer, Final Fight became a defining title in arcade brawler history.",
+          "rating": "0.79",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "ffight.zip",
+          "box": "https://i.redd.it/video-game-graphics-showcase-1989-v0-8wptfof6ng1d1.gif?width=720&auto=webp&s=f557594315270d1def54de2ca4671a2cc703bc02",
+          "poster": "https://m.media-amazon.com/images/M/MV5BMjZhYTQzOTgtYmYyMy00NjU4LThlNmEtY2ZjYWMzMWI0NGU2XkEyXkFqcGc@._V1_.jpg",
+          "cartridge": "https://i.ytimg.com/vi/q5EU-21u-us/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCNIPtk_y5LizgzUVAxXXbfebPXfQ",
+          "screenshots": [
+            "https://cdn.mobygames.com/screenshots/16257313-final-fight-arcade-ride-fight.png",
+            "https://i.ytimg.com/vi/E8-ZPhfTR80/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD7V5FVm7mygg2h3YJuYtFMGdchhA",
+            "https://cdn.mobygames.com/screenshots/16413893-final-fight-arcade-in-the-slums.png",
+            "https://tcrf.net/images/4/4f/FinalFightArcStageDebug.png",
+            "https://hips.hearstapps.com/digitalspyuk.cdnds.net/13/01/gaming-final-fight-screenshot-2.jpg"
           ],
           "bookmark_status": false,
           "play_count": 0,
