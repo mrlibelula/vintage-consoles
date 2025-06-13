@@ -7,7 +7,7 @@
         
         @if ($show_hero)
         <div class="flex flex-col justify-between sm:-mt-16 h-full"
-            :class="!darkMode ? 'fade-hero-light' : 'fade-hero'"
+            :class="!isDark ? 'fade-hero-light' : 'fade-hero'"
         >
             <div></div>
             <x-container class="mb-2 sm:mb-10 text-center md:text-left">

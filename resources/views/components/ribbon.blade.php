@@ -94,13 +94,13 @@
         }
     }'
 
-    :style="darkMode 
+    :style="isDark 
         ? '--swiper-navigation-color: #fff; --swiper-pagination-color: #fff; --swiper-pagination-bottom: -11px;'
         : '--swiper-navigation-color: #000; --swiper-pagination-color: #000; --swiper-pagination-bottom: -11px;'
     "
 >
     <div slot="container-start" class="parallax-bg"
-        :style="darkMode 
+        :style="isDark 
             ? 'background-image: url({{ $dark_wallpaper }}); opacity: 0.05;'
             : 'background-image: url({{ $light_wallpaper }}); opacity: 0.05;'
         " 

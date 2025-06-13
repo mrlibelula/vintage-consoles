@@ -249,13 +249,16 @@
             </div>
 
             <div>
-                <div @click="darkMode = !darkMode" class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent dark:border-transparent hover:border-cod-gray-300 hover:dark:border-rose-600 dark:border-cod-gray-600 text-left text-lg text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-700 hover:dark:text-cod-gray-300 hover:bg-cod-gray-50 hover:dark:bg-rose-900/50 focus:outline-none focus:text-cod-gray-800 dark:focus:text-cod-gray-200 focus:bg-cod-gray-100 dark:focus:bg-cod-gray-900 focus:border-cod-gray-700 dark:focus:border-cod-gray-300 smooth-300 cursor-pointer">
+                <div @click="cycleTheme()" class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent dark:border-transparent hover:border-cod-gray-300 hover:dark:border-rose-600 dark:border-cod-gray-600 text-left text-lg text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-700 hover:dark:text-cod-gray-300 hover:bg-cod-gray-50 hover:dark:bg-rose-900/50 focus:outline-none focus:text-cod-gray-800 dark:focus:text-cod-gray-200 focus:bg-cod-gray-100 dark:focus:bg-cod-gray-900 focus:border-cod-gray-700 dark:focus:border-cod-gray-300 smooth-300 cursor-pointer">
                     <div class="flex items-center">
-                        <div x-cloak x-show="darkMode" class="text-lg">
+                        <div x-cloak x-show="theme === 'light'" class="text-lg">
                             {{ __('Light theme') }}
                         </div>
-                        <div x-cloak x-show="!darkMode" class="text-lg">
+                        <div x-cloak x-show="theme === 'dark'" class="text-lg">
                             {{ __('Dark theme') }}
+                        </div>
+                        <div x-cloak x-show="theme === 'system'" class="text-lg">
+                            {{ __('System theme') }}
                         </div>
                     </div>
                 </div>

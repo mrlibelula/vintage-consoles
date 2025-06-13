@@ -1,9 +1,44 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
     x-cloak
-    x-data="{ darkMode: localStorage.getItem('dark') === 'true' }"
-    x-init="$watch('darkMode', val => localStorage.setItem('dark', val))"
-    x-bind:class="{ 'dark': darkMode }"
+    x-data="{ 
+        theme: localStorage.getItem('theme') || 'system',
+        isDark: false,
+        init() {
+            // Migrate from old 'dark' key to new 'theme' key
+            if (!localStorage.getItem('theme') && localStorage.getItem('dark')) {
+                const oldDark = localStorage.getItem('dark') === 'true';
+                this.theme = oldDark ? 'dark' : 'light';
+                localStorage.removeItem('dark');
+            }
+            
+            this.updateTheme();
+            this.$watch('theme', val => {
+                localStorage.setItem('theme', val);
+                this.updateTheme();
+            });
+            
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                if (this.theme === 'system') {
+                    this.updateTheme();
+                }
+            });
+        },
+        updateTheme() {
+            if (this.theme === 'system') {
+                this.isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            } else {
+                this.isDark = this.theme === 'dark';
+            }
+        },
+        cycleTheme() {
+            const themes = ['light', 'dark', 'system'];
+            const currentIndex = themes.indexOf(this.theme);
+            this.theme = themes[(currentIndex + 1) % themes.length];
+        }
+    }"
+    x-bind:class="{ 'dark': isDark }"
 >
     <head>
         <meta charset="utf-8">
