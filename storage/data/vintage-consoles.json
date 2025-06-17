@@ -2523,6 +2523,46 @@
           "hof": [],
           "is_free": true,
           "options": {}
+        },
+        {
+          "id": 18,
+          "title": "Enduro",
+          "slug": "enduro",
+          "release_year": "1983",
+          "publisher": "Activision",
+          "genres": [
+            {
+              "name": "racing",
+              "description": "Focuses on driving vehicles to compete against other cars or the clock."
+            },
+            {
+              "name": "arcade",
+              "description": "Simple, fast-paced gameplay designed for quick sessions and high-score chasing."
+            }
+          ],
+          "description": "Enduro is a racing video game where players compete in an endless endurance race, overtaking a set number of cars each day and facing changing weather and light conditions like fog, night, and dawn.",
+          "rating": "0.94",
+          "multiplayer_support": false,
+          "save_state_support": true,
+          "rom": "Enduro-USA.a26",
+          "box": "https://leeyngdo.github.io/assets/images/RL/deep-q-learning/enduro.gif",
+          "poster": "https://upload.wikimedia.org/wikipedia/en/thumb/8/84/Enduro_Coverart.png/250px-Enduro_Coverart.png",
+          "cartridge": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXsq1UR0xBh_aUdI-YILp9gFCXA_47OsJWvA&s",
+          "screenshots": [
+            "https://cdn.mobygames.com/screenshots/1078111-enduro-atari-2600-driving-at-night.png",
+            "https://www.atarimania.com/2600/screens/enduro_5.gif",
+            "https://www.atarimania.com/2600/screens/enduro_pal_5.gif",
+            "https://cdn.mobygames.com/3053e340-ab72-11ed-a218-02420a00019e.webp"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
         }
       ]
     },
