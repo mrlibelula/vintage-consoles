@@ -14,7 +14,7 @@ class SelectedConsole extends Component
     public bool $console_data_accordion = true;
     public bool $specs_accordion = false;
     public bool $community_accordion = true;
-    public string $ob = 'squares';
+    public string $ob = 'group';
 
     public function toggleAccordion(string $accordion_prop)
     {
@@ -33,7 +33,7 @@ class SelectedConsole extends Component
 
     public function render()
     {
-        $this->ob = Session::exists('ob') ? Session::get('ob') : 'squares';
+        $this->ob = Session::exists('ob') ? Session::get('ob') : $this->ob;
         return view('livewire.selected-console');
     }
 }

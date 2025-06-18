@@ -55,7 +55,8 @@
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=VT323&display=block" rel="stylesheet">
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=VT323&display=block" as="style">
 
         <!-- Iconset -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/icon.min.css" integrity="sha256-KyXPF3/VOPPst/NQOzCWr97QMfSfzJLyFT0o5lYJXiQ=" crossorigin="anonymous" />
@@ -69,11 +70,60 @@
 
         <!-- Styles -->
         <style>
+            /* Prevent FOUT without jarring flash */
             * {
                 font-family: 'VT323', monospace;
                 font-size: 1.32rem;
             }
+            
+            /* Hide text until font loads */
+            body {
+                color: transparent;
+                transition: color 0.2s ease-in-out;
+            }
+            
+            /* Show text once font is loaded */
+            html.fonts-loaded body {
+                color: inherit;
+            }
+            
+            /* Keep background and layout visible */
+            body {
+                background-color: inherit;
+            }
         </style>
+        
+        <!-- Font loading script -->
+        <script>
+            // Optimized font loading detection
+            function showContent() {
+                document.documentElement.classList.add('fonts-loaded');
+            }
+            
+            // Check if VT323 font is loaded
+            if (document.fonts && document.fonts.check) {
+                // Modern browsers - check specifically for VT323
+                const checkVT323 = () => {
+                    if (document.fonts.check('16px VT323')) {
+                        showContent();
+                    } else {
+                        setTimeout(checkVT323, 10);
+                    }
+                };
+                
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', checkVT323);
+                } else {
+                    checkVT323();
+                }
+            } else {
+                // Fallback for older browsers
+                document.fonts.ready.then(showContent);
+            }
+            
+            // Reduced safety timeout - show after 1 second max
+            setTimeout(showContent, 1000);
+        </script>
         
         @stack('styles')
 

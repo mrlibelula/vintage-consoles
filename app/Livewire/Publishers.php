@@ -12,14 +12,14 @@ class Publishers extends Component
     public array $publishers = [];
     public string $publisher_name;
     public array $filtered_games = [];
-    public string $ob = 'squares';
+    public string $ob = 'group';
     
     public function mount(Request $request, string $publisher_name = '')
     {
         if ($request->has('ob')) {
             $this->ob = $request->query('ob');
         } else {
-            $this->ob = Session::has('ob') ? Session::get('ob') : 'squares';
+            $this->ob = Session::has('ob') ? Session::get('ob') : $this->ob;
         }
         Session::put('ob', $this->ob);
 
@@ -80,7 +80,7 @@ class Publishers extends Component
     {
         if (Session::exists('ob')) {
             $ob = Session::get('ob');
-            $this->ob = $ob === 'lista' ? 'squares' : $ob;
+            $this->ob = $ob === 'lista' ? $this->ob : $ob;
         }
         return view('livewire.publishers');
     }

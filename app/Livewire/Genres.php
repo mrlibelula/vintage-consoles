@@ -13,14 +13,14 @@ class Genres extends Component
     public string $genre_name;
     public array $genres = [];
     public array $filtered_games = [];
-    public string $ob = 'squares';
+    public string $ob = 'group';
 
     public function mount(Request $request, string $genre_name = '')
     {
         if ($request->has('ob')) {
             $this->ob = $request->query('ob');
         } else {
-            $this->ob = Session::has('ob') ? Session::get('ob') : 'squares';
+            $this->ob = Session::has('ob') ? Session::get('ob') : $this->ob;
         }
         Session::put('ob', $this->ob);
 

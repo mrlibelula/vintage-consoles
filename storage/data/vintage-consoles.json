@@ -145,48 +145,6 @@
         },
         {
           "id": 3,
-          "title": "The Adventures of Dizzy",
-          "slug": "the-adventures-of-dizzy",
-          "release_year": "1991",
-          "publisher": "Codemasters",
-          "genres": [
-            {
-              "name": "platformer",
-              "description": "\"The Adventures of Dizzy\" combines platforming gameplay with adventure elements. Players control Dizzy, the egg-shaped protagonist, as they navigate various levels, solve puzzles, collect items, and interact with characters to progress through the game."
-            },
-            {
-              "name": "adventure",
-              "description": "\"Fantastic Adventures of Dizzy\" for the NES is an adventure game featuring Dizzy, an anthropomorphic egg. Players navigate through various environments, solve puzzles, and interact with characters to progress in the story. The game combines platforming elements with inventory-based puzzle solving, creating a rich and engaging adventure experience."
-            }
-          ],
-          "description": "Dizzy, the egg-shaped character, became popular through games developed by Codemasters on home computers but did not have an official NES release.",
-          "rating": "0.69",
-          "multiplayer_support": true,
-          "save_state_support": true,
-          "rom": "Fantastic Adventures of Dizzy, The (Unl) [!].nes",
-          "box": "https://tcrf.net/images/2/2f/TFAoD-SkySkipping.gif",
-          "poster": "https://m.media-amazon.com/images/I/51s0AHl3vUL.jpg",
-          "cartridge": "https://m.media-amazon.com/images/I/51wzizjz19L._AC_UF1000,1000_QL80_.jpg",
-          "screenshots": [
-            "https://i0.wp.com/www.arcadeattack.co.uk/wp-content/uploads/2016/11/Fantastic-Dizzy-NES-1-300x263.png?resize=350%2C307",
-            "https://i.ytimg.com/vi/fha8FEynhfs/hqdefault.jpg",
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyoM23cd2kdD68WYEbAqn1T_8pxWpJxpodPwvZ4vRDzwk6lDCzLnR4bvHMLCGffdogaDo&usqp=CAU",
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1CXoUKlhZ_SvdWO8jwXrZyDEGEQHUyKEHQ5cc9JdWvCFf2yRTd_fG_N-TCQRNV3ZFWSY&usqp=CAU",
-            "https://tcrf.net/images/4/43/TFAoD-EndlessFall.png",
-            "https://i0.wp.com/www.arcadeattack.co.uk/wp-content/uploads/2016/11/Fantastic-Dizzy-NES-2.png?resize=350%2C306"
-          ],
-          "bookmark_status": false,
-          "play_count": 0,
-          "last_played": "",
-          "metadata": {},
-          "user_reviews": [],
-          "additional_notes": "",
-          "hof": [],
-          "is_free": true,
-          "options": {}
-        },
-        {
-          "id": 4,
           "title": "Super Mario Bros. 3",
           "slug": "super-mario-bros-3",
           "release_year": "1988",
@@ -249,7 +207,7 @@
           "options": {}
         },
         {
-          "id": 5,
+          "id": 4,
           "title": "The Simpsons - Bart Vs. the World",
           "slug": "the-simpsons-bart-vs-the-world",
           "release_year": "1991",
@@ -295,7 +253,7 @@
           "options": {}
         },
         {
-          "id": 6,
+          "id": 5,
           "title": "Snake Rattle 'n' Roll",
           "slug": "snake-rattle-n-roll",
           "release_year": "1990",
@@ -320,6 +278,48 @@
             "https://i.ytimg.com/vi/mF19LhEM8Q8/maxresdefault.jpg",
             "https://i.ytimg.com/vi/r1aFoGEWHFA/hqdefault.jpg",
             "https://r.mprd.se/fup/up/56930-Snake_Rattle_n_Roll_(USA)-1.png"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 6,
+          "title": "The Adventures of Dizzy",
+          "slug": "the-adventures-of-dizzy",
+          "release_year": "1991",
+          "publisher": "Codemasters",
+          "genres": [
+            {
+              "name": "platformer",
+              "description": "\"The Adventures of Dizzy\" combines platforming gameplay with adventure elements. Players control Dizzy, the egg-shaped protagonist, as they navigate various levels, solve puzzles, collect items, and interact with characters to progress through the game."
+            },
+            {
+              "name": "adventure",
+              "description": "\"Fantastic Adventures of Dizzy\" for the NES is an adventure game featuring Dizzy, an anthropomorphic egg. Players navigate through various environments, solve puzzles, and interact with characters to progress in the story. The game combines platforming elements with inventory-based puzzle solving, creating a rich and engaging adventure experience."
+            }
+          ],
+          "description": "Dizzy, the egg-shaped character, became popular through games developed by Codemasters on home computers but did not have an official NES release.",
+          "rating": "0.69",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "Fantastic Adventures of Dizzy, The (Unl) [!].nes",
+          "box": "https://tcrf.net/images/2/2f/TFAoD-SkySkipping.gif",
+          "poster": "https://m.media-amazon.com/images/I/51s0AHl3vUL.jpg",
+          "cartridge": "https://m.media-amazon.com/images/I/51wzizjz19L._AC_UF1000,1000_QL80_.jpg",
+          "screenshots": [
+            "https://i0.wp.com/www.arcadeattack.co.uk/wp-content/uploads/2016/11/Fantastic-Dizzy-NES-1-300x263.png?resize=350%2C307",
+            "https://i.ytimg.com/vi/fha8FEynhfs/hqdefault.jpg",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyoM23cd2kdD68WYEbAqn1T_8pxWpJxpodPwvZ4vRDzwk6lDCzLnR4bvHMLCGffdogaDo&usqp=CAU",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1CXoUKlhZ_SvdWO8jwXrZyDEGEQHUyKEHQ5cc9JdWvCFf2yRTd_fG_N-TCQRNV3ZFWSY&usqp=CAU",
+            "https://tcrf.net/images/4/43/TFAoD-EndlessFall.png",
+            "https://i0.wp.com/www.arcadeattack.co.uk/wp-content/uploads/2016/11/Fantastic-Dizzy-NES-2.png?resize=350%2C306"
           ],
           "bookmark_status": false,
           "play_count": 0,
@@ -1130,6 +1130,50 @@
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8muiWU2DkKg2I4yzEOmrff9ptCAv5SWFTcg&s",
             "https://www.giantbomb.com/a/uploads/original/0/6150/503440-bddsnes3.gif",
             "https://i.ytimg.com/vi/UtsBsxtoIgs/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AGyBoAC0AWKAgwIABABGEYgRihZMA8=&rs=AOn4CLBqAX57FstLuiDWD1I9n0TPlojVsw"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 15,
+          "title": "Mega Man X",
+          "slug": "mega-man-x",
+          "release_year": "1993",
+          "publisher": "Capcom",
+          "genres": [
+            {
+              "name": "action",
+              "description": "Focuses on fast-paced combat, boss fights, and precise shooting mechanics."
+            },
+            {
+              "name": "platformer",
+              "description": "Requires skilled jumping, climbing, and navigating intricate stage layouts."
+            },
+            {
+              "name": "run-and-gun",
+              "description": "Blend of running, shooting, and using special weapons gained from defeated bosses."
+            }
+          ],
+          "description": "Mega Man X is an action-platformer released for the SNES in 1993. Players control X, an advanced robot fighting Mavericks in a futuristic world. The game expands the classic Mega Man formula with wall-jumping, dash abilities, upgradeable armor, and a more dynamic level design.",
+          "rating": "0.72",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "Mega Man X (USA) (Rev 1).zip",
+          "box": "https://media.tenor.com/aR2TwV8tofQAAAAM/mega-man-x-snes.gif",
+          "poster": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co3tu2.jpg",
+          "cartridge": "https://i.ebayimg.com/images/g/zXsAAOSwQB1jVxsn/s-l400.jpg",
+          "screenshots": [
+            "https://cdn.mobygames.com/screenshots/2020797-mega-man-x-snes-attacking-a-giant-robot-bug-thing.png",
+            "https://cdn.mobygames.com/screenshots/2021652-mega-man-x-snes-after-finishing-all-8-standard-levels-a-few-very.png",
+            "https://cdn.mobygames.com/screenshots/2021469-mega-man-x-snes-climbing-the-tower.png",
+            "https://preview.redd.it/u1eni8qsygm61.jpg?width=640&crop=smart&auto=webp&s=55c3b62db4e587d21b21fac4ea75cc465efdf76b"
           ],
           "bookmark_status": false,
           "play_count": 0,
