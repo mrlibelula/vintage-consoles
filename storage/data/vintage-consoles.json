@@ -450,6 +450,137 @@
           "hof": [],
           "is_free": true,
           "options": {}
+        },
+        {
+          "id": 10,
+          "title": "Super Off Road",
+          "slug": "super-off-road",
+          "release_year": "1991",
+          "publisher": "Tradewest",
+          "genres": [
+            {
+              "name": "racing",
+              "description": "Compete in off-road truck races with tight turns and jumps."
+            },
+            {
+              "name": "arcade",
+              "description": "Simple, accessible pick-up-and-play gameplay with quick matches."
+            },
+            {
+              "name": "multiplayer",
+              "description": "Supports up to three players racing simultaneously for high-scoring fun."
+            }
+          ],
+          "description": "Ivan \"Ironman\" Stewart's Super Off Road is an arcade-style racing game originally released in arcades and later ported to the SNES in 1991. Players race rugged off-road trucks around dirt tracks filled with jumps and hazards, competing for cash to upgrade their vehicles in fast-paced, top-down racing action.",
+          "rating": "0.80",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "Super Off Road (USA).nes",
+          "box": "https://i0.wp.com/superchartisland.com/wp-content/uploads/2016/02/tumblr_o2zomzlRP81u9d85bo1_640.gif",
+          "poster": "https://gamefaqs.gamespot.com/a/box/7/6/7/49767_front.jpg",
+          "cartridge": "https://lh3.googleusercontent.com/proxy/YQ_UHN8DMcM2yHxenkN978NzEE6AkHgUtvM43mQmmXoRUiPxsdv_q5qn22bfxAGHqlK5qRqu6DAjUg5WLJuz8Tly72G3yWOJOu-njA778XUVvCA6inc",
+          "screenshots": [
+            "https://www.oldgames.sk/images/oldgames/racing/Ivan.Ironman.Stewarts.Super.Off.Road/super-off-road-002.png",
+            "https://cdn.mobygames.com/e4760316-abaf-11ed-b721-02420a00019b.webp",
+            "https://i.kinja-img.com/image/upload/c_fit,q_60,w_645/068dbcb6f42f1264bd06230f77ccd1d9.jpg"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 11,
+          "title": "Super C (Contra)",
+          "slug": "super-c-contra",
+          "release_year": "1990",
+          "publisher": "Konami",
+          "genres": [
+            {
+              "name": "run-and-gun",
+              "description": "Fast-paced shooting while moving through enemy-packed levels."
+            },
+            {
+              "name": "action",
+              "description": "Focuses on intense combat, rapid-fire gameplay, and dramatic boss encounters."
+            },
+            {
+              "name": "platformer",
+              "description": "Involves jumping over hazards and navigating tricky terrain while under fire."
+            }
+          ],
+          "description": "Super C is a run-and-gun action game released for the NES in 1990. As a sequel to Contra, it challenges players to battle alien forces through side-scrolling and top-down levels, using powerful weapons and tight reflexes to survive waves of enemies and tough bosses.",
+          "rating": "0.85",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "Super C (USA).nes",
+          "box": "https://64.media.tumblr.com/396b9a1c20b7ef85bc893dbe2269f2fe/tumblr_ovx5siEkDN1tdkro1o1_540.gif",
+          "poster": "https://cdn.thegamesdb.net/images/original/boxart/front/111450-1.jpg",
+          "cartridge": "https://cdn11.bigcommerce.com/s-ymgqt/images/stencil/1280x1280/products/24505/33284/Super-C-Contra-II---NES-G__80421.1712935358.jpg?c=2",
+          "screenshots": [
+            "https://cdn.mobygames.com/screenshots/3525425-super-contra-nes-in-the-european-version-all-the-characters-are-.png",
+            "https://cdn.mobygames.com/screenshots/3522248-super-contra-nes-interesting-rocky-level.png",
+            "https://indiegamerchick.com/wp-content/uploads/2024/10/super-contra-japan-241025-134204.png?w=584"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 12,
+          "title": "Maniac Mansion",
+          "slug": "maniac-mansion",
+          "release_year": "1990",
+          "publisher": "Jaleco",
+          "genres": [
+            {
+              "name": "adventure",
+              "description": "Story-driven gameplay focused on exploration and puzzle-solving"
+            },
+            {
+              "name": "puzzle",
+              "description": "Involves solving logical and item-based puzzles to progress."
+            },
+            {
+              "name": "point-and-click",
+              "description": "Navigate rooms and interact with objects through a command menu system."
+            }
+          ],
+          "description": "Maniac Mansion is a graphic adventure game released for the NES in 1990. Players control a group of teenagers who break into the spooky Edison mansion to rescue a kidnapped girl, solving quirky puzzles, avoiding bizarre inhabitants, and uncovering secrets in this humorous cult classic.",
+          "rating": "0.90",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "Maniac Mansion (USA).nes",
+          "box": "https://tcrf.net/images/5/5a/Maniac_mansion_nes_hidden_msg.gif",
+          "poster": "https://i.ebayimg.com/00/s/MTAwMFg2NjM=/z/83QAAOSwa7Zkl1~M/$_57.JPG?set_id=8800005007",
+          "cartridge": "https://ctrlaltdelights.com/cdn/shop/files/il_fullxfull.5992203404_8m8f.jpg?v=1729714074&width=1946",
+          "screenshots": [
+            "https://cdn.mobygames.com/screenshots/16318290-maniac-mansion-nes-cutscene-weird-ed-is-worried-about-his-dad.png",
+            "https://cdn.mobygames.com/screenshots/1813468-maniac-mansion-nes-in-front-of-the-mansion.png",
+            "https://cdn.mobygames.com/screenshots/16318287-maniac-mansion-nes-green-tentacles-room.png",
+            "https://cdn.mobygames.com/screenshots/16318281-maniac-mansion-nes-cutscene-dr-fred-is-holding-sandy-hostage.png",
+            "https://scummvm.org/data/screenshots/scumm/maniac/maniac_amiga_en_1_2_full.png"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
         }
       ]
     },
