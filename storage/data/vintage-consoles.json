@@ -1007,6 +1007,139 @@
           "hof": [],
           "is_free": true,
           "options": {}
+        },
+        {
+          "id": 12,
+          "title": "Contra III: The Alien Wars",
+          "slug": "contra-iii-the-alien-wars",
+          "release_year": "1992",
+          "publisher": "Konami",
+          "genres": [
+            {
+              "name": "run-and-gun",
+              "description": "Fast-paced shooting gameplay where players move and shoot simultaneously through enemy-filled levels."
+            },
+            {
+              "name": "action",
+              "description": "Emphasizes reflex-based combat, explosive set-pieces, and boss battles."
+            },
+            {
+              "name": "platformer",
+              "description": "Includes jumping, dodging obstacles, and navigating multi-layered stages while fighting enemies."
+            }
+          ],
+          "description": "Contra III: The Alien Wars is a run-and-gun action game released for the Super Nintendo Entertainment System in 1992. Players battle relentless alien hordes and massive bosses across destructible environments, using powerful weapons and riding vehicles in high-octane side-scrolling and top-down stages.",
+          "rating": "0.80",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "Contra III - The Alien Wars (USA).zip",
+          "box": "/images/games/contra3.webp",
+          "poster": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co64pi.jpg",
+          "cartridge": "https://theexchange.com/cdn/shop/products/ContraIII-TheAlienWars_USA.png?v=1619789445",
+          "screenshots": [
+            "https://cdn.mobygames.com/screenshots/16192357-contra-iii-the-alien-wars-snes-vicious-slave-hawks-defeated-supe.png",
+            "https://cdn.mobygames.com/screenshots/15733701-contra-iii-the-alien-wars-snes-level-3-has-many-bosses.png",
+            "https://cdn.mobygames.com/screenshots/16514900-contra-iii-the-alien-wars-snes-the-final-boss-of-level-3.png",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpCFhQoehtPlNDiPjoDvkCaSk_kWn_W28RJg&s",
+            "https://cdn.mobygames.com/screenshots/15715720-contra-iii-the-alien-wars-snes-entering-the-last-level.png",
+            "https://cdn.mobygames.com/screenshots/16192231-contra-iii-the-alien-wars-snes-against-gomeramos-king-super-prob.png"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 13,
+          "title": "Earthworm Jim 2",
+          "slug": "earthworm-jim-2",
+          "release_year": "1995",
+          "publisher": "Shiny Entertainment",
+          "genres": [
+            {
+              "name": "platformer",
+              "description": "Navigate tricky terrain, jump between platforms, and overcome environmental hazards."
+            },
+            {
+              "name": "run-and-gun",
+              "description": "Use an array of outlandish weapons while moving and shooting through enemies."
+            },
+            {
+              "name": "action",
+              "description": "Combines combat, reflex-based gameplay, and unique stage gimmicks with comedic flair."
+            }
+          ],
+          "description": "Earthworm Jim 2 is a quirky platformer and run-and-gun game released for the SNES in 1995. Players guide Jim, the worm in a super suit, through bizarre levels full of surreal humor, varied gameplay styles, wacky weapons, and eccentric boss fights.",
+          "rating": "0.75",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "Earthworm Jim 2 (USA).zip",
+          "box": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNZIJWXEN7mPpEQgXiqlY3BqIEGyZaBQH5BZVRTnOYAiTUps1XZpH4PPY7q-CnzhhBY4bATd45COB5G1ySITcFGA7HTR4VAKh49JCe6GTsrUUMFPsoX3TArfJBHKrlXQ2ZuO0-grx5CAZv/s280/Earthworm_Jim_2_10_%2528SNES%2529.gif",
+          "poster": "https://superretro.com.au/cdn/shop/files/manual-earthworm-jim-2-snes-42850-635672_800x.jpg?v=1728980639",
+          "cartridge": "https://steelcollectibles.com/cdn/shop/files/3049_5bb8f724d4d221.55747131_Snes_20-_20Earthworm_20Jim_202_large_4034f0e3-158e-44fa-9dc0-eff9aa65a7e7.jpg?v=1708290532",
+          "screenshots": [
+            "https://cdn.mobygames.com/screenshots/633281-earthworm-jim-2-snes-jim-looks-confused.png",
+            "https://cdn.mobygames.com/screenshots/7568368-earthworm-jim-2-genesis-starting-level.png",
+            "https://www.blueroms.ws/static/game/4508/imgs/screenshots/screenshot5.gif"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
+        },
+        {
+          "id": 14,
+          "title": "Battletoads & Double Dragon",
+          "slug": "battletoads-double-dragon",
+          "release_year": "1993",
+          "publisher": "Tradewest",
+          "genres": [
+            {
+              "name": "beat-em-up",
+              "description": "Side-scrolling combat focused on fighting multiple enemies using combos and special moves."
+            },
+            {
+              "name": "action",
+              "description": "Features fast-paced brawling, boss battles, and varied stage mechanics."
+            },
+            {
+              "name": "platformer",
+              "description": "Includes jumping across obstacles and navigating challenging environmental hazards."
+            }
+          ],
+          "description": "Battletoads & Double Dragon is a crossover beat ‘em up game released for the SNES in 1993. Players team up as the Battletoads or the Double Dragon brothers to fight through waves of enemies, tackle platforming sections, and defeat bosses in a colorful, chaotic adventure across space.",
+          "rating": "0.88",
+          "multiplayer_support": true,
+          "save_state_support": true,
+          "rom": "Battletoads-Double Dragon (USA).zip",
+          "box": "https://i.redd.it/ixonp6857hy81.gif",
+          "poster": "https://upload.wikimedia.org/wikipedia/en/6/63/BattleToadsDoubleDragon.jpg",
+          "cartridge": "https://http2.mlstatic.com/D_NQ_NP_618370-MLB79440885202_102024-O-id-763-battletoads-vs-double-dragon-original-snes.webp",
+          "screenshots": [
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8idGfUHlKS_ZR6T_-DTlQhwYm62HNREUesA&s",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8muiWU2DkKg2I4yzEOmrff9ptCAv5SWFTcg&s",
+            "https://www.giantbomb.com/a/uploads/original/0/6150/503440-bddsnes3.gif",
+            "https://i.ytimg.com/vi/UtsBsxtoIgs/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AGyBoAC0AWKAgwIABABGEYgRihZMA8=&rs=AOn4CLBqAX57FstLuiDWD1I9n0TPlojVsw"
+          ],
+          "bookmark_status": false,
+          "play_count": 0,
+          "last_played": "",
+          "metadata": {},
+          "user_reviews": [],
+          "additional_notes": "",
+          "hof": [],
+          "is_free": true,
+          "options": {}
         }
       ]
     },
