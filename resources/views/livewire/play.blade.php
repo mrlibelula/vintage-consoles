@@ -3,14 +3,35 @@
         <!-- player & user data -->
         <div class="flex flex-col gap-x-0 gap-y-1 xl:gap-x-2 xl:gap-y-0 xl:flex-row sticky items-start justify-between overflow-hidden">
             <!-- player -->
-            <div class="w-full xl:w-[70%] bg-black h-full rounded-lg overflow-hidden">
-                <iframe class="game-arena" frameborder="0"
+            <div class="w-full xl:w-[70%] bg-black h-full rounded-lg overflow-hidden relative">
+                <!-- DOS Game Iframe Loader - Shows immediately for DOS games -->
+                @if (strtolower($console['short_name']) === 'pc')
+                <div id="dos-iframe-loader" class="absolute inset-0 bg-black flex flex-col justify-center items-center z-50 text-white font-sans">
+                    <!-- Spinner -->
+                    <div class="w-16 h-16 border-4 border-white/20 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+                    <!-- Loading Text -->
+                    <div class="text-xl font-medium mb-2">Loading {{ $game['title'] }}</div>
+                    <div class="text-sm opacity-70">Initializing JS-DOS emulator...</div>
+                </div>
+                <style>
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                    .animate-spin {
+                        animation: spin 1s linear infinite;
+                    }
+                </style>
+                @endif
+
+                <iframe id="game-iframe" class="game-arena" frameborder="0"
                     @if (strtolower($console['short_name']) === 'pc')
                     {{-- src="https://dos.zone/player/?bundleUrl={{ $game['rom'] }}&anonymous=1" --}}
                     src="{{ route('dosplayer', [
                         \App\Service\Tool::encode(json_encode($game)),
                         strtolower($console['short_name']),
                     ]) }}"
+                    onload="hideDosIframeLoader()"
                     @else
                     src="{{ $player_route }}"
                     @endif
@@ -210,3 +231,37 @@
 
     </div>
 </x-container>
+
+<!-- DOS Iframe Loader JavaScript -->
+@if (strtolower($console['short_name']) === 'pc')
+<script>
+    function hideDosIframeLoader() {
+        console.log("DOS iframe loaded, hiding loader");
+        const loader = document.getElementById('dos-iframe-loader');
+        if (loader) {
+            loader.style.opacity = '0';
+            loader.style.transition = 'opacity 0.5s ease-out';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        }
+    }
+
+    // Fallback timeout to hide loader after 20 seconds
+    setTimeout(() => {
+        const loader = document.getElementById('dos-iframe-loader');
+        if (loader && loader.style.display !== 'none') {
+            console.log("DOS iframe loader fallback timeout - hiding loader");
+            hideDosIframeLoader();
+        }
+    }, 20000);
+
+    // Additional check for iframe load events
+    document.addEventListener('DOMContentLoaded', function() {
+        const iframe = document.getElementById('game-iframe');
+        if (iframe) {
+            iframe.addEventListener('load', hideDosIframeLoader);
+        }
+    });
+</script>
+@endif
