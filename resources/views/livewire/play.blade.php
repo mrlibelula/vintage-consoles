@@ -6,12 +6,16 @@
             <div class="w-full xl:w-[70%] bg-black h-full rounded-lg overflow-hidden relative">
                 <!-- DOS Game Iframe Loader - Shows immediately for DOS games -->
                 @if (strtolower($console['short_name']) === 'pc')
-                <div id="dos-iframe-loader" class="absolute inset-0 bg-black flex flex-col justify-center items-center z-50 text-white font-sans">
+                <div id="dos-iframe-loader" class="absolute inset-0 bg-black flex flex-col justify-center items-center z-50 text-white font-sans px-4 sm:px-6 md:px-8">
                     <!-- Spinner -->
-                    <div class="w-16 h-16 border-4 border-white/20 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 border-4 border-white/20 border-t-rose-500 rounded-full animate-spin mb-4 sm:mb-6"></div>
                     <!-- Loading Text -->
-                    <div class="text-xl font-medium mb-2">Loading {{ $game['title'] }}</div>
-                    <div class="text-sm opacity-70">Initializing JS-DOS emulator...</div>
+                    <div class="text-lg sm:text-xl md:text-2xl font-medium mb-2 text-center leading-tight px-2 max-w-xs sm:max-w-sm md:max-w-md break-words">
+                        Loading {{ $game['title'] }}
+                    </div>
+                    <div class="text-xs sm:text-sm opacity-70 text-center leading-tight px-2">
+                        Please wait while the ROM loads...
+                    </div>
                 </div>
                 <style>
                     @keyframes spin {
@@ -20,6 +24,16 @@
                     }
                     .animate-spin {
                         animation: spin 1s linear infinite;
+                    }
+                    /* Custom rose spinner color to match theme */
+                    #dos-iframe-loader .border-t-rose-500 {
+                        border-top-color: #e60012;
+                    }
+                    /* Ensure text breaks properly on very long titles */
+                    #dos-iframe-loader .break-words {
+                        word-wrap: break-word;
+                        overflow-wrap: break-word;
+                        hyphens: auto;
                     }
                 </style>
                 @endif

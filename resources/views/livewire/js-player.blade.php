@@ -1,7 +1,106 @@
 <div>
+    <!-- EmulatorJS Loader Overlay - Rose themed with game info -->
+    <div id="emulatorjs-loader" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #000000;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 999999;
+        color: white;
+        font-family: system-ui, -apple-system, sans-serif;
+        margin: 0;
+        padding: 16px;
+    ">
+        <!-- Rose Spinner -->
+        <div id="emulatorjs-spinner" style="
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid #e60012;
+            border-radius: 50%;
+            animation: emulatorjsSpin 1s linear infinite;
+            margin-bottom: 16px;
+        "></div>
+        <!-- Loading Text -->
+        <div id="emulatorjs-title" style="
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-align: center;
+            line-height: 1.25;
+            padding: 0 8px;
+            max-width: 320px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        ">Loading {{ $title }}</div>
+        <div style="
+            font-size: 12px;
+            opacity: 0.7;
+            text-align: center;
+            line-height: 1.25;
+            padding: 0 8px;
+        ">Please wait while the ROM loads...</div>
+    </div>
+
     <div id="game"></div>
+    
+    @push('styles')
+    <style>
+        @keyframes emulatorjsSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive design for EmulatorJS loader */
+        @media (min-width: 640px) {
+            #emulatorjs-spinner {
+                width: 64px !important;
+                height: 64px !important;
+                margin-bottom: 24px !important;
+            }
+            #emulatorjs-title {
+                font-size: 20px !important;
+                max-width: 384px !important;
+            }
+            #emulatorjs-loader div:last-child {
+                font-size: 14px !important;
+            }
+        }
+
+        @media (min-width: 768px) {
+            #emulatorjs-loader {
+                padding: 32px !important;
+            }
+            #emulatorjs-title {
+                font-size: 24px !important;
+                max-width: 448px !important;
+            }
+        }
+    </style>
+    @endpush
+    
     @push('scripts')
     <script>
+        // Hide EmulatorJS loader function
+        function hideEmulatorJSLoader() {
+            console.log("EmulatorJS: Hiding rose-themed loader");
+            const loader = document.getElementById('emulatorjs-loader');
+            if (loader) {
+                loader.style.opacity = '0';
+                loader.style.transition = 'opacity 0.5s ease-out';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }
+        }
+
         EJS_player = "#game";
         EJS_core = "{{ $short_name }}";
         EJS_gameName = "{{ $title }}";
@@ -15,10 +114,8 @@
         
         // Callback when emulator is ready and game starts
         EJS_onGameStart = function() {
-            console.log("EmulatorJS: Game has started, hiding universal loader");
-            if (window.hideUniversalLoader) {
-                window.hideUniversalLoader();
-            }
+            console.log("EmulatorJS: Game has started, hiding rose-themed loader");
+            hideEmulatorJSLoader();
         };
         
         // Fallback: Hide loader after emulator is ready (in case onGameStart doesn't fire)
@@ -26,12 +123,19 @@
             console.log("EmulatorJS: Emulator ready");
             // Set a timeout to hide loader if game doesn't start within 10 seconds
             setTimeout(() => {
-                if (window.hideUniversalLoader) {
-                    console.log("EmulatorJS: Fallback - hiding universal loader after timeout");
-                    window.hideUniversalLoader();
-                }
+                console.log("EmulatorJS: Fallback - hiding rose-themed loader after timeout");
+                hideEmulatorJSLoader();
             }, 10000);
         };
+
+        // Fallback timeout to hide loader after 20 seconds
+        setTimeout(() => {
+            const loader = document.getElementById('emulatorjs-loader');
+            if (loader && loader.style.display !== 'none') {
+                console.log("EmulatorJS: Emergency fallback - hiding loader after 20 seconds");
+                hideEmulatorJSLoader();
+            }
+        }, 20000);
     </script>
     {{-- it stays always ON in SPA mode --}}
     <script src="https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@4.0.7/data/loader.js"></script>
