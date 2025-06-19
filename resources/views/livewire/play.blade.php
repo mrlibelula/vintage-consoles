@@ -260,7 +260,7 @@
                 font-family: system-ui, -apple-system, sans-serif;
                 padding: 16px;
             ">
-                <div style="
+                <div class="dos-spinner" style="
                     width: 48px;
                     height: 48px;
                     border: 4px solid rgba(255, 255, 255, 0.2);
@@ -269,7 +269,7 @@
                     animation: spin 1s linear infinite;
                     margin-bottom: 16px;
                 "></div>
-                <div style="
+                <div class="dos-title" style="
                     font-size: 18px;
                     font-weight: 500;
                     margin-bottom: 8px;
@@ -281,7 +281,7 @@
                     overflow-wrap: break-word;
                     hyphens: auto;
                 ">Loading ${GAME_TITLE}</div>
-                <div style="
+                <div class="dos-subtitle" style="
                     font-size: 12px;
                     opacity: 0.7;
                     text-align: center;
@@ -291,34 +291,62 @@
             </div>
         `;
 
-        // Add responsive styles
+        // Add responsive styles with class selectors
         const style = document.createElement('style');
         style.textContent = `
             @keyframes spin {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
             }
+            
+            /* Tablet styles */
             @media (min-width: 640px) {
-                #dynamic-dos-loader > div > div:first-child {
+                .dos-spinner {
                     width: 64px !important;
                     height: 64px !important;
                     margin-bottom: 24px !important;
                 }
-                #dynamic-dos-loader > div > div:nth-child(2) {
+                .dos-title {
                     font-size: 20px !important;
                     max-width: 384px !important;
                 }
-                #dynamic-dos-loader > div > div:last-child {
+                .dos-subtitle {
                     font-size: 14px !important;
                 }
             }
+            
+            /* Desktop styles */
             @media (min-width: 768px) {
                 #dynamic-dos-loader > div {
                     padding: 32px !important;
                 }
-                #dynamic-dos-loader > div > div:nth-child(2) {
+                .dos-spinner {
+                    width: 80px !important;
+                    height: 80px !important;
+                    margin-bottom: 32px !important;
+                }
+                .dos-title {
                     font-size: 24px !important;
                     max-width: 448px !important;
+                }
+                .dos-subtitle {
+                    font-size: 16px !important;
+                }
+            }
+            
+            /* Large desktop styles */
+            @media (min-width: 1024px) {
+                .dos-spinner {
+                    width: 96px !important;
+                    height: 96px !important;
+                    margin-bottom: 40px !important;
+                }
+                .dos-title {
+                    font-size: 28px !important;
+                    max-width: 512px !important;
+                }
+                .dos-subtitle {
+                    font-size: 18px !important;
                 }
             }
         `;
