@@ -3,41 +3,7 @@
         <!-- player & user data -->
         <div class="flex flex-col gap-x-0 gap-y-1 xl:gap-x-2 xl:gap-y-0 xl:flex-row sticky items-start justify-between overflow-hidden">
             <!-- player -->
-            <div class="w-full xl:w-[70%] bg-black h-full rounded-lg overflow-hidden relative">
-                <!-- DOS Game Iframe Loader - Shows immediately for DOS games -->
-                @if (strtolower($console['short_name']) === 'pc')
-                <div id="dos-iframe-loader" class="absolute inset-0 bg-black flex flex-col justify-center items-center z-50 text-white font-sans px-4 sm:px-6 md:px-8">
-                    <!-- Spinner -->
-                    <div class="w-12 h-12 sm:w-16 sm:h-16 border-4 border-white/20 border-t-rose-500 rounded-full animate-spin mb-4 sm:mb-6"></div>
-                    <!-- Loading Text -->
-                    <div class="text-lg sm:text-xl md:text-2xl font-medium mb-2 text-center leading-tight px-2 max-w-xs sm:max-w-sm md:max-w-md break-words">
-                        Loading {{ $game['title'] }}
-                    </div>
-                    <div class="text-xs sm:text-sm opacity-70 text-center leading-tight px-2">
-                        Please wait while the ROM loads...
-                    </div>
-                </div>
-                <style>
-                    @keyframes spin {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                    }
-                    .animate-spin {
-                        animation: spin 1s linear infinite;
-                    }
-                    /* Custom rose spinner color to match theme */
-                    #dos-iframe-loader .border-t-rose-500 {
-                        border-top-color: #e60012;
-                    }
-                    /* Ensure text breaks properly on very long titles */
-                    #dos-iframe-loader .break-words {
-                        word-wrap: break-word;
-                        overflow-wrap: break-word;
-                        hyphens: auto;
-                    }
-                </style>
-                @endif
-
+            <div id="game-container" class="w-full xl:w-[70%] bg-black h-full rounded-lg overflow-hidden relative">
                 <iframe id="game-iframe" class="game-arena" frameborder="0"
                     @if (strtolower($console['short_name']) === 'pc')
                     {{-- src="https://dos.zone/player/?bundleUrl={{ $game['rom'] }}&anonymous=1" --}}
@@ -249,33 +215,171 @@
 <!-- DOS Iframe Loader JavaScript -->
 @if (strtolower($console['short_name']) === 'pc')
 <script>
+    // Use sessionStorage to persist state across Livewire updates
+    const STORAGE_KEY = 'dos_loader_{{ $game["id"] ?? "default" }}_hidden';
+    const GAME_TITLE = @json($game['title'] ?? 'DOS Game');
+    
+    function isDosLoaderHidden() {
+        return sessionStorage.getItem(STORAGE_KEY) === 'true';
+    }
+    
+    function markDosLoaderAsHidden() {
+        sessionStorage.setItem(STORAGE_KEY, 'true');
+    }
+
+    function createDosLoader() {
+        // Don't create if already hidden
+        if (isDosLoaderHidden()) {
+            return;
+        }
+
+        // Check if loader already exists
+        if (document.getElementById('dynamic-dos-loader')) {
+            return;
+        }
+
+        const container = document.getElementById('game-container');
+        if (!container) return;
+
+        const loader = document.createElement('div');
+        loader.id = 'dynamic-dos-loader';
+        loader.innerHTML = `
+            <div style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #000000;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 50;
+                color: white;
+                font-family: system-ui, -apple-system, sans-serif;
+                padding: 16px;
+            ">
+                <div style="
+                    width: 48px;
+                    height: 48px;
+                    border: 4px solid rgba(255, 255, 255, 0.2);
+                    border-top: 4px solid #e60012;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                    margin-bottom: 16px;
+                "></div>
+                <div style="
+                    font-size: 18px;
+                    font-weight: 500;
+                    margin-bottom: 8px;
+                    text-align: center;
+                    line-height: 1.25;
+                    padding: 0 8px;
+                    max-width: 320px;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    hyphens: auto;
+                ">Loading ${GAME_TITLE}</div>
+                <div style="
+                    font-size: 12px;
+                    opacity: 0.7;
+                    text-align: center;
+                    line-height: 1.25;
+                    padding: 0 8px;
+                ">Please wait while the ROM loads...</div>
+            </div>
+        `;
+
+        // Add responsive styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            @media (min-width: 640px) {
+                #dynamic-dos-loader > div > div:first-child {
+                    width: 64px !important;
+                    height: 64px !important;
+                    margin-bottom: 24px !important;
+                }
+                #dynamic-dos-loader > div > div:nth-child(2) {
+                    font-size: 20px !important;
+                    max-width: 384px !important;
+                }
+                #dynamic-dos-loader > div > div:last-child {
+                    font-size: 14px !important;
+                }
+            }
+            @media (min-width: 768px) {
+                #dynamic-dos-loader > div {
+                    padding: 32px !important;
+                }
+                #dynamic-dos-loader > div > div:nth-child(2) {
+                    font-size: 24px !important;
+                    max-width: 448px !important;
+                }
+            }
+        `;
+        
+        document.head.appendChild(style);
+        container.appendChild(loader);
+
+        console.log("DOS loader created dynamically");
+    }
+
     function hideDosIframeLoader() {
         console.log("DOS iframe loaded, hiding loader");
-        const loader = document.getElementById('dos-iframe-loader');
-        if (loader) {
+        const loader = document.getElementById('dynamic-dos-loader');
+        if (loader && !isDosLoaderHidden()) {
+            markDosLoaderAsHidden();
             loader.style.opacity = '0';
             loader.style.transition = 'opacity 0.5s ease-out';
             setTimeout(() => {
-                loader.style.display = 'none';
+                loader.remove();
             }, 500);
         }
     }
 
-    // Fallback timeout to hide loader after 20 seconds
+    function removeDosLoaderIfHidden() {
+        if (isDosLoaderHidden()) {
+            const loader = document.getElementById('dynamic-dos-loader');
+            if (loader) {
+                loader.remove();
+            }
+        }
+    }
+
+    // Initialize loader
+    function initDosLoader() {
+        createDosLoader();
+        removeDosLoaderIfHidden();
+    }
+
+    // Run immediately
+    initDosLoader();
+
+    // Fallback timeout (only if not already hidden)
     setTimeout(() => {
-        const loader = document.getElementById('dos-iframe-loader');
-        if (loader && loader.style.display !== 'none') {
+        if (!isDosLoaderHidden()) {
             console.log("DOS iframe loader fallback timeout - hiding loader");
             hideDosIframeLoader();
         }
     }, 20000);
 
-    // Additional check for iframe load events
+    // Handle iframe load
     document.addEventListener('DOMContentLoaded', function() {
         const iframe = document.getElementById('game-iframe');
-        if (iframe) {
+        if (iframe && !iframe.hasAttribute('data-dos-listener-added')) {
+            iframe.setAttribute('data-dos-listener-added', 'true');
             iframe.addEventListener('load', hideDosIframeLoader);
         }
+    });
+
+    // Handle Livewire updates
+    document.addEventListener('livewire:updated', function() {
+        initDosLoader();
     });
 </script>
 @endif
