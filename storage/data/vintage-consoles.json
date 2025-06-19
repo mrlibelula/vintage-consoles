@@ -1787,14 +1787,22 @@
               "description": "This genre involves hand-to-hand combat against multiple enemies in side-scrolling or fixed-screen environments. Players often face waves of enemies and use punches, kicks, grabs, and sometimes weapons to fight them off. In P.O.W., the player controls a soldier escaping from a military prison, battling guards using martial arts, knives, guns, and grenades — classic beat 'em up mechanics."
             },
             {
+              "name": "action",
+              "description": "Emphasizes intense melee combat, weapon pickups, and environmental hazards."
+            },
+            {
               "name": "run-and-gun",
               "description": "Run and gun games focus on fast-paced shooting and movement, typically in a side-scrolling or top-down perspective. They emphasize reflexes and offensive gameplay, often combining melee and ranged combat. P.O.W. incorporates this by allowing players to pick up firearms and grenades, adding shooting elements to the core beat 'em up gameplay."
+            },
+            {
+              "name": "side-scrolling",
+              "description": "Players progress left to right through multi-stage levels."
             }
             
           ],
-          "description": "",
-          "rating": "0.59",
-          "multiplayer_support": false,
+          "description": "P.O.W.: Prisoners of War is a side-scrolling beat 'em up arcade game released by SNK in 1988. Players control escaped prisoners fighting their way through enemy bases and military camps, using hand-to-hand combat and enemy weapons to battle soldiers, tanks, and bosses in a gritty rescue mission.",
+          "rating": "0.75",
+          "multiplayer_support": true,
           "save_state_support": true,
           "rom": "pow.zip",
           "box": "https://i.ytimg.com/vi/VCSvHEDwWyc/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBSGIKrKW7X4U9vQ_2emQP_HzZ2hw",
