@@ -46,13 +46,15 @@
                         wire:model.live.lazy="search" 
                         class="h-[2.2rem] w-full text-xl px-8" 
                         placeholder="Search game"
-                        name="game_search_query"
-                        autocomplete="new-password"
+                        name="game_search_query_{{ uniqid() }}"
+                        autocomplete="off"
                         autocorrect="off"
                         autocapitalize="off"
                         spellcheck="false"
                         role="search"
                         aria-label="Search games"
+                        data-lpignore="true"
+                        data-form-type="other"
                     />
                 </form>
                 <x-icons.magnify class=" absolute mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-300" />
