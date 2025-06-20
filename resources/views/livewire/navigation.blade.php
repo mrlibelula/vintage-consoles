@@ -138,10 +138,6 @@
 
                             <div class="border-t border-cod-gray-200 dark:border-cod-gray-600"></div>
 
-                            <x-dropdown-link href="{{ route('about') }}">
-                                {{ __('About') }}
-                            </x-dropdown-link>
-
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf

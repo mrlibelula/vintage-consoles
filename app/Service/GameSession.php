@@ -35,7 +35,8 @@ class GameSession
     private function createNewSession(): void
     {
         if (Storage::disk($this->disk)->exists($this->json_data_file)) {
-            $this->consoles = json_decode(Storage::disk($this->disk)->get($this->json_data_file), true)['consoles'];
+            $data = json_decode(Storage::disk($this->disk)->get($this->json_data_file), true);
+            $this->consoles = isset($data['consoles']) ? $data['consoles'] : [];
             Session::put('consoles', $this->consoles);
         }
     }

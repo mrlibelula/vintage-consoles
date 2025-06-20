@@ -112,7 +112,8 @@ class Dashboard extends Component
     public function loadConsoles($data_source = 'vintage-consoles.json', $disk = 'data')
     {
         if (Storage::disk($disk)->exists($data_source)) {
-            $this->consoles = json_decode(Storage::disk($disk)->get($data_source), true)['consoles'];
+            $data = json_decode(Storage::disk($disk)->get($data_source), true);
+            $this->consoles = isset($data['consoles']) ? $data['consoles'] : [];
         }
     }
 
