@@ -40,7 +40,21 @@
 
             <!-- search bar -->
             <div class="relative w-full flex gap-x-2 items-center justify-between">
-                <x-input @keydown.enter="$dispatch('loader-top-on')" wire:model.live.lazy="search" class="absolute h-[2.2rem] w-full text-xl px-8" placeholder="Search game" />
+                <form autocomplete="off" class="absolute w-full">
+                    <x-input 
+                        @keydown.enter="$dispatch('loader-top-on')" 
+                        wire:model.live.lazy="search" 
+                        class="h-[2.2rem] w-full text-xl px-8" 
+                        placeholder="Search game"
+                        name="game_search_query"
+                        autocomplete="new-password"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                        role="search"
+                        aria-label="Search games"
+                    />
+                </form>
                 <x-icons.magnify class=" absolute mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-300" />
                 <x-icons.x wire:click="clearSearchResults" class="absolute right-0 mx-2 w-[0.8rem] h-[0.8rem] text-cod-gray-300 cursor-pointer" />
             </div>
@@ -137,6 +151,12 @@
                             @endif
 
                             <div class="border-t border-cod-gray-200 dark:border-cod-gray-600"></div>
+
+                            @if (Auth::user()->hasRole('admin'))
+                                <x-dropdown-link href="{{ route('admin.games') }}">
+                                    {{ __('Game Manager') }}
+                                </x-dropdown-link>
+                            @endif
 
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}" x-data>

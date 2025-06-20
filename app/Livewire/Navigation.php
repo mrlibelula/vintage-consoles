@@ -12,6 +12,8 @@ class Navigation extends Component
     public string $search = '';
     public array $search_results = [];
 
+    protected $listeners = ['refreshSearchData'];
+
     public function updatedSearch()
     {
         if (!strlen($this->search)) {
@@ -19,12 +21,12 @@ class Navigation extends Component
             return;
         }
 
-        $consoles = Session::get('consoles');
+        $consoles = Session::get('consoles', []);
         $results = [];
         $result_id = 0;
 
         foreach ($consoles as $console) {
-            foreach ($console['games'] as $game) {
+            foreach ($console['games'] ?? [] as $game) {
                 if (str_contains(strtolower($game['title']), strtolower($this->search))) {
                     $results[] = [
                         'result_id' => $result_id++,
@@ -54,6 +56,17 @@ class Navigation extends Component
     {
         $this->search = '';
         $this->search_results = [];
+    }
+
+    /**
+     * Refresh search data by reloading session data
+     */
+    public function refreshSearchData()
+    {
+        // If there's an active search, re-run it with fresh data
+        if (!empty($this->search)) {
+            $this->updatedSearch();
+        }
     }
 
     /**

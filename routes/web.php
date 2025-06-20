@@ -39,5 +39,8 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    // 
+    // Admin routes - protected by admin middleware
+    Route::middleware(['admin'])->group(function () {
+        Route::get('/admin/games', App\Livewire\Admin\GameManager::class)->name('admin.games');
+    });
 });
