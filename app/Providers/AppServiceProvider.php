@@ -23,14 +23,25 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        // Only force HTTPS URLs if explicitly in production and secure
-        if ($this->app->environment('production') && request()->isSecure()) {
+        // Comprehensive HTTPS fix for production
+        if ($this->app->environment('production')) {
+            // Force HTTPS for all URL generation
             URL::forceScheme('https');
+            
+            // Fix domain/subdomain issues that cause browser warnings
+            $appUrl = env('APP_URL');
+            if ($appUrl && str_starts_with($appUrl, 'https://')) {
+                $domain = parse_url($appUrl, PHP_URL_HOST);
+                if ($domain) {
+                    URL::forceRootUrl($appUrl);
+                }
+            }
+            
+            // Additional security headers to prevent mixed content warnings
+            if (request()->isSecure()) {
+                config(['session.secure' => true]);
+                config(['session.cookie' => config('session.cookie').'_secure']);
+            }
         }
-        
-        // Alternative approach if using a load balancer/proxy:
-        // if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
-        //     URL::forceScheme('https');
-        // }
     }
 }
