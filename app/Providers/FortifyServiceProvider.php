@@ -29,45 +29,22 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Force HTTPS for Fortify routes in production
-        if ($this->app->environment('production')) {
-            Fortify::loginView(function () {
-                URL::forceScheme('https');
-                return view('auth.login');
-            });
+        // Configure Fortify views - let Laravel handle HTTPS naturally
+        Fortify::loginView(function () {
+            return view('auth.login');
+        });
 
-            Fortify::registerView(function () {
-                URL::forceScheme('https');
-                return view('auth.register');
-            });
+        Fortify::registerView(function () {
+            return view('auth.register');
+        });
 
-            Fortify::requestPasswordResetLinkView(function () {
-                URL::forceScheme('https');
-                return view('auth.forgot-password');
-            });
+        Fortify::requestPasswordResetLinkView(function () {
+            return view('auth.forgot-password');
+        });
 
-            Fortify::resetPasswordView(function ($request) {
-                URL::forceScheme('https');
-                return view('auth.reset-password', ['request' => $request]);
-            });
-        } else {
-            // Development views without forcing HTTPS
-            Fortify::loginView(function () {
-                return view('auth.login');
-            });
-
-            Fortify::registerView(function () {
-                return view('auth.register');
-            });
-
-            Fortify::requestPasswordResetLinkView(function () {
-                return view('auth.forgot-password');
-            });
-
-            Fortify::resetPasswordView(function ($request) {
-                return view('auth.reset-password', ['request' => $request]);
-            });
-        }
+        Fortify::resetPasswordView(function ($request) {
+            return view('auth.reset-password', ['request' => $request]);
+        });
 
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);

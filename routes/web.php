@@ -21,6 +21,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Debugging route to understand authentication state in production
+Route::get('/debug-auth', function () {
+    if (!app()->environment('production')) {
+        return 'This route only works in production';
+    }
+    
+    return response()->json([
+        'authenticated' => auth()->check(),
+        'user_id' => auth()->id(),
+        'session_id' => session()->getId(),
+        'session_data' => session()->all(),
+        'app_url' => config('app.url'),
+        'request_url' => request()->fullUrl(),
+        'is_secure' => request()->isSecure(),
+        'headers' => request()->headers->all(),
+        'server_https' => $_SERVER['HTTPS'] ?? 'not set',
+        'server_port' => $_SERVER['SERVER_PORT'] ?? 'not set',
+    ]);
+})->name('debug.auth');
+
 // Route::get('/', function () {
 //     return view('landing');
 // });
