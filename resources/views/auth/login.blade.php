@@ -12,7 +12,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ secure_url(route('login', [], false)) }}">
             @csrf
 
             <div>
@@ -34,7 +34,7 @@
 
             <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
-                    <a wire:navigate class="underline text-2xl text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-900 dark:hover:text-cod-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 dark:focus:ring-offset-cod-gray-800" href="{{ route('password.request') }}">
+                    <a wire:navigate class="underline text-2xl text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-900 dark:hover:text-cod-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 dark:focus:ring-offset-cod-gray-800" href="{{ secure_url(route('password.request', [], false)) }}">
                         {{ __('Forgot your password?') }}
                     </a>
                 @endif
@@ -44,7 +44,7 @@
                 </x-button>
             </div>
 
-            <a a wire:navigate href="{{ route('register') }}">
+            <a a wire:navigate href="{{ secure_url(route('register', [], false)) }}">
                 <div class=" w-full pt-8 text-xl text-center text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-100">
                     New? Sign up for free
                 </div>

@@ -21,20 +21,46 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect('/dashboard');
-});
+// Debugging route to understand authentication state in production
+Route::get('/debug-auth', function () {
+    if (!app()->environment('production')) {
+        return 'This route only works in production';
+    }
+    
+    return response()->json([
+        'authenticated' => auth()->check(),
+        'user_id' => auth()->id(),
+        'session_id' => session()->getId(),
+        'session_data' => session()->all(),
+        'app_url' => config('app.url'),
+        'request_url' => request()->fullUrl(),
+        'is_secure' => request()->isSecure(),
+        'headers' => request()->headers->all(),
+        'server_https' => $_SERVER['HTTPS'] ?? 'not set',
+        'server_port' => $_SERVER['SERVER_PORT'] ?? 'not set',
+    ]);
+})->name('debug.auth');
+
+// Route::get('/', function () {
+//     return view('landing');
+// });
+
+Route::get('/{console_short_name?}', Dashboard::class)->name('home');
+Route::get('/dashboard/{console_short_name?}', Dashboard::class)->name('dashboard');
+Route::get('/emulator/{console_short_name}/{game_title_slug}', Play::class)->name('play');
+Route::get('/player/{enc_json_game}/{console_short_name}', JsPlayer::class)->name('player');
+Route::get('/dosplayer/{enc_json_game}/{console_short_name}', DosPlayer::class)->name('dosplayer');
+Route::get('/games/genres/{genre_name?}', Genres::class)->name('genres');
+Route::get('/games/publishers/{publisher_name?}', Publishers::class)->name('publishers');
+Route::get('/creator/about', About::class)->name('about');
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    Route::get('/dos/{slug}', DosPlayer::class)->name('dos-player');
-    Route::get('/js/{slug}', JsPlayer::class)->name('js-player');
-    Route::get('/play/{slug}', Play::class)->name('play');
-    Route::get('/about', About::class)->name('about');
-    Route::get('/genres/{slug}', Genres::class)->name('genres');
-    Route::get('/publishers/{slug}', Publishers::class)->name('publishers');
+    // Admin routes - protected by admin middleware
+    Route::middleware(['admin'])->group(function () {
+        Route::get('/admin/games', App\Livewire\Admin\GameManager::class)->name('admin.games');
+    });
 });
