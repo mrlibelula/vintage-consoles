@@ -40,9 +40,9 @@
 
             <!-- search bar -->
             <div class="relative w-full flex gap-x-2 items-center justify-between">
-                <form autocomplete="off" class="absolute w-full">
+                <form autocomplete="off" class="absolute w-full" @submit.prevent>
                     <x-input 
-                        @keydown.enter="$dispatch('loader-top-on')" 
+                        @keydown.enter.prevent="$dispatch('loader-top-on'); $wire.set('search', $event.target.value, true)" 
                         wire:model.live.lazy="search" 
                         class="h-[2.2rem] w-full text-xl px-8" 
                         placeholder="Search game"
