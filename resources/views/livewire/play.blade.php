@@ -353,12 +353,9 @@
         
         document.head.appendChild(style);
         container.appendChild(loader);
-
-        console.log("DOS loader created dynamically");
     }
 
     function hideDosIframeLoader() {
-        console.log("DOS iframe loaded, hiding loader");
         const loader = document.getElementById('dynamic-dos-loader');
         if (loader && !isDosLoaderHidden()) {
             markDosLoaderAsHidden();

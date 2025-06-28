@@ -223,7 +223,10 @@ class Play extends Component
     {
         $console_short_name = strtolower($this->console['short_name']);
         if ($console_short_name !== 'pc') {
-            $this->game_url = 'games/' . $console_short_name . '/' . $this->game['rom'];
+            $this->game_url = route('game.serve', [
+                'console' => $console_short_name,
+                'filename' => $this->game['rom']
+            ]);
         }
     }
 

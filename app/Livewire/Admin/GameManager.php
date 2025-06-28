@@ -322,12 +322,12 @@ class GameManager extends Component
         }
         
         // For other consoles, check local storage
-        $romPath = public_path("games/{$consoleShortName}/{$rom}");
+        $romPath = storage_path("data/games/{$consoleShortName}/{$rom}");
         
         if (!file_exists($romPath)) {
             return [
                 'valid' => false,
-                'message' => "ROM file '{$rom}' not found in /public/games/{$consoleShortName}/ directory. Please ensure the file exists."
+                'message' => "ROM file '{$rom}' not found in /storage/data/games/{$consoleShortName}/ directory. Please ensure the file exists."
             ];
         }
         

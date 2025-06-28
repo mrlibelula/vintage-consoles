@@ -16,7 +16,6 @@
         async function startEmulator() {
             try {
                 const dosbox = document.getElementById("dosbox");
-                console.log("JS-DOS: Starting emulator initialization");
                 
                 const ci = await Dos(dosbox, {
                     wdosboxUrl: "https://v8.js-dos.com/latest/wdosbox.js",
@@ -24,7 +23,6 @@
                     autolock: true,
                 });
                 
-                console.log("JS-DOS: Emulator initialized");
                 ci.setTheme("dark");
                 ci.setAutoStart(true);
                 

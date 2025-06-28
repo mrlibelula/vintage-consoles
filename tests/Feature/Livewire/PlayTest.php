@@ -284,7 +284,7 @@ describe('Play Component - Core Functionality', function () {
             $play->game = getSimpleMockConsoleData()['games'][0];
             
             $play->loadGameUrl();
-            expect($play->game_url)->toBe('games/nes/mario.nes');
+            expect($play->game_url)->toContain('/games/serve/nes/mario.nes');
         });
 
         it('does not set game URL for PC console', function () {

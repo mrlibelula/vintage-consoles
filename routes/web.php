@@ -54,6 +54,29 @@ Route::get('/games/genres/{genre_name?}', Genres::class)->name('genres');
 Route::get('/games/publishers/{publisher_name?}', Publishers::class)->name('publishers');
 Route::get('/creator/about', About::class)->name('about');
 
+// Game file serving route - accessible to all users (no middleware)
+Route::get('/games/serve/{console}/{filename}', function ($console, $filename) {
+    $gamePath = storage_path("data/games/{$console}/{$filename}");
+    
+    if (!file_exists($gamePath)) {
+        abort(404, 'Game file not found');
+    }
+    
+    // Get the file's MIME type
+    $mimeType = mime_content_type($gamePath);
+    
+    // If we can't determine the MIME type, use application/octet-stream
+    if (!$mimeType) {
+        $mimeType = 'application/octet-stream';
+    }
+    
+    // Return the file with appropriate headers
+    return response()->file($gamePath, [
+        'Content-Type' => $mimeType,
+        'Cache-Control' => 'public, max-age=31536000', // Cache for 1 year
+    ]);
+})->name('game.serve');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

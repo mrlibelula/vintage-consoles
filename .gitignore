@@ -20,13 +20,13 @@ yarn-error.log
 /storage/data/chat/
 /storage/data/url-check-report.json
 
-# Track all game ROMs with simpler rules
-!public/games/
-!public/games/arcade/
-!public/games/arcade/**
-!public/games/nes/
-!public/games/nes/**
-!public/games/atari2600/
-!public/games/atari2600/**
-!public/games/snes/
-!public/games/snes/**
+# Track game ROMs in storage
+!storage/data/games/
+!storage/data/games/arcade/
+!storage/data/games/arcade/**
+!storage/data/games/nes/
+!storage/data/games/nes/**
+!storage/data/games/atari2600/
+!storage/data/games/atari2600/**
+!storage/data/games/snes/
+!storage/data/games/snes/**

@@ -90,7 +90,6 @@
     <script>
         // Hide EmulatorJS loader function
         function hideEmulatorJSLoader() {
-            console.log("EmulatorJS: Hiding rose-themed loader");
             const loader = document.getElementById('emulatorjs-loader');
             if (loader) {
                 loader.style.opacity = '0';
@@ -114,16 +113,13 @@
         
         // Callback when emulator is ready and game starts
         EJS_onGameStart = function() {
-            console.log("EmulatorJS: Game has started, hiding rose-themed loader");
             hideEmulatorJSLoader();
         };
         
         // Fallback: Hide loader after emulator is ready (in case onGameStart doesn't fire)
         EJS_ready = function() {
-            console.log("EmulatorJS: Emulator ready");
             // Set a timeout to hide loader if game doesn't start within 10 seconds
             setTimeout(() => {
-                console.log("EmulatorJS: Fallback - hiding rose-themed loader after timeout");
                 hideEmulatorJSLoader();
             }, 10000);
         };
@@ -132,7 +128,6 @@
         setTimeout(() => {
             const loader = document.getElementById('emulatorjs-loader');
             if (loader && loader.style.display !== 'none') {
-                console.log("EmulatorJS: Emergency fallback - hiding loader after 20 seconds");
                 hideEmulatorJSLoader();
             }
         }, 20000);

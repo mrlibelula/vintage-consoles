@@ -65,7 +65,7 @@ describe('JsPlayer Component - Core Functionality', function () {
             expect($component->get('title'))->toBe('Super Mario Bros.')
                 ->and($component->get('short_name'))->toBe('nes')
                 ->and($component->get('game_id'))->toBe(1)
-                ->and($component->get('game_url'))->toContain('games/nes/mario.nes');
+                ->and($component->get('game_url'))->toContain('/games/serve/nes/mario.nes');
         });
 
         it('generates correct game URLs for different consoles', function () {
@@ -81,7 +81,7 @@ describe('JsPlayer Component - Core Functionality', function () {
                 ]);
 
                 expect($component->get('short_name'))->toBe($console)
-                    ->and($component->get('game_url'))->toContain("games/{$console}/");
+                    ->and($component->get('game_url'))->toContain("/games/serve/{$console}/");
             }
         });
     });
@@ -155,7 +155,7 @@ describe('JsPlayer Component - Core Functionality', function () {
                     'console_short_name' => $console
                 ]);
 
-                expect($component->get('game_url'))->toContain("games/{$console}/{$rom}");
+                expect($component->get('game_url'))->toContain("/games/serve/{$console}/{$rom}");
             }
         });
 

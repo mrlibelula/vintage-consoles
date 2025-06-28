@@ -19,7 +19,10 @@ class JsPlayer extends Component
         $game_data = json_decode($json_game, true);
         $this->title = $game_data['title'];
         $this->short_name = $console_short_name;
-        $this->game_url = asset('games/' . $console_short_name . '/' . $game_data['rom']);
+        $this->game_url = route('game.serve', [
+            'console' => $console_short_name, 
+            'filename' => $game_data['rom']
+        ]);
         $this->game_id = $game_data['id'];
     }
 
