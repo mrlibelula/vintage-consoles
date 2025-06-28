@@ -14,6 +14,8 @@ class Genres extends Component
     public array $genres = [];
     public array $filtered_games = [];
     public string $ob = 'group';
+    public array $games = [];
+    public string $current_genre = '';
 
     public function mount(Request $request, string $genre_name = '')
     {
@@ -29,7 +31,7 @@ class Genres extends Component
         // verify if genre exists in db
         $contains = false;
         $genres = $this->genres();
-        if ($genre_name) $contains = collect($genres)->contains($genre_name);
+        if ($genre_name) $contains = collect($genres)->contains('name', $genre_name);
         $this->genre_name = $contains
             ? $genre_name
             : '';
@@ -53,15 +55,24 @@ class Genres extends Component
     {
         $games = [];
         if ($genre_name) {
-            // filter games
-            $consoles = Session::get('consoles') ?? [];
+            // Use optimized session approach
+            if (!Session::has('consoles_basic')) {
+                new GameSession();
+            }
+
+            // Load full console data for filtering
+            $gameSession = new GameSession();
+            $consoles = $gameSession->getFullConsoleData();
+            
             foreach ($consoles as $console) {
-                foreach ($console['games'] as $game) {
-                    $found = Tool::findItemByKey($game['genres'], 'name', strtolower($genre_name));
-                    if ($found) {
-                        $game['console_id'] = $console['id'];
-                        $game['console_short_name'] = $console['short_name'];
-                        $games[] = $game;
+                if (isset($console['games'])) {
+                    foreach ($console['games'] as $game) {
+                        $found = Tool::findItemByKey($game['genres'], 'name', strtolower($genre_name));
+                        if ($found) {
+                            $game['console_id'] = $console['id'];
+                            $game['console_short_name'] = $console['short_name'];
+                            $games[] = $game;
+                        }
                     }
                 }
             }
@@ -72,7 +83,7 @@ class Genres extends Component
 
     public function genres(): array
     {
-        return Tool::getGenres();
+        return Tool::genres();
     }
 
     public function rendered()
@@ -88,5 +99,46 @@ class Genres extends Component
             $this->ob = $ob === 'lista' ? 'squares' : $ob;
         }
         return view('livewire.genres');
+    }
+
+    /**
+     * Filter component games from consoles via genre name
+     *
+     * @param string $genre_name
+     * @return void
+     */
+    public function filterByGenre(string $genre_name): void
+    {
+        $this->current_genre = $genre_name;
+        $this->games = [];
+        
+        // Use optimized session - get basic console info first
+        if (!Session::has('consoles_basic')) {
+            new GameSession();
+        }
+
+        // Load full console data only when filtering is needed
+        $gameSession = new GameSession();
+        $consoles = $gameSession->getFullConsoleData();
+
+        foreach ($consoles as $console) {
+            if (isset($console['games'])) {
+                foreach ($console['games'] as $game) {
+                    if (isset($game['genres'])) {
+                        foreach ($game['genres'] as $genre) {
+                            if (strtolower($genre['name']) === strtolower($genre_name)) {
+                                $this->games[] = array_merge($game, [
+                                    'console_short_name' => $console['short_name'],
+                                    'console_long_name' => $console['long_name']
+                                ]);
+                                break 2; // Break out of both genre and game loops for this game
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->dispatchBrowserEvent('loader-off');
     }
 }

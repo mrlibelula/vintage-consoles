@@ -43,12 +43,14 @@ class Game
 
     private function console(string $console_short_name): array
     {
-        // search for Session data
-        // if not found, create new Session data
-        if (!Session::has('consoles')) {
+        // Use optimized session approach - load full data only when needed
+        if (!Session::has('consoles_basic')) {
             new GameSession;
         }
-        return Tool::findItemByKey(Session::get('consoles'), 'short_name', $console_short_name);
+        
+        // Get full console data including games from GameSession
+        $gameSession = new GameSession();
+        return $gameSession->getFullConsoleData($console_short_name);
     }
 
     private function loadConsole(string $console_short_name)

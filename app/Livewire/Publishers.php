@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Service\Tool;
 use Livewire\Component;
+use App\Service\GameSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -23,51 +24,49 @@ class Publishers extends Component
         }
         Session::put('ob', $this->ob);
 
-        // new GameSession;
-        $this->publishers();
-        $this->filterGames($publisher_name);
+        new GameSession;
+        
+        // verify if publisher exists in db
+        $publishers = $this->publishers();
+        $contains = false;
+        if ($publisher_name) $contains = collect($publishers)->contains('name', $publisher_name);
+        $this->publisher_name = $contains ? $publisher_name : '';
+        $this->publishers = $publishers;
+        $this->filterGames($this->publisher_name);
     }
 
     public function filterGames(string $publisher_name)
     {
         $games = [];
         if ($publisher_name) {
-            // filter games by publisher
-            $consoles = Session::get('consoles') ?? [];
+            // Use optimized session approach
+            if (!Session::has('consoles_basic')) {
+                new GameSession();
+            }
+
+            // Load full console data for filtering
+            $gameSession = new GameSession();
+            $consoles = $gameSession->getFullConsoleData();
+            
             foreach ($consoles as $console) {
-                foreach ($console['games'] as $game) {
-                    $found = strtolower($game['publisher']) === strtolower($publisher_name) ? $game : null;
-                    if ($found) {
-                        $game['console_id'] = $console['id'];
-                        $game['console_short_name'] = $console['short_name'];
-                        $games[] = $game;
+                if (isset($console['games'])) {
+                    foreach ($console['games'] as $game) {
+                        if (isset($game['publisher']) && strtolower($game['publisher']) === strtolower($publisher_name)) {
+                            $game['console_id'] = $console['id'];
+                            $game['console_short_name'] = $console['short_name'];
+                            $games[] = $game;
+                        }
                     }
                 }
             }
+            $games = Tool::sortBy($games, 'title', 'asc');
         }
-        $games = array_filter($games, fn ($game) => $game !== null);
-        $this->filtered_games = Tool::sortBy($games, 'title', 'asc');
+        $this->filtered_games = $games;
     }
 
-    public function publishers()
+    public function publishers(): array
     {
-        $publishers = [];
-        if (Session::has('consoles')) {
-            $consoles = Session::get('consoles');
-            foreach ($consoles as $console) {
-                $games = $console['games'];
-                foreach ($games as $game) {
-                    $publishers[] = !in_array($game['publisher'], $publishers) ? $game['publisher'] : null;
-                }
-            }
-            $publishers = array_filter($publishers, fn ($publisher) => $publisher !== null);
-            // sort ignoring case sensitivity
-            usort($publishers, function($a, $b) {
-                return strcasecmp($a, $b);
-            });
-    
-        }
-        $this->publishers = $publishers;
+        return Tool::publishers();
     }
 
     public function rendered()

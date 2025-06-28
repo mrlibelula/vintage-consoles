@@ -85,8 +85,8 @@
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-[0.2rem]">
                 <!-- genres list -->
                 @forelse ($genres as $genre)
-                <a @click="$dispatch('loader-top-on')" wire:navigate href="{{ route('genres', $genre) }}" class="link">
-                    #{{ $genre }}
+                <a @click="$dispatch('loader-top-on')" wire:navigate href="{{ route('genres', $genre['name']) }}" class="link">
+                    #{{ $genre['name'] }} <span class="text-xs text-gray-500">({{ $genre['games_count'] }})</span>
                 </a>
                 @empty
                 <div>

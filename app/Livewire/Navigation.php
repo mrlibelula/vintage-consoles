@@ -21,7 +21,15 @@ class Navigation extends Component
             return;
         }
 
-        $consoles = Session::get('consoles', []);
+        // Use optimized session approach - only load full data when searching
+        if (!Session::has('consoles_basic')) {
+            new GameSession();
+        }
+
+        // Load full console data for search functionality
+        $gameSession = new GameSession();
+        $consoles = $gameSession->getFullConsoleData();
+        
         $results = [];
         $result_id = 0;
 

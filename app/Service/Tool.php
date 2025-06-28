@@ -230,27 +230,78 @@ class Tool
     }
 
     /**
-     * List of all detected game genres
-     *
-     * @return array
+     * Create/Get unique [array] of genres (games) from existing consoles Session data
      */
-    public static function getGenres(): array
+    public static function genres($disk = 'data', $consolesJson = 'vintage-consoles.json'): array
     {
-        $genres = [];
-        $consoles = Session::get('consoles');
-        if (!$consoles) {
-            $consoles = Storage::disk('data')->get('vintage-consoles.json');
-            $consoles = json_decode($consoles, true)['consoles'];
+        // Use basic session data first
+        if (!Session::has('consoles_basic')) {
+            new GameSession();
         }
+
+        // For genres, we need full data - load from file when needed
+        $gameSession = new GameSession();
+        $consoles = $gameSession->getFullConsoleData();
+
+        $genres = [];
+        
         foreach ($consoles as $console) {
-            foreach ($console['games'] as $game) {
-                $genres[] = collect($game['genres'])->pluck('name')->toArray();
+            if (isset($console['games'])) {
+                foreach ($console['games'] as $game) {
+                    if (isset($game['genres'])) {
+                        foreach ($game['genres'] as $genre) {
+                            $genreName = $genre['name'];
+                            if (!isset($genres[$genreName])) {
+                                $genres[$genreName] = [
+                                    'name' => $genreName,
+                                    'description' => $genre['description'] ?? '',
+                                    'games_count' => 0
+                                ];
+                            }
+                            $genres[$genreName]['games_count']++;
+                        }
+                    }
+                }
             }
         }
-        $genres = Arr::flatten($genres);
-        $genres = array_unique($genres);
-        sort($genres);
-        return $genres;
+
+        return array_values($genres);
+    }
+
+    /**
+     * Create/Get unique [array] of publishers (games) from existing consoles Session data
+     */
+    public static function publishers(): array
+    {
+        // Use basic session data first
+        if (!Session::has('consoles_basic')) {
+            new GameSession();
+        }
+
+        // For publishers, we need full data - load from file when needed  
+        $gameSession = new GameSession();
+        $consoles = $gameSession->getFullConsoleData();
+
+        $publishers = [];
+        
+        foreach ($consoles as $console) {
+            if (isset($console['games'])) {
+                foreach ($console['games'] as $game) {
+                    if (isset($game['publisher'])) {
+                        $publisherName = $game['publisher'];
+                        if (!isset($publishers[$publisherName])) {
+                            $publishers[$publisherName] = [
+                                'name' => $publisherName,
+                                'games_count' => 0
+                            ];
+                        }
+                        $publishers[$publisherName]['games_count']++;
+                    }
+                }
+            }
+        }
+
+        return array_values($publishers);
     }
 
     /**
