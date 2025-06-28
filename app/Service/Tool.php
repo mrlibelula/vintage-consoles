@@ -238,6 +238,10 @@ class Tool
     {
         $genres = [];
         $consoles = Session::get('consoles');
+        if (!$consoles) {
+            $consoles = Storage::disk('data')->get('vintage-consoles.json');
+            $consoles = json_decode($consoles, true)['consoles'];
+        }
         foreach ($consoles as $console) {
             foreach ($console['games'] as $game) {
                 $genres[] = collect($game['genres'])->pluck('name')->toArray();

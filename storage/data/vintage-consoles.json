@@ -2921,6 +2921,46 @@
                     "hof": [],
                     "is_free": true,
                     "options": []
+                },
+                {
+                    "play_count": 0,
+                    "last_played": "",
+                    "bookmark_status": false,
+                    "metadata": [],
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": [],
+                    "title": "Smurfs",
+                    "publisher": "Coleco",
+                    "release_year": "1983",
+                    "description": "In 'Smurfs', players control a Smurf character who must navigate through various levels while avoiding obstacles and enemies. The game features platforming elements where players collect items and aim to reach the end of each stage to rescue Smurfette from the evil Gargamel.",
+                    "rating": "0.65",
+                    "rom": "Smurf-(CBS)-(PAL).bin",
+                    "poster": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Smurf_Rescue_in_Gargamel%27s_Castle_cover.webp/250px-Smurf_Rescue_in_Gargamel%27s_Castle_cover.webp.png",
+                    "box": "https://archive.org/serve/atari_2600_smurf_-_rescue_in_gargamels_castle_smurf_smurf_action_1982_coleco_henr/atari_2600_smurf_-_rescue_in_gargamels_castle_smurf_smurf_action_1982_coleco_henr_screenshot.gif",
+                    "cartridge": "https://i.ebayimg.com/images/g/Tt0AAOSwHz5llEbl/s-l1200.jpg",
+                    "multiplayer_support": false,
+                    "save_state_support": true,
+                    "is_free": false,
+                    "genres": [
+                        {
+                            "name": "platformer",
+                            "description": "A genre focused on jumping and climbing to navigate levels."
+                        },
+                        {
+                            "name": "action",
+                            "description": "A genre that emphasizes physical challenges and quick reflexes."
+                        }
+                    ],
+                    "screenshots": [
+                        "https://www.atarimania.com/2600/screens/smurf_pal_4.gif",
+                        "https://atariage.com/2600/screenshots/s_SmurfsRescueInGargamelsCastle_4.png",
+                        "https://www.atarimania.com/2600/screens/smurf_pal_9.gif",
+                        "https://www.atarimania.com/2600/screens/smurf_pal_3.gif"
+                    ],
+                    "id": 19,
+                    "slug": "smurfs"
                 }
             ]
         },
