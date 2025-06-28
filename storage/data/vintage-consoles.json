@@ -2098,6 +2098,46 @@
                     "hof": [],
                     "is_free": true,
                     "options": []
+                },
+                {
+                    "play_count": 0,
+                    "last_played": "",
+                    "bookmark_status": false,
+                    "metadata": [],
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": [],
+                    "title": "Zaxxon",
+                    "publisher": "Sega",
+                    "release_year": "1982",
+                    "description": "Zaxxon is a pioneering isometric shooter that places players in the cockpit of a spacecraft navigating through a 3D environment. Players must avoid obstacles and enemy fire while strategically managing fuel and ammunition to complete missions and achieve high scores.",
+                    "rating": "0.85",
+                    "rom": "zaxxon.zip",
+                    "poster": "https://www.giantbomb.com/a/uploads/original/9/93770/2366246-a5200_zaxxon.jpg",
+                    "box": "https://i.imgur.com/yDHCeo6.gif",
+                    "cartridge": "https://i.pinimg.com/736x/fa/c1/32/fac132b579c83bc1266aa76242b27d72.jpg",
+                    "multiplayer_support": false,
+                    "save_state_support": true,
+                    "is_free": false,
+                    "genres": [
+                        {
+                            "name": "shooter",
+                            "description": "A game focused on shooting enemies and targets."
+                        },
+                        {
+                            "name": "isometric",
+                            "description": "A game that presents a 3D perspective using a 2D plane."
+                        }
+                    ],
+                    "screenshots": [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAGPi05Oqv4TAcdkQk3sY2sAtc9BztS0CjCQ&s",
+                        "https://cdn.mobygames.com/screenshots/16170388-zaxxon-arcade-lasers-area.png",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-qwHuzQ86DvTAccR4Zzp5a2jr9EG6ucfwZg&s",
+                        "https://media.classic-retro-games.com/70/zaxxon_remake_03.png"
+                    ],
+                    "id": 16,
+                    "slug": "zaxxon"
                 }
             ]
         },
@@ -2961,6 +3001,44 @@
                     ],
                     "id": 19,
                     "slug": "smurfs"
+                },
+                {
+                    "play_count": 0,
+                    "last_played": "",
+                    "bookmark_status": false,
+                    "metadata": [],
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": [],
+                    "title": "Megamania",
+                    "publisher": "Activision",
+                    "release_year": "1982",
+                    "description": "Megamania is a fast-paced, vertically scrolling shooter where players control a spaceship navigating through waves of enemy objects, including various bizarre shapes and creatures. The objective is to shoot down these enemies while avoiding collisions, with increasing difficulty as the game progresses, making it a challenging experience for players.",
+                    "rating": "0.75",
+                    "rom": "MegaMania - A Space Nightmare (USA).a26",
+                    "poster": "https://upload.wikimedia.org/wikipedia/en/3/31/Megamania-game-cover-atari-2600.jpg",
+                    "box": "https://i.ytimg.com/vi/ZyUFe6znwHU/sddefault.jpg",
+                    "cartridge": "https://www.atarimania.com/2600/boxes/hi_res/megamania_cart.jpg",
+                    "multiplayer_support": false,
+                    "save_state_support": true,
+                    "is_free": false,
+                    "genres": [
+                        {
+                            "name": "shooter",
+                            "description": "A genre focused on shooting enemies and avoiding obstacles."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "Games designed for short, engaging play sessions, often found in arcade settings."
+                        }
+                    ],
+                    "screenshots": [
+                        "https://atariage.com/2600/screenshots/s_Megamania_2.png",
+                        "https://www.atarimania.com/2600/screens/megamania_pal_4.gif"
+                    ],
+                    "id": 20,
+                    "slug": "megamania"
                 }
             ]
         },
