@@ -211,7 +211,7 @@
     <div class="fixed top-[4.1rem] z-40 flex items-center justify-center w-full px-2">
         <div wire:click.away="clearSearchResults" class="flex flex-col gap-y-2 fade max-w-[28rem] _max-w-fit w-full rounded-md border-4 border-cod-gray-600 min-h-fit min-h-[10rem]_ sm:min-h-[13rem]_ max-h-[10rem] sm:max-h-[13rem] py-2 px-2 shadow-md shadow-black leading-tight overflow-hidden overflow-y-auto">
             @foreach ($search_results as $result)
-            <a wire:navigate href="{{ $this->gameRoute(['short_name' => $result['console_short_name']], ['id' => $result['game_id'], 'title' => $result['game_title']]) }}" class="group flex items-center gap-x-3 justify-start text-left rounded-md hover:bg-cod-gray-700 smooth-300 cursor-pointer pr-2">
+            <a wire:navigate href="{{ $this->gameRoute(['short_name' => $result['console_short_name']], ['id' => $result['game_id'], 'title' => $result['game_title']]) }}" @click="$dispatch('loader-top-on')" class="group flex items-center gap-x-3 justify-start text-left rounded-md hover:bg-cod-gray-700 smooth-300 cursor-pointer pr-2">
                 <div class=" w-12 h-[4.4rem] overflow-hidden rounded-md">
                     <img class=" w-full h-full brightness-75 group-hover:brightness-100 smooth-300" src="{{ $result['game_poster'] }}" alt="{{ $result['game_title'] }}">
                 </div>

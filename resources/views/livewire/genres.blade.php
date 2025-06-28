@@ -61,6 +61,7 @@
                                         'console_short_name' => $game['console_short_name'],
                                         'game_title_slug' => $game['slug']
                                     ]) }}"
+                                    @click="$dispatch('loader-top-on')"
                                     class="lazy-load-container" data-loaded="false"
                                 >
                                     <div :class="{ 'hidden': skeletonGroup || skeletonSquare }" class=" h-full">

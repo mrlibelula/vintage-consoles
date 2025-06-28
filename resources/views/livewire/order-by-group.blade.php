@@ -3,6 +3,7 @@
     @foreach ($selected_console['games'] as $game)
         <swiper-slide>
             <a href="{{ $this->gameRoute($game) }}" 
+                @click="$dispatch('loader-top-on')"
                 class="lazy-load-container" 
                 data-loaded="false" 
             >
