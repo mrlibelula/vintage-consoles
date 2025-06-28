@@ -95,13 +95,13 @@ class GameManager extends Component
      */
     protected function refreshSessionData()
     {
-        $consolesData = $this->gameManagerService->getConsoles();
+        // Use optimized approach - only refresh basic console data
+        // Don't load full data into session as it defeats our memory optimization
+        $gameSession = new \App\Service\GameSession(); // Constructor creates optimized session
+        $gameSession->clearCache(); // Clear cached full console data so fresh data is loaded
         
-        // Update session with fresh data from JSON file
-        Session::put('consoles', $consolesData);
-        
-        // Also refresh our local consoles data
-        $this->consoles = $consolesData;
+        // Also refresh our local consoles data for admin use
+        $this->consoles = $this->gameManagerService->getConsoles();
     }
 
     public function getFilteredGamesProperty()

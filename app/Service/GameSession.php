@@ -53,6 +53,7 @@ class GameSession
                         'manufacturer' => $console['manufacturer'] ?? null,
                         'release_year' => $console['release_year'] ?? null,
                         'game_count' => count($console['games'] ?? [])
+                        // Note: 'games', 'specs', 'community_links' deliberately excluded to save memory
                     ];
                 }
                 $this->consoles = $basicConsoles;

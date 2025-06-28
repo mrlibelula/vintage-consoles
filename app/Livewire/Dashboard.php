@@ -29,7 +29,15 @@ class Dashboard extends Component
     {
         $this->selected_console = [];
         $this->selected_console_id = $console_id;
-        $this->selected_console = Tool::findItemByKey($this->consoles, 'id', $console_id);
+        
+        // First try to find in basic console data for navigation
+        $basicConsole = Tool::findItemByKey($this->consoles, 'id', $console_id);
+        
+        if ($basicConsole) {
+            // Load full console data including games for the selected console
+            $gameSession = new GameSession();
+            $this->selected_console = $gameSession->getFullConsoleData($basicConsole['short_name']);
+        }
     }
     
     /**
@@ -111,10 +119,13 @@ class Dashboard extends Component
 
     public function loadConsoles($data_source = 'vintage-consoles.json', $disk = 'data')
     {
-        if (Storage::disk($disk)->exists($data_source)) {
-            $data = json_decode(Storage::disk($disk)->get($data_source), true);
-            $this->consoles = isset($data['consoles']) ? $data['consoles'] : [];
+        // Use optimized approach - only load basic console data for dashboard
+        if (!Session::has('consoles_basic')) {
+            new GameSession();
         }
+        
+        // Get basic console data from session (without full game details)
+        $this->consoles = Session::get('consoles_basic', []);
     }
 
     public function mount(Request $request, string $console_short_name = 'nes')
@@ -142,12 +153,17 @@ class Dashboard extends Component
             ? $this->setConsole($console_ids[$console_short_name])
             : $this->setConsole($console_ids['nes']);
         
+        // No longer pass full console data to GameSession
+        // GameSession will handle its own optimization
         $this->initGameSessionEnviro();
     }
     
     public function initGameSessionEnviro()
     {
-        new GameSession($this->consoles);
+        // Just ensure GameSession is initialized with optimized data
+        if (!Session::has('consoles_basic')) {
+            new GameSession();
+        }
     }
 
     public function render()

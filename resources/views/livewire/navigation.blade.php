@@ -43,7 +43,7 @@
                 <form autocomplete="off" class="absolute w-full" @submit.prevent>
                     <x-input 
                         @keydown.enter.prevent="$dispatch('loader-top-on'); $wire.set('search', $event.target.value, true)" 
-                        wire:model.live.lazy="search" 
+                        wire:model.live.debounce.500ms="search" 
                         class="h-[2.2rem] w-full text-xl px-8" 
                         placeholder="Search game"
                         name="game_search_query_{{ uniqid() }}"
