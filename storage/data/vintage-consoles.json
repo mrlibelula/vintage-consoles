@@ -1315,6 +1315,89 @@
                     "hof": [],
                     "is_free": true,
                     "options": []
+                },
+                {
+                    "play_count": 0,
+                    "last_played": "",
+                    "bookmark_status": false,
+                    "metadata": [],
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": [],
+                    "title": "Prince of Persia",
+                    "publisher": "Konami",
+                    "release_year": "1989",
+                    "description": "Prince of Persia for the Super Nintendo Entertainment System is a platform game that combines action and puzzle-solving elements. Players control the titular Prince as he navigates through a series of levels filled with traps, enemies, and obstacles, all while racing against time to rescue the princess. The game is known for its fluid animation and challenging gameplay mechanics.",
+                    "rating": "0.85",
+                    "rom": "Prince of Persia (USA).zip",
+                    "poster": "https://i.pinimg.com/474x/fc/11/a9/fc11a967b50845a2bf0e0042b9ea4ba6.jpg",
+                    "box": "https://i.pinimg.com/originals/f2/1e/3f/f21e3f5a929b92c28522aa321ce8a150.gif",
+                    "cartridge": "https://www.thevideogamecompany.com/cdn/shop/products/prince-of-persia-nintendo-snes-083717150107-cartridge.jpg?v=1657859246",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "is_free": false,
+                    "genres": [
+                        {
+                            "name": "platformer",
+                            "description": "A genre focused on jumping and climbing to navigate levels."
+                        },
+                        {
+                            "name": "action-adventure",
+                            "description": "A genre that combines elements of action and adventure, often involving exploration and puzzle-solving."
+                        }
+                    ],
+                    "screenshots": [
+                        "https://i.pinimg.com/originals/b2/21/de/b221de4bb16ddead52204d12a1c0bb15.gif",
+                        "https://cdn.mobygames.com/screenshots/16147992-prince-of-persia-snes-falling-down.png",
+                        "https://cdn.mobygames.com/screenshots/15775020-prince-of-persia-snes-confronting-with-a-skeleton.png",
+                        "https://cdn.mobygames.com/screenshots/7974454-prince-of-persia-snes-a-duel-with-an-amazon-guard.png",
+                        "https://cdn.mobygames.com/screenshots/7972792-prince-of-persia-snes-these-heavily-armoured-guards-are-either-h.png",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1vpBt1lfw67u4ePJbHSREBlAuDl43jKcZbw&s"
+                    ],
+                    "id": 16,
+                    "slug": "prince-of-persia"
+                },
+                {
+                    "play_count": 0,
+                    "last_played": "",
+                    "bookmark_status": false,
+                    "metadata": [],
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": [],
+                    "title": "Super Mario World 2 - Yoshi's Island",
+                    "publisher": "Nintendo",
+                    "release_year": "1995",
+                    "description": "Super Mario World 2 - Yoshi's Island is a platform game that follows Yoshi as he embarks on a quest to rescue Baby Mario from the clutches of Kamek. The game features unique gameplay mechanics, including the ability to transform Yoshi into various forms and utilize his egg-throwing abilities to defeat enemies and solve puzzles.",
+                    "rating": "0.92",
+                    "rom": "Super Mario World 2 - Yoshi's Island (USA).zip",
+                    "poster": "https://m.media-amazon.com/images/M/MV5BMWMxZWIyMGQtODI4Yi00MWQxLWJjOTMtZTgzZGY0YjIxODlmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+                    "box": "https://i.makeagif.com/media/5-06-2017/u_MH9g.gif",
+                    "cartridge": "https://www.thevideogamecompany.com/cdn/shop/products/super-mario-world-2-yoshis-island-nintendo-snes-045496830373-cartridge.jpg?v=1657859654",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "is_free": false,
+                    "genres": [
+                        {
+                            "name": "platformer",
+                            "description": "A genre focused on jumping and climbing through levels."
+                        },
+                        {
+                            "name": "puzzle",
+                            "description": "Incorporates problem-solving elements into gameplay."
+                        }
+                    ],
+                    "screenshots": [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkjC5JobkQUnHeTQHHwZTTE4wyyXtcGGKxOw&s",
+                        "https://cdn.mobygames.com/screenshots/10430096-super-mario-world-2-yoshis-island-snes-watch-out-for-those-black.jpg",
+                        "https://media.rawg.io/media/resize/420/-/screenshots/307/3073b285136e8f9e7cd879cc3b16b463.jpg",
+                        "https://images.launchbox-app.com/3e59957e-6022-442e-98b2-8a12366ae5f8.png",
+                        "https://www.giantbomb.com/a/uploads/original/2/23093/2707092-yoshisisland001.png"
+                    ],
+                    "id": 17,
+                    "slug": "super-mario-world-2-yoshis-island"
                 }
             ]
         },

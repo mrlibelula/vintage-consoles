@@ -189,7 +189,7 @@
                 
             </div>
             <div class=" hidden xl:flex items-center">
-                <x-theme-switcher class="ml-6" />
+                <x-theme-switcher class="ml-6 mt-0.5" />
 
             </div>
             
