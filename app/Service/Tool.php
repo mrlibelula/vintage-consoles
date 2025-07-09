@@ -458,4 +458,21 @@ class Tool
 
         // return;
     }
+
+    /**
+     * Updates or creates JSON properties values and returns updated JSON string
+     *
+     * @param string $original_json_data
+     * @param array $updated_data_array
+     * @return string|false
+     */
+    public static function updateOrCreateJsonColumns(string $original_json_data, array $updated_data_array): string|false
+    {
+        $updated_json_columns = json_decode($original_json_data, true);
+        foreach ($updated_data_array as $column => $new_value) {
+            $updated_json_columns[$column] = $new_value;
+        }
+        $updated_json_columns = json_encode($updated_json_columns);
+        return $updated_json_columns;
+    }
 }

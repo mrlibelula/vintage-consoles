@@ -44,6 +44,19 @@
                 </x-button>
             </div>
 
+            <div class="flex justify-center">
+                <a href="{{ route('login.google') }}" class="group flex justify-center items-center gap-x-4 border-[1.5px] bg-gray-300 border-black dark:border-white hover:bg-gray-100/70 rounded-full mt-8 mb-4 px-5 py-4 w-fit cursor-pointer transition-all duration-300 ease-in-out">
+                    <div class="shadow-none cursor-pointer flex justify-center text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-200 transition-all duration-300 ease-in-out text-2xl xl:text-3xl group-hover:text-gray-600 dark:group-hover:text-gray-200">
+                        {{-- <i class="google icon"></i> --}}
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png" alt="Google" class="w-8 h-8">
+                    </div>
+                    <div class="text-2xl group-hover:text-black  dark:group-hover:text-black transition-all duration-300 ease-in-out text-gray-800 dark:text-gray-800">
+                        Sign in with Google
+                    </div>
+                    
+                </a>
+            </div>
+
             <a a wire:navigate href="{{ secure_url(route('register', [], false)) }}">
                 <div class=" w-full pt-8 text-xl text-center text-rose-600 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-100">
                     New? Sign up for free

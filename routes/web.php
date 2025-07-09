@@ -9,6 +9,7 @@ use App\Livewire\Play;
 use App\Livewire\Publishers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\LoginController;
 
 
 /*
@@ -21,6 +22,10 @@ use Illuminate\Support\Facades\Storage;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// oauth2
+Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/login/google/redirect', [LoginController::class, 'handleGoogleCallback'])->name('login.google.callback');
 
 // Debugging route to understand authentication state in production
 Route::get('/debug-auth', function () {
