@@ -121,12 +121,12 @@
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <button class="flex text-2xl border-2 border-transparent rounded-full focus:outline-none focus:border-cod-gray-300 transition">
-                                    <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                    <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Str::of(Auth::user()->name)->explode(' ')->first() }}" />
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md mt-0.5">
                                     <button type="button" class="inline-flex mr-4 items-center px-3 py-2 border border-transparent text-xl leading-4 font-medium rounded-md text-cod-gray-500 dark:text-cod-gray-400  hover:text-cod-gray-700 dark:hover:text-cod-gray-300 focus:outline-none focus:bg-cod-gray-50 dark:focus:bg-cod-gray-700 active:bg-cod-gray-50 dark:active:bg-cod-gray-700 transition ease-in-out duration-150">
-                                        {{ Auth::user()->name }}
+                                        {{ Str::of(Auth::user()->name)->explode(' ')->first() }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -252,13 +252,13 @@
             <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                     <div class="shrink-0 mr-3">
-                        <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                        <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Str::of(Auth::user()->name)->explode(' ')->first() }}" />
                     </div>
                 @endif
 
                 @auth
                 <a wire.navigate href="{{ route('profile.show') }}">
-                    <div class="font-medium text-base text-cod-gray-800 dark:text-cod-gray-200">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-base text-cod-gray-800 dark:text-cod-gray-200">{{ Str::of(Auth::user()->name)->explode(' ')->first() }}</div>
                     <div class="font-medium text-xl text-cod-gray-500 mb-2">
                         {{ Auth::user()->email }}
                     </div>
