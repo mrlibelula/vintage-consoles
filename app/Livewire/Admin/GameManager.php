@@ -148,6 +148,7 @@ class GameManager extends Component
         $this->resetForm();
         $this->modalMode = 'add';
         $this->showModal = true;
+        $this->dispatch('loader-top-off');
     }
 
     public function openEditModal($gameId)
@@ -160,6 +161,7 @@ class GameManager extends Component
             $this->modalMode = 'edit';
             $this->showModal = true;
         }
+        $this->dispatch('loader-top-off');
     }
 
     public function openDeleteModal($gameId)
@@ -171,6 +173,7 @@ class GameManager extends Component
             $this->modalMode = 'delete';
             $this->showModal = true;
         }
+        $this->dispatch('loader-top-off');
     }
 
     public function closeModal()
@@ -179,6 +182,7 @@ class GameManager extends Component
         $this->resetForm();
         $this->editingGame = null;
         $this->js('document.body.style.overflow = "auto"');
+        $this->dispatch('loader-top-off');
     }
 
     public function saveGame()
@@ -277,7 +281,7 @@ class GameManager extends Component
         } else {
             session()->flash('error', 'Failed to save game. Please try again.');
         }
-        
+        $this->dispatch('loader-top-off');
         $this->js('window.dispatchEvent(new CustomEvent("loader-top-off"))');
     }
 

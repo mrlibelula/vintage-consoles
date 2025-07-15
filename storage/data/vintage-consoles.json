@@ -2221,6 +2221,45 @@
                     ],
                     "id": 16,
                     "slug": "zaxxon"
+                },
+                {
+                    "play_count": 0,
+                    "last_played": "",
+                    "bookmark_status": false,
+                    "metadata": [],
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": [],
+                    "title": "Metal Slug 2",
+                    "publisher": "SNK",
+                    "release_year": "1998",
+                    "description": "Meta Slug 2 is a run-and-gun arcade game that builds on its predecessor's gameplay, introducing new characters, vehicles, and weapons. Players navigate through various levels filled with enemies and obstacles, utilizing a mix of platforming and shooting mechanics to progress.",
+                    "rating": "0.85",
+                    "rom": "mslug2.zip",
+                    "poster": "https://m.media-amazon.com/images/M/MV5BMDY3OWVlYjktYzQ0ZS00OGMyLWIyMjgtOTQzMDIwNTE4NWU1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+                    "box": "https://i.pinimg.com/originals/41/76/bf/4176bfa881f1ba7c589bdeb7814d4c2a.gif",
+                    "cartridge": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQspI_787JiuXsB1u3euqvpCJZPvYY-99aoA&s",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "is_free": false,
+                    "genres": [
+                        {
+                            "name": "run-and-gun",
+                            "description": "A subgenre of shooter games where players control a character that can move and shoot simultaneously."
+                        },
+                        {
+                            "name": "platformer",
+                            "description": "A genre characterized by jumping between platforms and avoiding obstacles."
+                        }
+                    ],
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/16168954-metal-slug-2-super-vehicle-001ii-arcade-boss-land-destroyer.png",
+                        "https://i.kinja-img.com/image/upload/c_fit,q_60,w_645/7080c0d4327c07361a3f7d58a56af9de.jpg",
+                        "https://cdn.mobygames.com/screenshots/16169449-metal-slug-2-super-vehicle-001ii-arcade-enemy-cannons.png"
+                    ],
+                    "id": 17,
+                    "slug": "metal-slug-2"
                 }
             ]
         },

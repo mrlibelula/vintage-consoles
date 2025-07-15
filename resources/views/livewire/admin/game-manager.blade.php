@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="flex justify-end">
-                    <button wire:click="openAddModal" 
+                    <button @click="$dispatch('loader-top-on');" wire:click="openAddModal" 
                             class="inline-flex items-center px-4 py-1.5 border border-transparent text-xl font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 transition duration-150 ease-in-out">
                         <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -152,14 +152,14 @@
                                     </td>
                                     <td class="px-6 py-4 text-right text-xl font-medium">
                                         <div class="flex justify-end space-x-2">
-                                            <button wire:click="openEditModal({{ $game['id'] }})" 
+                                            <button @click="$dispatch('loader-top-on');" wire:click="openEditModal({{ $game['id'] }})" 
                                                     class="inline-flex items-center px-3 py-1">
                                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                                 </svg>
                                                 Edit
                                             </button>
-                                            <button wire:click="openDeleteModal({{ $game['id'] }})" 
+                                            <button @click="$dispatch('loader-top-on');" wire:click="openDeleteModal({{ $game['id'] }})" 
                                                     class="inline-flex items-center px-2 border border-transparent text-xl leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 dark:text-red-300 dark:bg-red-900 dark:hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150 ease-in-out">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -198,7 +198,7 @@
                  @keydown.escape.window="$wire.closeModal()"
                  x-on:modal-closed.window="document.body.style.overflow = 'auto'">
                 <div class="flex items-center justify-center min-h-screen pt-20 px-4 pb-4 text-center sm:block sm:pt-8 sm:pb-4">
-                    <div class="fixed inset-0 bg-cod-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" wire:click="closeModal"></div>
+                    <div class="fixed inset-0 bg-cod-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" @click="$dispatch('loader-top-on');" wire:click="closeModal"></div>
 
                     <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
@@ -207,7 +207,7 @@
                             <!-- Delete Confirmation Modal -->
                             <div class="bg-white dark:bg-cod-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                 <div class="flex justify-end mb-2">
-                                    <button type="button" wire:click="closeModal" class="text-cod-gray-400 hover:text-cod-gray-600 dark:hover:text-cod-gray-200 transition-colors">
+                                    <button type="button" @click="$dispatch('loader-top-on');" wire:click="closeModal" class="text-cod-gray-400 hover:text-cod-gray-600 dark:hover:text-cod-gray-200 transition-colors">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                         </svg>
@@ -246,7 +246,7 @@
                             <form wire:submit="saveGame" @submit="$dispatch('loader-top-on')" x-data>
                                 <div class="bg-white dark:bg-cod-gray-800 px-4 pt-5 pb-4 sm:p-6 relative">
                                     <!-- Close button positioned at top-right -->
-                                    <button type="button" wire:click="closeModal" class="absolute top-4 right-4 text-cod-gray-400 hover:text-cod-gray-600 dark:hover:text-cod-gray-200 transition-colors z-10">
+                                    <button type="button" @click="$dispatch('loader-top-on');" wire:click="closeModal" class="absolute top-4 right-4 text-cod-gray-400 hover:text-cod-gray-600 dark:hover:text-cod-gray-200 transition-colors z-10">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                         </svg>
@@ -466,11 +466,11 @@
                                 </div>
 
                                 <div class="bg-cod-gray-50 dark:bg-cod-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                    <button type="submit" 
+                                    <button @click="$dispatch('loader-top-on');" type="submit" 
                                             class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-rose-600 text-base font-medium text-white hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 sm:ml-3 sm:w-auto sm:text-xl">
                                         {{ $modalMode === 'add' ? 'Add Game' : 'Update Game' }}
                                     </button>
-                                    <button type="button" wire:click="closeModal" 
+                                    <button @click="$dispatch('loader-top-on');" type="button" wire:click="closeModal" 
                                             class="mt-3 w-full inline-flex justify-center rounded-md border border-cod-gray-300 dark:border-cod-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-cod-gray-800 text-base font-medium text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-50 dark:hover:bg-cod-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-xl">
                                         Cancel
                                     </button>
