@@ -20,7 +20,7 @@
         @endif
 
         <!-- Console Selection & Search -->
-        <div class="bg-white dark:bg-cod-gray-800 shadow rounded-lg p-6 mb-6">
+        <div class="bg-cod-gray-50 dark:bg-cod-gray-800 shadow rounded-lg p-6 mb-6">
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                 <div class="flex-1">
                     <label for="console-select" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300 mb-2">
@@ -28,7 +28,7 @@
                     </label>
                     <select wire:model.live="selectedConsole" id="console-select" 
                             @change="$dispatch('loader-top-on'); setTimeout(() => $dispatch('loader-top-off'), 500)"
-                            class="w-full md:w-[18rem]_ px-3 py-2 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500">
+                            class="w-full md:w-[18rem]_ px-3 py-2 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500">
                         @foreach($consoles as $console)
                             <option value="{{ $console['short_name'] }}">{{ $console['long_name'] }} ({{ $console['short_name'] }})</option>
                         @endforeach
@@ -40,7 +40,7 @@
                         Search Games
                     </label>
                     <input wire:model.live.debounce.300ms="searchTerm" type="text" id="search" placeholder="Search by title or publisher..."
-                        class="w-full px-3 py-2 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 placeholder-cod-gray-500 dark:placeholder-cod-gray-400 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500">
+                        class="w-full px-3 py-2 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 placeholder-cod-gray-500 dark:placeholder-cod-gray-400 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500">
                 </div>
 
                 <div class="flex justify-end">
@@ -56,7 +56,7 @@
         </div>
 
         <!-- Games Table -->
-        <div class="bg-white dark:bg-cod-gray-800 shadow rounded-lg overflow-hidden">
+        <div class="bg-cod-gray-50 dark:bg-cod-gray-800 shadow rounded-lg overflow-hidden">
             <div class="px-6 py-4 border-b border-cod-gray-200 dark:border-cod-gray-700">
                 <h3 class="text-xl font-medium text-cod-gray-900 dark:text-cod-gray-100">
                     Games for {{ $selectedConsole }} ({{ count($this->filteredGames) }} games)
@@ -99,7 +99,7 @@
                                 <th class="px-6 py-3 text-right text-base bg-cod-gray-50 dark:bg-cod-gray-700 font-medium text-cod-gray-500 dark:text-cod-gray-400 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white dark:bg-cod-gray-800 divide-y divide-cod-gray-200 dark:divide-cod-gray-700">
+                        <tbody class="bg-cod-gray-50 dark:bg-cod-gray-800 divide-y divide-cod-gray-200 dark:divide-cod-gray-700">
                             @foreach($this->filteredGames as $game)
                                 <tr class="hover:bg-rose-200/60 dark:hover:bg-rose-700/20 transition-colors duration-300">
                                     <td class="px-6 py-4">
@@ -202,10 +202,10 @@
 
                     <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-                    <div class="inline-block align-bottom bg-white dark:bg-cod-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-12 sm:align-middle sm:max-w-4xl sm:w-full">
+                    <div class="inline-block align-bottom bg-cod-gray-50 dark:bg-cod-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-12 sm:align-middle sm:max-w-4xl sm:w-full">
                         @if($modalMode === 'delete')
                             <!-- Delete Confirmation Modal -->
-                            <div class="bg-white dark:bg-cod-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <div class="bg-cod-gray-50 dark:bg-cod-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                 <div class="flex justify-end mb-2">
                                     <button type="button" @click="$dispatch('loader-top-on');" wire:click="closeModal" class="text-cod-gray-400 hover:text-cod-gray-600 dark:hover:text-cod-gray-200 transition-colors">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -237,14 +237,14 @@
                                     Delete
                                 </button>
                                 <button wire:click="closeModal" type="button" 
-                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-cod-gray-300 dark:border-cod-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-cod-gray-800 text-base font-medium text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-50 dark:hover:bg-cod-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-xl">
+                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-cod-gray-300 dark:border-cod-gray-600 shadow-sm px-4 py-2 bg-cod-gray-50 dark:bg-cod-gray-800 text-base font-medium text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-50 dark:hover:bg-cod-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-xl">
                                     Cancel
                                 </button>
                             </div>
                         @else
                             <!-- Add/Edit Game Modal -->
                             <form wire:submit="saveGame" @submit="$dispatch('loader-top-on')" x-data>
-                                <div class="bg-white dark:bg-cod-gray-800 px-4 pt-5 pb-4 sm:p-6 relative">
+                                <div class="bg-cod-gray-50 dark:bg-cod-gray-800 px-4 pt-5 pb-4 sm:p-6 relative">
                                     <!-- Close button positioned at top-right -->
                                     <button type="button" @click="$dispatch('loader-top-on');" wire:click="closeModal" class="absolute top-4 right-4 text-cod-gray-400 hover:text-cod-gray-600 dark:hover:text-cod-gray-200 transition-colors z-10">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -308,7 +308,7 @@
                                                     </div>
                                                 </div>
                                                 <input wire:model="title" type="text" id="title" required
-                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
                                                 @error('title') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                                 <p class="mt-1 text-sm text-cod-gray-500 dark:text-cod-gray-400">Enter the game title, then click "AI Fill" to auto-populate other fields</p>
                                             </div>
@@ -316,7 +316,7 @@
                                             <div>
                                                 <label for="publisher" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Publisher <span class="text-rose-600">*</span></label>
                                                 <input wire:model="publisher" type="text" id="publisher" required
-                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
                                                 @error('publisher') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                             </div>
 
@@ -324,14 +324,14 @@
                                                 <div>
                                                     <label for="release_year" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Release Year <span class="text-rose-600">*</span></label>
                                                     <input wire:model="release_year" type="number" id="release_year" required min="1970" max="{{ date('Y') + 5 }}"
-                                                        class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                        class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
                                                     @error('release_year') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                                 </div>
 
                                                 <div>
                                                     <label for="rating" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Rating (0-1) <span class="text-rose-600">*</span></label>
                                                     <input wire:model="rating" type="number" id="rating" required min="0" max="1" step="0.01"
-                                                        class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                        class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
                                                     @error('rating') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                                 </div>
                                             </div>
@@ -339,7 +339,7 @@
                                             <div>
                                                 <label for="rom" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">ROM File <span class="text-rose-600">*</span></label>
                                                 <input wire:model="rom" type="text" id="rom" required
-                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
                                                 @error('rom') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                                 
                                                 <!-- ROM Validation Error Message -->
@@ -376,7 +376,7 @@
                                             <div>
                                                 <label for="poster" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Poster URL</label>
                                                 <input wire:model="poster" type="text" id="poster" placeholder="https://example.com/image.jpg or /images/games/image.png"
-                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
                                                 @error('poster') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                                 <p class="mt-1 text-sm text-cod-gray-500 dark:text-cod-gray-400">Enter a full URL or a local path starting with "/"</p>
                                             </div>
@@ -384,7 +384,7 @@
                                             <div>
                                                 <label for="box" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Box Art URL</label>
                                                 <input wire:model="box" type="text" id="box" placeholder="https://example.com/image.jpg or /images/games/image.png"
-                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
                                                 @error('box') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                                 <p class="mt-1 text-sm text-cod-gray-500 dark:text-cod-gray-400">Enter a full URL or a local path starting with "/"</p>
                                             </div>
@@ -392,7 +392,7 @@
                                             <div>
                                                 <label for="cartridge" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Cartridge URL</label>
                                                 <input wire:model="cartridge" type="text" id="cartridge" placeholder="https://example.com/image.jpg or /images/games/image.png"
-                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
                                                 @error('cartridge') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                                 <p class="mt-1 text-sm text-cod-gray-500 dark:text-cod-gray-400">Enter a full URL or a local path starting with "/"</p>
                                             </div>
@@ -424,7 +424,7 @@
                                     <div class="mt-6">
                                         <label for="description" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Description <span class="text-rose-600">*</span></label>
                                         <textarea wire:model="description" id="description" rows="4" required
-                                                class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500"></textarea>
+                                                class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500"></textarea>
                                         @error('description') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                     </div>
 
@@ -434,9 +434,9 @@
                                         @foreach($genres as $index => $genre)
                                             <div class="flex gap-4 mb-2">
                                                 <input wire:model="genres.{{ $index }}.name" type="text" placeholder="Genre name"
-                                                    class="flex-1 border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="flex-1 border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
                                                 <input wire:model="genres.{{ $index }}.description" type="text" placeholder="Genre description"
-                                                    class="flex-[2] border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="flex-[2] border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
                                                 @if(count($genres) > 1)
                                                     <button type="button" wire:click="removeGenre({{ $index }})" 
                                                             class="px-3 py-2 text-red-600 hover:text-red-800">Remove</button>
@@ -453,7 +453,7 @@
                                         @foreach($screenshots as $index => $screenshot)
                                             <div class="flex gap-4 mb-2">
                                                 <input wire:model="screenshots.{{ $index }}" type="text" placeholder="https://example.com/image.jpg or /images/games/image.png"
-                                                    class="flex-1 border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-white dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="flex-1 border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
                                                 @if(count($screenshots) > 1)
                                                     <button type="button" wire:click="removeScreenshot({{ $index }})" 
                                                             class="px-3 py-2 text-red-600 hover:text-red-800">Remove</button>
@@ -471,7 +471,7 @@
                                         {{ $modalMode === 'add' ? 'Add Game' : 'Update Game' }}
                                     </button>
                                     <button @click="$dispatch('loader-top-on');" type="button" wire:click="closeModal" 
-                                            class="mt-3 w-full inline-flex justify-center rounded-md border border-cod-gray-300 dark:border-cod-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-cod-gray-800 text-base font-medium text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-50 dark:hover:bg-cod-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-xl">
+                                            class="mt-3 w-full inline-flex justify-center rounded-md border border-cod-gray-300 dark:border-cod-gray-600 shadow-sm px-4 py-2 bg-cod-gray-50 dark:bg-cod-gray-800 text-base font-medium text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-50 dark:hover:bg-cod-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-xl">
                                         Cancel
                                     </button>
                                 </div>
