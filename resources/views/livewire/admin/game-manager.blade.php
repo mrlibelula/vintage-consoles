@@ -252,19 +252,22 @@
                                         </svg>
                                     </button>
                                     
-                                    <!-- Modal header -->
+                                    <!-- Modal header with inline console switcher -->
                                     <div class="mb-4 pr-8">
-                                        <h3 class="text-xl leading-6 font-medium text-cod-gray-900 dark:text-cod-gray-100">
-                                            {{ $modalMode === 'add' ? 'Add New Game' : 'Edit Game' }} 
-                                            @if($selectedConsole)
-                                                @php
-                                                    $console = collect($consoles)->firstWhere('short_name', $selectedConsole);
-                                                @endphp
-                                                @if($console)
-                                                    <span class="text-cod-gray-500 dark:text-cod-gray-400">({{ $console['long_name'] }})</span>
-                                                @endif
-                                            @endif
-                                        </h3>
+                                        <div class="flex items-center gap-3">
+                                            <h3 class="text-xl leading-6 font-medium text-cod-gray-900 dark:text-cod-gray-100">
+                                                {{ $modalMode === 'add' ? 'Add New Game' : 'Edit Game' }}
+                                            </h3>
+                                            <div class="min-w-[14rem]">
+                                                <label for="form_console_header" class="sr-only">Console</label>
+                                                <select wire:model="formConsole" id="form_console_header"
+                                                        class="w-full px-3 py-1.5 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    @foreach($consoles as $consoleOption)
+                                                        <option value="{{ $consoleOption['short_name'] }}">{{ $consoleOption['long_name'] }} ({{ $consoleOption['short_name'] }})</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

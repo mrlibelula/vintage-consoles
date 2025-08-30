@@ -27,6 +27,8 @@ class GameManager extends Component
     public $sortDirection = 'asc';
 
     // Form fields
+    public $formConsole = '';
+    public $originalConsole = '';
     public $title = '';
     public $publisher = '';
     public $release_year = '';
@@ -148,6 +150,9 @@ class GameManager extends Component
         $this->resetForm();
         $this->modalMode = 'add';
         $this->showModal = true;
+        // Default console for the modal is the currently selected console
+        $this->formConsole = $this->selectedConsole;
+        $this->originalConsole = $this->selectedConsole;
         $this->dispatch('loader-top-off');
     }
 
@@ -160,6 +165,9 @@ class GameManager extends Component
             $this->fillForm($game);
             $this->modalMode = 'edit';
             $this->showModal = true;
+            // Track console for move scenarios
+            $this->formConsole = $this->selectedConsole;
+            $this->originalConsole = $this->selectedConsole;
         }
         $this->dispatch('loader-top-off');
     }
@@ -211,8 +219,9 @@ class GameManager extends Component
             }],
         ]);
 
-        // Validate ROM file existence
-        $romValidation = $this->validateRomFile($this->rom, $this->selectedConsole);
+        // Validate ROM file existence against the console selected in the modal
+        $consoleForValidation = $this->formConsole ?: $this->selectedConsole;
+        $romValidation = $this->validateRomFile($this->rom, $consoleForValidation);
         if (!$romValidation['valid']) {
             // Dispatch ROM error event for in-modal message
             $this->js('window.dispatchEvent(new CustomEvent("rom-error", { detail: { message: "' . addslashes($romValidation['message']) . '" } }))');
@@ -262,18 +271,30 @@ class GameManager extends Component
         ];
 
         if ($this->modalMode === 'add') {
-            $success = $this->gameManagerService->addGame($this->selectedConsole, $gameData);
+            $success = $this->gameManagerService->addGame($this->formConsole, $gameData);
             $message = 'Game added successfully!';
         } else {
-            $success = $this->gameManagerService->updateGame(
-                $this->selectedConsole, 
-                $this->editingGame['id'], 
-                $gameData
-            );
-            $message = 'Game updated successfully!';
+            if ($this->formConsole !== $this->originalConsole) {
+                // Move game across consoles: preserve existing metadata when possible
+                $dataToAdd = array_merge($this->editingGame ?? [], $gameData);
+                unset($dataToAdd['id']); // id will be generated in target console
+                $deleted = $this->gameManagerService->deleteGame($this->originalConsole, $this->editingGame['id']);
+                $added = $this->gameManagerService->addGame($this->formConsole, $dataToAdd);
+                $success = $deleted && $added;
+                $message = 'Game moved and updated successfully!';
+            } else {
+                $success = $this->gameManagerService->updateGame(
+                    $this->originalConsole,
+                    $this->editingGame['id'],
+                    $gameData
+                );
+                $message = 'Game updated successfully!';
+            }
         }
 
         if ($success) {
+            // Ensure the main list reflects the console chosen in the modal
+            $this->selectedConsole = $this->formConsole ?: $this->selectedConsole;
             $this->loadGames();
             $this->refreshSessionData(); // Refresh session data for search functionality
             $this->closeModal();
@@ -438,8 +459,9 @@ class GameManager extends Component
 
         try {
             // Get console long name for better AI context
-            $console = collect($this->consoles)->firstWhere('short_name', $this->selectedConsole);
-            $consoleName = $console ? $console['long_name'] : $this->selectedConsole;
+            $consoleKey = $this->formConsole ?: $this->selectedConsole;
+            $console = collect($this->consoles)->firstWhere('short_name', $consoleKey);
+            $consoleName = $console ? $console['long_name'] : $consoleKey;
 
             $prompt = "You are a video game database expert. Please provide detailed information about the following video game in JSON format.
 

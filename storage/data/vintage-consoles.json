@@ -2260,6 +2260,45 @@
                     ],
                     "id": 17,
                     "slug": "metal-slug-2"
+                },
+                {
+                    "play_count": 0,
+                    "last_played": "",
+                    "bookmark_status": false,
+                    "metadata": [],
+                    "user_reviews": [],
+                    "additional_notes": "",
+                    "hof": [],
+                    "options": [],
+                    "title": "Tempest",
+                    "publisher": "Atari",
+                    "release_year": "1981",
+                    "description": "Tempest is a tube shooter arcade game where players control a claw-shaped spaceship navigating through a three-dimensional tunnel. The objective is to destroy enemies and avoid obstacles while collecting power-ups, all set to a vibrant and psychedelic visual style that was groundbreaking for its time.",
+                    "rating": "0.85",
+                    "rom": "tempest.zip",
+                    "poster": "https://i.ebayimg.com/00/s/MTYwMFgxMDYy/z/mLQAAOSwLxpdcThn/$_57.JPG?set_id=8800005007",
+                    "box": "https://i.imgur.com/VSgRVfA.gif",
+                    "cartridge": "https://newwavetoys.com/cdn/shop/products/Tempest_CP34_massPro.jpg?v=1553784147",
+                    "multiplayer_support": true,
+                    "save_state_support": true,
+                    "is_free": false,
+                    "genres": [
+                        {
+                            "name": "shooter",
+                            "description": "A genre focused on shooting enemies and targets, often with fast-paced gameplay."
+                        },
+                        {
+                            "name": "arcade",
+                            "description": "Games designed for arcade machines, typically featuring high scores and short play sessions."
+                        }
+                    ],
+                    "screenshots": [
+                        "https://cdn.mobygames.com/screenshots/18147994-tempest-arcade-hi-res-vector-display-mode.png",
+                        "https://i.pinimg.com/474x/5e/f3/90/5ef39002d6b510cc7fa1558cf6cc2718.jpg",
+                        "https://i.ytimg.com/vi/AMto2HJJSSA/maxresdefault.jpg"
+                    ],
+                    "slug": "tempest",
+                    "id": 18
                 }
             ]
         },
