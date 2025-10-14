@@ -21,9 +21,9 @@ class Play extends Component
     public int $current_screenshot_key = -1;
 
     public array $accordion_toggler = [
-        'description' => true, 
-        'genres' => true, 
-        'screenshots' => true, 
+        'description' => false, 
+        'genres' => false, 
+        'screenshots' => false, 
     ];
 
     public array $tabs = [
