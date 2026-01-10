@@ -347,12 +347,14 @@ class GameManager extends Component
         }
         
         // For other consoles, check local storage
-        $romPath = storage_path("data/games/{$consoleShortName}/{$rom}");
+        // Convert to lowercase to match filesystem directory names (e.g., "nes" not "NES")
+        $consoleDir = strtolower($consoleShortName);
+        $romPath = storage_path("data/games/{$consoleDir}/{$rom}");
         
         if (!file_exists($romPath)) {
             return [
                 'valid' => false,
-                'message' => "ROM file '{$rom}' not found in /storage/data/games/{$consoleShortName}/ directory. Please ensure the file exists."
+                'message' => "ROM file '{$rom}' not found in /storage/data/games/{$consoleDir}/ directory. Please ensure the file exists."
             ];
         }
         
@@ -364,13 +366,13 @@ class GameManager extends Component
             'atari2600' => ['bin', 'a26'],
         ];
         
-        if (isset($allowedExtensions[$consoleShortName])) {
+        if (isset($allowedExtensions[$consoleDir])) {
             $extension = strtolower(pathinfo($rom, PATHINFO_EXTENSION));
-            if (!in_array($extension, $allowedExtensions[$consoleShortName])) {
+            if (!in_array($extension, $allowedExtensions[$consoleDir])) {
                 return [
                     'valid' => false,
-                    'message' => "Invalid file extension for {$consoleShortName}. Expected: " . 
-                               implode(', ', $allowedExtensions[$consoleShortName]) . 
+                    'message' => "Invalid file extension for {$consoleDir}. Expected: " . 
+                               implode(', ', $allowedExtensions[$consoleDir]) . 
                                ". Got: {$extension}"
                 ];
             }
