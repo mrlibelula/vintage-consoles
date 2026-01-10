@@ -19,6 +19,7 @@ yarn-error.log
 /.vscode
 /storage/data/chat/
 /storage/data/url-check-report.json
+/storage/data/vintage-consoles.json
 
 # Track game ROMs in storage
 !storage/data/games/
