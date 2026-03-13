@@ -1,5 +1,5 @@
 <div>
-    <div class="{{ $show_hero ? 'relative h-[10rem] sm:h-[30vh] bg-cover bg-center bg-no-repeat' : '' }}"
+    <div class="{{ $show_hero ? 'relative h-[10rem] sm:h-[36vh] bg-cover bg-center bg-no-repeat' : '' }}"
         @if ($show_hero)
         style="filter: grayscale(1); background-image: url({{ $hero_image }});"
         @endif
