@@ -84,9 +84,12 @@
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-[0.2rem]">
                 <!-- publishers list -->
                 @forelse ($publishers as $publisher)
-                <a @click="$dispatch('loader-top-on')" wire:navigate href="{{ route('publishers', $publisher['name']) }}" class="link capitalize">
-                    {{ $publisher['name'] }} <span class="text-xs text-gray-500">({{ $publisher['games_count'] }})</span>
-                </a>
+                <div class="flex gap-x-1">
+                    <a @click="$dispatch('loader-top-on')" wire:navigate href="{{ route('publishers', $publisher['name']) }}" class="link capitalize leading-none mb-4">
+                        {{ $publisher['name'] }}
+                    </a>
+                    <span class="text-sm mt-0.5 text-gray-500">({{ $publisher['games_count'] }})</span>
+                </div>
                 @empty
                 <div>
                     No Publishers found

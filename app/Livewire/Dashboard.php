@@ -14,7 +14,7 @@ class Dashboard extends Component
     public array $consoles = [];
     public array $selected_console = [];
     public int $selected_console_id = 0;
-    public bool $show_hero = false;
+    public bool $show_hero = true;
     public string $hero_image;
     public string $ob = 'group';
     public array $console_tabs = [
@@ -105,7 +105,6 @@ class Dashboard extends Component
             // 'https://mir-s3-cdn-cf.behance.net/project_modules/1400_opt_1/6060fa143584307.627d06916b633.gif',
             'https://mir-s3-cdn-cf.behance.net/project_modules/1400_opt_1/5ad139143584307.627d06916e5a6.gif',
             // 'https://mir-s3-cdn-cf.behance.net/project_modules/1400_opt_1/b0366c143584307.627d06916fa75.gif',
-            'https://camo.githubusercontent.com/cceb98265f0226a790be96288cd9753481531c3908c6ca4e636f42f258c7f350/68747470733a2f2f6465762d746f2d75706c6f6164732e73332e616d617a6f6e6177732e636f6d2f75706c6f6164732f61727469636c65732f3871697963626678766d317730726469376565332e676966',
             'https://i.pinimg.com/originals/1b/96/5c/1b965c3c3b5df0517bdca4e0d95beb15.gif',
             'https://i.pinimg.com/originals/15/e7/e3/15e7e300166c962d3b8a22f60b5cac9e.gif',
             'https://i.pinimg.com/originals/83/ad/fc/83adfc6e00273fac549747a0eb3b4487.gif',
