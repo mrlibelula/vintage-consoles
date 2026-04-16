@@ -386,19 +386,15 @@ class GameManager extends Component
      */
     private function isValidImagePath(string $path): bool
     {
+        $path = trim($path);
+
         // Check if it's a valid URL
         if (filter_var($path, FILTER_VALIDATE_URL)) {
             return true;
         }
         
-        // Check if it's a relative path starting with /
-        if (str_starts_with($path, '/')) {
-            // Optional: Check if the local file exists
-            $localPath = public_path($path);
-            return file_exists($localPath);
-        }
-        
-        return false;
+        // Accept local URIs that start at web root (e.g. /images/games/foo.png)
+        return str_starts_with($path, '/');
     }
 
     public function deleteGame()
