@@ -194,13 +194,34 @@
                 {{ $game['console_short_name'] === 'atari2600' ? 'Atari 2600' : $game['console_short_name'] }}
             </div>
             @endisset
+            @php
+                $boxUrl   = $game['box'] ?? '';
+                $boxLower = strtolower($boxUrl);
+                $isWebm   = str_contains($boxLower, '.webm');
+                $isMp4    = str_contains($boxLower, '.mp4');
+                $isVideo  = $isWebm || $isMp4;
+                $mp4Url   = $isWebm ? str_replace('.webm', '.mp4', $boxUrl) : ($isMp4 ? $boxUrl : '');
+            @endphp
             <div class="wrapper overflow-hidden h-full justify-between">
-                <!-- Placeholder for the box background -->
-                <div class="colorProd relative lazy-load-bg" 
-                    data-bg-url="{{ $game['box'] }}" 
-                    style="background-image: url({{ asset('images/placeholder-wide-dark.jpg') }});"
-                >
-                </div>
+                @if ($isVideo)
+                    <!-- Video box background -->
+                    <div class="colorProd relative lazy-load-video">
+                        <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline>
+                            @if ($isWebm)
+                                <source data-src="{{ $boxUrl }}" type="video/webm">
+                            @endif
+                            @if ($mp4Url)
+                                <source data-src="{{ $mp4Url }}" type="video/mp4">
+                            @endif
+                        </video>
+                    </div>
+                @else
+                    <!-- GIF / image box background -->
+                    <div class="colorProd relative lazy-load-bg"
+                        data-bg-url="{{ $boxUrl }}"
+                        style="background-image: url({{ asset('images/placeholder-wide-dark.jpg') }});"
+                    ></div>
+                @endif
                 <div class=" absolute top-0 w-full h-[177px] bg-gradient-to-b from-transparent/30 via-transparent to-cod-gray-200 dark:from-transparent/30 dark:via-transparent dark:to-cod-gray-900">
                     &nbsp;
                 </div>

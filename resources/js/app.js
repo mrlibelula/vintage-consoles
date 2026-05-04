@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (entry.isIntersecting) {
                     const container = entry.target
 
-                    // Load background images
+                    // Load background images (GIF / static)
                     const lazyBackgrounds = container.querySelectorAll('.lazy-load-bg')
                     lazyBackgrounds.forEach(bg => {
                         const bgUrl = bg.getAttribute('data-bg-url')
@@ -20,6 +20,19 @@ document.addEventListener('DOMContentLoaded', function() {
                             bg.style.backgroundImage = `url('${bgUrl}')`
                             bg.removeAttribute('data-bg-url')
                         }
+                    })
+
+                    // Load video backgrounds (webm / mp4)
+                    const lazyVideos = container.querySelectorAll('.lazy-load-video')
+                    lazyVideos.forEach(videoWrap => {
+                        const video = videoWrap.querySelector('video')
+                        if (!video) return
+                        video.querySelectorAll('source[data-src]').forEach(source => {
+                            source.src = source.getAttribute('data-src')
+                            source.removeAttribute('data-src')
+                        })
+                        video.load()
+                        video.play().catch(() => {})
                     })
 
                     container.setAttribute('data-loaded', 'true')
