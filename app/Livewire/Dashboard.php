@@ -118,13 +118,19 @@ class Dashboard extends Component
 
     public function loadConsoles($data_source = 'vintage-consoles.json', $disk = 'data')
     {
-        // Use optimized approach - only load basic console data for dashboard
-        if (!Session::has('consoles_basic')) {
+        if ($data_source !== 'vintage-consoles.json') {
+            if (Storage::disk($disk)->exists($data_source)) {
+                $data = json_decode(Storage::disk($disk)->get($data_source), true);
+                $this->consoles = $data['consoles'] ?? [];
+            }
+            return;
+        }
+
+        if (!Session::has('consoles')) {
             new GameSession();
         }
-        
-        // Get basic console data from session (without full game details)
-        $this->consoles = Session::get('consoles_basic', []);
+
+        $this->consoles = Session::get('consoles', []);
     }
 
     public function mount(Request $request, string $console_short_name = 'nes')
@@ -159,8 +165,7 @@ class Dashboard extends Component
     
     public function initGameSessionEnviro()
     {
-        // Just ensure GameSession is initialized with optimized data
-        if (!Session::has('consoles_basic')) {
+        if (!Session::has('consoles')) {
             new GameSession();
         }
     }

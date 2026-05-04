@@ -40,7 +40,7 @@ class Publishers extends Component
         $games = [];
         if ($publisher_name) {
             // Use optimized session approach
-            if (!Session::has('consoles_basic')) {
+            if (!Session::has('consoles')) {
                 new GameSession();
             }
 

@@ -56,7 +56,7 @@ class Genres extends Component
         $games = [];
         if ($genre_name) {
             // Use optimized session approach
-            if (!Session::has('consoles_basic')) {
+            if (!Session::has('consoles')) {
                 new GameSession();
             }
 
@@ -113,7 +113,7 @@ class Genres extends Component
         $this->games = [];
         
         // Use optimized session - get basic console info first
-        if (!Session::has('consoles_basic')) {
+        if (!Session::has('consoles')) {
             new GameSession();
         }
 

@@ -60,136 +60,130 @@ describe('Game Service', function () {
         Session::flush();
     });
     
-    describe('Constructor and Console Loading', function () {
-        it('can be instantiated with a console short name', function () {
-            $game = new Game('nes');
-            
-            expect($game)->toBeInstanceOf(Game::class);
-        });
+    // Constructor and Console Loading
+    it('can be instantiated with a console short name', function () {
+        $game = new Game('nes');
         
-        it('loads console data correctly when console exists', function () {
-            $game = new Game('nes');
-            $console = $game->getConsole();
-            
-            expect($console)->toBeArray();
-            
-            if (!empty($console)) {
-                expect($console['id'])->toBe(1)
-                    ->and($console['short_name'])->toBe('nes')
-                    ->and($console['long_name'])->toBe('Nintendo Entertainment System')
-                    ->and($console['games'])->toBeArray()
-                    ->and($console['games'])->toHaveCount(2);
-            }
-        });
-        
-        it('finds correct console by short name', function () {
-            $snesGame = new Game('snes');
-            $console = $snesGame->getConsole();
-            
-            expect($console)->toBeArray();
-            
-            if (!empty($console)) {
-                expect($console['id'])->toBe(2)
-                    ->and($console['short_name'])->toBe('snes')
-                    ->and($console['long_name'])->toBe('Super Nintendo Entertainment System');
-            }
-        });
-        
-        it('handles case insensitive console names', function () {
-            $game = new Game('NES');
-            $console = $game->getConsole();
-            
-            // This will likely return empty array since search is case sensitive
-            expect($console)->toBeArray();
-        });
+        expect($game)->toBeInstanceOf(Game::class);
     });
     
-    describe('Console Data Access', function () {
-        it('returns console data via getConsole method', function () {
-            $game = new Game('nes');
-            $console = $game->getConsole();
-            
-            expect($console)->toBeArray();
-            
-            if (!empty($console)) {
-                expect($console)->toHaveKeys(['id', 'short_name', 'long_name', 'games']);
-            }
-        });
+    it('loads console data correctly when console exists', function () {
+        $game = new Game('nes');
+        $console = $game->getConsole();
         
-        it('console contains games array when console found', function () {
-            $game = new Game('nes');
-            $console = $game->getConsole();
-            
-            expect($console)->toBeArray();
-            
-            if (!empty($console) && isset($console['games'])) {
-                expect($console['games'])->toBeArray()
-                    ->and($console['games'][0])->toHaveKeys(['id', 'title', 'slug', 'rom'])
-                    ->and($console['games'][0]['title'])->toBe('Super Mario Bros')
-                    ->and($console['games'][1]['title'])->toBe('The Legend of Zelda');
-            }
-        });
-    });
-    
-    describe('Game Data Access', function () {
-        it('throws error when game data accessed before initialization', function () {
-            $game = new Game('nes');
-            
-            // The $game property is never initialized, so accessing it should throw an error
-            expect(fn() => $game->getGame())->toThrow(Error::class);
-        });
-    });
-    
-    describe('Session Integration', function () {
-        it('creates game session if not exists', function () {
-            // Session should be flushed in beforeEach, and storage already mocked
-            $game = new Game('nes');
-            
-            expect(Session::has('consoles'))->toBeTrue();
-        });
+        expect($console)->toBeArray();
         
-        it('uses existing session data when available', function () {
-            $game = new Game('nes');
-            $console = $game->getConsole();
-            
-            expect($console)->toBeArray();
-            // Note: Session data may be replaced by GameSession constructor loading from file
-            expect(Session::has('consoles'))->toBeTrue();
-        });
+        if (!empty($console)) {
+            expect($console['id'])->toBe(1)
+                ->and($console['short_name'])->toBe('nes')
+                ->and($console['long_name'])->toBe('Nintendo Entertainment System')
+                ->and($console['games'])->toBeArray()
+                ->and($console['games'])->toHaveCount(2);
+        }
     });
     
-    describe('Error Handling', function () {
-        it('handles non-existent console gracefully', function () {
-            $game = new Game('invalid_console');
-            $console = $game->getConsole();
-            
-            expect($console)->toBeArray();
-            // Should return empty array when console not found
-        });
+    it('finds correct console by short name', function () {
+        $snesGame = new Game('snes');
+        $console = $snesGame->getConsole();
         
-        it('handles empty session data', function () {
-            // Set empty session data
-            Session::put('consoles', []);
-            
-            $game = new Game('nes');
-            $console = $game->getConsole();
-            
-            expect($console)->toBeArray();
-        });
+        expect($console)->toBeArray();
+        
+        if (!empty($console)) {
+            expect($console['id'])->toBe(2)
+                ->and($console['short_name'])->toBe('snes')
+                ->and($console['long_name'])->toBe('Super Nintendo Entertainment System');
+        }
     });
     
-    describe('Integration with Tool Service', function () {
-        it('uses Tool::findItemByKey for console lookup', function () {
-            $game = new Game('snes');
-            $console = $game->getConsole();
-            
-            expect($console)->toBeArray();
-            
-            if (!empty($console)) {
-                // Verify that it found the correct console using Tool::findItemByKey logic
-                expect($console['short_name'])->toBe('snes')
-                    ->and($console['id'])->toBe(2);
-            }
-        });
+    it('handles case insensitive console names', function () {
+        $game = new Game('NES');
+        $console = $game->getConsole();
+        
+        // This will likely return empty array since search is case sensitive
+        expect($console)->toBeArray();
+    });
+
+    // Console Data Access
+    it('returns console data via getConsole method', function () {
+        $game = new Game('nes');
+        $console = $game->getConsole();
+        
+        expect($console)->toBeArray();
+        
+        if (!empty($console)) {
+            expect($console)->toHaveKeys(['id', 'short_name', 'long_name', 'games']);
+        }
+    });
+    
+    it('console contains games array when console found', function () {
+        $game = new Game('nes');
+        $console = $game->getConsole();
+        
+        expect($console)->toBeArray();
+        
+        if (!empty($console) && isset($console['games'])) {
+            expect($console['games'])->toBeArray()
+                ->and($console['games'][0])->toHaveKeys(['id', 'title', 'slug', 'rom'])
+                ->and($console['games'][0]['title'])->toBe('Super Mario Bros')
+                ->and($console['games'][1]['title'])->toBe('The Legend of Zelda');
+        }
+    });
+
+    // Game Data Access
+    it('throws error when game data accessed before initialization', function () {
+        $game = new Game('nes');
+        
+        // The $game property is never initialized, so accessing it should throw an error
+        expect(fn() => $game->getGame())->toThrow(Error::class);
+    });
+
+    // Session Integration
+    it('creates game session if not exists', function () {
+        // Session should be flushed in beforeEach, and storage already mocked
+        $game = new Game('nes');
+        
+        expect(Session::has('consoles'))->toBeTrue();
+    });
+    
+    it('uses existing session data when available', function () {
+        $game = new Game('nes');
+        $console = $game->getConsole();
+        
+        expect($console)->toBeArray();
+        // Note: Session data may be replaced by GameSession constructor loading from file
+        expect(Session::has('consoles'))->toBeTrue();
+    });
+
+    // Error Handling
+    it('handles non-existent console gracefully', function () {
+        $game = new Game('invalid_console');
+        $console = $game->getConsole();
+        
+        expect($console)->toBeArray();
+        // Should return empty array when console not found
+    });
+    
+    it('handles empty session data', function () {
+        // Set empty session data
+        Session::put('consoles', []);
+        
+        $game = new Game('nes');
+        $console = $game->getConsole();
+        
+        expect($console)->toBeArray();
+    });
+
+    // Integration with Tool Service
+    it('uses Tool::findItemByKey for console lookup', function () {
+        $game = new Game('snes');
+        $console = $game->getConsole();
+        
+        expect($console)->toBeArray();
+        
+        if (!empty($console)) {
+            // Verify that it found the correct console using Tool::findItemByKey logic
+            expect($console['short_name'])->toBe('snes')
+                ->and($console['id'])->toBe(2);
+        }
     });
 }); 

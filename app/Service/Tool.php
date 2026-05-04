@@ -230,12 +230,35 @@ class Tool
     }
 
     /**
+     * Get unique array of genre name strings from session consoles data.
+     * Throws ErrorException if session('consoles') is not set.
+     */
+    public static function getGenres(): array
+    {
+        $consoles = session('consoles');
+        $genres = [];
+
+        foreach ($consoles as $console) {
+            if (isset($console['games'])) {
+                foreach ($console['games'] as $game) {
+                    if (isset($game['genres'])) {
+                        foreach ($game['genres'] as $genre) {
+                            $genres[] = $genre['name'];
+                        }
+                    }
+                }
+            }
+        }
+
+        return array_values(array_unique($genres));
+    }
+
+    /**
      * Create/Get unique [array] of genres (games) from existing consoles Session data
      */
     public static function genres($disk = 'data', $consolesJson = 'vintage-consoles.json'): array
     {
-        // Use basic session data first
-        if (!Session::has('consoles_basic')) {
+        if (!Session::has('consoles')) {
             new GameSession();
         }
 
@@ -273,8 +296,7 @@ class Tool
      */
     public static function publishers(): array
     {
-        // Use basic session data first
-        if (!Session::has('consoles_basic')) {
+        if (!Session::has('consoles')) {
             new GameSession();
         }
 

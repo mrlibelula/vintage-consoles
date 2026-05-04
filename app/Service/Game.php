@@ -44,7 +44,7 @@ class Game
     private function console(string $console_short_name): array
     {
         // Use optimized session approach - load full data only when needed
-        if (!Session::has('consoles_basic')) {
+        if (!Session::has('consoles')) {
             new GameSession;
         }
         

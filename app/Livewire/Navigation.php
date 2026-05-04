@@ -26,7 +26,7 @@ class Navigation extends Component
         // Use static cache to avoid repeated full data loads
         if (self::$searchCache === null) {
             // Only load full data once per request/session
-            if (!Session::has('consoles_basic')) {
+            if (!Session::has('consoles')) {
                 new GameSession();
             }
             
