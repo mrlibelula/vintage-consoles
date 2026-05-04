@@ -1,4 +1,4 @@
-<div class="h-full_ h-[17rem] flex items-start justify-start py-4">
+<div class="h-[14.5rem] flex items-start justify-start py-4">
     <style>
         .containerCards {
             display: flex;
@@ -41,12 +41,21 @@
             transition: ease all 0.3s;
         }
     
-        .containerCards .card .wrapper:hover {
-            transform: translateY(-15px);
+        .containerCards .card .wrapper:hover .imgProd {
+            height: 80px;
         }
     
-        .containerCards .card .wrapper:hover .imgProd {
-            height: 160px;
+        .containerCards .card .wrapper .mediaContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 177px;
+            overflow: hidden;
+        }
+
+        .containerCards .card .wrapper:hover .colorProd {
+            transform: scale(1.08);
         }
     
         .containerCards .card .wrapper .colorProd {
@@ -55,11 +64,12 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 177px;
+            height: 100%;
             background-size: cover;
-            background-position: center bottom;
+            background-position: center;
             background-repeat: no-repeat;
-            border-radius: 0px;
+            transform-origin: center center;
+            transition: ease all 0.3s;
         }
     
         .containerCards .card .wrapper .imgProd {
@@ -69,7 +79,7 @@
             position: absolute;
             bottom: calc(100% - 225px);
             width: 100%;
-            height: 100px;
+            height: 60px;
             transition: ease all 0.3s;
         }
     
@@ -202,37 +212,39 @@
                 $isVideo  = $isWebm || $isMp4;
                 $mp4Url   = $isWebm ? str_replace('.webm', '.mp4', $boxUrl) : ($isMp4 ? $boxUrl : '');
             @endphp
-            <div class="wrapper overflow-hidden h-full justify-between">
-                @if ($isVideo)
-                    <!-- Video box background -->
-                    <div class="colorProd relative lazy-load-video">
-                        <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline>
-                            @if ($isWebm)
-                                <source data-src="{{ $boxUrl }}" type="video/webm">
-                            @endif
-                            @if ($mp4Url)
-                                <source data-src="{{ $mp4Url }}" type="video/mp4">
-                            @endif
-                        </video>
-                    </div>
-                @else
-                    <!-- GIF / image box background -->
-                    <div class="colorProd relative lazy-load-bg"
-                        data-bg-url="{{ $boxUrl }}"
-                        style="background-image: url({{ asset('images/placeholder-wide-dark.jpg') }});"
-                    ></div>
-                @endif
-                <div class=" absolute top-0 w-full h-[177px] bg-gradient-to-b from-transparent/30 via-transparent to-cod-gray-200 dark:from-transparent/30 dark:via-transparent dark:to-cod-gray-900">
-                    &nbsp;
+            <div class="wrapper overflow-hidden w-full h-full flex justify-between items-center">
+                <div class="mediaContainer">
+                    @if ($isVideo)
+                        <!-- Video box background -->
+                        <div class="colorProd lazy-load-video">
+                            <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline>
+                                @if ($isWebm)
+                                    <source data-src="{{ $boxUrl }}" type="video/webm">
+                                @endif
+                                @if ($mp4Url)
+                                    <source data-src="{{ $mp4Url }}" type="video/mp4">
+                                @endif
+                            </video>
+                        </div>
+                    @else
+                        <!-- GIF / image box background -->
+                        <div class="colorProd lazy-load-bg"
+                            data-bg-url="{{ $boxUrl }}"
+                            style="background-image: url({{ asset('images/placeholder-wide-dark.jpg') }});"
+                        ></div>
+                    @endif
+                </div>
+                <div class="absolute top-0 w-full h-[177px] bg-gradient-to-b from-transparent/30 via-transparent to-cod-gray-200 dark:from-transparent/30 dark:via-transparent dark:to-cod-gray-900 pointer-events-none">
                 </div>
                 <!-- Placeholder for the poster background -->
                 
                 <div class="imgProd flex items-center justify-center lazy-load-bg opacity-70 group-hover:opacity-90 smooth-300" 
-                    data-bg-url="{{ $game['poster'] }}" 
-                    style="background-image: url({{ asset('images/placeholder-poster-homer.jpg') }});">
+                    {{-- data-bg-url="{{ $game['poster'] }}"  --}}
+                    {{-- style="background-image: url({{ asset('images/placeholder-poster-homer.jpg') }});" --}}
+                >
                 </div>
-                <div class="infoProd_ flex flex-col justify-between text-center h-full">
-                    <p class="-mt-3 px-6 leading-none text-base text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
+                <div class="infoProd_ absolute inset-x-0 bottom-0 top-[177px] flex items-center justify-center text-center">
+                    <p class="flex max-w-[calc(100%-3rem)] items-center justify-center px-4 leading-none text-base text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
                         {{ Str::limit($game['title'], 31) }}
                     </p>
                     
