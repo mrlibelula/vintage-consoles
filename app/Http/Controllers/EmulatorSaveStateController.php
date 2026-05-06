@@ -103,7 +103,20 @@ class EmulatorSaveStateController extends Controller
 
     private function authorizeSave(Request $request, EmulatorSaveState $saveState): void
     {
-        abort_unless($saveState->user_id === $request->user()->id, 403);
+        // Avoid strict-type mismatches across DB drivers (e.g. bigint IDs coming back as strings).
+        $requestUserId = (string) $request->user()->id;
+        $ownerUserId = (string) $saveState->user_id;
+
+        if ($ownerUserId !== $requestUserId) {
+            logger()->warning('EmulatorSaveState unauthorized access attempt.', [
+                'save_state_id' => $saveState->id,
+                'owner_user_id' => $ownerUserId,
+                'request_user_id' => $requestUserId,
+                'path' => $request->path(),
+            ]);
+
+            abort(403);
+        }
     }
 
     private function serializeSave(EmulatorSaveState $save): array
