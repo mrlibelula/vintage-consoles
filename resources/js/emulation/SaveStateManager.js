@@ -1,5 +1,6 @@
 const PANEL_ID = 'vintage-save-state-panel'
 const STORAGE_PREFIXES = ['emulatorjs', 'EJS', 'vintage.gamepad']
+const SAVE_STATE_CACHE_NAME = 'vintage-save-states-v1'
 const ICONS = {
     close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>',
     panelToggle:
@@ -32,6 +33,80 @@ function playerFetch(input, init = {}) {
     const fetcher = window.VintagePlayerFetch || window.fetch.bind(window)
 
     return fetcher(input, init)
+}
+
+function canUseCacheStorage() {
+    return typeof window !== 'undefined'
+        && typeof window.caches !== 'undefined'
+        && typeof window.caches.open === 'function'
+}
+
+function cacheKeyForSave(save) {
+    const updated = save?.updated_at ? String(save.updated_at) : ''
+    return `${save.download_url}#updated_at=${encodeURIComponent(updated)}`
+}
+
+async function readSaveFromCache(save) {
+    if (!canUseCacheStorage() || !save?.download_url) {
+        return null
+    }
+
+    const cache = await window.caches.open(SAVE_STATE_CACHE_NAME)
+    const match = await cache.match(cacheKeyForSave(save))
+    if (!match) {
+        return null
+    }
+
+    return new Uint8Array(await match.arrayBuffer())
+}
+
+async function writeSaveToCache(save, bytes) {
+    if (!canUseCacheStorage() || !save?.download_url) {
+        return
+    }
+
+    const cache = await window.caches.open(SAVE_STATE_CACHE_NAME)
+    const response = new Response(new Blob([bytes], { type: 'application/octet-stream' }), {
+        headers: {
+            'Content-Type': 'application/octet-stream',
+        },
+    })
+    await cache.put(cacheKeyForSave(save), response)
+}
+
+async function purgeOldCachedSaveVersions(save) {
+    if (!canUseCacheStorage() || !save?.download_url) {
+        return
+    }
+
+    const cache = await window.caches.open(SAVE_STATE_CACHE_NAME)
+    const keys = await cache.keys()
+    const prefix = `${save.download_url}#updated_at=`
+    const currentKey = cacheKeyForSave(save)
+
+    await Promise.all(keys.map(async request => {
+        const url = request?.url ? String(request.url) : ''
+        if (url.startsWith(prefix) && url !== currentKey) {
+            await cache.delete(request)
+        }
+    }))
+}
+
+async function purgeAllCachedSaveVersions(save) {
+    if (!canUseCacheStorage() || !save?.download_url) {
+        return
+    }
+
+    const cache = await window.caches.open(SAVE_STATE_CACHE_NAME)
+    const keys = await cache.keys()
+    const prefix = `${save.download_url}#updated_at=`
+
+    await Promise.all(keys.map(async request => {
+        const url = request?.url ? String(request.url) : ''
+        if (url.startsWith(prefix)) {
+            await cache.delete(request)
+        }
+    }))
 }
 
 function getLocalStorageSnapshot(config) {
@@ -282,16 +357,24 @@ export class SaveStateManager {
 
         try {
             this.setStatus(`Loading slot ${slot}...`)
-            const response = await playerFetch(save.download_url, { credentials: 'same-origin' })
+            let bytes = await readSaveFromCache(save)
+            const usedCache = Boolean(bytes)
 
-            if (!response.ok) {
-                throw new Error(`Download failed with status ${response.status}`)
+            if (!bytes) {
+                const response = await playerFetch(save.download_url, { credentials: 'same-origin' })
+
+                if (!response.ok) {
+                    throw new Error(`Download failed with status ${response.status}`)
+                }
+
+                bytes = new Uint8Array(await response.arrayBuffer())
+                await writeSaveToCache(save, bytes)
             }
 
-            const bytes = new Uint8Array(await response.arrayBuffer())
+            await purgeOldCachedSaveVersions(save)
             await this.adapter.restoreState(bytes, save)
             await this.restoreControlSettings({ silent: true })
-            this.setStatus(`Loaded slot ${slot}.`)
+            this.setStatus(`Loaded slot ${slot}${usedCache ? ' (cached)' : ''}.`)
             this.notify(`Loaded slot ${slot}`, 'success', notify)
         } catch (error) {
             console.error(error)
@@ -321,6 +404,7 @@ export class SaveStateManager {
             await this.request(save.delete_url, {
                 method: 'DELETE',
             })
+            await purgeAllCachedSaveVersions(save)
             await this.refreshSaves()
             this.setStatus(`Cleared slot ${slot}.`)
             this.notify(`Cleared slot ${slot}`, 'success', notify)
