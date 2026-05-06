@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\UpsertEmulatorSaveState;
 use App\Models\EmulatorSaveState;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -11,8 +12,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EmulatorSaveStateController extends Controller
 {
-    private const MAX_SLOTS = 5;
-
     public function index(Request $request): JsonResponse
     {
         $validated = $request->validate($this->contextRules());
@@ -33,39 +32,24 @@ class EmulatorSaveStateController extends Controller
     {
         $validated = $request->validate([
             ...$this->contextRules(),
-            'slot' => ['required', 'integer', 'min:1', 'max:'.self::MAX_SLOTS],
+            'slot' => ['required', 'integer', 'min:1', 'max:'.UpsertEmulatorSaveState::MAX_SLOTS],
             'label' => ['nullable', 'string', 'max:80'],
             'state' => ['required', 'file', 'max:102400'],
         ]);
 
         $contents = $request->file('state')->get();
-        $diskPath = $this->diskPath(
-            $request->user()->id,
+
+        $save = app(UpsertEmulatorSaveState::class)->execute(
+            $request->user(),
             $validated['console'],
             $validated['game_id'],
             $validated['emulator'],
             (int) $validated['slot'],
+            $validated['label'] ?? null,
+            $contents,
         );
 
-        Storage::disk('savestates')->put($diskPath, $contents);
-
-        $save = EmulatorSaveState::updateOrCreate(
-            [
-                'user_id' => $request->user()->id,
-                'console' => $validated['console'],
-                'game_id' => $validated['game_id'],
-                'emulator' => $validated['emulator'],
-                'slot' => $validated['slot'],
-            ],
-            [
-                'label' => $validated['label'] ?? null,
-                'disk_path' => $diskPath,
-                'size_bytes' => strlen($contents),
-                'checksum' => hash('sha256', $contents),
-            ],
-        );
-
-        return response()->json(['data' => $this->serializeSave($save->fresh())], 201);
+        return response()->json(['data' => $this->serializeSave($save)], 201);
     }
 
     public function update(Request $request, EmulatorSaveState $saveState): JsonResponse
@@ -120,13 +104,6 @@ class EmulatorSaveStateController extends Controller
     private function authorizeSave(Request $request, EmulatorSaveState $saveState): void
     {
         abort_unless($saveState->user_id === $request->user()->id, 403);
-    }
-
-    private function diskPath(int $userId, string $console, string $gameId, string $emulator, int $slot): string
-    {
-        $safeGameId = preg_replace('/[^A-Za-z0-9_-]/', '_', $gameId);
-
-        return "{$userId}/{$console}/{$safeGameId}/{$emulator}/slot-{$slot}.state";
     }
 
     private function serializeSave(EmulatorSaveState $save): array

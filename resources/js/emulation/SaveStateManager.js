@@ -8,6 +8,8 @@ const ICONS = {
     load: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h6l2 2h8v10a2 2 0 0 1-2 2H4V6z"/><path d="M12 11v6"/><path d="M9 14l3 3 3-3"/></svg>',
     clear: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M7 10v9h10v-9"/><path d="M10 12v5"/><path d="M14 12v5"/></svg>',
     sync: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h9l-2-2"/><path d="M16 7l-2 2"/><path d="M19 12a7 7 0 0 0-12-5"/><path d="M17 17H8l2 2"/><path d="M8 17l2-2"/><path d="M5 12a7 7 0 0 0 12 5"/></svg>',
+    upload:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
 }
 
 function toQuery(params) {
@@ -89,6 +91,7 @@ export class SaveStateManager {
         this.panel = null
         this.toastContainer = null
         this.currentSlot = 1
+        this.pendingUploadSlot = null
         this.keydownHandler = event => this.handleKeydown(event)
     }
 
@@ -185,6 +188,82 @@ export class SaveStateManager {
         }
     }
 
+    /**
+     * Upload a `.state` file from the user's device into a cloud slot (same API as in-emulator save).
+     */
+    async uploadFileToSlot(slot, file, { notify = true } = {}) {
+        this.selectSlot(slot)
+
+        if (!this.config.authenticated) {
+            this.setStatus('Log in to upload saves.')
+            this.notify('Log in to upload saves.', 'warning', notify)
+            return
+        }
+
+        if (!(file instanceof File)) {
+            return
+        }
+
+        const maxBytes = 102400 * 1024
+        if (file.size > maxBytes) {
+            this.setStatus('File is too large.')
+            this.notify('That file is too large (max 100 MB).', 'error', notify)
+            return
+        }
+
+        const save = this.saves.find(item => item.slot === slot)
+        if (save) {
+            const confirmed = window.confirm(
+                `Replace the cloud save in slot ${slot}? This cannot be undone.`,
+            )
+
+            if (!confirmed) {
+                return
+            }
+        }
+
+        try {
+            this.setStatus(`Uploading slot ${slot}...`)
+            const formData = new FormData()
+
+            Object.entries(this.contextParams()).forEach(([key, value]) => formData.append(key, value))
+            formData.append('slot', slot)
+
+            const name = /\.state$/i.test(file.name) ? file.name : `${file.name.replace(/[/\\\\]/g, '_')}.state`
+            formData.append('state', file, name)
+
+            await this.request(this.config.endpoints.saveStates, {
+                method: 'POST',
+                body: formData,
+            })
+            await this.saveControlSettings({ silent: true })
+            await this.refreshSaves()
+            this.setStatus(`Uploaded slot ${slot} to server.`)
+            this.notify(`Uploaded slot ${slot}`, 'success', notify)
+        } catch (error) {
+            console.error(error)
+            this.setStatus(`Could not upload slot ${slot}.`)
+            this.notify(`Could not upload slot ${slot}`, 'error', notify)
+        }
+    }
+
+    promptUploadFromDisk(slot) {
+        if (!this.config.authenticated) {
+            this.setStatus('Log in to upload saves.')
+            this.notify('Log in to upload saves.', 'warning', true)
+            return
+        }
+
+        this.selectSlot(slot, { notify: false })
+        this.pendingUploadSlot = slot
+        const input = this.panel?.querySelector('.vintage-save-state-file-input')
+
+        if (input) {
+            input.value = ''
+            input.click()
+        }
+    }
+
     async loadSlot(slot, { notify = false } = {}) {
         this.selectSlot(slot)
         const save = this.saves.find(item => item.slot === slot)
@@ -262,6 +341,7 @@ export class SaveStateManager {
     handleKeydown(event) {
         if (event.key === 'Escape') {
             this.closeHelpDialog()
+            this.closeUploadDialog()
             return
         }
 
@@ -302,6 +382,50 @@ export class SaveStateManager {
 
     closeHelpDialog() {
         this.panel?.querySelector('.vintage-save-help-dialog')?.setAttribute('hidden', '')
+    }
+
+    openUploadDialog() {
+        if (!this.config.authenticated) {
+            this.setStatus('Log in to upload saves.')
+            this.notify('Log in to upload saves.', 'warning', true)
+            return
+        }
+
+        this.pendingUploadSlot = this.currentSlot
+        this.syncUploadDialog()
+        this.panel.querySelector('.vintage-save-upload-dialog')?.removeAttribute('hidden')
+    }
+
+    closeUploadDialog() {
+        this.panel?.querySelector('.vintage-save-upload-dialog')?.setAttribute('hidden', '')
+    }
+
+    syncUploadDialog() {
+        if (!this.panel || !this.config.authenticated) {
+            return
+        }
+
+        const slots = Number(this.config.slots || 5)
+        const picker = this.panel.querySelector('.vintage-save-upload-slot-picker')
+        const summary = this.panel.querySelector('.vintage-save-upload-summary')
+        const pending = this.pendingUploadSlot ?? this.currentSlot
+        const selectedSlot = Math.min(Math.max(Number(pending) || 1, 1), slots)
+        this.pendingUploadSlot = selectedSlot
+
+        if (picker) {
+            picker.querySelectorAll('button[data-slot]').forEach(button => {
+                const slot = Number(button.getAttribute('data-slot'))
+                button.classList.toggle('is-selected', slot === selectedSlot)
+                button.setAttribute('aria-pressed', String(slot === selectedSlot))
+            })
+        }
+
+        if (summary) {
+            const save = this.saves.find(item => item.slot === selectedSlot)
+            summary.textContent = save
+                ? `Uploading will replace the cloud save in slot ${selectedSlot}.`
+                : `Uploading will create a new cloud save in slot ${selectedSlot}.`
+        }
     }
 
     isEditableTarget(target) {
@@ -403,7 +527,12 @@ export class SaveStateManager {
                         <i class="fa fa-cloud-upload vintage-save-state-title-fa" aria-hidden="true"></i>
                         <span>Cloud Save Slots</span>
                     </div>
-                    ${this.config.authenticated ? '<button type="button" class="vintage-help-link">Hotkeys</button>' : ''}
+                    ${this.config.authenticated ? `
+                        <div class="vintage-save-state-heading-actions">
+                            <button type="button" class="vintage-upload-link" aria-label="Upload save file" title="Upload a .state file">${ICONS.upload}</button>
+                            <button type="button" class="vintage-help-link">Hotkeys</button>
+                        </div>
+                    ` : ''}
                 </div>
                 <div class="vintage-save-state-message"></div>
                 <div class="vintage-save-state-slots"></div>
@@ -420,10 +549,26 @@ export class SaveStateManager {
                         <div><dt>Ctrl+Alt+1-5</dt><dd>Select slot 1 through 5</dd></div>
                         <div><dt>Ctrl+Delete</dt><dd>Clear the current slot after confirmation</dd></div>
                     </dl>
+                    <p>Use the <strong>Upload</strong> button in the header to send a <code>.state</code> file from your computer into any slot (you will be asked before replacing an existing cloud save).</p>
                     <p>Slots are saved to your account and can be restored from another device.</p>
                 </div>
             </div>
+            <div class="vintage-save-upload-dialog" role="dialog" aria-modal="true" aria-label="Upload a save state" hidden>
+                <div class="vintage-save-upload-card">
+                    <button type="button" class="vintage-save-upload-close" aria-label="Close upload">x</button>
+                    <h2>Upload a save</h2>
+                    <p>Select a target slot, then choose a <code>.state</code> file from your device.</p>
+                    <div class="vintage-save-upload-slot-picker" role="group" aria-label="Upload target slot">
+                        ${Array.from({ length: Number(this.config.slots || 5) }, (_, idx) => idx + 1).map(slot => `
+                            <button type="button" class="vintage-save-upload-slot" data-slot="${slot}" aria-pressed="false">Slot ${slot}</button>
+                        `).join('')}
+                    </div>
+                    <p class="vintage-save-upload-summary"></p>
+                    <button type="button" class="vintage-save-upload-pick" aria-label="Choose .state file">${ICONS.upload}<span>Choose file</span></button>
+                </div>
+            </div>
             <div class="vintage-save-toasts" aria-live="polite" aria-atomic="true"></div>
+            <input type="file" class="vintage-save-state-file-input" tabindex="-1" aria-hidden="true" accept=".state" />
         `
 
         this.addStyles()
@@ -431,14 +576,48 @@ export class SaveStateManager {
         this.panel = panel
         this.status = panel.querySelector('.vintage-save-state-message')
         this.toastContainer = panel.querySelector('.vintage-save-toasts')
+        panel.querySelector('.vintage-save-state-file-input').addEventListener('change', async event => {
+            const picked = event.target.files?.[0]
+            const pendingSlot = this.pendingUploadSlot
+            event.target.value = ''
+            this.pendingUploadSlot = null
+
+            if (!picked || pendingSlot === null) {
+                return
+            }
+
+            this.closeUploadDialog()
+            await this.uploadFileToSlot(pendingSlot, picked)
+        })
         panel.querySelector('.vintage-save-state-toggle').addEventListener('click', () => this.togglePanel())
         panel.querySelector('.vintage-control-sync').addEventListener('click', () => this.saveControlSettings())
         panel.querySelector('.vintage-help-link')?.addEventListener('click', () => this.openHelpDialog())
+        panel.querySelector('.vintage-upload-link')?.addEventListener('click', () => this.openUploadDialog())
         panel.querySelector('.vintage-save-help-close')?.addEventListener('click', () => this.closeHelpDialog())
         panel.querySelector('.vintage-save-help-dialog')?.addEventListener('click', event => {
             if (event.target.classList.contains('vintage-save-help-dialog')) {
                 this.closeHelpDialog()
             }
+        })
+        panel.querySelector('.vintage-save-upload-close')?.addEventListener('click', () => this.closeUploadDialog())
+        panel.querySelector('.vintage-save-upload-dialog')?.addEventListener('click', event => {
+            if (event.target.classList.contains('vintage-save-upload-dialog')) {
+                this.closeUploadDialog()
+            }
+        })
+        panel.querySelector('.vintage-save-upload-pick')?.addEventListener('click', () => {
+            const input = this.panel?.querySelector('.vintage-save-state-file-input')
+            if (input) {
+                input.value = ''
+                input.click()
+            }
+        })
+        panel.querySelectorAll('.vintage-save-upload-slot[data-slot]').forEach(button => {
+            button.addEventListener('click', () => {
+                const slot = Number(button.getAttribute('data-slot'))
+                this.pendingUploadSlot = slot
+                this.syncUploadDialog()
+            })
         })
         this.renderSlots()
     }
@@ -554,6 +733,11 @@ export class SaveStateManager {
                 justify-content: space-between;
                 margin-bottom: 8px;
             }
+            #${PANEL_ID} .vintage-save-state-heading-actions {
+                align-items: center;
+                display: inline-flex;
+                gap: 10px;
+            }
             #${PANEL_ID} .vintage-save-state-title {
                 align-items: center;
                 display: inline-flex;
@@ -573,6 +757,22 @@ export class SaveStateManager {
                 font-size: 12px;
                 padding: 0;
                 text-decoration: underline;
+            }
+            #${PANEL_ID} .vintage-upload-link {
+                background: rgba(217, 119, 6, 0.18);
+                border: 1px solid rgba(217, 119, 6, 0.32);
+                border-radius: 8px;
+                color: #fbbf24;
+                min-height: 30px;
+                min-width: 30px;
+                padding: 6px;
+            }
+            #${PANEL_ID} .vintage-upload-link:hover {
+                background: rgba(217, 119, 6, 0.26);
+            }
+            #${PANEL_ID} .vintage-upload-link svg {
+                height: 16px;
+                width: 16px;
             }
             #${PANEL_ID} .vintage-save-state-message {
                 color: #cbd5e1;
@@ -658,6 +858,21 @@ export class SaveStateManager {
             #${PANEL_ID} .vintage-save-help-dialog[hidden] {
                 display: none;
             }
+            #${PANEL_ID} .vintage-save-upload-dialog {
+                align-items: center;
+                background: rgba(0, 0, 0, 0.7);
+                bottom: 0;
+                display: flex;
+                justify-content: center;
+                left: 0;
+                position: fixed;
+                right: 0;
+                top: 0;
+                z-index: 1000001;
+            }
+            #${PANEL_ID} .vintage-save-upload-dialog[hidden] {
+                display: none;
+            }
             #${PANEL_ID} .vintage-save-help-card {
                 background: #101014;
                 border: 1px solid rgba(255, 255, 255, 0.18);
@@ -703,7 +918,94 @@ export class SaveStateManager {
                 font-size: 13px;
                 margin: 0;
             }
+            #${PANEL_ID} .vintage-save-help-card code {
+                background: rgba(255, 255, 255, 0.06);
+                border-radius: 4px;
+                padding: 1px 6px;
+                font-size: 12px;
+            }
+            #${PANEL_ID} .vintage-save-upload-card {
+                background: #101014;
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                border-radius: 14px;
+                box-shadow: 0 18px 54px rgba(0, 0, 0, 0.55);
+                color: #f8fafc;
+                max-width: 360px;
+                padding: 18px;
+                position: relative;
+                width: calc(100vw - 40px);
+            }
+            #${PANEL_ID} .vintage-save-upload-card h2 {
+                font-size: 18px;
+                margin: 0 0 8px;
+            }
+            #${PANEL_ID} .vintage-save-upload-card p {
+                color: #cbd5e1;
+                font-size: 13px;
+                line-height: 1.4;
+                margin: 8px 0;
+            }
+            #${PANEL_ID} .vintage-save-upload-card code {
+                background: rgba(255, 255, 255, 0.06);
+                border-radius: 4px;
+                padding: 1px 6px;
+                font-size: 12px;
+            }
+            #${PANEL_ID} .vintage-save-upload-slot-picker {
+                display: grid;
+                gap: 10px;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                margin-top: 12px;
+            }
+            #${PANEL_ID} .vintage-save-upload-slot {
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                border-radius: 10px;
+                color: #e2e8f0;
+                font-size: 13px;
+                font-weight: 800;
+                justify-content: flex-start;
+                padding: 10px 12px;
+                width: 100%;
+            }
+            #${PANEL_ID} .vintage-save-upload-slot.is-selected {
+                background: rgba(217, 119, 6, 0.18);
+                border-color: rgba(217, 119, 6, 0.34);
+                color: #fde68a;
+            }
+            #${PANEL_ID} .vintage-save-upload-summary {
+                color: #94a3b8;
+                font-size: 12px;
+                margin-top: 10px;
+                min-height: 16px;
+            }
+            #${PANEL_ID} .vintage-save-upload-pick {
+                background: #d97706;
+                gap: 8px;
+                margin-top: 12px;
+                width: 100%;
+            }
+            #${PANEL_ID} .vintage-save-upload-pick:hover:not(:disabled) {
+                background: #b45309;
+            }
+            #${PANEL_ID} .vintage-save-state-file-input {
+                clip: rect(0 0 0 0);
+                clip-path: inset(50%);
+                height: 1px;
+                overflow: hidden;
+                position: absolute;
+                white-space: nowrap;
+                width: 1px;
+            }
             #${PANEL_ID} .vintage-save-help-close {
+                min-height: 28px;
+                min-width: 28px;
+                padding: 4px;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+            }
+            #${PANEL_ID} .vintage-save-upload-close {
                 min-height: 28px;
                 min-width: 28px;
                 padding: 4px;
@@ -921,7 +1223,7 @@ export class SaveStateManager {
             row.classList.toggle('is-selected', slot === this.currentSlot)
             row.innerHTML = `
                 <button type="button" class="vintage-save-slot-meta" data-action="select">Slot ${slot}${save ? ` - ${new Date(save.updated_at).toLocaleString()}` : ' - empty'}</button>
-                <button type="button" data-action="save" aria-label="Save slot ${slot}" title="Save slot ${slot}">${ICONS.save}</button>
+                <button type="button" data-action="save" aria-label="Save slot ${slot}" title="Capture save to slot ${slot}">${ICONS.save}</button>
                 <button type="button" data-action="load" aria-label="Load slot ${slot}" title="Load slot ${slot}"${save ? '' : ' disabled'}>${ICONS.load}</button>
                 <button type="button" data-action="delete" aria-label="Clear slot ${slot}" title="Clear slot ${slot}"${save ? '' : ' disabled'}>${ICONS.clear}</button>
             `
@@ -935,6 +1237,8 @@ export class SaveStateManager {
         if (!this.config.authenticated) {
             this.setStatus('Log in to save slots to server storage.')
         }
+
+        this.syncUploadDialog()
     }
 
     setStatus(message) {

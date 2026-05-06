@@ -146,6 +146,10 @@
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 
+                            <x-dropdown-link href="{{ route('my-saves') }}" wire:navigate>
+                                {{ __('My Saves') }}
+                            </x-dropdown-link>
+
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
@@ -290,6 +294,12 @@
                 @auth
                 <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}
+                </x-responsive-nav-link>
+                @endauth
+
+                @auth
+                <x-responsive-nav-link href="{{ route('my-saves') }}" :active="request()->routeIs('my-saves')">
+                    {{ __('My Saves') }}
                 </x-responsive-nav-link>
                 @endauth
 

@@ -1,5 +1,66 @@
 <x-container class="h-screen -mt-[4rem]">
     <div class="flex flex-col gap-y-8">
+
+        @guest
+        @if (strtolower($console['short_name']) !== 'pc')
+        {{-- Cloud Save CTA Banner --}}
+        <div
+            x-data="{ show: !sessionStorage.getItem('save-cta-dismissed') }"
+            x-show="show"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-y-100"
+            x-transition:leave-end="opacity-0 scale-y-0"
+            x-cloak
+            class="-mb-4"
+        >
+            <div class="relative flex flex-col sm:flex-row items-center justify-between gap-3 rounded-lg border border-purple-200/80 dark:border-purple-900/40 bg-gradient-to-r from-white via-purple-50/70 to-white dark:from-cod-gray-950 dark:via-purple-950/20 dark:to-cod-gray-950 px-4 py-3 shadow-lg shadow-black/10 dark:shadow-black/40">
+
+                {{-- left: icon + copy --}}
+                <div class="flex items-center gap-x-3 min-w-0">
+                    <div class="flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-purple-500/10 dark:bg-purple-600/15 border border-purple-300/70 dark:border-purple-600/25">
+                        <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6H16a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:gap-x-1.5 min-w-0">
+                        <span class="text-cod-gray-900 dark:text-cod-gray-100 text-sm font-semibold leading-tight">Save your game progress in the cloud</span>
+                        <span class="text-cod-gray-600 dark:text-cod-gray-400 text-xs sm:text-sm leading-tight">— 5 free slots per game, always free.</span>
+                    </div>
+                </div>
+
+                {{-- right: CTAs + dismiss --}}
+                <div class="flex items-center gap-x-2 flex-shrink-0">
+                    {{-- Google sign-in --}}
+                    {{-- <a href="{{ route('login.google') }}"
+                        class="flex items-center gap-x-1.5 rounded-md bg-white hover:bg-gray-100 px-3 py-1.5 text-gray-800 text-xs font-semibold transition duration-200 shadow shadow-black/30">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Google-favicon-2015.png" alt="Google" class="w-3.5 h-3.5">
+                        <span>Google</span>
+                    </a> --}}
+
+                    {{-- email sign-in / register --}}
+                    <a href="{{ route('login') }}"
+                        class="flex items-center gap-x-1.5 rounded-md bg-purple-600 hover:bg-purple-500 px-3 py-1.5 text-white text-xs font-semibold transition duration-200 shadow shadow-black/30">
+                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        Sign up free
+                    </a>
+
+                    {{-- dismiss --}}
+                    <button
+                        @click="show = false; sessionStorage.setItem('save-cta-dismissed', '1')"
+                        class="ml-1 flex-shrink-0 p-1 rounded text-cod-gray-500 hover:text-cod-gray-800 dark:hover:text-cod-gray-300 transition duration-200"
+                        aria-label="Dismiss"
+                    >
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        @endif
+        @endguest
         <!-- player & user data -->
         <div class="flex flex-col gap-x-0 gap-y-1 xl:gap-x-2 xl:gap-y-0 xl:flex-row sticky items-start justify-between overflow-hidden">
             <!-- player -->
@@ -78,19 +139,28 @@
                                             {{ number_format($game['rating'] * 100, 0) }}%
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-x-1 justify-start">
-                                        <div class=" leading-none text-cod-gray-900 dark:text-cod-gray-400">
-                                            State:
-                                        </div>
-                                        @if ($game['save_state_support'])
-                                        <div class=" leading-none text-green-700 dark:text-green-500">
-                                            Yes
-                                        </div>
-                                        @else
-                                        <div class=" leading-none text-rose-700 dark:text-rose-500">
-                                            No
-                                        </div>
-                                        @endif
+                                    <div class="flex flex-col gap-y-1 items-start justify-start">
+                                        {{-- <div class="flex items-center gap-x-1 justify-start">
+                                            <div class=" leading-none text-cod-gray-900 dark:text-cod-gray-400">
+                                                State:
+                                            </div>
+                                            @if ($game['save_state_support'])
+                                            <div class=" leading-none text-green-700 dark:text-green-500">
+                                                Yes
+                                            </div>
+                                            @else
+                                            <div class=" leading-none text-purple-700 dark:text-purple-500">
+                                                No
+                                            </div>
+                                            @endif
+                                        </div> --}}
+                                        @auth
+                                            @if ($game['save_state_support'])
+                                            <div class="text-[11px] sm:text-xs leading-snug text-cod-gray-500 dark:text-cod-gray-500 max-w-[16rem] font-sans">
+                                                {{-- Cloud saves: open <span class="font-medium text-cod-gray-700 dark:text-cod-gray-300 underline underline-offset-2">Cloud Save Slots</span> on the player (floppy icon) to capture, load, or upload a <span class="font-medium">.state</span> file. --}}
+                                            </div>
+                                            @endif
+                                        @endauth
                                     </div>
                                     <div class="flex items-center gap-x-1 justify-start">
                                         <div class=" leading-none text-cod-gray-900 dark:text-cod-gray-400">
@@ -101,7 +171,7 @@
                                             Yes
                                         </div>
                                         @else
-                                        <div class=" leading-none text-rose-700 dark:text-rose-500">
+                                        <div class=" leading-none text-purple-700 dark:text-purple-500">
                                             No
                                         </div>
                                         @endif
@@ -196,13 +266,13 @@
             <div class="px-6">
                 <div class="flex items-center justify-between gap-x-[0.16rem] md:gap-x-2 xl:gap-x-4">
                     <div @click="$dispatch('fixed-modal-loader-on')" wire:click="changeScreenShot('left')" class="p-1">
-                        <x-icons.arrow-left class="w-3 md:w-5 xl:w-7 text-cod-gray-200 hover:text-rose-500 smooth-300 cursor-pointer" />
+                        <x-icons.arrow-left class="w-3 md:w-5 xl:w-7 text-cod-gray-200 hover:text-purple-500 smooth-300 cursor-pointer" />
                     </div>
                     <div class="w-[100vw] h-[15vh] sm:h-[23vh] md:h-[40vh] xl:h-[60vh]">
                         <img class="mb-4 w-full h-full rounded-md" src="{{ $game['screenshots'][$current_screenshot_key] }}" alt="Screenshot: {{ $game['title'] }}">
                     </div>
                     <div @click="$dispatch('fixed-modal-loader-on')" wire:click="changeScreenShot('right')" class="p-1">
-                        <x-icons.arrow-right class="w-3 md:w-5 xl:w-7 text-cod-gray-200 hover:text-rose-500 smooth-300 cursor-pointer" />
+                        <x-icons.arrow-right class="w-3 md:w-5 xl:w-7 text-cod-gray-200 hover:text-purple-500 smooth-300 cursor-pointer" />
                     </div>
                 </div>
             </div>

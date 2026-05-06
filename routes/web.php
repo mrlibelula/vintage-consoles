@@ -69,6 +69,10 @@ Route::get('/debug/memory', function () {
 //     return view('landing');
 // });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my/saves', App\Livewire\MySaves::class)->name('my-saves');
+});
+
 Route::middleware(['auth'])->prefix('player-data')->name('player-data.')->group(function () {
     Route::get('/save-states', [EmulatorSaveStateController::class, 'index'])->name('save-states.index');
     Route::post('/save-states', [EmulatorSaveStateController::class, 'store'])->name('save-states.store');
