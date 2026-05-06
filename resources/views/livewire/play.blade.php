@@ -140,6 +140,7 @@
                                             {{ number_format($game['rating'] * 100, 0) }}%
                                         </div>
                                     </div>
+                                    @auth
                                     <div class="flex flex-col gap-y-1 items-start justify-start">
                                         <div class="flex items-center gap-x-1 justify-start">
                                             <div class=" leading-none text-cod-gray-900 dark:text-cod-gray-400">
@@ -169,6 +170,7 @@
                                             @endif
                                         @endauth
                                     </div>
+                                    @endauth
                                     <div class="flex items-center gap-x-1 justify-start">
                                         <div class=" leading-none text-cod-gray-900 dark:text-cod-gray-400">
                                             Multiplayer:
