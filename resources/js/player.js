@@ -1,5 +1,6 @@
 import { GamepadManager } from './emulation/GamepadManager'
 import { GamepadDebugOverlay } from './emulation/GamepadDebugOverlay'
+import { SaveStateManager } from './emulation/SaveStateManager'
 import { EMULATOR_JS_KEYS, JS_DOS_KEYS, KeyboardInputAdapter } from './emulation/keyboard'
 
 let runningSession = null
@@ -54,8 +55,14 @@ window.VintagePlayerGamepad = {
     stop: stopPlayerGamepad,
 }
 
+window.VintageSaveStateManager = SaveStateManager
+
 window.addEventListener('vintage-gamepad:start', event => {
     startPlayerGamepad(event.detail || {})
+})
+
+window.addEventListener('vintage-gamepad:mappings-restored', event => {
+    runningSession?.manager?.updateMappings(event.detail || {})
 })
 
 if (window.VintagePlayerGamepadConfig) {
@@ -64,4 +71,8 @@ if (window.VintagePlayerGamepadConfig) {
 
 window.dispatchEvent(new CustomEvent('vintage-gamepad:ready', {
     detail: window.VintagePlayerGamepad,
+}))
+
+window.dispatchEvent(new CustomEvent('vintage-save-state:ready', {
+    detail: window.VintageSaveStateManager,
 }))

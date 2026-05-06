@@ -9,7 +9,24 @@
         
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <style>
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                overflow: hidden;
+                background: #000000;
+            }
+        </style>
+
         @stack('styles')
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+
+        <script>
+            window.VintagePlayerFetch = (input, init = {}) => window.fetch(input, init);
+        </script>
 
         @vite(['resources/js/player.js'])
 

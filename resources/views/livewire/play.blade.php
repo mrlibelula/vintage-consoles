@@ -4,7 +4,7 @@
         <div class="flex flex-col gap-x-0 gap-y-1 xl:gap-x-2 xl:gap-y-0 xl:flex-row sticky items-start justify-between overflow-hidden">
             <!-- player -->
             <div id="game-container" class="w-full xl:w-[70%] bg-black h-full rounded-lg overflow-hidden relative">
-                <iframe id="game-iframe" class="game-arena" frameborder="0"
+                <iframe id="game-iframe" class="game-arena" frameborder="0" scrolling="no"
                     @if (strtolower($console['short_name']) === 'pc')
                     {{-- src="https://dos.zone/player/?bundleUrl={{ $game['rom'] }}&anonymous=1" --}}
                     src="{{ route('dosplayer', [

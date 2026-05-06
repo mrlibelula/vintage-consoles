@@ -53,6 +53,20 @@
     
     @push('styles')
     <style>
+        #game {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #000000;
+        }
+
+        #game iframe,
+        #game canvas {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
         @keyframes emulatorjsSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -110,6 +124,37 @@
         EJS_gameUrl = "{{ $game_url }}";
         EJS_gameID = "{{ $game_id }}";
         EJS_oldCores = true;
+        window.VintageSaveStateConfig = @json($save_state_config);
+        let emulatorJsLoaderStarted = false;
+
+        const loadEmulatorJsScript = () => {
+            if (emulatorJsLoaderStarted) {
+                return;
+            }
+
+            emulatorJsLoaderStarted = true;
+            const script = document.createElement('script');
+            script.src = "https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@4.0.7/data/loader.js";
+            document.body.appendChild(script);
+        };
+
+        const startEmulatorJsSaveStates = () => {
+            if (!window.VintageSaveStateManager || window.VintageEmulatorSaveStates) {
+                return;
+            }
+
+            window.VintageEmulatorSaveStates = new window.VintageSaveStateManager(window.VintageSaveStateConfig, {
+                async captureState() {
+                    const state = window.EJS_emulator?.gameManager?.getState?.();
+
+                    return state instanceof Promise ? await state : state;
+                },
+                async restoreState(bytes) {
+                    window.EJS_emulator?.gameManager?.loadState?.(bytes);
+                },
+            });
+            window.VintageEmulatorSaveStates.init().finally(loadEmulatorJsScript);
+        };
 
         const startEmulatorJsGamepad = () => {
             window.VintagePlayerGamepad.start({
@@ -122,6 +167,12 @@
             startEmulatorJsGamepad();
         } else {
             window.addEventListener('vintage-gamepad:ready', startEmulatorJsGamepad, { once: true });
+        }
+
+        if (window.VintageSaveStateManager) {
+            startEmulatorJsSaveStates();
+        } else {
+            window.addEventListener('vintage-save-state:ready', startEmulatorJsSaveStates, { once: true });
         }
         
         // Callback when emulator is ready and game starts
@@ -146,7 +197,7 @@
         }, 20000);
     </script>
     {{-- it stays always ON in SPA mode --}}
-    <script src="https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@4.0.7/data/loader.js"></script>
+    {{-- Loaded dynamically after server-backed control settings are restored. --}}
     {{-- <script src="https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@latest/data/loader.js"></script> --}}
     
     {{-- doesn't work on SPA, only full page reload --}}

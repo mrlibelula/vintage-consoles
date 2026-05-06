@@ -1,17 +1,34 @@
 <div>
     @push('styles')
-    <link rel="stylesheet" href="https://v8.js-dos.com/latest/js-dos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/js-dos@8.3.20/dist/js-dos.css">
     <style>
-        #dosbox { height: 100vh; }
+        #dosbox {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #000000;
+        }
     </style>
     @endpush
 
     <div id="dosbox"></div>
 
-    <script src="https://v8.js-dos.com/latest/js-dos.js"></script>
     <script>
-        
+        if (window.self !== window.top && navigator.keyboard?.lock) {
+            try {
+                navigator.keyboard.lock = () => Promise.resolve();
+                navigator.keyboard.unlock = () => {};
+            } catch (error) {
+                console.warn('Keyboard Lock API cannot be disabled for the iframe.', error);
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/js-dos@8.3.20/dist/js-dos.js"></script>
+    <script>
+
         const bundleUrl = "{{ $game['rom'] }}";
+        const jsDosPathPrefix = 'https://cdn.jsdelivr.net/npm/js-dos@8.3.20/dist/emulators/';
+        let dosProps = null;
 
         const startJsDosGamepad = () => {
             window.VintagePlayerGamepad.start({
@@ -28,22 +45,27 @@
 
         async function startEmulator() {
             try {
+                if (dosProps?.stop) {
+                    await dosProps.stop();
+                }
+
                 const dosbox = document.getElementById("dosbox");
-                
-                const ci = await Dos(dosbox, {
-                    wdosboxUrl: "https://v8.js-dos.com/latest/wdosbox.js",
+                dosbox.innerHTML = '';
+
+                dosProps = await Dos(dosbox, {
+                    pathPrefix: jsDosPathPrefix,
                     url: bundleUrl,
-                    autolock: true,
+                    autolock: false,
                 });
-                
-                ci.setTheme("dark");
-                ci.setAutoStart(true);
-                
+
+                dosProps.setTheme("dark");
+                dosProps.setAutoStart(true);
+
                 // Hide the universal loader when emulator starts
                 if (window.hideUniversalLoader) {
                     window.hideUniversalLoader();
                 }
-                
+
             } catch (error) {
                 console.error("JS-DOS: Error starting emulator:", error);
                 // Hide loader even on error to prevent infinite loading
@@ -56,6 +78,6 @@
         }
 
         // Start the emulator as soon as the page loads
-        window.onload = startEmulator;
+        window.addEventListener('load', () => startEmulator());
     </script>
 </div>

@@ -9,6 +9,8 @@ use App\Livewire\Play;
 use App\Livewire\Publishers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\EmulatorControlSettingController;
+use App\Http\Controllers\EmulatorSaveStateController;
 use App\Http\Controllers\LoginController;
 
 
@@ -66,6 +68,17 @@ Route::get('/debug/memory', function () {
 // Route::get('/', function () {
 //     return view('landing');
 // });
+
+Route::middleware(['auth'])->prefix('player-data')->name('player-data.')->group(function () {
+    Route::get('/save-states', [EmulatorSaveStateController::class, 'index'])->name('save-states.index');
+    Route::post('/save-states', [EmulatorSaveStateController::class, 'store'])->name('save-states.store');
+    Route::patch('/save-states/{saveState}', [EmulatorSaveStateController::class, 'update'])->name('save-states.update');
+    Route::delete('/save-states/{saveState}', [EmulatorSaveStateController::class, 'destroy'])->name('save-states.destroy');
+    Route::get('/save-states/{saveState}/download', [EmulatorSaveStateController::class, 'download'])->name('save-states.download');
+
+    Route::get('/control-settings', [EmulatorControlSettingController::class, 'show'])->name('control-settings.show');
+    Route::put('/control-settings', [EmulatorControlSettingController::class, 'store'])->name('control-settings.store');
+});
 
 Route::get('/{console_short_name?}', Dashboard::class)->name('home');
 Route::get('/dashboard/{console_short_name?}', Dashboard::class)->name('dashboard');

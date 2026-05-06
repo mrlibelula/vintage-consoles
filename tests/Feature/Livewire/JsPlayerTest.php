@@ -50,7 +50,8 @@ describe('JsPlayer Component - Core Functionality', function () {
             ->assertViewIs('livewire.js-player')
             ->assertViewHas('title', 'Super Mario Bros.')
             ->assertViewHas('short_name', 'nes')
-            ->assertViewHas('game_id', 1);
+            ->assertViewHas('game_id', 1)
+            ->assertViewHas('save_state_config');
         });
 
         it('initializes properties correctly', function () {
@@ -65,7 +66,10 @@ describe('JsPlayer Component - Core Functionality', function () {
             expect($component->get('title'))->toBe('Super Mario Bros.')
                 ->and($component->get('short_name'))->toBe('nes')
                 ->and($component->get('game_id'))->toBe(1)
-                ->and($component->get('game_url'))->toContain('/games/serve/nes/mario.nes');
+                ->and($component->get('game_url'))->toContain('/games/serve/nes/mario.nes')
+                ->and($component->get('save_state_config.emulator'))->toBe('emulatorjs')
+                ->and($component->get('save_state_config.console'))->toBe('nes')
+                ->and($component->get('save_state_config.gameId'))->toBe('1');
         });
 
         it('generates correct game URLs for different consoles', function () {
@@ -204,7 +208,8 @@ describe('JsPlayer Component - Core Functionality', function () {
             ->assertViewHas('title')
             ->assertViewHas('short_name')
             ->assertViewHas('game_url')
-            ->assertViewHas('game_id');
+            ->assertViewHas('game_id')
+            ->assertViewHas('save_state_config');
         });
     });
 

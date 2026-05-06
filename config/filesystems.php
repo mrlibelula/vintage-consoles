@@ -48,6 +48,12 @@ return [
             'throw' => false,
         ],
 
+        'savestates' => [
+            'driver' => 'local',
+            'root' => storage_path('app/savestates'),
+            'throw' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

@@ -1,0 +1,963 @@
+const PANEL_ID = 'vintage-save-state-panel'
+const STORAGE_PREFIXES = ['emulatorjs', 'EJS', 'vintage.gamepad']
+const ICONS = {
+    close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>',
+    panelToggle:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M8 3v4h6V3"/><path d="M8 14h8"/><path d="M8 17h5"/><path d="M12 18v2.5"/><path d="M10 19.5l2 2 2-2"/></svg>',
+    save: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11l3 3v13H5V4z"/><path d="M8 4v6h8V6"/><path d="M8 16h8v4"/></svg>',
+    load: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h6l2 2h8v10a2 2 0 0 1-2 2H4V6z"/><path d="M12 11v6"/><path d="M9 14l3 3 3-3"/></svg>',
+    clear: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M7 10v9h10v-9"/><path d="M10 12v5"/><path d="M14 12v5"/></svg>',
+    sync: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h9l-2-2"/><path d="M16 7l-2 2"/><path d="M19 12a7 7 0 0 0-12-5"/><path d="M17 17H8l2 2"/><path d="M8 17l2-2"/><path d="M5 12a7 7 0 0 0 12 5"/></svg>',
+}
+
+function toQuery(params) {
+    return new URLSearchParams(params).toString()
+}
+
+function toBytes(data) {
+    if (data instanceof Uint8Array) {
+        return data
+    }
+
+    if (data instanceof ArrayBuffer) {
+        return new Uint8Array(data)
+    }
+
+    return new Uint8Array(data || [])
+}
+
+function playerFetch(input, init = {}) {
+    const fetcher = window.VintagePlayerFetch || window.fetch.bind(window)
+
+    return fetcher(input, init)
+}
+
+function getLocalStorageSnapshot(config) {
+    const keys = Object.keys(window.localStorage || {})
+    const markers = [
+        config.gameId,
+        config.gameTitle,
+        config.console,
+    ].filter(Boolean).map(value => String(value).toLowerCase())
+
+    return keys.reduce((settings, key) => {
+        const lowerKey = key.toLowerCase()
+        const matchesPrefix = STORAGE_PREFIXES.some(prefix => lowerKey.startsWith(prefix.toLowerCase()))
+        const matchesGame = markers.some(marker => lowerKey.includes(marker))
+
+        if (matchesPrefix || matchesGame) {
+            settings[key] = window.localStorage.getItem(key)
+        }
+
+        return settings
+    }, {})
+}
+
+function applyLocalStorageSnapshot(settings) {
+    let gamepadMappings = null
+
+    Object.entries(settings || {}).forEach(([key, value]) => {
+        if (value === null || typeof value === 'undefined') {
+            window.localStorage.removeItem(key)
+            return
+        }
+
+        window.localStorage.setItem(key, value)
+
+        if (key === 'vintage.gamepad.mappings') {
+            try {
+                gamepadMappings = JSON.parse(value)
+            } catch (error) {
+                console.warn('Synced gamepad mappings could not be parsed.', error)
+            }
+        }
+    })
+
+    if (gamepadMappings) {
+        window.dispatchEvent(new CustomEvent('vintage-gamepad:mappings-restored', {
+            detail: gamepadMappings,
+        }))
+    }
+}
+
+export class SaveStateManager {
+    constructor(config = {}, adapter = {}) {
+        this.config = config
+        this.adapter = adapter
+        this.saves = []
+        this.status = null
+        this.panel = null
+        this.toastContainer = null
+        this.currentSlot = 1
+        this.keydownHandler = event => this.handleKeydown(event)
+    }
+
+    async init() {
+        this.createPanel()
+        window.addEventListener('keydown', this.keydownHandler)
+        await Promise.all([
+            this.refreshSaves(),
+            this.restoreControlSettings(),
+        ])
+    }
+
+    contextParams() {
+        return {
+            console: this.config.console,
+            game_id: this.config.gameId,
+            emulator: this.config.emulator,
+        }
+    }
+
+    async request(url, options = {}) {
+        const headers = {
+            Accept: 'application/json',
+            ...(options.headers || {}),
+        }
+
+        if (this.config.csrfToken && options.method && options.method !== 'GET') {
+            headers['X-CSRF-TOKEN'] = this.config.csrfToken
+        }
+
+        const response = await playerFetch(url, {
+            credentials: 'same-origin',
+            ...options,
+            headers,
+        })
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`)
+        }
+
+        return response
+    }
+
+    async refreshSaves() {
+        if (!this.config.authenticated) {
+            this.saves = []
+            this.renderSlots()
+            return
+        }
+
+        const url = `${this.config.endpoints.saveStates}?${toQuery(this.contextParams())}`
+        const response = await this.request(url)
+        const payload = await response.json()
+        this.saves = payload.data || []
+        this.renderSlots()
+    }
+
+    async saveSlot(slot, { notify = false } = {}) {
+        this.selectSlot(slot)
+
+        if (!this.config.authenticated) {
+            this.setStatus('Log in to save to your account.')
+            this.notify('Log in to save to your account.', 'warning', notify)
+            return
+        }
+
+        if (!this.adapter.captureState) {
+            this.setStatus('Save state is not ready yet.')
+            this.notify('Save state is not ready yet.', 'warning', notify)
+            return
+        }
+
+        try {
+            this.setStatus(`Saving slot ${slot}...`)
+            const bytes = toBytes(await this.adapter.captureState())
+            const formData = new FormData()
+
+            Object.entries(this.contextParams()).forEach(([key, value]) => formData.append(key, value))
+            formData.append('slot', slot)
+            formData.append('state', new Blob([bytes], { type: 'application/octet-stream' }), `slot-${slot}.state`)
+
+            await this.request(this.config.endpoints.saveStates, {
+                method: 'POST',
+                body: formData,
+            })
+            await this.saveControlSettings({ silent: true })
+            await this.refreshSaves()
+            this.setStatus(`Saved slot ${slot} to server.`)
+            this.notify(`Saved slot ${slot}`, 'success', notify)
+        } catch (error) {
+            console.error(error)
+            this.setStatus(`Could not save slot ${slot}.`)
+            this.notify(`Could not save slot ${slot}`, 'error', notify)
+        }
+    }
+
+    async loadSlot(slot, { notify = false } = {}) {
+        this.selectSlot(slot)
+        const save = this.saves.find(item => item.slot === slot)
+
+        if (!save) {
+            this.setStatus(`Slot ${slot} is empty.`)
+            this.notify(`Slot ${slot} is empty`, 'warning', notify)
+            return
+        }
+
+        if (!this.adapter.restoreState) {
+            this.setStatus('Load state is not ready yet.')
+            this.notify('Load state is not ready yet.', 'warning', notify)
+            return
+        }
+
+        try {
+            this.setStatus(`Loading slot ${slot}...`)
+            const response = await playerFetch(save.download_url, { credentials: 'same-origin' })
+
+            if (!response.ok) {
+                throw new Error(`Download failed with status ${response.status}`)
+            }
+
+            const bytes = new Uint8Array(await response.arrayBuffer())
+            await this.adapter.restoreState(bytes, save)
+            await this.restoreControlSettings({ silent: true })
+            this.setStatus(`Loaded slot ${slot}.`)
+            this.notify(`Loaded slot ${slot}`, 'success', notify)
+        } catch (error) {
+            console.error(error)
+            this.setStatus(`Could not load slot ${slot}.`)
+            this.notify(`Could not load slot ${slot}`, 'error', notify)
+        }
+    }
+
+    async deleteSlot(slot, { notify = false } = {}) {
+        this.selectSlot(slot)
+        const save = this.saves.find(item => item.slot === slot)
+
+        if (!save) {
+            this.setStatus(`Slot ${slot} is already empty.`)
+            this.notify(`Slot ${slot} is already empty`, 'warning', notify)
+            return
+        }
+
+        const confirmed = window.confirm(`Clear save slot ${slot}? This will permanently remove it from server storage.`)
+
+        if (!confirmed) {
+            return
+        }
+
+        try {
+            this.setStatus(`Clearing slot ${slot}...`)
+            await this.request(save.delete_url, {
+                method: 'DELETE',
+            })
+            await this.refreshSaves()
+            this.setStatus(`Cleared slot ${slot}.`)
+            this.notify(`Cleared slot ${slot}`, 'success', notify)
+        } catch (error) {
+            console.error(error)
+            this.setStatus(`Could not clear slot ${slot}.`)
+            this.notify(`Could not clear slot ${slot}`, 'error', notify)
+        }
+    }
+
+    selectSlot(slot, { notify = false } = {}) {
+        const slots = Number(this.config.slots || 5)
+        this.currentSlot = Math.min(Math.max(Number(slot) || 1, 1), slots)
+        this.renderSlots()
+        this.notify(`Selected slot ${this.currentSlot}`, 'info', notify)
+    }
+
+    handleKeydown(event) {
+        if (event.key === 'Escape') {
+            this.closeHelpDialog()
+            return
+        }
+
+        if (this.isEditableTarget(event.target)) {
+            return
+        }
+
+        const key = event.key.toLowerCase()
+
+        if (event.ctrlKey && event.altKey && /^[1-5]$/.test(key)) {
+            event.preventDefault()
+            this.selectSlot(Number(key), { notify: true })
+            this.setStatus(`Selected slot ${this.currentSlot}.`)
+            return
+        }
+
+        if (event.ctrlKey && key === 's') {
+            event.preventDefault()
+            this.saveSlot(this.currentSlot, { notify: true })
+            return
+        }
+
+        if (event.ctrlKey && key === 'l') {
+            event.preventDefault()
+            this.loadSlot(this.currentSlot, { notify: true })
+            return
+        }
+
+        if (event.ctrlKey && (event.key === 'Delete' || event.key === 'Backspace')) {
+            event.preventDefault()
+            this.deleteSlot(this.currentSlot, { notify: true })
+        }
+    }
+
+    openHelpDialog() {
+        this.panel.querySelector('.vintage-save-help-dialog')?.removeAttribute('hidden')
+    }
+
+    closeHelpDialog() {
+        this.panel?.querySelector('.vintage-save-help-dialog')?.setAttribute('hidden', '')
+    }
+
+    isEditableTarget(target) {
+        if (!target) {
+            return false
+        }
+
+        const tagName = target.tagName?.toLowerCase()
+
+        return target.isContentEditable
+            || ['input', 'select', 'textarea'].includes(tagName)
+    }
+
+    captureControlSettings() {
+        if (this.adapter.captureControls) {
+            return this.adapter.captureControls()
+        }
+
+        return {
+            localStorage: getLocalStorageSnapshot(this.config),
+        }
+    }
+
+    async restoreControlSettings({ silent = false } = {}) {
+        if (!this.config.authenticated) {
+            return
+        }
+
+        try {
+            const params = {
+                ...this.contextParams(),
+                profile: 'default',
+            }
+            const response = await this.request(`${this.config.endpoints.controlSettings}?${toQuery(params)}`)
+            const payload = await response.json()
+
+            if (!payload.data?.settings) {
+                return
+            }
+
+            if (this.adapter.restoreControls) {
+                await this.adapter.restoreControls(payload.data.settings)
+            } else {
+                applyLocalStorageSnapshot(payload.data.settings.localStorage)
+            }
+
+            if (!silent) {
+                this.setStatus('Control settings restored.')
+            }
+        } catch (error) {
+            console.warn('Control settings could not be restored.', error)
+        }
+    }
+
+    async saveControlSettings({ silent = false } = {}) {
+        if (!this.config.authenticated) {
+            this.setStatus('Log in to sync control settings.')
+            return
+        }
+
+        try {
+            await this.request(this.config.endpoints.controlSettings, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...this.contextParams(),
+                    profile: 'default',
+                    settings: this.captureControlSettings(),
+                }),
+            })
+
+            if (!silent) {
+                this.setStatus('Control settings synced.')
+            }
+        } catch (error) {
+            console.error(error)
+            this.setStatus('Could not sync control settings.')
+        }
+    }
+
+    createPanel() {
+        if (document.getElementById(PANEL_ID)) {
+            this.panel = document.getElementById(PANEL_ID)
+            return
+        }
+
+        const panel = document.createElement('div')
+        panel.id = PANEL_ID
+        panel.innerHTML = `
+            <button type="button" class="vintage-save-state-toggle" aria-expanded="false" aria-controls="vintage-save-state-body" aria-label="Saves" title="Saves">
+                <span class="vintage-save-toggle-when-closed">${ICONS.panelToggle}</span>
+                <span class="vintage-save-toggle-when-open">${ICONS.close}<span class="vintage-save-toggle-close-label">Close</span></span>
+            </button>
+            <div id="vintage-save-state-body" class="vintage-save-state-body" hidden>
+                <div class="vintage-save-state-heading">
+                    <div class="vintage-save-state-title">
+                        <i class="fa fa-cloud-upload vintage-save-state-title-fa" aria-hidden="true"></i>
+                        <span>Cloud Save Slots</span>
+                    </div>
+                    ${this.config.authenticated ? '<button type="button" class="vintage-help-link">Hotkeys</button>' : ''}
+                </div>
+                <div class="vintage-save-state-message"></div>
+                <div class="vintage-save-state-slots"></div>
+                <button type="button" class="vintage-control-sync" aria-label="Sync controls" title="Sync controls">${ICONS.sync}<span>Sync Controls</span></button>
+            </div>
+            <div class="vintage-save-help-dialog" role="dialog" aria-modal="true" aria-label="Save slot instructions" hidden>
+                <div class="vintage-save-help-card">
+                    <button type="button" class="vintage-save-help-close" aria-label="Close help">x</button>
+                    <h2>Save Slot Shortcuts</h2>
+                    <p>Pick a current slot, then save or load without opening the panel.</p>
+                    <dl>
+                        <div><dt>Ctrl+S</dt><dd>Save the current slot</dd></div>
+                        <div><dt>Ctrl+L</dt><dd>Load the current slot</dd></div>
+                        <div><dt>Ctrl+Alt+1-5</dt><dd>Select slot 1 through 5</dd></div>
+                        <div><dt>Ctrl+Delete</dt><dd>Clear the current slot after confirmation</dd></div>
+                    </dl>
+                    <p>Slots are saved to your account and can be restored from another device.</p>
+                </div>
+            </div>
+            <div class="vintage-save-toasts" aria-live="polite" aria-atomic="true"></div>
+        `
+
+        this.addStyles()
+        document.body.appendChild(panel)
+        this.panel = panel
+        this.status = panel.querySelector('.vintage-save-state-message')
+        this.toastContainer = panel.querySelector('.vintage-save-toasts')
+        panel.querySelector('.vintage-save-state-toggle').addEventListener('click', () => this.togglePanel())
+        panel.querySelector('.vintage-control-sync').addEventListener('click', () => this.saveControlSettings())
+        panel.querySelector('.vintage-help-link')?.addEventListener('click', () => this.openHelpDialog())
+        panel.querySelector('.vintage-save-help-close')?.addEventListener('click', () => this.closeHelpDialog())
+        panel.querySelector('.vintage-save-help-dialog')?.addEventListener('click', event => {
+            if (event.target.classList.contains('vintage-save-help-dialog')) {
+                this.closeHelpDialog()
+            }
+        })
+        this.renderSlots()
+    }
+
+    addStyles() {
+        if (document.getElementById(`${PANEL_ID}-styles`)) {
+            return
+        }
+
+        const style = document.createElement('style')
+        style.id = `${PANEL_ID}-styles`
+        style.textContent = `
+            #${PANEL_ID} {
+                bottom: 72px;
+                color: #fff;
+                font-family: system-ui, -apple-system, sans-serif;
+                position: fixed;
+                right: 16px;
+                z-index: 1000000;
+            }
+            #${PANEL_ID} button {
+                align-items: center;
+                background: #e60012;
+                border: 0;
+                border-radius: 6px;
+                color: #fff;
+                cursor: pointer;
+                display: inline-flex;
+                font-weight: 700;
+                justify-content: center;
+                padding: 8px 10px;
+            }
+            #${PANEL_ID} .vintage-save-state-toggle {
+                background: rgba(0, 0, 0, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+                color: #fff;
+                font-weight: 400;
+                min-height: 40px;
+                min-width: 40px;
+                padding: 8px;
+            }
+            #${PANEL_ID} .vintage-save-state-toggle:hover {
+                background: rgba(0, 0, 0, 0.2);
+            }
+            #${PANEL_ID}.is-menu-open .vintage-save-state-toggle {
+                background: rgba(0, 0, 0, 0.88);
+                border-color: rgba(255, 255, 255, 0.18);
+                box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+                font-size: 12px;
+                font-weight: 600;
+                gap: 6px;
+                min-width: unset;
+                padding: 8px 12px;
+            }
+            #${PANEL_ID}.is-menu-open .vintage-save-state-toggle:hover {
+                background: rgba(0, 0, 0, 0.92);
+            }
+            #${PANEL_ID} .vintage-save-toggle-when-closed {
+                display: inline-flex;
+            }
+            #${PANEL_ID} .vintage-save-toggle-when-open {
+                align-items: center;
+                display: none;
+                gap: 6px;
+            }
+            #${PANEL_ID}.is-menu-open .vintage-save-toggle-when-closed {
+                display: none;
+            }
+            #${PANEL_ID}.is-menu-open .vintage-save-toggle-when-open {
+                display: inline-flex;
+            }
+            #${PANEL_ID} .vintage-save-state-toggle:focus-visible {
+                outline: 2px solid rgba(255, 255, 255, 0.65);
+                outline-offset: 2px;
+            }
+            #${PANEL_ID} .vintage-save-toggle-when-closed svg {
+                filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
+                height: 22px;
+                width: 22px;
+            }
+            #${PANEL_ID} .vintage-save-toggle-when-open svg {
+                height: 14px;
+                width: 14px;
+            }
+            #${PANEL_ID} .vintage-save-toggle-close-label {
+                letter-spacing: 0.02em;
+                white-space: nowrap;
+            }
+            #${PANEL_ID} button svg {
+                fill: none;
+                height: 16px;
+                stroke: currentColor;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 2;
+                width: 16px;
+            }
+            #${PANEL_ID} .vintage-save-state-body {
+                background: rgba(0, 0, 0, 0.88);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                border-radius: 10px;
+                box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+                margin-top: 8px;
+                max-width: 320px;
+                padding: 12px;
+            }
+            #${PANEL_ID} .vintage-save-state-heading {
+                align-items: center;
+                display: flex;
+                gap: 12px;
+                justify-content: space-between;
+                margin-bottom: 8px;
+            }
+            #${PANEL_ID} .vintage-save-state-title {
+                align-items: center;
+                display: inline-flex;
+                font-size: 14px;
+                font-weight: 800;
+                gap: 6px;
+            }
+            #${PANEL_ID} .vintage-save-state-title-fa {
+                flex-shrink: 0;
+                font-size: 15px;
+                line-height: 1;
+                opacity: 0.92;
+            }
+            #${PANEL_ID} .vintage-help-link {
+                background: transparent;
+                color: #fda4af;
+                font-size: 12px;
+                padding: 0;
+                text-decoration: underline;
+            }
+            #${PANEL_ID} .vintage-save-state-message {
+                color: #cbd5e1;
+                font-size: 12px;
+                margin-bottom: 8px;
+                min-height: 16px;
+            }
+            #${PANEL_ID} .vintage-save-state-shortcuts {
+                color: #94a3b8;
+                font-size: 11px;
+                line-height: 1.3;
+                margin-bottom: 10px;
+            }
+            #${PANEL_ID} .vintage-save-slot {
+                align-items: center;
+                display: grid;
+                gap: 6px;
+                grid-template-columns: 1fr auto auto auto;
+                margin-bottom: 6px;
+            }
+            #${PANEL_ID} .vintage-save-slot button:not(.vintage-save-slot-meta) {
+                min-height: 34px;
+                min-width: 34px;
+                padding: 8px;
+            }
+            #${PANEL_ID} .vintage-save-slot button[data-action="save"] {
+                background: #16a34a;
+            }
+            #${PANEL_ID} .vintage-save-slot button[data-action="save"]:hover:not(:disabled) {
+                background: #15803d;
+            }
+            #${PANEL_ID} .vintage-save-slot button[data-action="load"] {
+                background: #6366f1;
+            }
+            #${PANEL_ID} .vintage-save-slot button[data-action="load"]:hover:not(:disabled) {
+                background: #4f46e5;
+            }
+            #${PANEL_ID} .vintage-save-slot button[data-action="delete"] {
+                background: #e60012;
+            }
+            #${PANEL_ID} .vintage-save-slot button[data-action="delete"]:hover:not(:disabled) {
+                background: #c90010;
+            }
+            #${PANEL_ID} .vintage-save-slot.is-selected {
+                background: rgba(230, 0, 18, 0.18);
+                border-radius: 8px;
+                margin-left: -4px;
+                margin-right: -4px;
+                padding: 4px;
+            }
+            #${PANEL_ID} .vintage-save-slot-meta {
+                background: transparent;
+                color: #e2e8f0;
+                font-size: 12px;
+                font-weight: 600;
+                overflow: hidden;
+                padding-left: 0;
+                text-align: left;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            #${PANEL_ID} button:disabled {
+                cursor: not-allowed;
+                opacity: 0.45;
+            }
+            #${PANEL_ID} .vintage-control-sync {
+                gap: 8px;
+                margin-top: 6px;
+                width: 100%;
+            }
+            #${PANEL_ID} .vintage-save-help-dialog {
+                align-items: center;
+                background: rgba(0, 0, 0, 0.7);
+                bottom: 0;
+                display: flex;
+                justify-content: center;
+                left: 0;
+                position: fixed;
+                right: 0;
+                top: 0;
+                z-index: 1000001;
+            }
+            #${PANEL_ID} .vintage-save-help-dialog[hidden] {
+                display: none;
+            }
+            #${PANEL_ID} .vintage-save-help-card {
+                background: #101014;
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                border-radius: 14px;
+                box-shadow: 0 18px 54px rgba(0, 0, 0, 0.55);
+                color: #f8fafc;
+                max-width: 360px;
+                padding: 18px;
+                position: relative;
+                width: calc(100vw - 40px);
+            }
+            #${PANEL_ID} .vintage-save-help-card h2 {
+                font-size: 18px;
+                margin: 0 0 8px;
+            }
+            #${PANEL_ID} .vintage-save-help-card p {
+                color: #cbd5e1;
+                font-size: 13px;
+                line-height: 1.4;
+                margin: 8px 0;
+            }
+            #${PANEL_ID} .vintage-save-help-card dl {
+                display: grid;
+                gap: 8px;
+                margin: 14px 0;
+            }
+            #${PANEL_ID} .vintage-save-help-card dl div {
+                align-items: center;
+                display: grid;
+                gap: 10px;
+                grid-template-columns: 110px 1fr;
+            }
+            #${PANEL_ID} .vintage-save-help-card dt {
+                background: rgba(230, 0, 18, 0.18);
+                border-radius: 6px;
+                color: #fecdd3;
+                font-size: 12px;
+                font-weight: 800;
+                padding: 6px 8px;
+            }
+            #${PANEL_ID} .vintage-save-help-card dd {
+                color: #e2e8f0;
+                font-size: 13px;
+                margin: 0;
+            }
+            #${PANEL_ID} .vintage-save-help-close {
+                min-height: 28px;
+                min-width: 28px;
+                padding: 4px;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+            }
+            #${PANEL_ID} .vintage-save-toasts {
+                bottom: 118px;
+                display: grid;
+                gap: 8px;
+                pointer-events: none;
+                position: fixed;
+                right: 16px;
+                width: min(300px, calc(100vw - 32px));
+                z-index: 1000002;
+            }
+            #${PANEL_ID} .vintage-save-toast {
+                background: rgba(15, 23, 42, 0.94);
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                border-left: 4px solid #38bdf8;
+                border-radius: 10px;
+                box-shadow: 0 12px 34px rgba(0, 0, 0, 0.42);
+                color: #f8fafc;
+                font-size: 13px;
+                font-weight: 800;
+                opacity: 0;
+                padding: 10px 12px;
+                transform: translateY(8px) scale(0.98);
+                transition: opacity 180ms ease, transform 180ms ease;
+            }
+            #${PANEL_ID} .vintage-save-toast.is-visible {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            #${PANEL_ID} .vintage-save-toast.is-success {
+                border-left-color: #22c55e;
+            }
+            #${PANEL_ID} .vintage-save-toast.is-warning {
+                border-left-color: #f59e0b;
+            }
+            #${PANEL_ID} .vintage-save-toast.is-error {
+                border-left-color: #ef4444;
+            }
+            @media (max-width: 639px) {
+                #${PANEL_ID} {
+                    align-items: stretch;
+                    bottom: max(68px, calc(env(safe-area-inset-bottom, 0px) + 56px));
+                    box-sizing: border-box;
+                    display: flex;
+                    flex-direction: column;
+                    left: 0;
+                    right: 0;
+                    width: 100%;
+                }
+                #${PANEL_ID} .vintage-save-state-toggle {
+                    align-self: flex-end;
+                    border-radius: 10px;
+                    flex-shrink: 0;
+                    margin-right: max(12px, env(safe-area-inset-right, 0px));
+                    min-height: 44px;
+                    min-width: 44px;
+                    -webkit-tap-highlight-color: transparent;
+                }
+                #${PANEL_ID} .vintage-save-state-body {
+                    align-self: stretch;
+                    border-radius: 14px;
+                    box-sizing: border-box;
+                    margin-top: 10px;
+                    max-height: min(72vh, 540px);
+                    max-width: none;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    -webkit-overflow-scrolling: touch;
+                    padding-top: max(20px, calc(env(safe-area-inset-top, 0px) + 8px));
+                    padding-right: max(16px, env(safe-area-inset-right, 0px));
+                    padding-bottom: 16px;
+                    padding-left: max(16px, env(safe-area-inset-left, 0px));
+                    scroll-padding-top: 12px;
+                    scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+                    scrollbar-width: thin;
+                    width: 100%;
+                }
+                #${PANEL_ID} .vintage-save-state-heading {
+                    flex-wrap: wrap;
+                    gap: 8px 12px;
+                    margin-bottom: 10px;
+                    margin-top: 2px;
+                    padding-top: 2px;
+                }
+                #${PANEL_ID} .vintage-save-state-title {
+                    align-items: center;
+                    font-size: 15px;
+                    letter-spacing: 0.01em;
+                    line-height: 1.35;
+                }
+                #${PANEL_ID} .vintage-save-state-title-fa {
+                    display: inline-block;
+                    font-size: 16px;
+                    line-height: 1;
+                    padding-top: 3px;
+                }
+                #${PANEL_ID} .vintage-save-state-message {
+                    font-size: 13px;
+                    line-height: 1.35;
+                    margin-bottom: 10px;
+                }
+                #${PANEL_ID} .vintage-save-slot {
+                    align-items: stretch;
+                    background: rgba(255, 255, 255, 0.04);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    border-radius: 12px;
+                    gap: 10px 8px;
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                    grid-template-rows: auto auto;
+                    margin-bottom: 10px;
+                    padding: 10px 10px 12px;
+                }
+                #${PANEL_ID} .vintage-save-slot-meta {
+                    font-size: 14px;
+                    font-weight: 700;
+                    grid-column: 1 / -1;
+                    grid-row: 1;
+                    line-height: 1.35;
+                    min-height: 44px;
+                    padding: 6px 2px 2px;
+                    text-align: left;
+                    white-space: normal;
+                    -webkit-tap-highlight-color: transparent;
+                }
+                #${PANEL_ID} .vintage-save-slot button[data-action="save"] {
+                    grid-column: 1;
+                    grid-row: 2;
+                }
+                #${PANEL_ID} .vintage-save-slot button[data-action="load"] {
+                    grid-column: 2;
+                    grid-row: 2;
+                }
+                #${PANEL_ID} .vintage-save-slot button[data-action="delete"] {
+                    grid-column: 3;
+                    grid-row: 2;
+                }
+                #${PANEL_ID} .vintage-save-slot button:not(.vintage-save-slot-meta) {
+                    border-radius: 10px;
+                    min-height: 48px;
+                    min-width: 0;
+                    padding: 10px 6px;
+                    -webkit-tap-highlight-color: transparent;
+                }
+                #${PANEL_ID} .vintage-save-slot button:not(.vintage-save-slot-meta) svg {
+                    height: 20px;
+                    width: 20px;
+                }
+                #${PANEL_ID} .vintage-save-slot.is-selected {
+                    background: rgba(230, 0, 18, 0.22);
+                    border-color: rgba(254, 202, 202, 0.35);
+                    box-shadow: inset 0 0 0 1px rgba(254, 202, 202, 0.12);
+                    margin-left: 0;
+                    margin-right: 0;
+                    padding: 10px 10px 12px;
+                }
+                #${PANEL_ID} .vintage-control-sync {
+                    background: rgba(255, 255, 255, 0.06);
+                    border: 1px solid rgba(255, 255, 255, 0.22);
+                    color: #f1f5f9;
+                    font-size: 13px;
+                    font-weight: 600;
+                    gap: 8px;
+                    margin-top: 4px;
+                    min-height: 46px;
+                    padding: 10px 14px;
+                    -webkit-tap-highlight-color: transparent;
+                }
+                #${PANEL_ID} .vintage-control-sync svg {
+                    height: 18px;
+                    opacity: 0.95;
+                    width: 18px;
+                }
+                #${PANEL_ID} .vintage-save-toasts {
+                    bottom: max(120px, calc(env(safe-area-inset-bottom, 0px) + 108px));
+                    left: max(12px, env(safe-area-inset-left, 0px));
+                    right: max(12px, env(safe-area-inset-right, 0px));
+                    width: auto;
+                }
+            }
+        `
+        document.head.appendChild(style)
+    }
+
+    togglePanel() {
+        const body = this.panel.querySelector('.vintage-save-state-body')
+        const toggle = this.panel.querySelector('.vintage-save-state-toggle')
+        const nextHidden = !body.hidden
+        body.hidden = nextHidden
+        const isOpen = !nextHidden
+        toggle.setAttribute('aria-expanded', String(isOpen))
+        this.panel.classList.toggle('is-menu-open', isOpen)
+        toggle.setAttribute('aria-label', isOpen ? 'Close save menu' : 'Saves')
+        toggle.setAttribute('title', isOpen ? 'Close menu' : 'Saves')
+    }
+
+    renderSlots() {
+        if (!this.panel) {
+            return
+        }
+
+        const container = this.panel.querySelector('.vintage-save-state-slots')
+        const slots = Number(this.config.slots || 5)
+        container.innerHTML = ''
+
+        for (let slot = 1; slot <= slots; slot += 1) {
+            const save = this.saves.find(item => item.slot === slot)
+            const row = document.createElement('div')
+            row.className = 'vintage-save-slot'
+            row.classList.toggle('is-selected', slot === this.currentSlot)
+            row.innerHTML = `
+                <button type="button" class="vintage-save-slot-meta" data-action="select">Slot ${slot}${save ? ` - ${new Date(save.updated_at).toLocaleString()}` : ' - empty'}</button>
+                <button type="button" data-action="save" aria-label="Save slot ${slot}" title="Save slot ${slot}">${ICONS.save}</button>
+                <button type="button" data-action="load" aria-label="Load slot ${slot}" title="Load slot ${slot}"${save ? '' : ' disabled'}>${ICONS.load}</button>
+                <button type="button" data-action="delete" aria-label="Clear slot ${slot}" title="Clear slot ${slot}"${save ? '' : ' disabled'}>${ICONS.clear}</button>
+            `
+            row.querySelector('[data-action="select"]').addEventListener('click', () => this.selectSlot(slot))
+            row.querySelector('[data-action="save"]').addEventListener('click', () => this.saveSlot(slot))
+            row.querySelector('[data-action="load"]').addEventListener('click', () => this.loadSlot(slot))
+            row.querySelector('[data-action="delete"]').addEventListener('click', () => this.deleteSlot(slot))
+            container.appendChild(row)
+        }
+
+        if (!this.config.authenticated) {
+            this.setStatus('Log in to save slots to server storage.')
+        }
+    }
+
+    setStatus(message) {
+        if (this.status) {
+            this.status.textContent = message
+        }
+    }
+
+    notify(message, type = 'info', enabled = true) {
+        if (!enabled || !this.toastContainer) {
+            return
+        }
+
+        const toast = document.createElement('div')
+        toast.className = `vintage-save-toast is-${type}`
+        toast.setAttribute('role', 'status')
+        toast.textContent = message
+        this.toastContainer.appendChild(toast)
+
+        window.requestAnimationFrame(() => toast.classList.add('is-visible'))
+        window.setTimeout(() => {
+            toast.classList.remove('is-visible')
+            window.setTimeout(() => toast.remove(), 240)
+        }, 2400)
+    }
+}

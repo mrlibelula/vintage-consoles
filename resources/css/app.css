@@ -7,7 +7,7 @@
 }
 
 .game-arena {
-    @apply w-full h-[30vh] sm:h-[35vh] md:h-[36vh] lg:h-[37vh] xl:h-[47vh] border-0 m-0 p-0 overflow-hidden;
+    @apply block w-full h-[30vh] sm:h-[35vh] md:h-[36vh] lg:h-[37vh] xl:h-[47vh] border-0 m-0 p-0 overflow-hidden;
 }
 
 .smooth-300 {
