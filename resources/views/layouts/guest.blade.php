@@ -18,6 +18,19 @@
         <!-- Iconset -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/icon.min.css" integrity="sha256-KyXPF3/VOPPst/NQOzCWr97QMfSfzJLyFT0o5lYJXiQ=" crossorigin="anonymous" />
 
+        <script>
+            (() => {
+                const theme = localStorage.getItem('theme') || 'system'
+                const isDark =
+                    theme === 'dark' ||
+                    (theme === 'system' &&
+                        window.matchMedia &&
+                        window.matchMedia('(prefers-color-scheme: dark)').matches)
+
+                document.documentElement.classList.toggle('dark', Boolean(isDark))
+            })()
+        </script>
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
