@@ -234,7 +234,7 @@
                         ></div>
                     @endif
                 </div>
-                <div class="absolute top-0 w-full h-[177px] bg-gradient-to-b from-transparent/30 via-transparent to-cod-gray-200 dark:from-transparent/30 dark:via-transparent dark:to-cod-gray-900 pointer-events-none">
+                <div class="absolute top-0 w-full h-[177px] bg-gradient-to-b from-transparent/30 via-transparent to-cod-gray-200 dark:from-transparent dark:via-transparent dark:to-cod-gray-900 pointer-events-none">
                 </div>
                 <!-- Placeholder for the poster background -->
                 
@@ -244,8 +244,8 @@
                 >
                 </div>
                 <div class="infoProd_ absolute inset-x-0 bottom-0 top-[177px] flex items-center justify-center text-center">
-                    <p class="flex max-w-[calc(100%-3rem)] items-center justify-center px-4 leading-none text-base text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
-                        {{ Str::limit($game['title'], 31) }}
+                    <p class="flex max-w-[calc(100%-3rem)] items-center justify-center px-2 leading-none text-base_ text-[1rem] font-thin tracking-wider w-full text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
+                        {{ Str::limit($game['title'], 28) }}
                     </p>
                     
                 </div>
