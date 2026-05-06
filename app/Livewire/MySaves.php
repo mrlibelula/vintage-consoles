@@ -354,17 +354,26 @@ class MySaves extends Component
             ];
 
             foreach ($console['games'] ?? [] as $game) {
+                $idKey = isset($game['id']) && $game['id'] !== null ? (string) $game['id'] : null;
                 $slug = (string) ($game['slug'] ?? \Illuminate\Support\Str::slug($game['title'] ?? ''));
                 if ($slug === '') {
                     continue;
                 }
 
-                $map['games'][$shortKey][$slug] = [
+                $meta = [
                     'title'  => $game['title'] ?? null,
                     'slug'   => $slug,
                     'poster' => $game['poster'] ?? null,
                     'box'    => $game['box'] ?? null,
                 ];
+
+                // Primary lookup by slug (new schema).
+                $map['games'][$shortKey][$slug] = $meta;
+
+                // Back-compat: older production rows may store numeric IDs in `game_slug`.
+                if ($idKey && ! isset($map['games'][$shortKey][$idKey])) {
+                    $map['games'][$shortKey][$idKey] = $meta;
+                }
             }
         }
 

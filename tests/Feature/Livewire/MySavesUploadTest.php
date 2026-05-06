@@ -177,3 +177,29 @@ it('syncs orphaned savestate files from disk into the database', function () {
         ->and($save->size_bytes)->toBe(strlen('orphaned-data'))
         ->and(Storage::disk('savestates')->exists($save->disk_path))->toBeTrue();
 });
+
+it('shows the correct game title when legacy numeric ids are stored in game_slug', function () {
+    $user = User::factory()->create();
+
+    EmulatorSaveState::create([
+        'user_id' => $user->id,
+        'console' => 'snes',
+        // Legacy production data: numeric ID stored in `game_slug`
+        'game_slug' => '10',
+        'slot' => 1,
+        'disk_path' => "{$user->id}/snes/donkey-kong-country/donkey-kong-country-slot-1.state",
+        'label' => null,
+        'size_bytes' => 1,
+        'checksum' => hash('sha256', 'x'),
+    ]);
+
+    $component = Livewire::actingAs($user)->test(MySaves::class);
+
+    $grouped = $component->get('grouped');
+    expect($grouped)->toHaveKey('snes');
+
+    $games = $grouped['snes']['games'] ?? [];
+    expect($games)->toHaveKey('10');
+    expect($games['10']['title'])->toBe('Donkey Kong Country');
+    expect($games['10']['slug'])->toBe('donkey-kong-country');
+});
