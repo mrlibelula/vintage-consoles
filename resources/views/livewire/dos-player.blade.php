@@ -13,6 +13,19 @@
         
         const bundleUrl = "{{ $game['rom'] }}";
 
+        const startJsDosGamepad = () => {
+            window.VintagePlayerGamepad.start({
+                adapter: 'jsdos',
+                target: '#dosbox',
+            });
+        };
+
+        if (window.VintagePlayerGamepad) {
+            startJsDosGamepad();
+        } else {
+            window.addEventListener('vintage-gamepad:ready', startJsDosGamepad, { once: true });
+        }
+
         async function startEmulator() {
             try {
                 const dosbox = document.getElementById("dosbox");

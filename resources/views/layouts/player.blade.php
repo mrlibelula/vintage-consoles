@@ -11,6 +11,8 @@
 
         @stack('styles')
 
+        @vite(['resources/js/player.js'])
+
         @livewireStyles
     </head>
     <body>

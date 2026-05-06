@@ -110,6 +110,19 @@
         EJS_gameUrl = "{{ $game_url }}";
         EJS_gameID = "{{ $game_id }}";
         EJS_oldCores = true;
+
+        const startEmulatorJsGamepad = () => {
+            window.VintagePlayerGamepad.start({
+                adapter: 'emulatorjs',
+                target: '#game',
+            });
+        };
+
+        if (window.VintagePlayerGamepad) {
+            startEmulatorJsGamepad();
+        } else {
+            window.addEventListener('vintage-gamepad:ready', startEmulatorJsGamepad, { once: true });
+        }
         
         // Callback when emulator is ready and game starts
         EJS_onGameStart = function() {
