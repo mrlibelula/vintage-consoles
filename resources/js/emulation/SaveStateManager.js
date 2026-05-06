@@ -1429,7 +1429,7 @@ export class SaveStateManager {
         }
 
         if (!this.config.authenticated) {
-            this.setStatus('Log in to save slots to server storage.')
+            this.setStatus('Log in to save slots to your cloud account.')
         }
 
         this.syncUploadDialog()
