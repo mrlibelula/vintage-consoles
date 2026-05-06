@@ -141,20 +141,26 @@
                                         </div>
                                     </div>
                                     <div class="flex flex-col gap-y-1 items-start justify-start">
-                                        {{-- <div class="flex items-center gap-x-1 justify-start">
+                                        <div class="flex items-center gap-x-1 justify-start">
                                             <div class=" leading-none text-cod-gray-900 dark:text-cod-gray-400">
-                                                State:
+                                                Save slots:
                                             </div>
-                                            @if ($game['save_state_support'])
-                                            <div class=" leading-none text-green-700 dark:text-green-500">
-                                                Yes
-                                            </div>
-                                            @else
-                                            <div class=" leading-none text-purple-700 dark:text-purple-500">
-                                                No
-                                            </div>
-                                            @endif
-                                        </div> --}}
+                                                @if ($game['save_state_support'])
+                                                    @auth
+                                                        <div class="leading-none text-green-900 dark:text-green-500">
+                                                            {{ $save_slots_used }}/{{ $save_slots_total }}
+                                                        </div>
+                                                    @else
+                                                        <div class="leading-none text-green-600 dark:text-green-500">
+                                                            0/{{ $save_slots_total }}
+                                                        </div>
+                                                    @endauth
+                                                @else
+                                                    <div class="leading-none text-purple-700 dark:text-purple-500">
+                                                        Not supported
+                                                    </div>
+                                                @endif
+                                        </div>
                                         @auth
                                             @if ($game['save_state_support'])
                                             <div class="text-[11px] sm:text-xs leading-snug text-cod-gray-500 dark:text-cod-gray-500 max-w-[16rem] font-sans">

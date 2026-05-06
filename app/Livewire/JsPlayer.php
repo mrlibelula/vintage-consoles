@@ -36,18 +36,21 @@ class JsPlayer extends Component
 
     private function buildSaveStateConfig(array $game_data, string $console_short_name): array
     {
+        $gameSlug = $game_data['slug'] ?? \Illuminate\Support\Str::slug($game_data['title']);
+
         return [
-            'authenticated' => auth()->check(),
-            'console' => $console_short_name,
-            'gameId' => (string) $game_data['id'],
-            'gameTitle' => $game_data['title'],
-            'emulator' => 'emulatorjs',
-            'slots' => 5,
+            'authenticated'     => auth()->check(),
+            'console'           => $console_short_name,
+            'gameSlug'          => $gameSlug,
+            'gameId'            => (string) $game_data['id'],
+            'gameTitle'         => $game_data['title'],
+            'emulator'          => 'emulatorjs',
+            'slots'             => 5,
             'saveStateSupported' => $game_data['save_state_support'] ?? true,
-            'csrfToken' => csrf_token(),
-            'endpoints' => [
-                'saveStates' => route('player-data.save-states.index'),
-                'controlSettings' => route('player-data.control-settings.show'),
+            'csrfToken'         => csrf_token(),
+            'endpoints'         => [
+                'saveStates'        => route('player-data.save-states.index'),
+                'controlSettings'   => route('player-data.control-settings.show'),
                 'saveStateTemplate' => route('player-data.save-states.download', ['saveState' => '__SAVE_STATE__']),
             ],
         ];

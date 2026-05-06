@@ -42,27 +42,28 @@ it('stores an uploaded save via My Saves flow', function () {
     EmulatorSaveState::create([
         'user_id' => $user->id,
         'console' => 'nes',
-        'game_id' => '1',
-        'emulator' => 'emulatorjs',
+        'game_slug' => 'super-mario-bros',
         'slot' => 1,
-        'disk_path' => '1/nes/1/emulatorjs/slot-1.state',
+        'disk_path' => "{$user->id}/nes/super-mario-bros/super-mario-bros-slot-1.state",
         'label' => 'Existing',
         'size_bytes' => 3,
         'checksum' => hash('sha256', 'old'),
     ]);
-    Storage::disk('savestates')->put('1/nes/1/emulatorjs/slot-1.state', 'old');
+    Storage::disk('savestates')->put("{$user->id}/nes/super-mario-bros/super-mario-bros-slot-1.state", 'old');
 
     $file = UploadedFile::fake()->createWithContent('slot-2.state', 'fresh-upload');
 
     Livewire::actingAs($user)
         ->test(MySaves::class)
-        ->call('openUploadModal', 'nes', '1', 'emulatorjs', 2, 'Test Game')
+        ->call('openUploadModal', 'nes', 'super-mario-bros', 2, 'Super Mario Bros.')
         ->set('uploadStateFile', $file)
         ->call('submitUpload')
         ->assertHasNoErrors();
 
     $slot2 = EmulatorSaveState::query()
         ->where('user_id', $user->id)
+        ->where('console', 'nes')
+        ->where('game_slug', 'super-mario-bros')
         ->where('slot', 2)
         ->first();
 
@@ -84,8 +85,7 @@ it('rejects my saves upload without a file', function () {
     EmulatorSaveState::create([
         'user_id' => $user->id,
         'console' => 'nes',
-        'game_id' => '1',
-        'emulator' => 'emulatorjs',
+        'game_slug' => 'super-mario-bros',
         'slot' => 1,
         'disk_path' => 'x.state',
         'size_bytes' => 1,
@@ -94,7 +94,7 @@ it('rejects my saves upload without a file', function () {
 
     Livewire::actingAs($user)
         ->test(MySaves::class)
-        ->call('openUploadModal', 'nes', '1', 'emulatorjs', 2, 'Test Game')
+        ->call('openUploadModal', 'nes', 'super-mario-bros', 2, 'Super Mario Bros.')
         ->call('submitUpload')
         ->assertHasErrors(['uploadStateFile']);
 });
@@ -109,27 +109,6 @@ it('populates game options when a console is selected in the global upload modal
 
     $component->assertHasNoErrors();
     expect($component->get('globalGameOptions'))->toHaveCount(2);
-    expect($component->get('globalEmulator'))->toBe('emulatorjs');
-});
-
-it('defaults emulator to jsdos for the pc console in global upload', function () {
-    $user = User::factory()->create();
-
-    Session::put('consoles', [
-        [
-            'short_name' => 'pc',
-            'long_name' => 'DOS / PC',
-            'games' => [['id' => 99, 'title' => 'Commander Keen', 'slug' => 'commander-keen']],
-        ],
-    ]);
-
-    $component = Livewire::actingAs($user)
-        ->test(MySaves::class)
-        ->call('openGlobalUploadModal')
-        ->set('globalConsole', 'pc');
-
-    expect($component->get('globalEmulator'))->toBe('jsdos');
-    expect($component->get('globalGameOptions'))->toHaveCount(1);
 });
 
 it('uploads a state file for a game not yet in my saves via global upload', function () {
@@ -141,7 +120,7 @@ it('uploads a state file for a game not yet in my saves via global upload', func
         ->test(MySaves::class)
         ->call('openGlobalUploadModal')
         ->set('globalConsole', 'snes')
-        ->set('globalGameId', '10')
+        ->set('globalGameSlug', 'donkey-kong-country')
         ->set('globalSlot', 3)
         ->set('globalLabel', 'World 5')
         ->set('globalStateFile', $file)
@@ -151,7 +130,7 @@ it('uploads a state file for a game not yet in my saves via global upload', func
     $save = EmulatorSaveState::query()
         ->where('user_id', $user->id)
         ->where('console', 'snes')
-        ->where('game_id', '10')
+        ->where('game_slug', 'donkey-kong-country')
         ->where('slot', 3)
         ->first();
 
@@ -168,7 +147,7 @@ it('rejects global upload when no file is provided', function () {
         ->test(MySaves::class)
         ->call('openGlobalUploadModal')
         ->set('globalConsole', 'nes')
-        ->set('globalGameId', '1')
+        ->set('globalGameSlug', 'super-mario-bros')
         ->set('globalSlot', 1)
         ->call('submitGlobalUpload')
         ->assertHasErrors(['globalStateFile']);
@@ -177,7 +156,7 @@ it('rejects global upload when no file is provided', function () {
 it('syncs orphaned savestate files from disk into the database', function () {
     $user = User::factory()->create();
 
-    Storage::disk('savestates')->put("{$user->id}/snes/10/emulatorjs/slot-1.state", 'orphaned-data');
+    Storage::disk('savestates')->put("{$user->id}/snes/donkey-kong-country/donkey-kong-country-slot-1.state", 'orphaned-data');
 
     expect(EmulatorSaveState::query()->where('user_id', $user->id)->count())->toBe(0);
 
@@ -189,8 +168,7 @@ it('syncs orphaned savestate files from disk into the database', function () {
     $save = EmulatorSaveState::query()
         ->where('user_id', $user->id)
         ->where('console', 'snes')
-        ->where('game_id', '10')
-        ->where('emulator', 'emulatorjs')
+        ->where('game_slug', 'donkey-kong-country')
         ->where('slot', 1)
         ->first();
 

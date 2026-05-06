@@ -13,8 +13,7 @@ class EmulatorSaveState extends Model
     protected $fillable = [
         'user_id',
         'console',
-        'game_id',
-        'emulator',
+        'game_slug',
         'slot',
         'label',
         'disk_path',

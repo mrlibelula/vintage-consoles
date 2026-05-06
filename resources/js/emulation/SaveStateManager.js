@@ -168,18 +168,27 @@ export class SaveStateManager {
         this.currentSlot = 1
         this.pendingUploadSlot = null
         this.keydownHandler = event => this.handleKeydown(event)
+        this.pointerDownHandler = event => this.handlePointerDown(event)
     }
 
     async init() {
         this.createPanel()
         window.addEventListener('keydown', this.keydownHandler)
+        document.addEventListener('pointerdown', this.pointerDownHandler, true)
         await Promise.all([
             this.refreshSaves(),
             this.restoreControlSettings(),
         ])
     }
 
-    contextParams() {
+    saveStateParams() {
+        return {
+            console: this.config.console,
+            game_slug: this.config.gameSlug,
+        }
+    }
+
+    controlSettingsParams() {
         return {
             console: this.config.console,
             game_id: this.config.gameId,
@@ -217,7 +226,7 @@ export class SaveStateManager {
             return
         }
 
-        const url = `${this.config.endpoints.saveStates}?${toQuery(this.contextParams())}`
+        const url = `${this.config.endpoints.saveStates}?${toQuery(this.saveStateParams())}`
         const response = await this.request(url)
         const payload = await response.json()
         this.saves = payload.data || []
@@ -244,7 +253,7 @@ export class SaveStateManager {
             const bytes = toBytes(await this.adapter.captureState())
             const formData = new FormData()
 
-            Object.entries(this.contextParams()).forEach(([key, value]) => formData.append(key, value))
+            Object.entries(this.saveStateParams()).forEach(([key, value]) => formData.append(key, value))
             formData.append('slot', slot)
             formData.append('state', new Blob([bytes], { type: 'application/octet-stream' }), `slot-${slot}.state`)
 
@@ -301,7 +310,7 @@ export class SaveStateManager {
             this.setStatus(`Uploading slot ${slot}...`)
             const formData = new FormData()
 
-            Object.entries(this.contextParams()).forEach(([key, value]) => formData.append(key, value))
+            Object.entries(this.saveStateParams()).forEach(([key, value]) => formData.append(key, value))
             formData.append('slot', slot)
 
             const name = /\.state$/i.test(file.name) ? file.name : `${file.name.replace(/[/\\\\]/g, '_')}.state`
@@ -540,7 +549,7 @@ export class SaveStateManager {
 
         try {
             const params = {
-                ...this.contextParams(),
+                ...this.controlSettingsParams(),
                 profile: 'default',
             }
             const response = await this.request(`${this.config.endpoints.controlSettings}?${toQuery(params)}`)
@@ -577,7 +586,7 @@ export class SaveStateManager {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    ...this.contextParams(),
+                    ...this.controlSettingsParams(),
                     profile: 'default',
                     settings: this.captureControlSettings(),
                 }),
@@ -603,20 +612,22 @@ export class SaveStateManager {
         panel.innerHTML = `
             <button type="button" class="vintage-save-state-toggle" aria-expanded="false" aria-controls="vintage-save-state-body" aria-label="Saves" title="Saves">
                 <span class="vintage-save-toggle-when-closed">${ICONS.panelToggle}</span>
-                <span class="vintage-save-toggle-when-open">${ICONS.close}<span class="vintage-save-toggle-close-label">Close</span></span>
+                <span class="vintage-save-toggle-when-open">${ICONS.close}</span>
             </button>
+            <div class="vintage-save-state-backdrop" hidden></div>
             <div id="vintage-save-state-body" class="vintage-save-state-body" hidden>
                 <div class="vintage-save-state-heading">
                     <div class="vintage-save-state-title">
                         <i class="fa fa-cloud-upload vintage-save-state-title-fa" aria-hidden="true"></i>
                         <span>Cloud Save Slots</span>
                     </div>
-                    ${this.config.authenticated ? `
-                        <div class="vintage-save-state-heading-actions">
+                    <div class="vintage-save-state-heading-actions">
+                        <button type="button" class="vintage-save-state-close" aria-label="Close save menu" title="Close">${ICONS.close}</button>
+                        ${this.config.authenticated ? `
                             <button type="button" class="vintage-upload-link" aria-label="Upload save file" title="Upload a .state file">${ICONS.upload}</button>
                             <button type="button" class="vintage-help-link">Hotkeys</button>
-                        </div>
-                    ` : ''}
+                        ` : ''}
+                    </div>
                 </div>
                 <div class="vintage-save-state-message"></div>
                 <div class="vintage-save-state-slots"></div>
@@ -674,6 +685,8 @@ export class SaveStateManager {
             await this.uploadFileToSlot(pendingSlot, picked)
         })
         panel.querySelector('.vintage-save-state-toggle').addEventListener('click', () => this.togglePanel())
+        panel.querySelector('.vintage-save-state-close')?.addEventListener('click', () => this.closePanel())
+        panel.querySelector('.vintage-save-state-backdrop')?.addEventListener('click', () => this.closePanel())
         panel.querySelector('.vintage-control-sync').addEventListener('click', () => this.saveControlSettings())
         panel.querySelector('.vintage-help-link')?.addEventListener('click', () => this.openHelpDialog())
         panel.querySelector('.vintage-upload-link')?.addEventListener('click', () => this.openUploadDialog())
@@ -792,6 +805,9 @@ export class SaveStateManager {
                 letter-spacing: 0.02em;
                 white-space: nowrap;
             }
+            #${PANEL_ID}.is-menu-open .vintage-save-state-toggle {
+                display: none;
+            }
             #${PANEL_ID} button svg {
                 fill: none;
                 height: 16px;
@@ -809,6 +825,25 @@ export class SaveStateManager {
                 margin-top: 8px;
                 max-width: 320px;
                 padding: 12px;
+                position: relative;
+                z-index: 2;
+            }
+            #${PANEL_ID} .vintage-save-state-backdrop {
+                display: none;
+            }
+            @media (min-width: 640px) {
+                #${PANEL_ID} .vintage-save-state-backdrop {
+                    background: transparent;
+                    bottom: 0;
+                    left: 0;
+                    position: fixed;
+                    right: 0;
+                    top: 0;
+                    z-index: 1;
+                }
+                #${PANEL_ID}.is-menu-open .vintage-save-state-backdrop {
+                    display: block;
+                }
             }
             #${PANEL_ID} .vintage-save-state-heading {
                 align-items: center;
@@ -821,6 +856,18 @@ export class SaveStateManager {
                 align-items: center;
                 display: inline-flex;
                 gap: 10px;
+            }
+            #${PANEL_ID} .vintage-save-state-close {
+                background: transparent;
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                border-radius: 10px;
+                color: rgba(255, 255, 255, 0.88);
+                min-height: 30px;
+                min-width: 30px;
+                padding: 6px;
+            }
+            #${PANEL_ID} .vintage-save-state-close:hover {
+                background: rgba(255, 255, 255, 0.08);
             }
             #${PANEL_ID} .vintage-save-state-title {
                 align-items: center;
@@ -1145,6 +1192,10 @@ export class SaveStateManager {
                     right: 0;
                     width: 100%;
                 }
+                #${PANEL_ID}.is-menu-open {
+                    bottom: 0;
+                    top: 0;
+                }
                 #${PANEL_ID} .vintage-save-state-toggle {
                     align-self: flex-end;
                     border-radius: 10px;
@@ -1154,24 +1205,37 @@ export class SaveStateManager {
                     min-width: 44px;
                     -webkit-tap-highlight-color: transparent;
                 }
+                #${PANEL_ID}.is-menu-open .vintage-save-state-toggle {
+                    display: none;
+                }
+                #${PANEL_ID}.is-menu-open .vintage-save-state-backdrop {
+                    display: block;
+                    flex: 0 0 max(56px, calc(env(safe-area-inset-top, 0px) + 24px));
+                    height: max(56px, calc(env(safe-area-inset-top, 0px) + 24px));
+                    width: 100%;
+                }
                 #${PANEL_ID} .vintage-save-state-body {
                     align-self: stretch;
-                    border-radius: 14px;
+                    border-radius: 14px 14px 0 0;
                     box-sizing: border-box;
-                    margin-top: 10px;
-                    max-height: min(72vh, 540px);
+                    margin-top: 0;
+                    max-height: none;
                     max-width: none;
                     overflow-x: hidden;
                     overflow-y: auto;
                     -webkit-overflow-scrolling: touch;
                     padding-top: max(20px, calc(env(safe-area-inset-top, 0px) + 8px));
                     padding-right: max(16px, env(safe-area-inset-right, 0px));
-                    padding-bottom: 16px;
+                    padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
                     padding-left: max(16px, env(safe-area-inset-left, 0px));
                     scroll-padding-top: 12px;
                     scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
                     scrollbar-width: thin;
                     width: 100%;
+                }
+                #${PANEL_ID}.is-menu-open .vintage-save-state-body {
+                    flex: 1 1 auto;
+                    min-height: 0;
                 }
                 #${PANEL_ID} .vintage-save-state-heading {
                     flex-wrap: wrap;
@@ -1279,16 +1343,62 @@ export class SaveStateManager {
         document.head.appendChild(style)
     }
 
-    togglePanel() {
-        const body = this.panel.querySelector('.vintage-save-state-body')
-        const toggle = this.panel.querySelector('.vintage-save-state-toggle')
-        const nextHidden = !body.hidden
-        body.hidden = nextHidden
-        const isOpen = !nextHidden
+    isDesktopViewport() {
+        return typeof window !== 'undefined'
+            && typeof window.matchMedia === 'function'
+            && window.matchMedia('(min-width: 640px)').matches
+    }
+
+    setPanelOpen(isOpen) {
+        const body = this.panel?.querySelector('.vintage-save-state-body')
+        const toggle = this.panel?.querySelector('.vintage-save-state-toggle')
+        const backdrop = this.panel?.querySelector('.vintage-save-state-backdrop')
+
+        if (!body || !toggle) {
+            return
+        }
+
+        body.hidden = !isOpen
+        if (backdrop) {
+            backdrop.hidden = !isOpen
+        }
+
         toggle.setAttribute('aria-expanded', String(isOpen))
         this.panel.classList.toggle('is-menu-open', isOpen)
         toggle.setAttribute('aria-label', isOpen ? 'Close save menu' : 'Saves')
         toggle.setAttribute('title', isOpen ? 'Close menu' : 'Saves')
+    }
+
+    handlePointerDown(event) {
+        if (!this.panel || !this.isDesktopViewport()) {
+            return
+        }
+
+        const body = this.panel.querySelector('.vintage-save-state-body')
+        if (!body || body.hidden) {
+            return
+        }
+
+        const target = event.target
+        if (!(target instanceof Node)) {
+            return
+        }
+
+        if (this.panel.contains(target)) {
+            return
+        }
+
+        this.closePanel()
+    }
+
+    togglePanel() {
+        const body = this.panel?.querySelector('.vintage-save-state-body')
+        const nextIsOpen = Boolean(body?.hidden)
+        this.setPanelOpen(nextIsOpen)
+    }
+
+    closePanel() {
+        this.setPanelOpen(false)
     }
 
     renderSlots() {

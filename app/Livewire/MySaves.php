@@ -35,7 +35,7 @@ class MySaves extends Component
     // ── slot-specific upload (existing game row) ──────────────────────────────
     public bool $showUploadModal = false;
 
-    /** @var array{console:string,game_id:string,emulator:string,slot:int,game_title:string}|null */
+    /** @var array{console:string,game_slug:string,slot:int,game_title:string}|null */
     public ?array $uploadTarget = null;
 
     public $uploadStateFile = null;
@@ -50,12 +50,10 @@ class MySaves extends Component
 
     public string $globalConsole = '';
 
-    /** @var array<string,string> id => title */
+    /** @var array<string,string> slug => title */
     public array $globalGameOptions = [];
 
-    public string $globalGameId = '';
-
-    public string $globalEmulator = 'emulatorjs';
+    public string $globalGameSlug = '';
 
     public int $globalSlot = 1;
 
@@ -104,7 +102,9 @@ class MySaves extends Component
         abort_unless($id, 400);
 
         $save = EmulatorSaveState::find($id);
-        abort_unless($save && $save->user_id === auth()->id(), 403);
+        $requestUserId = (string) auth()->id();
+        $ownerUserId = (string) ($save?->user_id ?? '');
+        abort_unless($save && $ownerUserId === $requestUserId, 403);
 
         Storage::disk('savestates')->delete($save->disk_path);
         $save->delete();
@@ -114,13 +114,12 @@ class MySaves extends Component
         $this->loadSaves();
     }
 
-    public function openUploadModal(string $console, string $gameId, string $emulator, int $slot, string $gameTitle): void
+    public function openUploadModal(string $console, string $gameSlug, int $slot, string $gameTitle): void
     {
         $this->uploadTarget = [
-            'console' => $console,
-            'game_id' => $gameId,
-            'emulator' => $emulator,
-            'slot' => $slot,
+            'console'    => $console,
+            'game_slug'  => $gameSlug,
+            'slot'       => $slot,
             'game_title' => $gameTitle,
         ];
         $this->uploadLabel = '';
@@ -146,12 +145,11 @@ class MySaves extends Component
         abort_unless($slot >= 1 && $slot <= UpsertEmulatorSaveState::MAX_SLOTS, 400);
 
         $this->validate([
-            'uploadStateFile' => ['required', 'file', 'max:102400'],
-            'uploadLabel' => ['nullable', 'string', 'max:80'],
-            'uploadTarget.console' => ['required', 'string', 'max:64', 'regex:/^[A-Za-z0-9_-]+$/'],
-            'uploadTarget.game_id' => ['required', 'string', 'max:128'],
-            'uploadTarget.emulator' => ['required', 'string', Rule::in(['emulatorjs', 'jsdos'])],
-            'uploadTarget.slot' => ['required', 'integer', 'min:1', 'max:'.UpsertEmulatorSaveState::MAX_SLOTS],
+            'uploadStateFile'           => ['required', 'file', 'max:102400'],
+            'uploadLabel'               => ['nullable', 'string', 'max:80'],
+            'uploadTarget.console'      => ['required', 'string', 'max:64', 'regex:/^[A-Za-z0-9_-]+$/'],
+            'uploadTarget.game_slug'    => ['required', 'string', 'max:128', 'regex:/^[A-Za-z0-9_-]+$/'],
+            'uploadTarget.slot'         => ['required', 'integer', 'min:1', 'max:'.UpsertEmulatorSaveState::MAX_SLOTS],
         ]);
 
         $label = trim($this->uploadLabel);
@@ -166,8 +164,7 @@ class MySaves extends Component
         app(UpsertEmulatorSaveState::class)->execute(
             auth()->user(),
             $this->uploadTarget['console'],
-            $this->uploadTarget['game_id'],
-            $this->uploadTarget['emulator'],
+            $this->uploadTarget['game_slug'],
             $slot,
             $label !== '' ? $label : null,
             $contents,
@@ -182,9 +179,8 @@ class MySaves extends Component
     public function openGlobalUploadModal(): void
     {
         $this->globalConsole = '';
-        $this->globalGameId = '';
+        $this->globalGameSlug = '';
         $this->globalGameOptions = [];
-        $this->globalEmulator = 'emulatorjs';
         $this->globalSlot = 1;
         $this->globalLabel = '';
         $this->globalStateFile = null;
@@ -196,7 +192,7 @@ class MySaves extends Component
     {
         $this->showGlobalUploadModal = false;
         $this->globalConsole = '';
-        $this->globalGameId = '';
+        $this->globalGameSlug = '';
         $this->globalGameOptions = [];
         $this->globalStateFile = null;
         $this->resetErrorBag();
@@ -204,12 +200,10 @@ class MySaves extends Component
 
     public function updatedGlobalConsole(): void
     {
-        $this->globalGameId = '';
+        $this->globalGameSlug = '';
         $this->globalGameOptions = [];
         $this->globalStateFile = null;
         $this->resetErrorBag();
-
-        $this->globalEmulator = strtolower($this->globalConsole) === 'pc' ? 'jsdos' : 'emulatorjs';
 
         if (! $this->globalConsole) {
             return;
@@ -224,9 +218,9 @@ class MySaves extends Component
                 continue;
             }
             foreach ($console['games'] ?? [] as $game) {
-                $id = (string) ($game['id'] ?? '');
-                if ($id !== '') {
-                    $options[$id] = $game['title'] ?? "Game #{$id}";
+                $slug = (string) ($game['slug'] ?? \Illuminate\Support\Str::slug($game['title'] ?? ''));
+                if ($slug !== '') {
+                    $options[$slug] = $game['title'] ?? $slug;
                 }
             }
             break;
@@ -239,11 +233,10 @@ class MySaves extends Component
     public function submitGlobalUpload(): void
     {
         $this->validate([
-            'globalConsole' => ['required', 'string', 'max:64', 'regex:/^[A-Za-z0-9_-]+$/'],
-            'globalGameId' => ['required', 'string', 'max:128'],
-            'globalEmulator' => ['required', 'string', Rule::in(['emulatorjs', 'jsdos'])],
-            'globalSlot' => ['required', 'integer', 'min:1', 'max:'.UpsertEmulatorSaveState::MAX_SLOTS],
-            'globalLabel' => ['nullable', 'string', 'max:80'],
+            'globalConsole'   => ['required', 'string', 'max:64', 'regex:/^[A-Za-z0-9_-]+$/'],
+            'globalGameSlug'  => ['required', 'string', 'max:128', 'regex:/^[A-Za-z0-9_-]+$/'],
+            'globalSlot'      => ['required', 'integer', 'min:1', 'max:'.UpsertEmulatorSaveState::MAX_SLOTS],
+            'globalLabel'     => ['nullable', 'string', 'max:80'],
             'globalStateFile' => ['required', 'file', 'max:102400'],
         ]);
 
@@ -259,8 +252,7 @@ class MySaves extends Component
         app(UpsertEmulatorSaveState::class)->execute(
             auth()->user(),
             $this->globalConsole,
-            $this->globalGameId,
-            $this->globalEmulator,
+            $this->globalGameSlug,
             $this->globalSlot,
             $label !== '' ? $label : null,
             $contents,
@@ -291,7 +283,7 @@ class MySaves extends Component
     {
         $saves = EmulatorSaveState::where('user_id', auth()->id())
             ->orderBy('console')
-            ->orderBy('game_id')
+            ->orderBy('game_slug')
             ->orderBy('slot')
             ->get();
 
@@ -300,48 +292,44 @@ class MySaves extends Component
         $grouped = [];
 
         foreach ($saves as $save) {
-            $console = strtolower($save->console);
-            $gameId = (string) $save->game_id;
-            $emulator = $save->emulator;
+            $console   = strtolower($save->console);
+            $gameSlug  = (string) $save->game_slug;
 
             if (! isset($grouped[$console])) {
                 $consoleMeta = $gameMap['consoles'][$console] ?? [];
                 $grouped[$console] = [
-                    'long_name' => $consoleMeta['long_name'] ?? strtoupper($console),
-                    'console_icon' => $consoleMeta['console_icon'] ?? null,
-                    'console_logo' => $consoleMeta['console_logo'] ?? null,
-                    'games' => [],
+                    'long_name'     => $consoleMeta['long_name'] ?? strtoupper($console),
+                    'console_icon'  => $consoleMeta['console_icon'] ?? null,
+                    'console_logo'  => $consoleMeta['console_logo'] ?? null,
+                    'games'         => [],
                 ];
             }
 
-            $gameKey = "{$gameId}_{$emulator}";
-
-            if (! isset($grouped[$console]['games'][$gameKey])) {
-                $gameMeta = $gameMap['games'][$console][$gameId] ?? null;
-                $grouped[$console]['games'][$gameKey] = [
-                    'game_id' => $gameId,
-                    'emulator' => $emulator,
-                    'title' => $gameMeta['title'] ?? "Game #{$gameId}",
-                    'slug' => $gameMeta['slug'] ?? null,
-                    'poster' => $gameMeta['poster'] ?? null,
-                    'box' => $gameMeta['box'] ?? null,
-                    'slots' => array_fill(1, 5, null),
+            if (! isset($grouped[$console]['games'][$gameSlug])) {
+                $gameMeta = $gameMap['games'][$console][$gameSlug] ?? null;
+                $grouped[$console]['games'][$gameSlug] = [
+                    'game_slug' => $gameSlug,
+                    'title'     => $gameMeta['title'] ?? $gameSlug,
+                    'slug'      => $gameMeta['slug'] ?? $gameSlug,
+                    'poster'    => $gameMeta['poster'] ?? null,
+                    'box'       => $gameMeta['box'] ?? null,
+                    'slots'     => array_fill(1, 5, null),
                 ];
             }
 
-            $grouped[$console]['games'][$gameKey]['slots'][$save->slot] = [
-                'id' => $save->id,
-                'slot' => $save->slot,
-                'label' => $save->label,
-                'size_bytes' => $save->size_bytes,
-                'updated_at' => $save->updated_at?->toISOString(),
+            $grouped[$console]['games'][$gameSlug]['slots'][$save->slot] = [
+                'id'           => $save->id,
+                'slot'         => $save->slot,
+                'label'        => $save->label,
+                'size_bytes'   => $save->size_bytes,
+                'updated_at'   => $save->updated_at?->toISOString(),
                 'download_url' => route('player-data.save-states.download', $save),
             ];
         }
 
         $this->grouped = $grouped;
         $this->totalSlots = $saves->count();
-        $this->totalGames = $saves->groupBy(fn ($s) => $s->console.'.'.$s->game_id)->count();
+        $this->totalGames = $saves->groupBy(fn ($s) => $s->console.'.'.$s->game_slug)->count();
         $this->totalConsoles = $saves->groupBy('console')->count();
     }
 
@@ -360,22 +348,22 @@ class MySaves extends Component
 
             $shortKey = strtolower((string) $short);
             $map['consoles'][$shortKey] = [
-                'long_name' => $console['long_name'] ?? strtoupper($short),
+                'long_name'    => $console['long_name'] ?? strtoupper($short),
                 'console_icon' => $console['console_icon'] ?? null,
                 'console_logo' => $console['console_logo'] ?? null,
             ];
 
             foreach ($console['games'] ?? [] as $game) {
-                $gameId = (string) ($game['id'] ?? '');
-                if ($gameId === '') {
+                $slug = (string) ($game['slug'] ?? \Illuminate\Support\Str::slug($game['title'] ?? ''));
+                if ($slug === '') {
                     continue;
                 }
 
-                $map['games'][$shortKey][$gameId] = [
-                    'title' => $game['title'] ?? null,
-                    'slug' => $game['slug'] ?? null,
+                $map['games'][$shortKey][$slug] = [
+                    'title'  => $game['title'] ?? null,
+                    'slug'   => $slug,
                     'poster' => $game['poster'] ?? null,
-                    'box' => $game['box'] ?? null,
+                    'box'    => $game['box'] ?? null,
                 ];
             }
         }

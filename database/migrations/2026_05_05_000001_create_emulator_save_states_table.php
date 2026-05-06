@@ -12,8 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('console', 64);
-            $table->string('game_id', 128);
-            $table->string('emulator', 32);
+            $table->string('game_slug', 128);
             $table->unsignedTinyInteger('slot');
             $table->string('label')->nullable();
             $table->string('disk_path');
@@ -21,8 +20,8 @@ return new class extends Migration
             $table->string('checksum', 64);
             $table->timestamps();
 
-            $table->unique(['user_id', 'console', 'game_id', 'emulator', 'slot'], 'emulator_save_states_unique_slot');
-            $table->index(['user_id', 'console', 'game_id']);
+            $table->unique(['user_id', 'console', 'game_slug', 'slot'], 'emulator_save_states_unique_slot');
+            $table->index(['user_id', 'console', 'game_slug']);
         });
     }
 

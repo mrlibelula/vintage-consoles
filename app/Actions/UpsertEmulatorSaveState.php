@@ -13,13 +13,12 @@ final class UpsertEmulatorSaveState
     public function execute(
         User $user,
         string $console,
-        string $gameId,
-        string $emulator,
+        string $gameSlug,
         int $slot,
         ?string $label,
         string $binaryContents,
     ): EmulatorSaveState {
-        $diskPath = $this->diskPath($user->id, $console, $gameId, $emulator, $slot);
+        $diskPath = $this->diskPath($user->id, $console, $gameSlug, $slot);
 
         Storage::disk('savestates')->put($diskPath, $binaryContents);
 
@@ -27,8 +26,7 @@ final class UpsertEmulatorSaveState
             [
                 'user_id' => $user->id,
                 'console' => $console,
-                'game_id' => $gameId,
-                'emulator' => $emulator,
+                'game_slug' => $gameSlug,
                 'slot' => $slot,
             ],
             [
@@ -42,10 +40,10 @@ final class UpsertEmulatorSaveState
         return $save->fresh();
     }
 
-    public function diskPath(int $userId, string $console, string $gameId, string $emulator, int $slot): string
+    public function diskPath(int $userId, string $console, string $gameSlug, int $slot): string
     {
-        $safeGameId = preg_replace('/[^A-Za-z0-9_-]/', '_', $gameId);
+        $safeSlug = preg_replace('/[^A-Za-z0-9_-]/', '_', $gameSlug);
 
-        return "{$userId}/{$console}/{$safeGameId}/{$emulator}/slot-{$slot}.state";
+        return "{$userId}/{$console}/{$safeSlug}/{$safeSlug}-slot-{$slot}.state";
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Actions\UpsertEmulatorSaveState;
+use App\Models\EmulatorSaveState;
 use App\Service\Game;
 use App\Service\Tool;
 use Livewire\Component;
@@ -17,6 +19,8 @@ class Play extends Component
     public array $game;
     public string $game_url;
     public string $player_route;
+    public int $save_slots_used = 0;
+    public int $save_slots_total = UpsertEmulatorSaveState::MAX_SLOTS;
     public string $input = '';
     public int $current_screenshot_key = -1;
 
@@ -66,12 +70,35 @@ class Play extends Component
         }
 
         $this->game = $game;
+        $this->hydrateSaveSlots($console_short_name);
         $this->loadGameUrl();
         
         $this->player_route = route('player', [
             Tool::encode(json_encode($this->game)),
             strtolower($this->console['short_name']),
         ]);
+    }
+
+    private function hydrateSaveSlots(string $console_short_name): void
+    {
+        if (!auth()->check()) {
+            $this->save_slots_used = 0;
+            return;
+        }
+
+        if (!($this->game['save_state_support'] ?? false)) {
+            $this->save_slots_used = 0;
+            return;
+        }
+
+        $console = strtolower($console_short_name);
+        $gameSlug = $this->game['slug'] ?? Str::slug($this->game['title'] ?? '');
+
+        $this->save_slots_used = EmulatorSaveState::query()
+            ->where('user_id', auth()->id())
+            ->where('console', $console)
+            ->where('game_slug', $gameSlug)
+            ->count();
     }
 
     public function updatedInput()

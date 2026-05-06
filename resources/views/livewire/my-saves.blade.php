@@ -253,7 +253,7 @@
                               {{-- Upload / replace --}}
                               <button
                                 type="button"
-                                wire:click="openUploadModal(@js($consoleShort), @js((string) $game['game_id']), @js($game['emulator']), {{ (int) $slotNum }}, @js($game['title']))"
+                                wire:click="openUploadModal(@js($consoleShort), @js($game['game_slug']), {{ (int) $slotNum }}, @js($game['title']))"
                                 class="w-9 h-9 flex items-center justify-center rounded-md border border-cod-gray-300/60 dark:border-cod-gray-700 text-cod-gray-600 dark:text-cod-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-400/40 smooth-300"
                                 title="Replace slot {{ $slotNum }} with a .state file from your computer"
                               >
@@ -278,7 +278,7 @@
 
                             <button
                               type="button"
-                              wire:click="openUploadModal(@js($consoleShort), @js((string) $game['game_id']), @js($game['emulator']), {{ (int) $slotNum }}, @js($game['title']))"
+                              wire:click="openUploadModal(@js($consoleShort), @js($game['game_slug']), {{ (int) $slotNum }}, @js($game['title']))"
                               class="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-600/90 hover:bg-emerald-600 text-white text-base sm:text-lg font-medium shadow-sm smooth-300"
                               title="Upload a .state file into slot {{ $slotNum }}"
                             >
@@ -484,16 +484,16 @@
                 </label>
                 <select
                   id="g-game"
-                  wire:model.live="globalGameId"
+                  wire:model.live="globalGameSlug"
                   class="w-full rounded-lg border border-cod-gray-300 dark:border-cod-gray-700 bg-white dark:bg-cod-gray-900 text-cod-gray-800 dark:text-cod-gray-100 px-3 py-2 text-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent smooth-300"
                   size="{{ min(count($globalGameOptions), 6) }}"
                 >
                   <option value="">— Select a game —</option>
-                  @foreach ($globalGameOptions as $id => $title)
-                    <option value="{{ $id }}">{{ $title }}</option>
+                  @foreach ($globalGameOptions as $slug => $title)
+                    <option value="{{ $slug }}">{{ $title }}</option>
                   @endforeach
                 </select>
-                @error('globalGameId')
+                @error('globalGameSlug')
                   <p class="mt-1 text-lg text-red-600 dark:text-red-400">{{ $message }}</p>
                 @enderror
               @else
@@ -504,7 +504,7 @@
         @endif
 
         {{-- Step 3: Slot + Emulator + Label + File (shown after game selected) --}}
-        @if ($globalGameId)
+        @if ($globalGameSlug)
           {{-- Slot picker --}}
           <div>
             <span class="block text-xl text-cod-gray-600 dark:text-cod-gray-500 mb-2">
@@ -596,7 +596,7 @@
         wire:click="submitGlobalUpload"
         wire:loading.attr="disabled"
         wire:target="submitGlobalUpload,globalStateFile"
-        :disabled="! $globalGameId || ! $globalStateFile"
+        :disabled="! $globalGameSlug || ! $globalStateFile"
       >
         <span wire:loading.remove wire:target="submitGlobalUpload">Upload to cloud</span>
         <span wire:loading wire:target="submitGlobalUpload">Uploading…</span>
