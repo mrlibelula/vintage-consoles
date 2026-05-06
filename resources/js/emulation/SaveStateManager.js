@@ -41,9 +41,39 @@ function canUseCacheStorage() {
         && typeof window.caches.open === 'function'
 }
 
+function cacheVersionForSave(save) {
+    if (save?.checksum) {
+        return `checksum:${String(save.checksum)}`
+    }
+
+    if (save?.updated_at) {
+        return `updated_at:${String(save.updated_at)}`
+    }
+
+    return ''
+}
+
 function cacheKeyForSave(save) {
-    const updated = save?.updated_at ? String(save.updated_at) : ''
-    return `${save.download_url}#updated_at=${encodeURIComponent(updated)}`
+    const version = cacheVersionForSave(save)
+    return `${save.download_url}#v=${encodeURIComponent(version)}`
+}
+
+function downloadUrlForSave(save) {
+    const version = cacheVersionForSave(save)
+    if (!save?.download_url) {
+        return ''
+    }
+
+    try {
+        const url = new URL(save.download_url, window.location.origin)
+        if (version) {
+            url.searchParams.set('v', version)
+        }
+        return url.toString()
+    } catch {
+        // If a non-URL slips through, just fall back.
+        return save.download_url
+    }
 }
 
 async function readSaveFromCache(save) {
@@ -81,7 +111,7 @@ async function purgeOldCachedSaveVersions(save) {
 
     const cache = await window.caches.open(SAVE_STATE_CACHE_NAME)
     const keys = await cache.keys()
-    const prefix = `${save.download_url}#updated_at=`
+    const prefix = `${save.download_url}#v=`
     const currentKey = cacheKeyForSave(save)
 
     await Promise.all(keys.map(async request => {
@@ -99,7 +129,7 @@ async function purgeAllCachedSaveVersions(save) {
 
     const cache = await window.caches.open(SAVE_STATE_CACHE_NAME)
     const keys = await cache.keys()
-    const prefix = `${save.download_url}#updated_at=`
+    const prefix = `${save.download_url}#v=`
 
     await Promise.all(keys.map(async request => {
         const url = request?.url ? String(request.url) : ''
@@ -235,6 +265,7 @@ export class SaveStateManager {
 
     async saveSlot(slot, { notify = false } = {}) {
         this.selectSlot(slot)
+        const existingSave = this.saves.find(item => item.slot === slot) || null
 
         if (!this.config.authenticated) {
             this.setStatus('Log in to save to your account.')
@@ -263,6 +294,8 @@ export class SaveStateManager {
             })
             await this.saveControlSettings({ silent: true })
             await this.refreshSaves()
+            const latestSave = this.saves.find(item => item.slot === slot) || null
+            await purgeAllCachedSaveVersions(existingSave || latestSave)
             this.setStatus(`Saved slot ${slot} to server.`)
             this.notify(`Saved slot ${slot}`, 'success', notify)
         } catch (error) {
@@ -277,6 +310,7 @@ export class SaveStateManager {
      */
     async uploadFileToSlot(slot, file, { notify = true } = {}) {
         this.selectSlot(slot)
+        const existingSave = this.saves.find(item => item.slot === slot) || null
 
         if (!this.config.authenticated) {
             this.setStatus('Log in to upload saves.')
@@ -322,6 +356,8 @@ export class SaveStateManager {
             })
             await this.saveControlSettings({ silent: true })
             await this.refreshSaves()
+            const latestSave = this.saves.find(item => item.slot === slot) || null
+            await purgeAllCachedSaveVersions(existingSave || latestSave)
             this.setStatus(`Uploaded slot ${slot} to server.`)
             this.notify(`Uploaded slot ${slot}`, 'success', notify)
         } catch (error) {
@@ -370,7 +406,7 @@ export class SaveStateManager {
             const usedCache = Boolean(bytes)
 
             if (!bytes) {
-                const response = await playerFetch(save.download_url, { credentials: 'same-origin' })
+                const response = await playerFetch(downloadUrlForSave(save), { credentials: 'same-origin' })
 
                 if (!response.ok) {
                     throw new Error(`Download failed with status ${response.status}`)

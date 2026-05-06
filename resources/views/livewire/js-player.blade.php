@@ -67,6 +67,13 @@
             max-height: 100%;
         }
 
+        /* Desktop-only: hide EmulatorJS "hamburger" toggle (virtual gamepad menu toggle). */
+        @media (min-width: 768px) and (pointer: fine) {
+            .ejs_virtualGamepad_open {
+                display: none !important;
+            }
+        }
+
         @keyframes emulatorjsSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
