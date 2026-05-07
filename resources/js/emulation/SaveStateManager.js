@@ -197,6 +197,8 @@ export class SaveStateManager {
         this.toastContainer = null
         this.currentSlot = 1
         this.pendingUploadSlot = null
+        this.stateDownloadIndicator = null
+        this.stateDownloadIndicatorHome = null
         this.keydownHandler = event => this.handleKeydown(event)
         this.pointerDownHandler = event => this.handlePointerDown(event)
         this.fullscreenChangeHandler = () => this.handleFullscreenChange()
@@ -212,6 +214,7 @@ export class SaveStateManager {
         document.addEventListener('fullscreenchange', this.fullscreenChangeHandler)
         document.addEventListener('webkitfullscreenchange', this.fullscreenChangeHandler)
         this.panelHome = this.panel?.parentNode || document.body
+        this.createStateDownloadIndicator()
         this.handleFullscreenChange()
         this.attachIframeKeyListener()
         await Promise.all([
@@ -415,6 +418,7 @@ export class SaveStateManager {
             const usedCache = Boolean(bytes)
 
             if (!bytes) {
+                this.setStateDownloadIndicatorVisible(true)
                 const response = await playerFetch(downloadUrlForSave(save), { credentials: 'same-origin' })
 
                 if (!response.ok) {
@@ -422,6 +426,7 @@ export class SaveStateManager {
                 }
 
                 bytes = new Uint8Array(await response.arrayBuffer())
+                this.setStateDownloadIndicatorVisible(false)
                 await writeSaveToCache(save, bytes)
             }
 
@@ -434,6 +439,7 @@ export class SaveStateManager {
             console.error(error)
             this.setStatus(`Could not load slot ${slot}.`)
             this.notify(`Could not load slot ${slot}`, 'error', notify)
+            this.setStateDownloadIndicatorVisible(false)
         }
     }
 
@@ -864,6 +870,39 @@ export class SaveStateManager {
                 position: fixed;
                 right: 16px;
                 z-index: 1000000;
+            }
+            #vintage-state-download-indicator {
+                align-items: center;
+                background: rgba(0, 0, 0, 0.58);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                border-radius: 999px;
+                box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+                color: #fff;
+                display: none;
+                height: 36px;
+                justify-content: center;
+                width: 36px;
+                pointer-events: none;
+                position: absolute;
+                right: 12px;
+                top: 12px;
+                z-index: 1000003;
+            }
+            #vintage-state-download-indicator.is-visible {
+                display: inline-flex;
+            }
+            #vintage-state-download-indicator .vintage-state-download-spinner {
+                width: 18px;
+                height: 18px;
+                border: 3px solid rgba(255, 255, 255, 0.2);
+                border-top: 3px solid #e60012;
+                border-radius: 999px;
+                animation: vintageStateDownloadSpin 900ms linear infinite;
+                flex: 0 0 auto;
+            }
+            @keyframes vintageStateDownloadSpin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
             }
             #${PANEL_ID} button {
                 align-items: center;
@@ -1582,6 +1621,42 @@ export class SaveStateManager {
         document.head.appendChild(style)
     }
 
+    createStateDownloadIndicator() {
+        if (document.getElementById('vintage-state-download-indicator')) {
+            this.stateDownloadIndicator = document.getElementById('vintage-state-download-indicator')
+            this.stateDownloadIndicatorHome = this.stateDownloadIndicator.parentNode || document.body
+            return
+        }
+
+        const indicator = document.createElement('div')
+        indicator.id = 'vintage-state-download-indicator'
+        indicator.setAttribute('aria-hidden', 'true')
+        indicator.innerHTML = `
+            <span class="vintage-state-download-spinner"></span>
+        `
+
+        const home = document.querySelector('#game') || document.body
+        // Ensure the top-right positioning is relative to the game surface.
+        if (home instanceof HTMLElement) {
+            const computed = window.getComputedStyle(home)
+            if (!computed.position || computed.position === 'static') {
+                home.style.position = 'relative'
+            }
+        }
+
+        home.appendChild(indicator)
+        this.stateDownloadIndicator = indicator
+        this.stateDownloadIndicatorHome = home
+    }
+
+    setStateDownloadIndicatorVisible(visible) {
+        if (!this.stateDownloadIndicator) {
+            this.createStateDownloadIndicator()
+        }
+
+        this.stateDownloadIndicator?.classList.toggle('is-visible', Boolean(visible))
+    }
+
     isDesktopViewport() {
         return typeof window !== 'undefined'
             && typeof window.matchMedia === 'function'
@@ -1719,10 +1794,19 @@ export class SaveStateManager {
 
         if (fullscreenEl) {
             fullscreenEl.appendChild(this.panel)
+            if (this.stateDownloadIndicator) {
+                fullscreenEl.appendChild(this.stateDownloadIndicator)
+            }
         } else if (this.panelHome) {
             this.panelHome.appendChild(this.panel)
+            if (this.stateDownloadIndicator && this.stateDownloadIndicatorHome) {
+                this.stateDownloadIndicatorHome.appendChild(this.stateDownloadIndicator)
+            }
         } else {
             document.body.appendChild(this.panel)
+            if (this.stateDownloadIndicator) {
+                document.body.appendChild(this.stateDownloadIndicator)
+            }
         }
     }
 
