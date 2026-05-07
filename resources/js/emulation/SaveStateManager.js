@@ -588,14 +588,16 @@ export class SaveStateManager {
             return
         }
 
-        if (event.ctrlKey && key === 's') {
+        if (event.key === 'F2') {
             event.preventDefault()
+            event.stopImmediatePropagation()
             this.saveSlot(this.currentSlot, { notify: true })
             return
         }
 
-        if (event.ctrlKey && key === 'l') {
+        if (event.key === 'F4') {
             event.preventDefault()
+            event.stopImmediatePropagation()
             this.loadSlot(this.currentSlot, { notify: true })
             return
         }
@@ -842,14 +844,14 @@ export class SaveStateManager {
                     <button type="button" class="vintage-save-help-close" aria-label="Close help">x</button>
                     <h2>Hotkeys</h2>
                     <dl>
-                        <div><dt>Ctrl+S</dt><dd>Save slot</dd></div>
-                        <div><dt>Ctrl+L</dt><dd>Load slot</dd></div>
+                        <div><dt>F2</dt><dd>Save slot</dd></div>
+                        <div><dt>F4</dt><dd>Load slot</dd></div>
                         <div><dt>Ctrl+Alt+1–5</dt><dd>Pick slot</dd></div>
                         <div><dt>Ctrl+Del</dt><dd>Clear slot</dd></div>
                         <div><dt>F</dt><dd>Fullscreen</dd></div>
                         <div><dt>P</dt><dd>Pause / play</dd></div>
                     </dl>
-                    <p class="vintage-save-help-foot">Clear asks confirm · <strong>Upload</strong> <code>.state</code> · cloud</p>
+                    <p class="vintage-save-help-foot">F2 save · F4 load · Clear asks confirm · <strong>Upload</strong> <code>.state</code> · cloud</p>
                 </div>
             </div>
             <div class="vintage-save-upload-dialog" role="dialog" aria-modal="true" aria-label="Upload a save state" hidden>

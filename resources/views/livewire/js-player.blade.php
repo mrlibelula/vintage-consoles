@@ -107,6 +107,38 @@
     
     @push('scripts')
     <script>
+        // Keep the console readable during production testing.
+        // We only suppress known-noisy, non-actionable EmulatorJS warnings.
+        (function () {
+            const suppressedPrefixes = [
+                'Translation not found for ',
+                'The resource ',
+            ];
+
+            const shouldSuppress = args => {
+                const first = args?.[0];
+                if (typeof first !== 'string') {
+                    return false;
+                }
+                return suppressedPrefixes.some(prefix => first.startsWith(prefix));
+            };
+
+            const wrap = (method) => {
+                const original = console[method]?.bind(console);
+                if (!original) {
+                    return;
+                }
+                console[method] = (...args) => {
+                    if (shouldSuppress(args)) {
+                        return;
+                    }
+                    return original(...args);
+                };
+            };
+
+            wrap('warn');
+        })();
+
         // Hide EmulatorJS loader function
         function hideEmulatorJSLoader() {
             const loader = document.getElementById('emulatorjs-loader');
@@ -125,10 +157,9 @@
         // EJS_AdUrl = "https://libe.dev";
         EJS_color = "#e60012";
         EJS_startOnLoaded = true;
-        EJS_pathtodata = "https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@4.0.7/data/";
+        EJS_pathtodata = "https://cdn.emulatorjs.org/4.2.3/data/";
         EJS_gameUrl = "{{ $game_url }}";
         EJS_gameID = "{{ $game_id }}";
-        EJS_oldCores = true;
         window.VintageSaveStateConfig = @json($save_state_config);
         let emulatorJsLoaderStarted = false;
 
@@ -139,7 +170,9 @@
 
             emulatorJsLoaderStarted = true;
             const script = document.createElement('script');
-            script.src = "https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@4.0.7/data/loader.js";
+            // Pin to an exact EmulatorJS release to avoid the browser mixing cached
+            // assets from different versions (a common cause of loadState crashes).
+            script.src = "https://cdn.emulatorjs.org/4.2.3/data/loader.js?v=4.2.3";
             document.body.appendChild(script);
         };
 
@@ -161,7 +194,9 @@
                     }
                 },
             });
-            window.VintageEmulatorSaveStates.init().finally(loadEmulatorJsScript);
+            // Boot the emulator immediately; don't couple startup to the save-state UI.
+            loadEmulatorJsScript();
+            window.VintageEmulatorSaveStates.init().catch(error => console.warn('Save states failed to init.', error));
         };
 
         const startEmulatorJsGamepad = () => {
