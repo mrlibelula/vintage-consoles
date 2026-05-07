@@ -198,7 +198,6 @@ export class SaveStateManager {
         this.currentSlot = 1
         this.pendingUploadSlot = null
         this.stateDownloadIndicator = null
-        this.stateDownloadIndicatorHome = null
         this.keydownHandler = event => this.handleKeydown(event)
         this.pointerDownHandler = event => this.handlePointerDown(event)
         this.fullscreenChangeHandler = () => this.handleFullscreenChange()
@@ -883,10 +882,10 @@ export class SaveStateManager {
                 justify-content: center;
                 width: 36px;
                 pointer-events: none;
-                position: absolute;
-                right: 12px;
-                top: 12px;
-                z-index: 1000003;
+                position: fixed;
+                right: max(12px, env(safe-area-inset-right, 0px));
+                top: max(12px, env(safe-area-inset-top, 0px));
+                z-index: 2147483646;
             }
             #vintage-state-download-indicator.is-visible {
                 display: inline-flex;
@@ -1622,10 +1621,13 @@ export class SaveStateManager {
     }
 
     createStateDownloadIndicator() {
-        if (document.getElementById('vintage-state-download-indicator')) {
-            this.stateDownloadIndicator = document.getElementById('vintage-state-download-indicator')
-            this.stateDownloadIndicatorHome = this.stateDownloadIndicator.parentNode || document.body
-            return
+        const existing = document.getElementById('vintage-state-download-indicator')
+        if (existing) {
+            if (existing.isConnected) {
+                this.stateDownloadIndicator = existing
+                return
+            }
+            existing.remove()
         }
 
         const indicator = document.createElement('div')
@@ -1635,21 +1637,17 @@ export class SaveStateManager {
             <span class="vintage-state-download-spinner"></span>
         `
 
-        const home = document.querySelector('#game') || document.body
-        // Ensure the top-right positioning is relative to the game surface.
-        if (home instanceof HTMLElement) {
-            const computed = window.getComputedStyle(home)
-            if (!computed.position || computed.position === 'static') {
-                home.style.position = 'relative'
-            }
-        }
-
-        home.appendChild(indicator)
+        // EmulatorJS reparents / rebuilds #game after init; a node under #game can be detached.
+        // Fixed to the player document viewport (same visual frame as the emulator when #game is full-viewport).
+        document.body.appendChild(indicator)
         this.stateDownloadIndicator = indicator
-        this.stateDownloadIndicatorHome = home
     }
 
     setStateDownloadIndicatorVisible(visible) {
+        if (this.stateDownloadIndicator && !this.stateDownloadIndicator.isConnected) {
+            this.stateDownloadIndicator = null
+        }
+
         if (!this.stateDownloadIndicator) {
             this.createStateDownloadIndicator()
         }
@@ -1794,20 +1792,12 @@ export class SaveStateManager {
 
         if (fullscreenEl) {
             fullscreenEl.appendChild(this.panel)
-            if (this.stateDownloadIndicator) {
-                fullscreenEl.appendChild(this.stateDownloadIndicator)
-            }
         } else if (this.panelHome) {
             this.panelHome.appendChild(this.panel)
-            if (this.stateDownloadIndicator && this.stateDownloadIndicatorHome) {
-                this.stateDownloadIndicatorHome.appendChild(this.stateDownloadIndicator)
-            }
         } else {
             document.body.appendChild(this.panel)
-            if (this.stateDownloadIndicator) {
-                document.body.appendChild(this.stateDownloadIndicator)
-            }
         }
+        // Save-state download ring uses position:fixed on document.body; no reparent on fullscreen.
     }
 
     attachIframeKeyListener() {
