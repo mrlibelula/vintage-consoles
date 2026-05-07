@@ -87,11 +87,10 @@
       @endif
 
       {{-- ───────────────────── Desktop layout: vertical jump list + content ───────────────────── --}}
-      <div class="lg:flex lg:items-start lg:gap-6">
+      <div id="my-saves-scroll-spy" class="lg:flex lg:items-start lg:gap-6">
         @if (count($grouped) >= 2)
-          <aside class="hidden lg:block lg:w-64 shrink-0">
-            <div class="sticky top-20">
-              <div class="rounded-xl border border-cod-gray-300/60 dark:border-cod-gray-800 bg-cod-gray-100/60 dark:bg-cod-gray-900/70 p-4">
+          <aside class="hidden lg:block lg:w-64 shrink-0 lg:sticky lg:top-20 lg:self-start">
+              <div class="rounded-xl border border-cod-gray-300/60 dark:border-cod-gray-800 bg-cod-gray-100/60 dark:bg-cod-gray-900/70 p-4 max-h-[calc(100vh-6rem)] overflow-y-auto">
                 <div class="text-base sm:text-xl text-cod-gray-500 dark:text-cod-gray-600 mb-3">
                   Jump to
                 </div>
@@ -129,11 +128,10 @@
                   @endif
                 </nav>
               </div>
-            </div>
           </aside>
         @endif
 
-        <div class="min-w-0 flex-1">
+        <div class="min-w-0 flex-1 pb-24 lg:pb-[35vh]">
           {{-- ─────────────────────────── Console Sections ─────────────────────────── --}}
           @foreach ($grouped as $consoleShort => $consoleData)
             <section id="console-{{ $consoleShort }}" class="mb-14 scroll-mt-20">
@@ -158,6 +156,7 @@
                 @foreach ($consoleData['games'] as $gameKey => $game)
                   <div
                     id="game-{{ $consoleShort }}-{{ $gameKey }}"
+                    data-my-saves-game
                     class="rounded-xl border border-cod-gray-300/70 dark:border-cod-gray-800 bg-cod-gray-100/60 dark:bg-cod-gray-900/80 overflow-hidden scroll-mt-20"
                   >
 
