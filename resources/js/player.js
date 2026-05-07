@@ -1,6 +1,6 @@
 import { GamepadManager } from './emulation/GamepadManager'
 import { GamepadDebugOverlay } from './emulation/GamepadDebugOverlay'
-import { SaveStateManager } from './emulation/SaveStateManager'
+import { SaveStateManager, tryRestoreEmulatorJsFullscreenAfterReload } from './emulation/SaveStateManager'
 import { EMULATOR_JS_KEYS, JS_DOS_KEYS, KeyboardInputAdapter } from './emulation/keyboard'
 
 let runningSession = null
@@ -56,6 +56,7 @@ window.VintagePlayerGamepad = {
 }
 
 window.VintageSaveStateManager = SaveStateManager
+window.vintageTryRestoreEmulatorJsFullscreenAfterReload = tryRestoreEmulatorJsFullscreenAfterReload
 
 window.addEventListener('vintage-gamepad:start', event => {
     startPlayerGamepad(event.detail || {})
@@ -78,6 +79,10 @@ window.dispatchEvent(new CustomEvent('vintage-save-state:ready', {
 }))
 
 function vintageFullscreenTarget() {
+    const stable = window.__vintageStableFullscreenRoot
+    if (stable instanceof HTMLElement) {
+        return stable
+    }
     return document.getElementById('game') || document.getElementById('dosbox')
 }
 

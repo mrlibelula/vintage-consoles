@@ -158,6 +158,9 @@
         console.log('[Vintage] crossOriginIsolated:', window.crossOriginIsolated);
         console.log('[Vintage] SharedArrayBuffer available:', typeof SharedArrayBuffer !== 'undefined');
 
+        // Fullscreen on the document root so loadState / DOM changes inside #game cannot end API fullscreen.
+        window.__vintageStableFullscreenRoot = document.documentElement;
+
         EJS_player = "#game";
         EJS_core = "{{ $short_name }}";
         EJS_gameName = "{{ $title }}";

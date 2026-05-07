@@ -3,6 +3,7 @@ const STORAGE_PREFIXES = ['emulatorjs', 'EJS', 'vintage.gamepad']
 const SAVE_STATE_CACHE_NAME = 'vintage-save-states-v1'
 const EMULATORJS_PENDING_LOAD_SLOT_KEY = 'vintage.emulatorjs.pendingLoadSlot'
 const EMULATORJS_LOAD_COUNT_KEY = 'vintage.emulatorjs.loadStateCount'
+const EMULATORJS_RESTORE_FULLSCREEN_KEY = 'vintage.emulatorjs.restoreFullscreen'
 const ICONS = {
     close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>',
     panelToggle:
@@ -196,6 +197,56 @@ function bumpEmulatorJsLoadCount() {
     window.sessionStorage.setItem(EMULATORJS_LOAD_COUNT_KEY, String(emulatorJsLoadCount() + 1))
 }
 
+/**
+ * After a hard reload (second cloud load in one visit), try to re-enter fullscreen.
+ * Browsers usually require a user gesture; we try on game start and once on pointerdown.
+ */
+export function tryRestoreEmulatorJsFullscreenAfterReload() {
+    if (typeof document === 'undefined' || !canUseSessionStorage()) {
+        return
+    }
+
+    if (window.sessionStorage.getItem(EMULATORJS_RESTORE_FULLSCREEN_KEY) !== '1') {
+        return
+    }
+
+    const target = window.__vintageStableFullscreenRoot || document.documentElement
+    if (!(target instanceof Element)) {
+        return
+    }
+
+    const req = target.requestFullscreen?.bind(target) || target.webkitRequestFullscreen?.bind(target)
+    if (!req) {
+        window.sessionStorage.removeItem(EMULATORJS_RESTORE_FULLSCREEN_KEY)
+        return
+    }
+
+    const tryOnce = () => req()
+        .then(() => {
+            window.sessionStorage.removeItem(EMULATORJS_RESTORE_FULLSCREEN_KEY)
+            return true
+        })
+        .catch(() => false)
+
+    void tryOnce().then(ok => {
+        if (ok) {
+            return
+        }
+        if (window.sessionStorage.getItem(EMULATORJS_RESTORE_FULLSCREEN_KEY) !== '1') {
+            return
+        }
+        const onPointerDown = () => {
+            document.removeEventListener('pointerdown', onPointerDown, true)
+            void tryOnce().then(stillOk => {
+                if (!stillOk) {
+                    window.sessionStorage.removeItem(EMULATORJS_RESTORE_FULLSCREEN_KEY)
+                }
+            })
+        }
+        document.addEventListener('pointerdown', onPointerDown, true)
+    })
+}
+
 function getLocalStorageSnapshot(config) {
     const keys = Object.keys(window.localStorage || {})
     const markers = [
@@ -285,8 +336,13 @@ export class SaveStateManager {
                 window.sessionStorage.removeItem(EMULATORJS_PENDING_LOAD_SLOT_KEY)
                 window.sessionStorage.setItem(EMULATORJS_LOAD_COUNT_KEY, '0')
                 window.setTimeout(() => {
-                    void this.loadSlot(pendingSlot, { notify: true, forceInPlace: true })
+                    window.sessionStorage.setItem(EMULATORJS_RESTORE_FULLSCREEN_KEY, '1')
+                    void this.loadSlot(pendingSlot, { notify: true, forceInPlace: true }).finally(() => {
+                        window.vintageTryRestoreEmulatorJsFullscreenAfterReload?.()
+                    })
                 }, 700)
+            } else {
+                window.sessionStorage.removeItem(EMULATORJS_RESTORE_FULLSCREEN_KEY)
             }
         }
     }
@@ -522,6 +578,7 @@ export class SaveStateManager {
             const count = emulatorJsLoadCount()
             if (count >= 1) {
                 window.sessionStorage.setItem(EMULATORJS_PENDING_LOAD_SLOT_KEY, String(slot))
+                window.sessionStorage.setItem(EMULATORJS_RESTORE_FULLSCREEN_KEY, '1')
                 this.setStatus(`Reloading player to load slot ${slot} (stable after an earlier load this visit)...`)
                 this.notify('Reloading the player so this load runs cleanly…', 'info', true)
                 window.setTimeout(() => window.location.reload(), 150)
