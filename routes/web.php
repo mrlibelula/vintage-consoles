@@ -87,8 +87,8 @@ Route::middleware(['auth'])->prefix('player-data')->name('player-data.')->group(
 Route::get('/{console_short_name?}', Dashboard::class)->name('home');
 Route::get('/dashboard/{console_short_name?}', Dashboard::class)->name('dashboard');
 Route::get('/emulator/{console_short_name}/{game_title_slug}', Play::class)->name('play');
-Route::get('/player/{enc_json_game}/{console_short_name}', JsPlayer::class)->name('player');
-Route::get('/dosplayer/{enc_json_game}/{console_short_name}', DosPlayer::class)->name('dosplayer');
+Route::get('/player/{enc_json_game}/{console_short_name}', JsPlayer::class)->middleware('cross-origin-isolation')->name('player');
+Route::get('/dosplayer/{enc_json_game}/{console_short_name}', DosPlayer::class)->middleware('cross-origin-isolation')->name('dosplayer');
 Route::get('/games/genres/{genre_name?}', Genres::class)->name('genres');
 Route::get('/games/publishers/{publisher_name?}', Publishers::class)->name('publishers');
 Route::get('/creator/about', About::class)->name('about');
@@ -109,10 +109,13 @@ Route::get('/games/serve/{console}/{filename}', function ($console, $filename) {
         $mimeType = 'application/octet-stream';
     }
     
-    // Return the file with appropriate headers
+    // Return the file with appropriate headers.
+    // Cross-Origin-Resource-Policy: cross-origin lets COEP (credentialless/require-corp)
+    // pages load this same-origin resource without issues.
     return response()->file($gamePath, [
-        'Content-Type' => $mimeType,
-        'Cache-Control' => 'public, max-age=31536000', // Cache for 1 year
+        'Content-Type'                 => $mimeType,
+        'Cache-Control'                => 'public, max-age=31536000',
+        'Cross-Origin-Resource-Policy' => 'cross-origin',
     ]);
 })->name('game.serve');
 

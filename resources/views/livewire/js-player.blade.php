@@ -153,6 +153,11 @@
             }
         }
 
+        // Verification: confirm cross-origin isolation before the emulator starts.
+        // SharedArrayBuffer is required for EmulatorJS threaded WASM cores.
+        console.log('[Vintage] crossOriginIsolated:', window.crossOriginIsolated);
+        console.log('[Vintage] SharedArrayBuffer available:', typeof SharedArrayBuffer !== 'undefined');
+
         EJS_player = "#game";
         EJS_core = "{{ $short_name }}";
         EJS_gameName = "{{ $title }}";
@@ -162,8 +167,26 @@
         EJS_pathtodata = "https://cdn.emulatorjs.org/4.2.3/data/";
         EJS_gameUrl = "{{ $game_url }}";
         EJS_gameID = "{{ $game_id }}";
+
+        // Fix 3: Log the resolved core so any dev/prod mismatch is immediately visible.
+        console.log('[Vintage] EJS_core:', EJS_core);
+
         window.VintageSaveStateConfig = @json($save_state_config);
         let emulatorJsLoaderStarted = false;
+
+        // Fix 5: IndexedDB reset helper — clear EmulatorJS internal save storage.
+        // Call window.vintageResetEmulatorStorage() in the console if a game gets
+        // stuck on a corrupted internal save state.
+        window.vintageResetEmulatorStorage = function () {
+            const dbs = ['EmulatorJS', '/data/saves'];
+            dbs.forEach(name => {
+                const req = indexedDB.deleteDatabase(name);
+                req.onsuccess = () => console.log('[Vintage] Deleted IndexedDB:', name);
+                req.onerror   = () => console.warn('[Vintage] Could not delete IndexedDB:', name);
+                req.onblocked = () => console.warn('[Vintage] IndexedDB delete blocked (close other tabs):', name);
+            });
+            console.log('[Vintage] IndexedDB reset requested. Reload the page after this completes.');
+        };
 
         const loadEmulatorJsScript = () => {
             if (emulatorJsLoaderStarted) {
@@ -190,9 +213,14 @@
                     return state instanceof Promise ? await state : state;
                 },
                 async restoreState(bytes) {
-                    const result = window.EJS_emulator?.gameManager?.loadState?.(bytes);
-                    if (result instanceof Promise) {
-                        await result;
+                    try {
+                        const result = window.EJS_emulator?.gameManager?.loadState?.(bytes);
+                        if (result instanceof Promise) {
+                            await result;
+                        }
+                    } catch (err) {
+                        console.error('[Vintage] loadState failed:', err);
+                        throw err;
                     }
                 },
             });

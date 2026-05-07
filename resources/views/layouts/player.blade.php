@@ -25,6 +25,31 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
 
         <script>
+            // Register the Cross-Origin Isolation service worker.
+            // This is a JavaScript-side fallback that enables SharedArrayBuffer
+            // when the server-side COOP/COEP headers are not yet active (e.g. nginx
+            // proxy hasn't been reconfigured, or a CDN strips the headers).
+            // On the FIRST visit it reloads the page once to activate the worker.
+            // On all subsequent visits the page is cross-origin isolated immediately.
+            (function () {
+                if (!window.isSecureContext) return;          // HTTP-only env; skip
+                if (window.crossOriginIsolated) return;       // Server headers already set
+                if (!('serviceWorker' in navigator)) return;
+
+                navigator.serviceWorker.register('/coi-serviceworker.js').then(function (reg) {
+                    if (!navigator.serviceWorker.controller) {
+                        // Worker just installed for the first time — reload to activate.
+                        reg.installing && reg.installing.addEventListener('statechange', function (e) {
+                            if (e.target.state === 'activated') window.location.reload();
+                        });
+                    }
+                }).catch(function (err) {
+                    console.warn('[COI-SW] Service worker registration failed:', err);
+                });
+            })();
+        </script>
+
+        <script>
             window.VintagePlayerFetch = (input, init = {}) => window.fetch(input, init);
         </script>
 
