@@ -68,16 +68,36 @@ class EmulatorSaveStateController extends Controller
 
         abort_unless(Storage::disk('savestates')->exists($saveState->disk_path), 404);
 
-        $stream = Storage::disk('savestates')->readStream($saveState->disk_path);
+        $disk     = Storage::disk('savestates');
+        $path     = $saveState->disk_path;
+        $size     = $disk->size($path);
+        $stream   = $disk->readStream($path);
         $filename = "{$saveState->game_slug}-slot-{$saveState->slot}.state";
 
+        // Content-Transfer-Encoding: binary and Cache-Control: no-transform prevent
+        // PHP zlib output compression, mbstring output handlers, and reverse-proxy
+        // gzip from corrupting the binary payload before arrayBuffer() on the client.
+        // Content-Length lets the browser (and any proxy) detect truncation eagerly.
         return response()->streamDownload(function () use ($stream) {
+            // Flush any output buffer started before this callback (e.g. from
+            // output_buffering or zlib.output_compression in php.ini) so that
+            // binary bytes are written directly to the SAPI output layer.
+            while (ob_get_level() > 0) {
+                ob_end_clean();
+            }
+
             fpassthru($stream);
 
             if (is_resource($stream)) {
                 fclose($stream);
             }
-        }, $filename, ['Content-Type' => 'application/octet-stream']);
+        }, $filename, [
+            'Content-Type'              => 'application/octet-stream',
+            'Content-Transfer-Encoding' => 'binary',
+            'Content-Length'            => $size,
+            'Cache-Control'             => 'no-transform, no-store, private',
+            'X-Content-Type-Options'    => 'nosniff',
+        ]);
     }
 
     public function destroy(Request $request, EmulatorSaveState $saveState): JsonResponse

@@ -155,7 +155,10 @@
                     return state instanceof Promise ? await state : state;
                 },
                 async restoreState(bytes) {
-                    window.EJS_emulator?.gameManager?.loadState?.(bytes);
+                    const result = window.EJS_emulator?.gameManager?.loadState?.(bytes);
+                    if (result instanceof Promise) {
+                        await result;
+                    }
                 },
             });
             window.VintageEmulatorSaveStates.init().finally(loadEmulatorJsScript);
