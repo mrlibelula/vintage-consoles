@@ -29,6 +29,16 @@ function toBytes(data) {
     return new Uint8Array(data || [])
 }
 
+async function sha256Hex(bytes) {
+    if (typeof window === 'undefined' || !window.crypto?.subtle?.digest) {
+        return null
+    }
+
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', bytes)
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+}
+
 function playerFetch(input, init = {}) {
     const fetcher = window.VintagePlayerFetch || window.fetch.bind(window)
 
@@ -295,16 +305,39 @@ export class SaveStateManager {
             this.setStateDownloadIndicatorVisible(true)
             this.setStatus(`Saving slot ${slot}...`)
             const bytes = toBytes(await this.adapter.captureState())
+            const localChecksum = await sha256Hex(bytes)
             const formData = new FormData()
 
             Object.entries(this.saveStateParams()).forEach(([key, value]) => formData.append(key, value))
             formData.append('slot', slot)
             formData.append('state', new Blob([bytes], { type: 'application/octet-stream' }), `slot-${slot}.state`)
 
-            await this.request(this.config.endpoints.saveStates, {
+            const storeResponse = await this.request(this.config.endpoints.saveStates, {
                 method: 'POST',
                 body: formData,
             })
+            let storedSave = null
+            try {
+                const payload = await storeResponse.json()
+                storedSave = payload?.data || null
+            } catch {
+                storedSave = null
+            }
+
+            if (storedSave) {
+                const sizeMatches = Number(storedSave.size_bytes) === Number(bytes.byteLength)
+                const checksumMatches = localChecksum
+                    ? String(storedSave.checksum || '').toLowerCase() === String(localChecksum).toLowerCase()
+                    : true
+
+                if (!sizeMatches || !checksumMatches) {
+                    await purgeAllCachedSaveVersions(existingSave || storedSave)
+                    this.setStatus('Save failed integrity check (upload corruption).')
+                    this.notify('Save corrupted in transit (integrity check failed).', 'error', true)
+                    return
+                }
+            }
+
             await this.saveControlSettings({ silent: true })
             await this.refreshSaves()
             const latestSave = this.saves.find(item => item.slot === slot) || null
@@ -422,7 +455,10 @@ export class SaveStateManager {
 
             if (!bytes) {
                 this.setStateDownloadIndicatorVisible(true)
-                const response = await playerFetch(downloadUrlForSave(save), { credentials: 'same-origin' })
+                const response = await playerFetch(downloadUrlForSave(save), {
+                    credentials: 'same-origin',
+                    cache: 'no-store',
+                })
 
                 if (!response.ok) {
                     throw new Error(`Download failed with status ${response.status}`)
@@ -430,6 +466,46 @@ export class SaveStateManager {
 
                 bytes = new Uint8Array(await response.arrayBuffer())
                 this.setStateDownloadIndicatorVisible(false)
+                await writeSaveToCache(save, bytes)
+            }
+
+            const expectedSize = Number(save.size_bytes || 0) || null
+            const expectedChecksum = save.checksum ? String(save.checksum).toLowerCase() : null
+
+            const sizeOk = expectedSize ? Number(bytes.byteLength) === expectedSize : true
+            const checksum = expectedChecksum ? await sha256Hex(bytes) : null
+            const checksumOk = expectedChecksum && checksum
+                ? String(checksum).toLowerCase() === expectedChecksum
+                : true
+
+            if (!sizeOk || !checksumOk) {
+                await purgeAllCachedSaveVersions(save)
+
+                // Retry once from network in case cache/proxy returned corrupted bytes.
+                this.setStateDownloadIndicatorVisible(true)
+                const retryResponse = await playerFetch(downloadUrlForSave(save), {
+                    credentials: 'same-origin',
+                    cache: 'no-store',
+                })
+                if (!retryResponse.ok) {
+                    throw new Error(`Download retry failed with status ${retryResponse.status}`)
+                }
+                const retryBytes = new Uint8Array(await retryResponse.arrayBuffer())
+                this.setStateDownloadIndicatorVisible(false)
+
+                const retrySizeOk = expectedSize ? Number(retryBytes.byteLength) === expectedSize : true
+                const retryChecksum = expectedChecksum ? await sha256Hex(retryBytes) : null
+                const retryChecksumOk = expectedChecksum && retryChecksum
+                    ? String(retryChecksum).toLowerCase() === expectedChecksum
+                    : true
+
+                if (!retrySizeOk || !retryChecksumOk) {
+                    this.setStatus('State download corrupted (integrity check failed).')
+                    this.notify('State download corrupted (integrity check failed).', 'error', true)
+                    return
+                }
+
+                bytes = retryBytes
                 await writeSaveToCache(save, bytes)
             }
 
