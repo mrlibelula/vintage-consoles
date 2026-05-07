@@ -1456,16 +1456,22 @@ export class SaveStateManager {
         const slots = Number(this.config.slots || 5)
         container.innerHTML = ''
 
+        const guest = !this.config.authenticated
+
         for (let slot = 1; slot <= slots; slot += 1) {
             const save = this.saves.find(item => item.slot === slot)
             const row = document.createElement('div')
             row.className = 'vintage-save-slot'
             row.classList.toggle('is-selected', slot === this.currentSlot)
+            const selectDisabled = guest ? ' disabled' : ''
+            const saveDisabled = guest ? ' disabled' : ''
+            const loadDisabled = guest || !save ? ' disabled' : ''
+            const deleteDisabled = guest || !save ? ' disabled' : ''
             row.innerHTML = `
-                <button type="button" class="vintage-save-slot-meta" data-action="select">Slot ${slot}${save ? ` - ${new Date(save.updated_at).toLocaleString()}` : ' - empty'}</button>
-                <button type="button" data-action="save" aria-label="Save slot ${slot}" title="Capture save to slot ${slot}">${ICONS.save}</button>
-                <button type="button" data-action="load" aria-label="Load slot ${slot}" title="Load slot ${slot}"${save ? '' : ' disabled'}>${ICONS.load}</button>
-                <button type="button" data-action="delete" aria-label="Clear slot ${slot}" title="Clear slot ${slot}"${save ? '' : ' disabled'}>${ICONS.clear}</button>
+                <button type="button" class="vintage-save-slot-meta" data-action="select"${selectDisabled}>Slot ${slot}${save ? ` - ${new Date(save.updated_at).toLocaleString()}` : ' - empty'}</button>
+                <button type="button" data-action="save" aria-label="Save slot ${slot}" title="Capture save to slot ${slot}"${saveDisabled}>${ICONS.save}</button>
+                <button type="button" data-action="load" aria-label="Load slot ${slot}" title="Load slot ${slot}"${loadDisabled}>${ICONS.load}</button>
+                <button type="button" data-action="delete" aria-label="Clear slot ${slot}" title="Clear slot ${slot}"${deleteDisabled}>${ICONS.clear}</button>
             `
             row.querySelector('[data-action="select"]').addEventListener('click', () => this.selectSlot(slot))
             row.querySelector('[data-action="save"]').addEventListener('click', () => this.saveSlot(slot))
@@ -1474,7 +1480,12 @@ export class SaveStateManager {
             container.appendChild(row)
         }
 
-        if (!this.config.authenticated) {
+        const syncBtn = this.panel.querySelector('.vintage-control-sync')
+        if (syncBtn) {
+            syncBtn.disabled = guest
+        }
+
+        if (guest) {
             this.setStatus('Log in to save slots to your cloud account.')
         }
 
