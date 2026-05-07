@@ -164,6 +164,9 @@
         // EJS_AdUrl = "https://libe.dev";
         EJS_color = "#e60012";
         EJS_startOnLoaded = true;
+        // Avoid WASM pthread-related instability when loading states repeatedly.
+        // Keep threads enabled for cores that require it (e.g. PSP).
+        EJS_threads = @json($short_name === 'psp');
         EJS_pathtodata = "https://cdn.emulatorjs.org/4.2.3/data/";
         EJS_gameUrl = "{{ $game_url }}";
         EJS_gameID = "{{ $game_id }}";
@@ -213,15 +216,45 @@
                     return state instanceof Promise ? await state : state;
                 },
                 async restoreState(bytes) {
-                    try {
-                        const result = window.EJS_emulator?.gameManager?.loadState?.(bytes);
-                        if (result instanceof Promise) {
-                            await result;
+                    // Serialize restore requests; EmulatorJS cores can crash if loadState is re-entered.
+                    window.__vintageLoadStateQueue = (window.__vintageLoadStateQueue || Promise.resolve()).then(async () => {
+                        const waitUntilReady = async () => {
+                            const start = Date.now();
+                            while (Date.now() - start < 15000) {
+                                const fn = window.EJS_emulator?.gameManager?.loadState;
+                                if (typeof fn === 'function') {
+                                    return;
+                                }
+                                await new Promise(resolve => setTimeout(resolve, 50));
+                            }
+                            throw new Error('Emulator loadState not ready.');
+                        };
+
+                        const normalizeBytes = (value) => {
+                            if (value instanceof Uint8Array) {
+                                // Copy into a fresh buffer so the core never sees a view that might be mutated elsewhere.
+                                return value.slice();
+                            }
+                            if (value instanceof ArrayBuffer) {
+                                return new Uint8Array(value).slice();
+                            }
+                            return new Uint8Array(value || []).slice();
+                        };
+
+                        try {
+                            await waitUntilReady();
+                            const safeBytes = normalizeBytes(bytes);
+                            const result = window.EJS_emulator?.gameManager?.loadState?.(safeBytes);
+                            if (result instanceof Promise) {
+                                await result;
+                            }
+                        } catch (err) {
+                            console.error('[Vintage] loadState failed:', err);
+                            throw err;
                         }
-                    } catch (err) {
-                        console.error('[Vintage] loadState failed:', err);
-                        throw err;
-                    }
+                    });
+
+                    return window.__vintageLoadStateQueue;
                 },
             });
             // Boot the emulator immediately; don't couple startup to the save-state UI.
