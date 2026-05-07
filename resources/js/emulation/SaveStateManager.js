@@ -207,7 +207,6 @@ export class SaveStateManager {
 
     async init() {
         this.createPanel()
-        window.addEventListener('keydown', this.keydownHandler)
         document.addEventListener('keydown', this.keydownHandler, true)
         document.addEventListener('pointerdown', this.pointerDownHandler, true)
         document.addEventListener('fullscreenchange', this.fullscreenChangeHandler)
@@ -448,7 +447,13 @@ export class SaveStateManager {
             return
         }
 
-        const confirmed = window.confirm(`Clear save slot ${slot}? This will permanently remove it from server storage.`)
+        const confirmed = await this.confirm({
+            title: `Clear slot ${slot}?`,
+            message: 'This will permanently remove the cloud save from server storage. This cannot be undone.',
+            confirmLabel: 'Clear slot',
+            cancelLabel: 'Cancel',
+            tone: 'danger',
+        })
 
         if (!confirmed) {
             return
@@ -481,6 +486,7 @@ export class SaveStateManager {
         if (event.key === 'Escape') {
             this.closeHelpDialog()
             this.closeUploadDialog()
+            this.closeConfirmDialog()
             return
         }
 
@@ -537,6 +543,73 @@ export class SaveStateManager {
 
     closeUploadDialog() {
         this.panel?.querySelector('.vintage-save-upload-dialog')?.setAttribute('hidden', '')
+    }
+
+    closeConfirmDialog() {
+        if (typeof this.activeConfirmCancel === 'function') {
+            this.activeConfirmCancel()
+        }
+    }
+
+    confirm({
+        title = 'Are you sure?',
+        message = '',
+        confirmLabel = 'Confirm',
+        cancelLabel = 'Cancel',
+        tone = 'danger',
+    } = {}) {
+        return new Promise(resolve => {
+            const dialog = this.panel?.querySelector('.vintage-save-confirm-dialog')
+
+            if (!dialog) {
+                resolve(window.confirm(`${title}\n\n${message}`))
+                return
+            }
+
+            // If another confirm is already open, cancel it first.
+            if (typeof this.activeConfirmCancel === 'function') {
+                this.activeConfirmCancel()
+            }
+
+            const titleEl = dialog.querySelector('.vintage-save-confirm-title')
+            const messageEl = dialog.querySelector('.vintage-save-confirm-message')
+            const confirmBtn = dialog.querySelector('.vintage-save-confirm-confirm')
+            const cancelBtn = dialog.querySelector('.vintage-save-confirm-cancel')
+            const closeBtn = dialog.querySelector('.vintage-save-confirm-close')
+
+            titleEl.textContent = title
+            messageEl.textContent = message
+            confirmBtn.textContent = confirmLabel
+            cancelBtn.textContent = cancelLabel
+            confirmBtn.dataset.tone = tone
+
+            const cleanup = result => {
+                dialog.setAttribute('hidden', '')
+                confirmBtn.removeEventListener('click', onConfirm)
+                cancelBtn.removeEventListener('click', onCancel)
+                closeBtn.removeEventListener('click', onCancel)
+                dialog.removeEventListener('click', onBackdrop)
+                this.activeConfirmCancel = null
+                resolve(result)
+            }
+
+            const onConfirm = () => cleanup(true)
+            const onCancel = () => cleanup(false)
+            const onBackdrop = event => {
+                if (event.target === dialog) {
+                    cleanup(false)
+                }
+            }
+
+            confirmBtn.addEventListener('click', onConfirm)
+            cancelBtn.addEventListener('click', onCancel)
+            closeBtn.addEventListener('click', onCancel)
+            dialog.addEventListener('click', onBackdrop)
+
+            this.activeConfirmCancel = onCancel
+            dialog.removeAttribute('hidden')
+            window.requestAnimationFrame(() => confirmBtn.focus())
+        })
     }
 
     syncUploadDialog() {
@@ -706,6 +779,17 @@ export class SaveStateManager {
                     </div>
                     <p class="vintage-save-upload-summary"></p>
                     <button type="button" class="vintage-save-upload-pick" aria-label="Choose .state file">${ICONS.upload}<span>Choose file</span></button>
+                </div>
+            </div>
+            <div class="vintage-save-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="vintage-save-confirm-title" aria-describedby="vintage-save-confirm-message" hidden>
+                <div class="vintage-save-confirm-card">
+                    <button type="button" class="vintage-save-confirm-close" aria-label="Close">x</button>
+                    <h2 id="vintage-save-confirm-title" class="vintage-save-confirm-title">Are you sure?</h2>
+                    <p id="vintage-save-confirm-message" class="vintage-save-confirm-message"></p>
+                    <div class="vintage-save-confirm-actions">
+                        <button type="button" class="vintage-save-confirm-cancel">Cancel</button>
+                        <button type="button" class="vintage-save-confirm-confirm" data-tone="danger">Confirm</button>
+                    </div>
                 </div>
             </div>
             <div class="vintage-save-toasts" aria-live="polite" aria-atomic="true"></div>
@@ -1179,6 +1263,95 @@ export class SaveStateManager {
             }
             #${PANEL_ID} .vintage-save-upload-pick:hover:not(:disabled) {
                 background: #b45309;
+            }
+            #${PANEL_ID} .vintage-save-confirm-dialog {
+                align-items: center;
+                background: rgba(0, 0, 0, 0.7);
+                bottom: 0;
+                display: flex;
+                justify-content: center;
+                left: 0;
+                position: fixed;
+                right: 0;
+                top: 0;
+                z-index: 1000002;
+            }
+            #${PANEL_ID} .vintage-save-confirm-dialog[hidden] {
+                display: none;
+            }
+            #${PANEL_ID} .vintage-save-confirm-card {
+                background: #101014;
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                border-radius: 14px;
+                box-shadow: 0 18px 54px rgba(0, 0, 0, 0.55);
+                color: #f8fafc;
+                max-width: 360px;
+                padding: 18px 18px 16px;
+                position: relative;
+                width: calc(100vw - 40px);
+            }
+            #${PANEL_ID} .vintage-save-confirm-card h2 {
+                font-size: 17px;
+                font-weight: 800;
+                line-height: 1.25;
+                margin: 0 28px 8px 0;
+                padding: 0;
+            }
+            #${PANEL_ID} .vintage-save-confirm-card p {
+                color: #cbd5e1;
+                font-size: 13px;
+                line-height: 1.45;
+                margin: 0 0 14px;
+            }
+            #${PANEL_ID} .vintage-save-confirm-close {
+                background: transparent;
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                border-radius: 8px;
+                color: rgba(255, 255, 255, 0.85);
+                min-height: 28px;
+                min-width: 28px;
+                padding: 4px;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+            }
+            #${PANEL_ID} .vintage-save-confirm-close:hover {
+                background: rgba(255, 255, 255, 0.08);
+            }
+            #${PANEL_ID} .vintage-save-confirm-actions {
+                display: flex;
+                gap: 8px;
+                justify-content: flex-end;
+            }
+            #${PANEL_ID} .vintage-save-confirm-cancel {
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                color: #e2e8f0;
+                font-weight: 600;
+                padding: 9px 14px;
+            }
+            #${PANEL_ID} .vintage-save-confirm-cancel:hover {
+                background: rgba(255, 255, 255, 0.12);
+            }
+            #${PANEL_ID} .vintage-save-confirm-confirm {
+                font-weight: 700;
+                padding: 9px 14px;
+            }
+            #${PANEL_ID} .vintage-save-confirm-confirm[data-tone="danger"] {
+                background: #e60012;
+            }
+            #${PANEL_ID} .vintage-save-confirm-confirm[data-tone="danger"]:hover {
+                background: #c90010;
+            }
+            #${PANEL_ID} .vintage-save-confirm-confirm[data-tone="primary"] {
+                background: #6366f1;
+            }
+            #${PANEL_ID} .vintage-save-confirm-confirm[data-tone="primary"]:hover {
+                background: #4f46e5;
+            }
+            #${PANEL_ID} .vintage-save-confirm-confirm:focus-visible {
+                outline: 2px solid rgba(255, 255, 255, 0.65);
+                outline-offset: 2px;
             }
             #${PANEL_ID} .vintage-save-state-file-input {
                 clip: rect(0 0 0 0);
