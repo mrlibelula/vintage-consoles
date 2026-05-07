@@ -149,6 +149,17 @@ function vintagePlayerIsFKey(event) {
     return !event.repeat && (event.code === 'KeyF' || event.key === 'f' || event.key === 'F')
 }
 
+function vintagePlayerIsPKey(event) {
+    return !event.repeat && (event.code === 'KeyP' || event.key === 'p' || event.key === 'P')
+}
+
+function toggleVintageEmulatorPlayPause() {
+    const ejs = window.EJS_emulator
+    if (ejs && typeof ejs.togglePlaying === 'function') {
+        ejs.togglePlaying()
+    }
+}
+
 function vintagePlayerFullscreenKeydown(event) {
     if (event.defaultPrevented) {
         return
@@ -174,4 +185,34 @@ function vintagePlayerFullscreenKeydown(event) {
     void toggleVintagePlayerFullscreen()
 }
 
+function vintagePlayerPlayPauseKeydown(event) {
+    if (event.defaultPrevented) {
+        return
+    }
+
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+        return
+    }
+
+    if (!vintagePlayerIsPKey(event)) {
+        return
+    }
+
+    if (isVintageFullscreenKeyTargetEditable(event.target)) {
+        return
+    }
+
+    if (vintageSaveOverlayOpen()) {
+        return
+    }
+
+    if (!window.EJS_emulator || typeof window.EJS_emulator.togglePlaying !== 'function') {
+        return
+    }
+
+    event.preventDefault()
+    toggleVintageEmulatorPlayPause()
+}
+
 window.addEventListener('keydown', vintagePlayerFullscreenKeydown, true)
+window.addEventListener('keydown', vintagePlayerPlayPauseKeydown, true)

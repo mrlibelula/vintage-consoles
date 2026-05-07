@@ -669,20 +669,19 @@ export class SaveStateManager {
                 <div class="vintage-save-state-slots"></div>
                 <button type="button" class="vintage-control-sync" aria-label="Sync controls" title="Sync controls">${ICONS.sync}<span>Sync Controls</span></button>
             </div>
-            <div class="vintage-save-help-dialog" role="dialog" aria-modal="true" aria-label="Save slot instructions" hidden>
+            <div class="vintage-save-help-dialog" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts" hidden>
                 <div class="vintage-save-help-card">
                     <button type="button" class="vintage-save-help-close" aria-label="Close help">x</button>
-                    <h2>Save Slot Shortcuts</h2>
-                    <p>Pick a current slot, then save or load without opening the panel.</p>
+                    <h2>Hotkeys</h2>
                     <dl>
-                        <div><dt>Ctrl+S</dt><dd>Save the current slot</dd></div>
-                        <div><dt>Ctrl+L</dt><dd>Load the current slot</dd></div>
-                        <div><dt>Ctrl+Alt+1-5</dt><dd>Select slot 1 through 5</dd></div>
-                        <div><dt>Ctrl+Delete</dt><dd>Clear the current slot after confirmation</dd></div>
-                        <div><dt>F</dt><dd>Toggle game fullscreen</dd></div>
+                        <div><dt>Ctrl+S</dt><dd>Save slot</dd></div>
+                        <div><dt>Ctrl+L</dt><dd>Load slot</dd></div>
+                        <div><dt>Ctrl+Alt+1–5</dt><dd>Pick slot</dd></div>
+                        <div><dt>Ctrl+Del</dt><dd>Clear slot</dd></div>
+                        <div><dt>F</dt><dd>Fullscreen</dd></div>
+                        <div><dt>P</dt><dd>Pause / play</dd></div>
                     </dl>
-                    <p>Use the <strong>Upload</strong> button in the header to send a <code>.state</code> file from your computer into any slot (you will be asked before replacing an existing cloud save).</p>
-                    <p>Slots are saved to your account and can be restored from another device.</p>
+                    <p class="vintage-save-help-foot">Clear asks confirm · <strong>Upload</strong> <code>.state</code> · cloud</p>
                 </div>
             </div>
             <div class="vintage-save-upload-dialog" role="dialog" aria-modal="true" aria-label="Upload a save state" hidden>
@@ -1028,8 +1027,7 @@ export class SaveStateManager {
                     align-items: flex-start;
                     justify-content: center;
                     overflow-y: auto;
-                    padding-bottom: 24px;
-                    padding-top: clamp(72px, 16vh, 140px);
+                    padding: clamp(56px, 12vh, 120px) 12px 16px;
                 }
             }
             #${PANEL_ID} .vintage-save-help-dialog[hidden] {
@@ -1053,53 +1051,60 @@ export class SaveStateManager {
             #${PANEL_ID} .vintage-save-help-card {
                 background: #101014;
                 border: 1px solid rgba(255, 255, 255, 0.18);
-                border-radius: 14px;
+                border-radius: 12px;
                 box-shadow: 0 18px 54px rgba(0, 0, 0, 0.55);
                 color: #f8fafc;
-                max-width: 360px;
-                padding: 18px;
+                max-width: min(320px, calc(100vw - 24px));
+                padding: 12px 36px 10px 12px;
                 position: relative;
-                width: calc(100vw - 40px);
+                width: 100%;
             }
             #${PANEL_ID} .vintage-save-help-card h2 {
-                font-size: 18px;
-                margin: 0 0 8px;
+                font-size: 15px;
+                font-weight: 800;
+                line-height: 1.2;
+                margin: 0 0 6px;
+                padding-right: 4px;
             }
-            #${PANEL_ID} .vintage-save-help-card p {
-                color: #cbd5e1;
-                font-size: 13px;
-                line-height: 1.4;
-                margin: 8px 0;
+            #${PANEL_ID} .vintage-save-help-card .vintage-save-help-foot {
+                color: #94a3b8;
+                font-size: 11px;
+                line-height: 1.35;
+                margin: 6px 0 0;
             }
             #${PANEL_ID} .vintage-save-help-card dl {
                 display: grid;
-                gap: 8px;
-                margin: 14px 0;
+                gap: 4px;
+                margin: 0 0 4px;
             }
             #${PANEL_ID} .vintage-save-help-card dl div {
                 align-items: center;
                 display: grid;
-                gap: 10px;
-                grid-template-columns: 110px 1fr;
+                gap: 6px;
+                grid-template-columns: minmax(92px, 34%) 1fr;
             }
             #${PANEL_ID} .vintage-save-help-card dt {
                 background: rgba(230, 0, 18, 0.18);
-                border-radius: 6px;
+                border-radius: 5px;
                 color: #fecdd3;
-                font-size: 12px;
+                font-size: 10px;
                 font-weight: 800;
-                padding: 6px 8px;
+                line-height: 1.2;
+                padding: 4px 6px;
+                text-align: center;
+                word-break: break-word;
             }
             #${PANEL_ID} .vintage-save-help-card dd {
                 color: #e2e8f0;
-                font-size: 13px;
+                font-size: 12px;
+                line-height: 1.25;
                 margin: 0;
             }
             #${PANEL_ID} .vintage-save-help-card code {
                 background: rgba(255, 255, 255, 0.06);
-                border-radius: 4px;
-                padding: 1px 6px;
-                font-size: 12px;
+                border-radius: 3px;
+                padding: 0 4px;
+                font-size: 10px;
             }
             #${PANEL_ID} .vintage-save-upload-card {
                 background: #101014;
@@ -1175,12 +1180,12 @@ export class SaveStateManager {
                 width: 1px;
             }
             #${PANEL_ID} .vintage-save-help-close {
-                min-height: 28px;
-                min-width: 28px;
-                padding: 4px;
+                min-height: 26px;
+                min-width: 26px;
+                padding: 2px;
                 position: absolute;
-                right: 10px;
-                top: 10px;
+                right: 8px;
+                top: 8px;
             }
             #${PANEL_ID} .vintage-save-upload-close {
                 min-height: 28px;
@@ -1197,11 +1202,13 @@ export class SaveStateManager {
                 pointer-events: none;
                 position: fixed;
                 right: 16px;
-                width: min(300px, calc(100vw - 32px));
+                justify-items: end;
+                width: max-content;
+                max-width: min(320px, calc(100vw - 32px));
                 z-index: 1000002;
             }
             #${PANEL_ID} .vintage-save-toast {
-                background: rgba(15, 23, 42, 0.94);
+                background: rgba(15, 23, 42, 0.98);
                 border: 1px solid rgba(255, 255, 255, 0.14);
                 border-left: 4px solid #38bdf8;
                 border-radius: 10px;
@@ -1213,6 +1220,8 @@ export class SaveStateManager {
                 padding: 10px 12px;
                 transform: translateY(8px) scale(0.98);
                 transition: opacity 180ms ease, transform 180ms ease;
+                width: fit-content;
+                max-width: 100%;
             }
             #${PANEL_ID} .vintage-save-toast.is-visible {
                 opacity: 1;
@@ -1380,9 +1389,10 @@ export class SaveStateManager {
                 }
                 #${PANEL_ID} .vintage-save-toasts {
                     bottom: max(120px, calc(env(safe-area-inset-bottom, 0px) + 108px));
-                    left: max(12px, env(safe-area-inset-left, 0px));
+                    left: auto;
                     right: max(12px, env(safe-area-inset-right, 0px));
-                    width: auto;
+                    width: max-content;
+                    max-width: calc(100vw - max(24px, env(safe-area-inset-right, 0px) + env(safe-area-inset-left, 0px)));
                 }
             }
         `
