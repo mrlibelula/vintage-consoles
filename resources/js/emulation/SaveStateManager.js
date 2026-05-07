@@ -292,6 +292,7 @@ export class SaveStateManager {
         }
 
         try {
+            this.setStateDownloadIndicatorVisible(true)
             this.setStatus(`Saving slot ${slot}...`)
             const bytes = toBytes(await this.adapter.captureState())
             const formData = new FormData()
@@ -314,6 +315,8 @@ export class SaveStateManager {
             console.error(error)
             this.setStatus(`Could not save slot ${slot}.`)
             this.notify(`Could not save slot ${slot}`, 'error', notify)
+        } finally {
+            this.setStateDownloadIndicatorVisible(false)
         }
     }
 
