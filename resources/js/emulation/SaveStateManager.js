@@ -1,6 +1,8 @@
 const PANEL_ID = 'vintage-save-state-panel'
 const STORAGE_PREFIXES = ['emulatorjs', 'EJS', 'vintage.gamepad']
 const SAVE_STATE_CACHE_NAME = 'vintage-save-states-v1'
+const EMULATORJS_PENDING_LOAD_SLOT_KEY = 'vintage.emulatorjs.pendingLoadSlot'
+const EMULATORJS_LOAD_COUNT_KEY = 'vintage.emulatorjs.loadStateCount'
 const ICONS = {
     close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>',
     panelToggle:
@@ -149,6 +151,51 @@ async function purgeAllCachedSaveVersions(save) {
     }))
 }
 
+async function purgeCachedSavesExcept(save) {
+    if (!canUseCacheStorage() || !save?.download_url) {
+        return
+    }
+
+    const cache = await window.caches.open(SAVE_STATE_CACHE_NAME)
+    const keys = await cache.keys()
+    const keepPrefix = `${save.download_url}#v=`
+
+    await Promise.all(keys.map(async request => {
+        const url = request?.url ? String(request.url) : ''
+        if (!url.startsWith(keepPrefix)) {
+            await cache.delete(request)
+        }
+    }))
+}
+
+function canUseSessionStorage() {
+    try {
+        if (typeof window === 'undefined' || !window.sessionStorage) {
+            return false
+        }
+        const probe = '__vintage_probe__'
+        window.sessionStorage.setItem(probe, '1')
+        window.sessionStorage.removeItem(probe)
+        return true
+    } catch {
+        return false
+    }
+}
+
+function emulatorJsLoadCount() {
+    if (!canUseSessionStorage()) {
+        return 0
+    }
+    return Number(window.sessionStorage.getItem(EMULATORJS_LOAD_COUNT_KEY) || 0) || 0
+}
+
+function bumpEmulatorJsLoadCount() {
+    if (!canUseSessionStorage()) {
+        return
+    }
+    window.sessionStorage.setItem(EMULATORJS_LOAD_COUNT_KEY, String(emulatorJsLoadCount() + 1))
+}
+
 function getLocalStorageSnapshot(config) {
     const keys = Object.keys(window.localStorage || {})
     const markers = [
@@ -231,6 +278,17 @@ export class SaveStateManager {
             this.refreshSaves(),
             this.restoreControlSettings(),
         ])
+
+        if (this.config?.emulator === 'emulatorjs' && canUseSessionStorage()) {
+            const pendingSlot = Number(window.sessionStorage.getItem(EMULATORJS_PENDING_LOAD_SLOT_KEY) || 0) || 0
+            if (pendingSlot > 0) {
+                window.sessionStorage.removeItem(EMULATORJS_PENDING_LOAD_SLOT_KEY)
+                window.sessionStorage.setItem(EMULATORJS_LOAD_COUNT_KEY, '0')
+                window.setTimeout(() => {
+                    void this.loadSlot(pendingSlot, { notify: true, forceInPlace: true })
+                }, 700)
+            }
+        }
     }
 
     saveStateParams() {
@@ -432,7 +490,7 @@ export class SaveStateManager {
         }
     }
 
-    async loadSlot(slot, { notify = false } = {}) {
+    async loadSlot(slot, { notify = false, forceInPlace = false } = {}) {
         this.selectSlot(slot)
         const save = this.saves.find(item => item.slot === slot)
 
@@ -446,6 +504,17 @@ export class SaveStateManager {
             this.setStatus('Load state is not ready yet.')
             this.notify('Load state is not ready yet.', 'warning', notify)
             return
+        }
+
+        if (!forceInPlace && this.config?.emulator === 'emulatorjs' && canUseSessionStorage()) {
+            const count = emulatorJsLoadCount()
+            if (count >= 1) {
+                window.sessionStorage.setItem(EMULATORJS_PENDING_LOAD_SLOT_KEY, String(slot))
+                this.setStatus(`Reloading player to load slot ${slot} safely...`)
+                this.notify('Reloading player to prevent a crash...', 'info', true)
+                window.setTimeout(() => window.location.reload(), 150)
+                return
+            }
         }
 
         try {
@@ -510,7 +579,11 @@ export class SaveStateManager {
             }
 
             await purgeOldCachedSaveVersions(save)
+            await purgeCachedSavesExcept(save)
             await this.adapter.restoreState(bytes, save)
+            if (this.config?.emulator === 'emulatorjs') {
+                bumpEmulatorJsLoadCount()
+            }
             await this.restoreControlSettings({ silent: true })
             this.setStatus(`Loaded slot ${slot}${usedCache ? ' (cached)' : ''}.`)
             this.notify(`Loaded slot ${slot}`, 'success', notify)
