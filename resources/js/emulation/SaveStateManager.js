@@ -199,12 +199,22 @@ export class SaveStateManager {
         this.pendingUploadSlot = null
         this.keydownHandler = event => this.handleKeydown(event)
         this.pointerDownHandler = event => this.handlePointerDown(event)
+        this.fullscreenChangeHandler = () => this.handleFullscreenChange()
+        this.panelHome = null
+        this.iframeKeyTarget = null
+        this.iframeKeyRetryTimer = null
     }
 
     async init() {
         this.createPanel()
         window.addEventListener('keydown', this.keydownHandler)
+        document.addEventListener('keydown', this.keydownHandler, true)
         document.addEventListener('pointerdown', this.pointerDownHandler, true)
+        document.addEventListener('fullscreenchange', this.fullscreenChangeHandler)
+        document.addEventListener('webkitfullscreenchange', this.fullscreenChangeHandler)
+        this.panelHome = this.panel?.parentNode || document.body
+        this.handleFullscreenChange()
+        this.attachIframeKeyListener()
         await Promise.all([
             this.refreshSaves(),
             this.restoreControlSettings(),
@@ -1524,5 +1534,63 @@ export class SaveStateManager {
             toast.classList.remove('is-visible')
             window.setTimeout(() => toast.remove(), 240)
         }, 2400)
+    }
+
+    handleFullscreenChange() {
+        if (!this.panel) {
+            return
+        }
+
+        const doc = document
+        const fullscreenEl = doc.fullscreenElement || doc.webkitFullscreenElement
+
+        if (fullscreenEl) {
+            fullscreenEl.appendChild(this.panel)
+        } else if (this.panelHome) {
+            this.panelHome.appendChild(this.panel)
+        } else {
+            document.body.appendChild(this.panel)
+        }
+    }
+
+    attachIframeKeyListener() {
+        if (this.iframeKeyTarget) {
+            return
+        }
+
+        const tryAttach = () => {
+            const frame = document.querySelector('#game iframe')
+            if (!frame) {
+                return false
+            }
+
+            try {
+                const win = frame.contentWindow
+                if (!win) {
+                    return false
+                }
+
+                win.addEventListener('keydown', this.keydownHandler, true)
+                this.iframeKeyTarget = win
+                return true
+            } catch {
+                // Likely cross-origin; cannot access.
+                return false
+            }
+        }
+
+        if (tryAttach()) {
+            return
+        }
+
+        // EmulatorJS may create the iframe later; retry briefly.
+        let attempts = 0
+        this.iframeKeyRetryTimer = window.setInterval(() => {
+            attempts += 1
+            if (tryAttach() || attempts >= 20) {
+                window.clearInterval(this.iframeKeyRetryTimer)
+                this.iframeKeyRetryTimer = null
+            }
+        }, 500)
     }
 }
