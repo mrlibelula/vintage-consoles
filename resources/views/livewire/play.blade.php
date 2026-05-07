@@ -78,8 +78,7 @@
                     onload="hideDosIframeLoader()"
                     @else
                     src="{{ $player_route }}"
-                    @endif
-                    allowfullscreen>
+                    @endif>
                 </iframe>
             </div>
             </div>

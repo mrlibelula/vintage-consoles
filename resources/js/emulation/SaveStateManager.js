@@ -2,8 +2,9 @@ const PANEL_ID = 'vintage-save-state-panel'
 const STORAGE_PREFIXES = ['emulatorjs', 'EJS', 'vintage.gamepad']
 const SAVE_STATE_CACHE_NAME = 'vintage-save-states-v1'
 const EMULATORJS_PENDING_LOAD_SLOT_KEY = 'vintage.emulatorjs.pendingLoadSlot'
-const EMULATORJS_LOAD_COUNT_KEY = 'vintage.emulatorjs.loadStateCount'
-const EMULATORJS_RESTORE_FULLSCREEN_KEY = 'vintage.emulatorjs.restoreFullscreen'
+/** Legacy keys — cleared on boot so old tabs do not keep reload/fullscreen flags. */
+const EMULATORJS_LEGACY_LOAD_COUNT_KEY = 'vintage.emulatorjs.loadStateCount'
+const EMULATORJS_LEGACY_RESTORE_FS_KEY = 'vintage.emulatorjs.restoreFullscreen'
 const ICONS = {
     close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>',
     panelToggle:
@@ -183,99 +184,6 @@ function canUseSessionStorage() {
     }
 }
 
-function emulatorJsLoadCount() {
-    if (!canUseSessionStorage()) {
-        return 0
-    }
-    return Number(window.sessionStorage.getItem(EMULATORJS_LOAD_COUNT_KEY) || 0) || 0
-}
-
-function bumpEmulatorJsLoadCount() {
-    if (!canUseSessionStorage()) {
-        return
-    }
-    window.sessionStorage.setItem(EMULATORJS_LOAD_COUNT_KEY, String(emulatorJsLoadCount() + 1))
-}
-
-/**
- * After a hard reload (second cloud load in one visit), try to re-enter fullscreen.
- * Browsers usually require a user gesture; we try on game start and once on pointerdown.
- */
-function vintageFullscreenRestoreTarget() {
-    try {
-        if (window.frameElement instanceof Element) {
-            return window.frameElement
-        }
-    } catch {
-        /* cross-origin embedder */
-    }
-    const stable = window.__vintageStableFullscreenRoot
-    if (stable instanceof Element) {
-        return stable
-    }
-    return document.documentElement
-}
-
-export function tryRestoreEmulatorJsFullscreenAfterReload() {
-    if (typeof document === 'undefined' || !canUseSessionStorage()) {
-        return
-    }
-
-    if (window.sessionStorage.getItem(EMULATORJS_RESTORE_FULLSCREEN_KEY) !== '1') {
-        return
-    }
-
-    try {
-        const fe = window.frameElement
-        if (fe instanceof Element && fe.ownerDocument) {
-            const pdoc = fe.ownerDocument
-            const pfs = pdoc.fullscreenElement || pdoc.webkitFullscreenElement
-            if (pfs === fe) {
-                window.sessionStorage.removeItem(EMULATORJS_RESTORE_FULLSCREEN_KEY)
-                return
-            }
-        }
-    } catch {
-        /* ignore */
-    }
-
-    const target = vintageFullscreenRestoreTarget()
-    if (!(target instanceof Element)) {
-        return
-    }
-
-    const req = target.requestFullscreen?.bind(target) || target.webkitRequestFullscreen?.bind(target)
-    if (!req) {
-        window.sessionStorage.removeItem(EMULATORJS_RESTORE_FULLSCREEN_KEY)
-        return
-    }
-
-    const tryOnce = () => req()
-        .then(() => {
-            window.sessionStorage.removeItem(EMULATORJS_RESTORE_FULLSCREEN_KEY)
-            return true
-        })
-        .catch(() => false)
-
-    void tryOnce().then(ok => {
-        if (ok) {
-            return
-        }
-        if (window.sessionStorage.getItem(EMULATORJS_RESTORE_FULLSCREEN_KEY) !== '1') {
-            return
-        }
-        const onPointerDown = () => {
-            document.removeEventListener('pointerdown', onPointerDown, true)
-            void tryOnce().then(stillOk => {
-                if (!stillOk) {
-                    window.sessionStorage.removeItem(EMULATORJS_RESTORE_FULLSCREEN_KEY)
-                }
-            })
-        }
-        document.addEventListener('pointerdown', onPointerDown, true)
-    })
-}
-
 function getLocalStorageSnapshot(config) {
     const keys = Object.keys(window.localStorage || {})
     const markers = [
@@ -363,15 +271,12 @@ export class SaveStateManager {
             const pendingSlot = Number(window.sessionStorage.getItem(EMULATORJS_PENDING_LOAD_SLOT_KEY) || 0) || 0
             if (pendingSlot > 0) {
                 window.sessionStorage.removeItem(EMULATORJS_PENDING_LOAD_SLOT_KEY)
-                window.sessionStorage.setItem(EMULATORJS_LOAD_COUNT_KEY, '0')
                 window.setTimeout(() => {
-                    window.sessionStorage.setItem(EMULATORJS_RESTORE_FULLSCREEN_KEY, '1')
-                    void this.loadSlot(pendingSlot, { notify: true, forceInPlace: true }).finally(() => {
-                        window.vintageTryRestoreEmulatorJsFullscreenAfterReload?.()
-                    })
+                    void this.loadSlot(pendingSlot, { notify: true, forceInPlace: true })
                 }, 700)
             } else {
-                window.sessionStorage.removeItem(EMULATORJS_RESTORE_FULLSCREEN_KEY)
+                window.sessionStorage.removeItem(EMULATORJS_LEGACY_RESTORE_FS_KEY)
+                window.sessionStorage.removeItem(EMULATORJS_LEGACY_LOAD_COUNT_KEY)
             }
         }
     }
@@ -603,18 +508,6 @@ export class SaveStateManager {
             return
         }
 
-        if (!forceInPlace && this.config?.emulator === 'emulatorjs' && canUseSessionStorage()) {
-            const count = emulatorJsLoadCount()
-            if (count >= 1) {
-                window.sessionStorage.setItem(EMULATORJS_PENDING_LOAD_SLOT_KEY, String(slot))
-                window.sessionStorage.setItem(EMULATORJS_RESTORE_FULLSCREEN_KEY, '1')
-                this.setStatus(`Reloading player to load slot ${slot} (stable after an earlier load this visit)...`)
-                this.notify('Reloading the player so this load runs cleanly…', 'info', true)
-                window.setTimeout(() => window.location.reload(), 150)
-                return
-            }
-        }
-
         try {
             this.setStatus(`Loading slot ${slot}...`)
             let bytes = await readSaveFromCache(save)
@@ -679,9 +572,6 @@ export class SaveStateManager {
             await purgeOldCachedSaveVersions(save)
             await purgeCachedSavesExcept(save)
             await this.adapter.restoreState(bytes, save)
-            if (this.config?.emulator === 'emulatorjs') {
-                bumpEmulatorJsLoadCount()
-            }
             await this.restoreControlSettings({ silent: true })
             this.setStatus(`Loaded slot ${slot}${usedCache ? ' (cached)' : ''}.`)
             this.notify(`Loaded slot ${slot}`, 'success', notify)
@@ -1008,7 +898,7 @@ export class SaveStateManager {
                 </div>
                 <div class="vintage-save-state-message"></div>
                 ${this.config.authenticated ? `
-                    <p class="vintage-save-state-hint">Tap a row to choose the slot for F2. <strong>Save</strong> uploads your <em>current</em> gameplay to that slot (safe). <strong>Load</strong> replaces the run with that checkpoint; loading again may reload the player for stability.</p>
+                    <p class="vintage-save-state-hint">Tap a row to choose the slot for F2. <strong>Save</strong> uploads your <em>current</em> gameplay to that slot (safe). <strong>Load</strong> replaces the run with that checkpoint.</p>
                 ` : ''}
                 <div class="vintage-save-state-slots"></div>
                 <button type="button" class="vintage-control-sync" aria-label="Sync controls" title="Sync controls">${ICONS.sync}<span>Sync Controls</span></button>
@@ -1017,7 +907,7 @@ export class SaveStateManager {
                 <div class="vintage-save-help-card">
                     <button type="button" class="vintage-save-help-close" aria-label="Close help">x</button>
                     <h2>Hotkeys</h2>
-                    <p class="vintage-save-help-tip">To copy your current progress to another slot, use <strong>Save</strong> on that slot’s row. Do <strong>not</strong> use Load—that replaces your session (and a second Load in one visit may reload the player to avoid crashes).</p>
+                    <p class="vintage-save-help-tip">To copy your current progress to another slot, use <strong>Save</strong> on that slot’s row. Do <strong>not</strong> use Load—that replaces your session.</p>
                     <dl>
                         <div><dt>F2</dt><dd>Save the <em>highlighted</em> slot (current gameplay only; does not load)</dd></div>
                         <div><dt>F4</dt><dd>Load the highlighted checkpoint into the emulator</dd></div>
@@ -2028,7 +1918,7 @@ export class SaveStateManager {
             row.innerHTML = `
                 <button type="button" class="vintage-save-slot-meta" data-action="select"${selectDisabled} aria-label="Slot ${slot}: choose for F2 and highlight (does not load cloud state)" title="Choose slot for F2 / highlighted row — does not load from the cloud">Slot ${slot}${save ? ` · ${new Date(save.updated_at).toLocaleString()}` : ' · empty'}</button>
                 <button type="button" data-action="save" aria-label="Save current gameplay to slot ${slot}" title="Save: upload your current in-emulator state to this slot (does not load this slot)"${saveDisabled}>${ICONS.save}</button>
-                <button type="button" data-action="load" aria-label="Load checkpoint from slot ${slot}" title="Load: replace the current run with this slot’s checkpoint (loading again in this visit may reload the player for stability)"${loadDisabled}>${ICONS.load}</button>
+                <button type="button" data-action="load" aria-label="Load checkpoint from slot ${slot}" title="Load: replace the current run with this slot’s checkpoint"${loadDisabled}>${ICONS.load}</button>
                 <button type="button" data-action="delete" aria-label="Clear slot ${slot}" title="Remove this slot’s cloud save"${deleteDisabled}>${ICONS.clear}</button>
             `
             row.querySelector('[data-action="select"]').addEventListener('click', () => this.selectSlot(slot))
