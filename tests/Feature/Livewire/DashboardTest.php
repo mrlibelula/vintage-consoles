@@ -25,7 +25,7 @@ function getMockCompleteConsoleData() {
                 'manufacturer' => 'Nintendo',
                 'emulator' => [
                     'name' => 'EmulatorJS',
-                    'version' => '4.0.7'
+                    'version' => '4.2.3'
                 ],
                 'specs' => [
                     'cpu' => '8-bit MOS 6502',
@@ -80,7 +80,7 @@ function getMockCompleteConsoleData() {
                 'manufacturer' => 'Nintendo',
                 'emulator' => [
                     'name' => 'EmulatorJS',
-                    'version' => '4.0.7'
+                    'version' => '4.2.3'
                 ],
                 'specs' => [
                     'cpu' => '16-bit Ricoh 5A22',
@@ -123,7 +123,7 @@ function getMockCompleteConsoleData() {
                 'manufacturer' => 'Various',
                 'emulator' => [
                     'name' => 'EmulatorJS',
-                    'version' => '4.0.7'
+                    'version' => '4.2.3'
                 ],
                 'specs' => [
                     'cpu' => 'Various processors',
@@ -166,7 +166,7 @@ function getMockCompleteConsoleData() {
                 'manufacturer' => 'Atari',
                 'emulator' => [
                     'name' => 'EmulatorJS',
-                    'version' => '4.0.7'
+                    'version' => '4.2.3'
                 ],
                 'specs' => [
                     'cpu' => 'MOS 6507',

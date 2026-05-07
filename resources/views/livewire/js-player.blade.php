@@ -137,6 +137,8 @@
             };
 
             wrap('warn');
+            wrap('log');
+            wrap('info');
         })();
 
         // Hide EmulatorJS loader function

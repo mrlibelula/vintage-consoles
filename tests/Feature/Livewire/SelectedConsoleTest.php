@@ -21,7 +21,7 @@ function getMockSelectedConsole()
         'manufacturer' => 'Nintendo',
         'emulator' => [
             'name' => 'EmulatorJS',
-            'version' => '4.0.7'
+            'version' => '4.2.3'
         ],
         'specs' => [
             'cpu' => '8-bit MOS 6502',
