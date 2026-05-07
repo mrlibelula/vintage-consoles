@@ -343,19 +343,28 @@ export class SaveStateManager {
         this.renderSlots()
     }
 
-    async saveSlot(slot, { notify = false } = {}) {
+    async saveSlot(slot, { notify = false, retainActiveSlot = false } = {}) {
+        const primaryBefore = this.currentSlot
+        const revertActiveSlotIfNeeded = () => {
+            if (retainActiveSlot && primaryBefore !== slot) {
+                this.selectSlot(primaryBefore, { notify: false })
+            }
+        }
+
         this.selectSlot(slot)
         const existingSave = this.saves.find(item => item.slot === slot) || null
 
         if (!this.config.authenticated) {
             this.setStatus('Log in to save to your account.')
             this.notify('Log in to save to your account.', 'warning', notify)
+            revertActiveSlotIfNeeded()
             return
         }
 
         if (!this.adapter.captureState) {
             this.setStatus('Save state is not ready yet.')
             this.notify('Save state is not ready yet.', 'warning', notify)
+            revertActiveSlotIfNeeded()
             return
         }
 
@@ -392,6 +401,7 @@ export class SaveStateManager {
                     await purgeAllCachedSaveVersions(existingSave || storedSave)
                     this.setStatus('Save failed integrity check (upload corruption).')
                     this.notify('Save corrupted in transit (integrity check failed).', 'error', true)
+                    revertActiveSlotIfNeeded()
                     return
                 }
             }
@@ -402,10 +412,12 @@ export class SaveStateManager {
             await purgeAllCachedSaveVersions(existingSave || latestSave)
             this.setStatus(`Saved slot ${slot} to server.`)
             this.notify(`Saved slot ${slot}`, 'success', notify)
+            revertActiveSlotIfNeeded()
         } catch (error) {
             console.error(error)
             this.setStatus(`Could not save slot ${slot}.`)
             this.notify(`Could not save slot ${slot}`, 'error', notify)
+            revertActiveSlotIfNeeded()
         } finally {
             this.setStateDownloadIndicatorVisible(false)
         }
@@ -510,8 +522,8 @@ export class SaveStateManager {
             const count = emulatorJsLoadCount()
             if (count >= 1) {
                 window.sessionStorage.setItem(EMULATORJS_PENDING_LOAD_SLOT_KEY, String(slot))
-                this.setStatus(`Reloading player to load slot ${slot} safely...`)
-                this.notify('Reloading player to prevent a crash...', 'info', true)
+                this.setStatus(`Reloading player to load slot ${slot} (stable after an earlier load this visit)...`)
+                this.notify('Reloading the player so this load runs cleanly…', 'info', true)
                 window.setTimeout(() => window.location.reload(), 150)
                 return
             }
@@ -909,6 +921,9 @@ export class SaveStateManager {
                     </div>
                 </div>
                 <div class="vintage-save-state-message"></div>
+                ${this.config.authenticated ? `
+                    <p class="vintage-save-state-hint">Tap a row to choose the slot for F2. <strong>Save</strong> uploads your <em>current</em> gameplay to that slot (safe). <strong>Load</strong> replaces the run with that checkpoint; loading again may reload the player for stability.</p>
+                ` : ''}
                 <div class="vintage-save-state-slots"></div>
                 <button type="button" class="vintage-control-sync" aria-label="Sync controls" title="Sync controls">${ICONS.sync}<span>Sync Controls</span></button>
             </div>
@@ -916,15 +931,16 @@ export class SaveStateManager {
                 <div class="vintage-save-help-card">
                     <button type="button" class="vintage-save-help-close" aria-label="Close help">x</button>
                     <h2>Hotkeys</h2>
+                    <p class="vintage-save-help-tip">To copy your current progress to another slot, use <strong>Save</strong> on that slot’s row. Do <strong>not</strong> use Load—that replaces your session (and a second Load in one visit may reload the player to avoid crashes).</p>
                     <dl>
-                        <div><dt>F2</dt><dd>Save slot</dd></div>
-                        <div><dt>F4</dt><dd>Load slot</dd></div>
-                        <div><dt>Ctrl+Alt+1–5</dt><dd>Pick slot</dd></div>
+                        <div><dt>F2</dt><dd>Save the <em>highlighted</em> slot (current gameplay only; does not load)</dd></div>
+                        <div><dt>F4</dt><dd>Load the highlighted checkpoint into the emulator</dd></div>
+                        <div><dt>Ctrl+Alt+1–5</dt><dd>Highlight a slot for F2/F4 (does not load)</dd></div>
                         <div><dt>Ctrl+Del</dt><dd>Clear slot</dd></div>
                         <div><dt>F</dt><dd>Fullscreen</dd></div>
                         <div><dt>P</dt><dd>Pause / play</dd></div>
                     </dl>
-                    <p class="vintage-save-help-foot">F2 save · F4 load · Clear asks confirm · <strong>Upload</strong> <code>.state</code> · cloud</p>
+                    <p class="vintage-save-help-foot">F2 / row Save = upload current run · F4 / Load = restore checkpoint · Clear asks confirm · <strong>Upload</strong> <code>.state</code></p>
                 </div>
             </div>
             <div class="vintage-save-upload-dialog" role="dialog" aria-modal="true" aria-label="Upload a save state" hidden>
@@ -1234,6 +1250,15 @@ export class SaveStateManager {
                 margin-bottom: 8px;
                 min-height: 16px;
             }
+            #${PANEL_ID} .vintage-save-state-hint {
+                color: #94a3b8;
+                font-size: 11px;
+                line-height: 1.4;
+                margin: 0 0 10px;
+            }
+            #${PANEL_ID} .vintage-save-state-hint strong {
+                color: #e2e8f0;
+            }
             #${PANEL_ID} .vintage-save-state-shortcuts {
                 color: #94a3b8;
                 font-size: 11px;
@@ -1352,6 +1377,12 @@ export class SaveStateManager {
                 line-height: 1.2;
                 margin: 0 0 6px;
                 padding-right: 4px;
+            }
+            #${PANEL_ID} .vintage-save-help-card .vintage-save-help-tip {
+                color: #cbd5e1;
+                font-size: 12px;
+                line-height: 1.35;
+                margin: 0 0 8px;
             }
             #${PANEL_ID} .vintage-save-help-card .vintage-save-help-foot {
                 color: #94a3b8;
@@ -1909,13 +1940,13 @@ export class SaveStateManager {
             const loadDisabled = guest || !save ? ' disabled' : ''
             const deleteDisabled = guest || !save ? ' disabled' : ''
             row.innerHTML = `
-                <button type="button" class="vintage-save-slot-meta" data-action="select"${selectDisabled}>Slot ${slot}${save ? ` - ${new Date(save.updated_at).toLocaleString()}` : ' - empty'}</button>
-                <button type="button" data-action="save" aria-label="Save slot ${slot}" title="Capture save to slot ${slot}"${saveDisabled}>${ICONS.save}</button>
-                <button type="button" data-action="load" aria-label="Load slot ${slot}" title="Load slot ${slot}"${loadDisabled}>${ICONS.load}</button>
-                <button type="button" data-action="delete" aria-label="Clear slot ${slot}" title="Clear slot ${slot}"${deleteDisabled}>${ICONS.clear}</button>
+                <button type="button" class="vintage-save-slot-meta" data-action="select"${selectDisabled} aria-label="Slot ${slot}: choose for F2 and highlight (does not load cloud state)" title="Choose slot for F2 / highlighted row — does not load from the cloud">Slot ${slot}${save ? ` · ${new Date(save.updated_at).toLocaleString()}` : ' · empty'}</button>
+                <button type="button" data-action="save" aria-label="Save current gameplay to slot ${slot}" title="Save: upload your current in-emulator state to this slot (does not load this slot)"${saveDisabled}>${ICONS.save}</button>
+                <button type="button" data-action="load" aria-label="Load checkpoint from slot ${slot}" title="Load: replace the current run with this slot’s checkpoint (loading again in this visit may reload the player for stability)"${loadDisabled}>${ICONS.load}</button>
+                <button type="button" data-action="delete" aria-label="Clear slot ${slot}" title="Remove this slot’s cloud save"${deleteDisabled}>${ICONS.clear}</button>
             `
             row.querySelector('[data-action="select"]').addEventListener('click', () => this.selectSlot(slot))
-            row.querySelector('[data-action="save"]').addEventListener('click', () => this.saveSlot(slot))
+            row.querySelector('[data-action="save"]').addEventListener('click', () => this.saveSlot(slot, { retainActiveSlot: true }))
             row.querySelector('[data-action="load"]').addEventListener('click', () => this.loadSlot(slot))
             row.querySelector('[data-action="delete"]').addEventListener('click', () => this.deleteSlot(slot))
             container.appendChild(row)

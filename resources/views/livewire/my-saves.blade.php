@@ -311,7 +311,7 @@
             No saves yet
           </p>
           <p class="text-lg sm:text-2xl text-cod-gray-500 dark:text-cod-gray-600 mt-1">
-            Play a game and use <span class="text-cod-gray-700 dark:text-cod-gray-400 font-medium">Cloud Save Slots</span> in the player to save—or upload a <span class="font-mono text-lg">.state</span> file there to seed your first cloud slot. This page lists games once you have at least one slot.
+            Play a game and use <span class="text-cod-gray-700 dark:text-cod-gray-400 font-medium">Cloud Save Slots</span> in the player to save—or upload a <span class="font-mono text-lg">.state</span> file there to seed your first cloud slot. To copy your current progress to another slot, use <strong>Save</strong> on that row, not <strong>Load</strong>. This page lists games once you have at least one slot.
           </p>
         </div>
         <a
