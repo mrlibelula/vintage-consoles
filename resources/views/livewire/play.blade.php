@@ -63,10 +63,12 @@
         @endif
         @endguest
         <!-- player & user data -->
-        <div class="flex flex-col gap-x-0 gap-y-1 xl:gap-x-2 xl:gap-y-0 xl:flex-row sticky items-start justify-between overflow-hidden">
-            <!-- player -->
-            <div id="game-container" class="w-full xl:w-[70%] bg-black h-full rounded-lg overflow-hidden relative">
+        <div class="flex flex-col gap-x-0 gap-y-1 xl:gap-x-2 xl:gap-y-0 xl:flex-row sticky items-start justify-between max-xl:overflow-visible xl:overflow-hidden">
+            <!-- player: viewport-width strip below xl (avoids clipped negative margins); tabs keep container padding -->
+            <div class="w-full shrink-0 max-xl:relative max-xl:left-1/2 max-xl:-translate-x-1/2 max-xl:w-screen max-xl:max-w-none xl:left-0 xl:translate-x-0 xl:w-[70%]">
+            <div id="game-container" class="w-full bg-black h-full max-xl:rounded-none rounded-lg overflow-hidden relative">
                 <iframe id="game-iframe" class="game-arena" frameborder="0" scrolling="no"
+                    allow="fullscreen"
                     @if (strtolower($console['short_name']) === 'pc')
                     {{-- src="https://dos.zone/player/?bundleUrl={{ $game['rom'] }}&anonymous=1" --}}
                     src="{{ route('dosplayer', [
@@ -79,6 +81,7 @@
                     @endif
                     allowfullscreen>
                 </iframe>
+            </div>
             </div>
 
             <!-- game panel -->
@@ -290,6 +293,79 @@
 
     </div>
 </x-container>
+
+@push('scripts')
+<script>
+(function () {
+    if (window.__vintagePlayPageFullscreenHotkey) {
+        return
+    }
+    window.__vintagePlayPageFullscreenHotkey = true
+
+    function vintagePlayPageEditableTarget(el) {
+        if (!el || !(el instanceof HTMLElement)) {
+            return false
+        }
+        if (el.closest('[contenteditable="true"]')) {
+            return true
+        }
+        const t = el.tagName
+        return t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT'
+    }
+
+    function vintagePlayPageIsFKey(event) {
+        return !event.repeat && (event.code === 'KeyF' || event.key === 'f' || event.key === 'F')
+    }
+
+    function vintagePlayPageToggleIframeFullscreen() {
+        const iframe = document.getElementById('game-iframe')
+        if (!iframe) {
+            return
+        }
+        const doc = document
+        const fs = doc.fullscreenElement || doc.webkitFullscreenElement
+        if (fs) {
+            const exit = doc.exitFullscreen || doc.webkitExitFullscreen
+            exit && exit.call(doc)
+            return
+        }
+        const req = iframe.requestFullscreen || iframe.webkitRequestFullscreen
+        req && req.call(iframe).catch(function () {})
+    }
+
+    window.addEventListener('message', function (event) {
+        if (event.origin !== window.location.origin) {
+            return
+        }
+        if (!event.data || event.data.type !== 'vintage-player-toggle-fullscreen') {
+            return
+        }
+        vintagePlayPageToggleIframeFullscreen()
+    })
+
+    window.addEventListener('keydown', function (event) {
+        if (event.defaultPrevented) {
+            return
+        }
+        if (event.ctrlKey || event.metaKey || event.altKey) {
+            return
+        }
+        if (!vintagePlayPageIsFKey(event)) {
+            return
+        }
+        if (vintagePlayPageEditableTarget(event.target)) {
+            return
+        }
+        const iframe = document.getElementById('game-iframe')
+        if (!iframe) {
+            return
+        }
+        event.preventDefault()
+        vintagePlayPageToggleIframeFullscreen()
+    }, true)
+})()
+</script>
+@endpush
 
 <!-- DOS Iframe Loader JavaScript -->
 @if (strtolower($console['short_name']) === 'pc')

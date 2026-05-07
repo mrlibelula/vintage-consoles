@@ -679,6 +679,7 @@ export class SaveStateManager {
                         <div><dt>Ctrl+L</dt><dd>Load the current slot</dd></div>
                         <div><dt>Ctrl+Alt+1-5</dt><dd>Select slot 1 through 5</dd></div>
                         <div><dt>Ctrl+Delete</dt><dd>Clear the current slot after confirmation</dd></div>
+                        <div><dt>F</dt><dd>Toggle game fullscreen</dd></div>
                     </dl>
                     <p>Use the <strong>Upload</strong> button in the header to send a <code>.state</code> file from your computer into any slot (you will be asked before replacing an existing cloud save).</p>
                     <p>Slots are saved to your account and can be restored from another device.</p>
@@ -1021,6 +1022,15 @@ export class SaveStateManager {
                 right: 0;
                 top: 0;
                 z-index: 1000001;
+            }
+            @media (max-width: 1279px) {
+                #${PANEL_ID} .vintage-save-help-dialog {
+                    align-items: flex-start;
+                    justify-content: center;
+                    overflow-y: auto;
+                    padding-bottom: 24px;
+                    padding-top: clamp(72px, 16vh, 140px);
+                }
             }
             #${PANEL_ID} .vintage-save-help-dialog[hidden] {
                 display: none;

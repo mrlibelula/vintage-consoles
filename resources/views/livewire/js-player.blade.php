@@ -67,11 +67,9 @@
             max-height: 100%;
         }
 
-        /* Desktop-only: hide EmulatorJS "hamburger" toggle (virtual gamepad menu toggle). */
-        @media (min-width: 768px) and (pointer: fine) {
-            .ejs_virtualGamepad_open {
-                display: none !important;
-            }
+        /* Hide EmulatorJS virtual-gamepad hamburger (top-right in player). Site nav stays in parent. */
+        #game .ejs_virtualGamepad_open {
+            display: none !important;
         }
 
         @keyframes emulatorjsSpin {
