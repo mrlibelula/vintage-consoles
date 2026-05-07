@@ -111,17 +111,53 @@ async function requestFullscreenOn(el) {
     }
 }
 
+/**
+ * True when this window is embedded and the parent document has put our iframe in fullscreen.
+ * In that case fullscreen survives in-iframe reloads (e.g. EmulatorJS stability reload on F4).
+ */
+function vintageEmbedderIframeIsFullscreen() {
+    try {
+        const fe = window.frameElement
+        if (!(fe instanceof Element) || !fe.ownerDocument) {
+            return false
+        }
+        const pdoc = fe.ownerDocument
+        const pfs = pdoc.fullscreenElement || pdoc.webkitFullscreenElement
+        return pfs === fe
+    } catch {
+        return false
+    }
+}
+
 async function toggleVintagePlayerFullscreen() {
     const doc = document
     const fsEl = doc.fullscreenElement || doc.webkitFullscreenElement
+    const embedderFs = vintageEmbedderIframeIsFullscreen()
 
-    if (fsEl) {
-        const exit = doc.exitFullscreen?.bind(doc) || doc.webkitExitFullscreen?.bind(doc)
-        try {
-            await exit?.()
-        } catch {
-            /* ignore */
+    if (fsEl || embedderFs) {
+        if (fsEl) {
+            const exit = doc.exitFullscreen?.bind(doc) || doc.webkitExitFullscreen?.bind(doc)
+            try {
+                await exit?.()
+            } catch {
+                /* ignore */
+            }
         }
+        if (vintageEmbedderIframeIsFullscreen()) {
+            const fe = window.frameElement
+            const pdoc = fe.ownerDocument
+            const exit = pdoc.exitFullscreen?.bind(pdoc) || pdoc.webkitExitFullscreen?.bind(pdoc)
+            try {
+                await exit?.()
+            } catch {
+                /* ignore */
+            }
+        }
+        return
+    }
+
+    const fe = window.frameElement
+    if (fe instanceof Element && (await requestFullscreenOn(fe))) {
         return
     }
 

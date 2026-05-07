@@ -201,6 +201,21 @@ function bumpEmulatorJsLoadCount() {
  * After a hard reload (second cloud load in one visit), try to re-enter fullscreen.
  * Browsers usually require a user gesture; we try on game start and once on pointerdown.
  */
+function vintageFullscreenRestoreTarget() {
+    try {
+        if (window.frameElement instanceof Element) {
+            return window.frameElement
+        }
+    } catch {
+        /* cross-origin embedder */
+    }
+    const stable = window.__vintageStableFullscreenRoot
+    if (stable instanceof Element) {
+        return stable
+    }
+    return document.documentElement
+}
+
 export function tryRestoreEmulatorJsFullscreenAfterReload() {
     if (typeof document === 'undefined' || !canUseSessionStorage()) {
         return
@@ -210,7 +225,21 @@ export function tryRestoreEmulatorJsFullscreenAfterReload() {
         return
     }
 
-    const target = window.__vintageStableFullscreenRoot || document.documentElement
+    try {
+        const fe = window.frameElement
+        if (fe instanceof Element && fe.ownerDocument) {
+            const pdoc = fe.ownerDocument
+            const pfs = pdoc.fullscreenElement || pdoc.webkitFullscreenElement
+            if (pfs === fe) {
+                window.sessionStorage.removeItem(EMULATORJS_RESTORE_FULLSCREEN_KEY)
+                return
+            }
+        }
+    } catch {
+        /* ignore */
+    }
+
+    const target = vintageFullscreenRestoreTarget()
     if (!(target instanceof Element)) {
         return
     }
