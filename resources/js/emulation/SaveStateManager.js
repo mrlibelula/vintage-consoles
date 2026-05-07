@@ -198,6 +198,7 @@ export class SaveStateManager {
         this.currentSlot = 1
         this.pendingUploadSlot = null
         this.stateDownloadIndicator = null
+        this.stateDownloadIndicatorHome = null
         this.keydownHandler = event => this.handleKeydown(event)
         this.pointerDownHandler = event => this.handlePointerDown(event)
         this.fullscreenChangeHandler = () => this.handleFullscreenChange()
@@ -1625,6 +1626,7 @@ export class SaveStateManager {
         if (existing) {
             if (existing.isConnected) {
                 this.stateDownloadIndicator = existing
+                this.stateDownloadIndicatorHome = this.stateDownloadIndicatorHome || document.body
                 return
             }
             existing.remove()
@@ -1641,6 +1643,21 @@ export class SaveStateManager {
         // Fixed to the player document viewport (same visual frame as the emulator when #game is full-viewport).
         document.body.appendChild(indicator)
         this.stateDownloadIndicator = indicator
+        this.stateDownloadIndicatorHome = document.body
+    }
+
+    syncStateDownloadIndicatorParent() {
+        const indicator = this.stateDownloadIndicator
+        if (!indicator) {
+            return
+        }
+
+        const fullscreenEl = document.fullscreenElement || document.webkitFullscreenElement
+        const home = fullscreenEl || this.stateDownloadIndicatorHome || document.body
+
+        if (indicator.parentNode !== home) {
+            home.appendChild(indicator)
+        }
     }
 
     setStateDownloadIndicatorVisible(visible) {
@@ -1650,6 +1667,10 @@ export class SaveStateManager {
 
         if (!this.stateDownloadIndicator) {
             this.createStateDownloadIndicator()
+        }
+
+        if (visible) {
+            this.syncStateDownloadIndicatorParent()
         }
 
         this.stateDownloadIndicator?.classList.toggle('is-visible', Boolean(visible))
@@ -1792,12 +1813,20 @@ export class SaveStateManager {
 
         if (fullscreenEl) {
             fullscreenEl.appendChild(this.panel)
+            if (this.stateDownloadIndicator) {
+                fullscreenEl.appendChild(this.stateDownloadIndicator)
+            }
         } else if (this.panelHome) {
             this.panelHome.appendChild(this.panel)
+            if (this.stateDownloadIndicator && this.stateDownloadIndicatorHome) {
+                this.stateDownloadIndicatorHome.appendChild(this.stateDownloadIndicator)
+            }
         } else {
             document.body.appendChild(this.panel)
+            if (this.stateDownloadIndicator) {
+                (this.stateDownloadIndicatorHome || document.body).appendChild(this.stateDownloadIndicator)
+            }
         }
-        // Save-state download ring uses position:fixed on document.body; no reparent on fullscreen.
     }
 
     attachIframeKeyListener() {
