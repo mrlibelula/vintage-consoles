@@ -1,4 +1,4 @@
-<div class="h-[14.5rem] flex items-start justify-start py-4">
+<div class="flex h-[calc(290px+2rem)] shrink-0 items-start justify-start py-4">
     <style>
         .containerCards {
             display: flex;
@@ -35,7 +35,7 @@
     
         .containerCards .card .wrapper {
             margin: 0px 0px 0px 0px;
-            padding-top: 260px;
+            padding-top: 290px;
             box-sizing: border-box;
             position: relative;
             transition: ease all 0.3s;
@@ -77,7 +77,7 @@
             background-position: center bottom;
             background-repeat: no-repeat;
             position: absolute;
-            bottom: calc(100% - 225px);
+            bottom: calc(100% - 255px);
             width: 100%;
             height: 60px;
             transition: ease all 0.3s;
@@ -243,9 +243,9 @@
                     {{-- style="background-image: url({{ asset('images/placeholder-poster-homer.jpg') }});" --}}
                 >
                 </div>
-                <div class="infoProd_ absolute inset-x-0 bottom-0 top-[177px] flex items-center justify-center text-center">
-                    <p class="flex max-w-[calc(100%-3rem)] items-center justify-center px-2 leading-none text-base_ text-[1rem] font-thin tracking-wider w-full text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
-                        {{ Str::limit($game['title'], 28) }}
+                <div class="infoProd absolute inset-x-0 bottom-0 top-[177px] flex items-center justify-center text-center">
+                    <p class="flex min-w-0 w-full items-center justify-center whitespace-normal px-2 py-2 text-center text-base_ text-[1rem] font-thin leading-none tracking-wider text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
+                        {{ Str::limit($game['title'], 55) }}
                     </p>
                     
                 </div>
