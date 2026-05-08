@@ -6,6 +6,7 @@ use App\Actions\UpsertEmulatorSaveState;
 use App\Models\EmulatorSaveState;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -104,10 +105,51 @@ class EmulatorSaveStateController extends Controller
     {
         $this->authorizeSave($request, $saveState);
 
-        Storage::disk('savestates')->delete($saveState->disk_path);
+        $disk = Storage::disk('savestates');
+        $disk->delete($saveState->disk_path);
+        if ($saveState->backup_disk_path) {
+            $disk->delete($saveState->backup_disk_path);
+        } else {
+            // Back-compat: if backup exists but DB was never updated, still delete it.
+            $disk->delete("{$saveState->disk_path}.backup");
+        }
         $saveState->delete();
 
         return response()->json(['data' => ['deleted' => true]]);
+    }
+
+    public function restoreBackup(Request $request, EmulatorSaveState $saveState): JsonResponse
+    {
+        $this->authorizeSave($request, $saveState);
+
+        $disk = Storage::disk('savestates');
+        $primaryPath = $saveState->disk_path;
+        $backupPath = $saveState->backup_disk_path ?: "{$primaryPath}.backup";
+
+        abort_unless($disk->exists($primaryPath), 404);
+        abort_unless($disk->exists($backupPath), 404);
+
+        $tmpPath = "{$primaryPath}.tmp-".bin2hex(random_bytes(6));
+
+        // Swap primary and backup.
+        $disk->move($primaryPath, $tmpPath);
+        $disk->move($backupPath, $primaryPath);
+        $disk->move($tmpPath, $backupPath);
+
+        [$primaryChecksum, $primaryBytes] = $this->checksumAndSize($disk, $primaryPath);
+        [$backupChecksum, $backupBytes] = $this->checksumAndSize($disk, $backupPath);
+
+        $saveState->forceFill([
+            'disk_path' => $primaryPath,
+            'size_bytes' => $primaryBytes,
+            'checksum' => $primaryChecksum,
+            'backup_disk_path' => $backupPath,
+            'backup_size_bytes' => $backupBytes,
+            'backup_checksum' => $backupChecksum,
+            'backup_updated_at' => Carbon::now(),
+        ])->save();
+
+        return response()->json(['data' => $this->serializeSave($saveState->fresh())]);
     }
 
     private function contextRules(): array
@@ -137,6 +179,9 @@ class EmulatorSaveStateController extends Controller
 
     private function serializeSave(EmulatorSaveState $save): array
     {
+        $backupPath = $save->backup_disk_path ?: ($save->disk_path ? "{$save->disk_path}.backup" : null);
+        $hasBackup = $backupPath ? Storage::disk('savestates')->exists($backupPath) : false;
+
         return [
             'id'           => $save->id,
             'slot'         => $save->slot,
@@ -144,8 +189,41 @@ class EmulatorSaveStateController extends Controller
             'size_bytes'   => $save->size_bytes,
             'checksum'     => $save->checksum,
             'updated_at'   => $save->updated_at?->toISOString(),
+            'has_backup'   => $hasBackup,
+            'backup_updated_at' => $save->backup_updated_at?->toISOString(),
             'download_url' => route('player-data.save-states.download', $save),
             'delete_url'   => route('player-data.save-states.destroy', $save),
+            'restore_backup_url' => $hasBackup ? route('player-data.save-states.restore-backup', $save) : null,
         ];
+    }
+
+    /**
+     * @return array{string,int} [checksum, bytes]
+     */
+    private function checksumAndSize($disk, string $path): array
+    {
+        $stream = $disk->readStream($path);
+        if (! is_resource($stream)) {
+            $contents = (string) $disk->get($path);
+
+            return [hash('sha256', $contents), strlen($contents)];
+        }
+
+        $hash = hash_init('sha256');
+        $bytes = 0;
+
+        while (! feof($stream)) {
+            $chunk = fread($stream, 1024 * 1024);
+            if ($chunk === false) {
+                break;
+            }
+
+            $bytes += strlen($chunk);
+            hash_update($hash, $chunk);
+        }
+
+        fclose($stream);
+
+        return [hash_final($hash), $bytes];
     }
 }

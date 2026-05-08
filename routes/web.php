@@ -79,6 +79,7 @@ Route::middleware(['auth'])->prefix('player-data')->name('player-data.')->group(
     Route::patch('/save-states/{saveState}', [EmulatorSaveStateController::class, 'update'])->name('save-states.update');
     Route::delete('/save-states/{saveState}', [EmulatorSaveStateController::class, 'destroy'])->name('save-states.destroy');
     Route::get('/save-states/{saveState}/download', [EmulatorSaveStateController::class, 'download'])->name('save-states.download');
+    Route::post('/save-states/{saveState}/restore-backup', [EmulatorSaveStateController::class, 'restoreBackup'])->name('save-states.restore-backup');
 
     Route::get('/control-settings', [EmulatorControlSettingController::class, 'show'])->name('control-settings.show');
     Route::put('/control-settings', [EmulatorControlSettingController::class, 'store'])->name('control-settings.store');

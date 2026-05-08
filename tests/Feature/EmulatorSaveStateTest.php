@@ -102,11 +102,16 @@ it('deletes the current users save state and stored file', function () {
         'game_slug' => 'megaman-2',
         'slot'      => 1,
         'disk_path' => 'slot-to-delete.state',
+        'backup_disk_path' => 'slot-to-delete.state.backup',
         'size_bytes' => 5,
         'checksum'  => str_repeat('a', 64),
+        'backup_size_bytes' => 4,
+        'backup_checksum' => str_repeat('b', 64),
+        'backup_updated_at' => now(),
     ]);
 
     Storage::disk('savestates')->put($save->disk_path, 'state');
+    Storage::disk('savestates')->put($save->backup_disk_path, 'prev');
 
     $this->actingAs($user)
         ->deleteJson(route('player-data.save-states.destroy', $save))
@@ -114,7 +119,69 @@ it('deletes the current users save state and stored file', function () {
         ->assertJsonPath('data.deleted', true);
 
     expect(EmulatorSaveState::query()->whereKey($save->id)->exists())->toBeFalse()
-        ->and(Storage::disk('savestates')->exists('slot-to-delete.state'))->toBeFalse();
+        ->and(Storage::disk('savestates')->exists('slot-to-delete.state'))->toBeFalse()
+        ->and(Storage::disk('savestates')->exists('slot-to-delete.state.backup'))->toBeFalse();
+});
+
+it('rotates the previous slot state into a backup on subsequent saves', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->postJson(route('player-data.save-states.store'), [
+        'console'   => 'snes',
+        'game_slug' => 'dkc',
+        'slot'      => 1,
+        'state'     => UploadedFile::fake()->createWithContent('dkc-slot-1.state', 'first-state'),
+    ])->assertCreated();
+
+    $this->actingAs($user)->postJson(route('player-data.save-states.store'), [
+        'console'   => 'snes',
+        'game_slug' => 'dkc',
+        'slot'      => 1,
+        'state'     => UploadedFile::fake()->createWithContent('dkc-slot-1.state', 'second-state'),
+    ])->assertCreated();
+
+    $save = EmulatorSaveState::first();
+    expect($save)->not->toBeNull()
+        ->and($save->disk_path)->toContain('slot-1.state')
+        ->and($save->backup_disk_path)->toContain('slot-1.state.backup')
+        ->and($save->checksum)->toBe(hash('sha256', 'second-state'))
+        ->and($save->backup_checksum)->toBe(hash('sha256', 'first-state'));
+
+    expect(Storage::disk('savestates')->get($save->disk_path))->toBe('second-state')
+        ->and(Storage::disk('savestates')->get($save->backup_disk_path))->toBe('first-state');
+});
+
+it('restores the previous backup by swapping primary and backup then returns updated metadata', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->postJson(route('player-data.save-states.store'), [
+        'console'   => 'snes',
+        'game_slug' => 'dkc',
+        'slot'      => 1,
+        'state'     => UploadedFile::fake()->createWithContent('dkc-slot-1.state', 'first-state'),
+    ])->assertCreated();
+
+    $this->actingAs($user)->postJson(route('player-data.save-states.store'), [
+        'console'   => 'snes',
+        'game_slug' => 'dkc',
+        'slot'      => 1,
+        'state'     => UploadedFile::fake()->createWithContent('dkc-slot-1.state', 'second-state'),
+    ])->assertCreated();
+
+    $save = EmulatorSaveState::first();
+    $primaryPath = $save->disk_path;
+    $backupPath = $save->backup_disk_path;
+
+    $response = $this->actingAs($user)
+        ->postJson(route('player-data.save-states.restore-backup', $save));
+
+    $response->assertOk()
+        ->assertJsonPath('data.slot', 1)
+        ->assertJsonPath('data.has_backup', true)
+        ->assertJsonPath('data.checksum', hash('sha256', 'first-state'));
+
+    expect(Storage::disk('savestates')->get($primaryPath))->toBe('first-state')
+        ->and(Storage::disk('savestates')->get($backupPath))->toBe('second-state');
 });
 
 it('stores per-game control settings for the authenticated user', function () {

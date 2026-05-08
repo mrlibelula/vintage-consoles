@@ -11,6 +11,8 @@ const ICONS = {
         '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M8 3v4h6V3"/><path d="M8 14h8"/><path d="M8 17h5"/><path d="M12 18v2.5"/><path d="M10 19.5l2 2 2-2"/></svg>',
     save: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11l3 3v13H5V4z"/><path d="M8 4v6h8V6"/><path d="M8 16h8v4"/></svg>',
     load: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h6l2 2h8v10a2 2 0 0 1-2 2H4V6z"/><path d="M12 11v6"/><path d="M9 14l3 3 3-3"/></svg>',
+    restore:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.36-6.36"/><path d="M3 4v6h6"/><path d="M21 12a9 9 0 0 1-15.36 6.36"/><path d="M21 20v-6h-6"/></svg>',
     clear: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M7 10v9h10v-9"/><path d="M10 12v5"/><path d="M14 12v5"/></svg>',
     sync: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h9l-2-2"/><path d="M16 7l-2 2"/><path d="M19 12a7 7 0 0 0-12-5"/><path d="M17 17H8l2 2"/><path d="M8 17l2-2"/><path d="M5 12a7 7 0 0 0 12 5"/></svg>',
     upload:
@@ -621,6 +623,48 @@ export class SaveStateManager {
         }
     }
 
+    async restorePrevious(slot, { notify = true } = {}) {
+        this.selectSlot(slot)
+        const save = this.saves.find(item => item.slot === slot)
+
+        if (!save || !save.restore_backup_url || !save.has_backup) {
+            this.setStatus('No backup is available for this slot yet.')
+            this.notify('No backup available for this slot.', 'warning', notify)
+            return
+        }
+
+        const confirmed = await this.confirm({
+            title: `Restore previous checkpoint for slot ${slot}?`,
+            message: 'This swaps the current cloud state with the previous backup, then loads it into the emulator. Your current state will become the new backup.',
+            confirmLabel: 'Restore previous',
+            cancelLabel: 'Cancel',
+            tone: 'primary',
+        })
+
+        if (!confirmed) {
+            return
+        }
+
+        // Get UI chrome out of the way before swapping + auto-loading.
+        this.closePanel()
+
+        try {
+            this.setStateDownloadIndicatorVisible(true)
+            this.setStatus(`Restoring previous checkpoint for slot ${slot}...`)
+            await purgeAllCachedSaveVersions(save)
+            await this.request(save.restore_backup_url, { method: 'POST' })
+            await this.refreshSaves()
+            this.setStatus(`Restored previous checkpoint for slot ${slot}.`)
+            await this.loadSlot(slot, { notify: true, forceInPlace: true })
+        } catch (error) {
+            console.error(error)
+            this.setStatus(`Could not restore slot ${slot}.`)
+            this.notify(`Could not restore slot ${slot}`, 'error', notify)
+        } finally {
+            this.setStateDownloadIndicatorVisible(false)
+        }
+    }
+
     selectSlot(slot, { notify = false } = {}) {
         const slots = Number(this.config.slots || 5)
         this.currentSlot = Math.min(Math.max(Number(slot) || 1, 1), slots)
@@ -1147,6 +1191,21 @@ export class SaveStateManager {
                 display: none;
             }
             @media (min-width: 640px) {
+                #${PANEL_ID}.is-menu-open {
+                    align-items: center;
+                    bottom: 0;
+                    display: flex;
+                    justify-content: center;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                }
+                #${PANEL_ID}.is-menu-open .vintage-save-state-body {
+                    margin-top: 0;
+                    max-height: calc(100vh - 48px);
+                    overflow-y: auto;
+                    pointer-events: auto;
+                }
                 #${PANEL_ID} .vintage-save-state-backdrop {
                     background: transparent;
                     bottom: 0;
@@ -1158,6 +1217,7 @@ export class SaveStateManager {
                 }
                 #${PANEL_ID}.is-menu-open .vintage-save-state-backdrop {
                     display: block;
+                    pointer-events: auto;
                 }
             }
             #${PANEL_ID} .vintage-save-state-heading {
@@ -1245,7 +1305,7 @@ export class SaveStateManager {
                 align-items: center;
                 display: grid;
                 gap: 6px;
-                grid-template-columns: 1fr auto auto auto;
+                grid-template-columns: 1fr auto auto auto auto;
                 margin-bottom: 6px;
             }
             #${PANEL_ID} .vintage-save-slot button:not(.vintage-save-slot-meta) {
@@ -1705,7 +1765,7 @@ export class SaveStateManager {
                     border: 1px solid rgba(255, 255, 255, 0.1);
                     border-radius: 12px;
                     gap: 10px 8px;
-                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                    grid-template-columns: repeat(4, minmax(0, 1fr));
                     grid-template-rows: auto auto;
                     margin-bottom: 10px;
                     padding: 10px 10px 12px;
@@ -1730,8 +1790,12 @@ export class SaveStateManager {
                     grid-column: 2;
                     grid-row: 2;
                 }
-                #${PANEL_ID} .vintage-save-slot button[data-action="delete"] {
+                #${PANEL_ID} .vintage-save-slot button[data-action="restore"] {
                     grid-column: 3;
+                    grid-row: 2;
+                }
+                #${PANEL_ID} .vintage-save-slot button[data-action="delete"] {
+                    grid-column: 4;
                     grid-row: 2;
                 }
                 #${PANEL_ID} .vintage-save-slot button:not(.vintage-save-slot-meta) {
@@ -1914,16 +1978,19 @@ export class SaveStateManager {
             const selectDisabled = guest ? ' disabled' : ''
             const saveDisabled = guest ? ' disabled' : ''
             const loadDisabled = guest || !save ? ' disabled' : ''
+            const restoreDisabled = guest || !save || !save.has_backup ? ' disabled' : ''
             const deleteDisabled = guest || !save ? ' disabled' : ''
             row.innerHTML = `
                 <button type="button" class="vintage-save-slot-meta" data-action="select"${selectDisabled} aria-label="Slot ${slot}: choose for F2 and highlight (does not load cloud state)" title="Choose slot for F2 / highlighted row — does not load from the cloud">Slot ${slot}${save ? ` · ${new Date(save.updated_at).toLocaleString()}` : ' · empty'}</button>
                 <button type="button" data-action="save" aria-label="Save current gameplay to slot ${slot}" title="Save: upload your current in-emulator state to this slot (does not load this slot)"${saveDisabled}>${ICONS.save}</button>
                 <button type="button" data-action="load" aria-label="Load checkpoint from slot ${slot}" title="Load: replace the current run with this slot’s checkpoint"${loadDisabled}>${ICONS.load}</button>
+                <button type="button" data-action="restore" aria-label="Restore previous checkpoint for slot ${slot}" title="Restore previous: swap to the previous backup checkpoint and load it"${restoreDisabled}>${ICONS.restore}</button>
                 <button type="button" data-action="delete" aria-label="Clear slot ${slot}" title="Remove this slot’s cloud save"${deleteDisabled}>${ICONS.clear}</button>
             `
             row.querySelector('[data-action="select"]').addEventListener('click', () => this.selectSlot(slot))
             row.querySelector('[data-action="save"]').addEventListener('click', () => this.saveSlot(slot, { retainActiveSlot: true }))
             row.querySelector('[data-action="load"]').addEventListener('click', () => this.loadSlot(slot))
+            row.querySelector('[data-action="restore"]').addEventListener('click', () => this.restorePrevious(slot))
             row.querySelector('[data-action="delete"]').addEventListener('click', () => this.deleteSlot(slot))
             container.appendChild(row)
         }
