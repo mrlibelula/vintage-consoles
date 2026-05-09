@@ -33,20 +33,6 @@
                         <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-lista-on');"  wire:navigate href="/{{ $selected_console['short_name'] }}?ob=lista" class="btn-small"><x-icons.lista class="{{ $ob === 'lista' ? ' text-rose-700 dark:text-gray-200' : '' }}" /></a>
                     </div>
 
-                    <!-- skeleton group -->
-                    <template x-if="skeletonGroup">
-                        <div class="p-4 mb-[1rem]">
-                            <x-skeleton-group :count="3" />
-                        </div>
-                    </template>
-                    
-                    <!-- skeleton square -->
-                    <template x-if="skeletonSquare">                        
-                        <div class="px-4 mb-10">
-                            <x-skeleton-square :count="3" />
-                        </div>
-                    </template>
-                    
                     <!-- skeleton lista -->
                     <template x-if="skeletonLista">
                         <div class="py-4 mb-[0.9rem]">
@@ -54,7 +40,7 @@
                         </div>
                     </template>
 
-                    <div :class="{ 'hidden': skeletonGroup || skeletonSquare || skeletonLista }" class="py-4">
+                    <div :class="{ 'hidden': skeletonLista }" class="w-full min-w-0 py-4">
                         @if ($ob === 'group')
                         <livewire:order-by-group :selected_console="$selected_console" :key="uniqid()" />
                         @elseif ($ob === 'squares')

@@ -86,11 +86,11 @@
         },
         "768": {
             "slidesPerView": {{ $slides_per_view['md'] }},
-            "spaceBetween": {{ $space_between['sm'] }}
+            "spaceBetween": {{ $space_between['md'] }}
         },
         "1024": {
             "slidesPerView": {{ $slides_per_view['xl'] }},
-            "spaceBetween": {{ $space_between['sm'] }}
+            "spaceBetween": {{ $space_between['xl'] }}
         }
     }'
 
