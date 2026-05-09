@@ -281,15 +281,17 @@
                               Empty
                             </span>
 
-                            <button
-                              type="button"
-                              wire:click="openUploadModal(@js($consoleShort), @js($game['game_slug']), {{ (int) $slotNum }}, @js($game['title']))"
-                              class="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-600/90 hover:bg-emerald-600 text-white text-base sm:text-lg font-medium shadow-sm smooth-300"
-                              title="Upload a .state file into slot {{ $slotNum }}"
-                            >
-                              <i class="fa fa-cloud-upload text-base"></i>
-                              <span>Upload .state</span>
-                            </button>
+                            <span class="flex items-center w-full justify-end sm:w-auto sm:ml-auto">
+                              <button
+                                type="button"
+                                wire:click="openUploadModal(@js($consoleShort), @js($game['game_slug']), {{ (int) $slotNum }}, @js($game['title']))"
+                                class="w-9 h-9 flex items-center justify-center rounded-md border border-cod-gray-300/60 dark:border-cod-gray-700 text-cod-gray-600 dark:text-cod-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-400/40 smooth-300"
+                                title="Upload a .state file into slot {{ $slotNum }}"
+                                aria-label="Upload a .state file into slot {{ $slotNum }}"
+                              >
+                                <i class="fa fa-cloud-upload text-base" aria-hidden="true"></i>
+                              </button>
+                            </span>
                           @endif
 
                         </div>
