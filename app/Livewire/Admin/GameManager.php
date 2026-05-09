@@ -3,10 +3,10 @@
 namespace App\Livewire\Admin;
 
 use App\Service\GameManager as GameManagerService;
-use App\Service\GameSession;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Pagination\LengthAwarePaginator;
 use OpenAI\Laravel\Facades\OpenAI;
 use Illuminate\Support\Facades\Session;
 
@@ -23,8 +23,9 @@ class GameManager extends Component
     public $modalMode = 'add'; // 'add', 'edit', 'delete'
     public $editingGame = null;
     public $searchTerm = '';
-    public $sortField = 'id';
+    public $sortField = 'title';
     public $sortDirection = 'asc';
+    public int $perPage = 4;
 
     // Form fields
     public $formConsole = '';
@@ -54,6 +55,7 @@ class GameManager extends Component
     public function mount()
     {
         $this->consoles = $this->gameManagerService->getConsoles();
+        $this->perPage = (int) Session::get('admin-game-manager.perPage', 4);
         
         if (!empty($this->consoles)) {
             $this->selectedConsole = $this->consoles[0]['short_name'];
@@ -70,6 +72,13 @@ class GameManager extends Component
 
     public function updatedSearchTerm()
     {
+        $this->resetPage();
+    }
+
+    public function updatedPerPage($value)
+    {
+        $this->perPage = max(1, (int) $value);
+        Session::put('admin-game-manager.perPage', $this->perPage);
         $this->resetPage();
     }
 
@@ -143,6 +152,27 @@ class GameManager extends Component
         }
 
         return $games;
+    }
+
+    public function getPaginatedGamesProperty(): LengthAwarePaginator
+    {
+        $filtered = $this->filteredGames;
+        $total = count($filtered);
+
+        $page = (int) $this->getPage();
+        $perPage = max(1, (int) $this->perPage);
+        $offset = max(0, ($page - 1) * $perPage);
+
+        return new LengthAwarePaginator(
+            array_slice($filtered, $offset, $perPage),
+            $total,
+            $perPage,
+            $page,
+            [
+                'path' => request()->url(),
+                'query' => request()->query(),
+            ]
+        );
     }
 
     public function openAddModal()

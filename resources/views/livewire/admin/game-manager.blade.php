@@ -43,6 +43,19 @@
                         class="w-full px-3 py-2 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 placeholder-cod-gray-500 dark:placeholder-cod-gray-400 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500">
                 </div>
 
+                <div class="w-full sm:w-auto">
+                    <label for="per-page" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300 mb-2">
+                        Per page
+                    </label>
+                    <select wire:model.live="perPage" id="per-page"
+                            class="w-full sm:w-28 px-3 py-2 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500">
+                        <option value="4">4</option>
+                        <option value="8">8</option>
+                        <option value="12">12</option>
+                        <option value="16">16</option>
+                    </select>
+                </div>
+
                 <div class="flex justify-end">
                     <button @click="$dispatch('loader-top-on');" wire:click="openAddModal" 
                             class="inline-flex items-center px-4 py-1.5 border border-transparent text-xl font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 transition duration-150 ease-in-out">
@@ -59,11 +72,11 @@
         <div class="bg-cod-gray-50 dark:bg-cod-gray-800 shadow rounded-lg overflow-hidden">
             <div class="px-6 py-4 border-b border-cod-gray-200 dark:border-cod-gray-700">
                 <h3 class="text-xl font-medium text-cod-gray-900 dark:text-cod-gray-100">
-                    Games for {{ $selectedConsole }} ({{ count($this->filteredGames) }} games)
+                    Games for {{ $selectedConsole }} ({{ $this->paginatedGames->total() }} games)
                 </h3>
             </div>
 
-            @if(count($this->filteredGames) > 0)
+            @if($this->paginatedGames->total() > 0)
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-cod-gray-200 dark:divide-cod-gray-700">
                         <thead class="bg-cod-gray-50 dark:bg-cod-gray-900">
@@ -100,7 +113,7 @@
                             </tr>
                         </thead>
                         <tbody class="bg-cod-gray-50 dark:bg-cod-gray-800 divide-y divide-cod-gray-200 dark:divide-cod-gray-700">
-                            @foreach($this->filteredGames as $game)
+                            @foreach($this->paginatedGames as $game)
                                 <tr class="hover:bg-rose-200/60 dark:hover:bg-rose-700/20 transition-colors duration-300">
                                     <td class="px-6 py-4">
                                         <div class="flex items-start">
@@ -171,6 +184,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="px-6 py-4 border-t border-cod-gray-200 dark:border-cod-gray-700">
+                    {{ $this->paginatedGames->links() }}
                 </div>
             @else
                 <div class="px-6 py-12 text-center">
