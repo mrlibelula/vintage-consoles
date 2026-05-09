@@ -28,8 +28,8 @@
                     
                     <!-- game list display options -->
                     <div class="flex items-center justify-start gap-x-3 w-full dark:text-cod-gray-500 leading-none -mb-8">
-                        <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-group-on');"  wire:navigate href="/{{ $selected_console['short_name'] }}?ob=group" class="btn-small"><x-icons.group class="{{ $ob === 'group' ? ' text-rose-700 dark:text-gray-200' : '' }}" /></a>
-                        <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-square-on');"  wire:navigate href="/{{ $selected_console['short_name'] }}?ob=squares" class="btn-small"><x-icons.squares class="{{ $ob === 'squares' ? ' text-rose-700 dark:text-gray-200' : '' }}" /></a>
+                        <a @click="$dispatch('skeleton-square-off'); $dispatch('skeleton-group-on');" wire:navigate href="/{{ $selected_console['short_name'] }}?ob=group" class="btn-small"><x-icons.group class="{{ $ob === 'group' ? ' text-rose-700 dark:text-gray-200' : '' }}" /></a>
+                        <a @click="$dispatch('skeleton-group-off'); $dispatch('skeleton-square-on');" wire:navigate href="/{{ $selected_console['short_name'] }}?ob=squares" class="btn-small"><x-icons.squares class="{{ $ob === 'squares' ? ' text-rose-700 dark:text-gray-200' : '' }}" /></a>
                         <a @click="$dispatch('loader-top-on'); $dispatch('skeleton-lista-on');"  wire:navigate href="/{{ $selected_console['short_name'] }}?ob=lista" class="btn-small"><x-icons.lista class="{{ $ob === 'lista' ? ' text-rose-700 dark:text-gray-200' : '' }}" /></a>
                     </div>
 

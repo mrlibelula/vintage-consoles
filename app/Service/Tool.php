@@ -170,10 +170,11 @@ class Tool
      * @param \Livewire\Component $dispatch_component
      * @return void
      */
-    public static function loadersOff(\Livewire\Component $dispatch_component, array $events = [
-        'loader-off', 'loader-top-off', 'skeleton-group-off', 'skeleton-lista-off', 'skeleton-square-off'
-    ]): void
+    public static function loadersOff(\Livewire\Component $dispatch_component, ?array $events = null): void
     {
+        $events ??= [
+            'loader-off', 'loader-top-off', 'skeleton-group-off', 'skeleton-lista-off', 'skeleton-square-off',
+        ];
         foreach ($events as $event) {
             $dispatch_component->dispatch($event);
         }

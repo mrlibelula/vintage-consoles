@@ -23,7 +23,13 @@ class SelectedConsole extends Component
 
     public function rendered()
     {
-        Tool::loadersOff($this);
+        // Do not dispatch skeleton-group-off / skeleton-square-off here — they would cancel
+        // the in-Swiper skeletons before paint. Those are cleared from OrderByGroup / OrderBySquares.
+        Tool::loadersOff($this, [
+            'loader-off',
+            'loader-top-off',
+            'skeleton-lista-off',
+        ]);
     }
 
     public function mount()

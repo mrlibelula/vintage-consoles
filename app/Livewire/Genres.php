@@ -88,7 +88,16 @@ class Genres extends Component
 
     public function rendered()
     {
-        Tool::loadersOff($this);
+        Tool::loadersOff($this, [
+            'loader-off',
+            'loader-top-off',
+            'skeleton-lista-off',
+        ]);
+        // Defer ribbon skeleton off so Alpine can apply skeleton-*-on after wire:navigate morph.
+        $this->js("requestAnimationFrame(() => requestAnimationFrame(() => {
+            window.dispatchEvent(new CustomEvent('skeleton-group-off'));
+            window.dispatchEvent(new CustomEvent('skeleton-square-off'));
+        }))");
         $this->dispatch('fixed-modal-loader-off');
     }
 
