@@ -16,6 +16,8 @@ class MySaves extends Component
 {
     use WithFileUploads;
 
+    private const SAVE_STATE_UNSUPPORTED_CONSOLES = ['pc'];
+
     public array $grouped = [];
 
     public int $totalSlots = 0;
@@ -209,6 +211,13 @@ class MySaves extends Component
             return;
         }
 
+        if (in_array(strtolower($this->globalConsole), self::SAVE_STATE_UNSUPPORTED_CONSOLES, true)) {
+            $this->addError('globalConsole', 'Save states are not supported for this console.');
+            $this->globalConsole = '';
+
+            return;
+        }
+
         $gameSession = new GameSession;
         $consoles = $gameSession->getFullConsoleData();
 
@@ -240,6 +249,12 @@ class MySaves extends Component
             'globalStateFile' => ['required', 'file', 'max:102400'],
         ]);
 
+        if (in_array(strtolower($this->globalConsole), self::SAVE_STATE_UNSUPPORTED_CONSOLES, true)) {
+            $this->addError('globalConsole', 'Save states are not supported for this console.');
+
+            return;
+        }
+
         $contents = file_get_contents($this->globalStateFile->getRealPath());
         if ($contents === false) {
             $this->addError('globalStateFile', 'Could not read the uploaded file.');
@@ -270,6 +285,9 @@ class MySaves extends Component
         $options = [];
         foreach ($consoles as $console) {
             $short = strtolower((string) ($console['short_name'] ?? ''));
+            if (in_array($short, self::SAVE_STATE_UNSUPPORTED_CONSOLES, true)) {
+                continue;
+            }
             if ($short !== '') {
                 $options[$short] = $console['long_name'] ?? strtoupper($short);
             }
