@@ -612,4 +612,9 @@ Additional requirements:
     {
         return view('livewire.admin.game-manager');
     }
+
+    public function rendered()
+    {
+        $this->dispatch('loader-top-off');
+    }
 } 
