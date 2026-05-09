@@ -98,10 +98,32 @@
             @endif
 
             <!-- all genres list -->
-            <div>
-                Here are all the <span class=" text-sky-600 dark:text-sky-400">genres</span> detected on the database:
+            <div class="flex flex-col sm:flex-row items-start justify-between gap-3">
+                <p class="min-w-0 flex-1 pr-2 text-cod-gray-700 dark:text-cod-gray-400 m-0 text-sm leading-snug sm:text-base">
+                    Here are all the <span class="text-sky-600 dark:text-sky-400">genres</span> detected on the database:
+                </p>
+                <div
+                    class="inline-flex shrink-0 rounded-md border border-cod-gray-400/60 p-0.5 text-[0.65rem] leading-none tracking-wide text-cod-gray-700 shadow-sm dark:border-cod-gray-600 dark:text-cod-gray-200 dark:shadow-black sm:text-xs"
+                    role="group"
+                    aria-label="Sort genres"
+                >
+                    <button
+                        type="button"
+                        wire:click="setGenreSort('count')"
+                        class="rounded px-2 py-1 font-mono transition duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-1 focus-visible:ring-offset-cod-gray-100 dark:focus-visible:ring-offset-cod-gray-900 {{ $genreSort === 'count' ? 'bg-sky-600 text-white dark:bg-sky-500' : 'hover:bg-cod-gray-300/60 dark:hover:bg-cod-gray-700' }}"
+                    >
+                        Count
+                    </button>
+                    <button
+                        type="button"
+                        wire:click="setGenreSort('alpha')"
+                        class="rounded px-2 py-1 font-mono transition duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-1 focus-visible:ring-offset-cod-gray-100 dark:focus-visible:ring-offset-cod-gray-900 {{ $genreSort === 'alpha' ? 'bg-sky-600 text-white dark:bg-sky-500' : 'hover:bg-cod-gray-300/60 dark:hover:bg-cod-gray-700' }}"
+                    >
+                        A–Z
+                    </button>
+                </div>
             </div>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-[0.2rem]">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-[0.2rem]" wire:key="genre-grid-{{ $genreSort }}">
                 <!-- genres list -->
                 @forelse ($genres as $genre)
                 <div class="flex gap-x-1">

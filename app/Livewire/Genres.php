@@ -17,6 +17,9 @@ class Genres extends Component
     public array $games = [];
     public string $current_genre = '';
 
+    /** @var string count|alpha */
+    public string $genreSort = 'count';
+
     public function mount(Request $request, string $genre_name = '')
     {
         if ($request->has('ob')) {
@@ -29,13 +32,15 @@ class Genres extends Component
         new GameSession;
 
         // verify if genre exists in db
+        $canonicalGenres = Tool::genres();
         $contains = false;
-        $genres = $this->genres();
-        if ($genre_name) $contains = collect($genres)->contains('name', $genre_name);
+        if ($genre_name) {
+            $contains = collect($canonicalGenres)->contains('name', $genre_name);
+        }
         $this->genre_name = $contains
             ? $genre_name
             : '';
-        $this->genres = $genres;
+        $this->genres = $this->genresForDisplay();
         $this->filterGames($this->genre_name);
     }
 
@@ -81,9 +86,28 @@ class Genres extends Component
         $this->filtered_games = $games;
     }
 
-    public function genres(): array
+    /**
+     * Genres for the index list, ordered by $genreSort (count desc from Tool, or name asc).
+     */
+    protected function genresForDisplay(): array
     {
-        return Tool::genres();
+        $list = Tool::genres();
+        if ($this->genreSort === 'alpha') {
+            usort($list, static function (array $a, array $b): int {
+                return strcmp($a['name'] ?? '', $b['name'] ?? '');
+            });
+        }
+
+        return $list;
+    }
+
+    public function setGenreSort(string $sort): void
+    {
+        if (! in_array($sort, ['count', 'alpha'], true)) {
+            return;
+        }
+        $this->genreSort = $sort;
+        $this->genres = $this->genresForDisplay();
     }
 
     public function rendered()

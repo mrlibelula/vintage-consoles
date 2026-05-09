@@ -289,7 +289,14 @@ class Tool
             }
         }
 
-        return array_values($genres);
+        $genresList = array_values($genres);
+        usort($genresList, function (array $a, array $b): int {
+            $byCount = ($b['games_count'] ?? 0) <=> ($a['games_count'] ?? 0);
+
+            return $byCount !== 0 ? $byCount : strcmp($a['name'] ?? '', $b['name'] ?? '');
+        });
+
+        return $genresList;
     }
 
     /**
