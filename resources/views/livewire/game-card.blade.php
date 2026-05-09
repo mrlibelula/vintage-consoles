@@ -228,9 +228,9 @@
                         </div>
                     @else
                         <!-- GIF / image box background -->
-                        <div class="colorProd lazy-load-bg"
+                        <div
+                            class="colorProd lazy-load-bg bg-cod-gray-300 dark:bg-cod-gray-800"
                             data-bg-url="{{ $boxUrl }}"
-                            style="background-image: url({{ asset('images/placeholder-wide-dark.jpg') }});"
                         ></div>
                     @endif
                 </div>

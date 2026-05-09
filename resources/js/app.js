@@ -4,6 +4,22 @@ import './bootstrap';
  * Lazy load all css background images
  */
 document.addEventListener('DOMContentLoaded', function() {
+    let ribbonSkeletonClearTimer = null
+
+    /** Debounced: hide Swiper ribbon skeletons after lazy-load runs (matches Alpine ribbon view). */
+    function scheduleRibbonSkeletonClear(container) {
+        const host = container.closest('[data-ribbon-view]')
+        const mode = host?.getAttribute?.('data-ribbon-view')
+        if (mode !== 'group' && mode !== 'squares') {
+            return
+        }
+        clearTimeout(ribbonSkeletonClearTimer)
+        ribbonSkeletonClearTimer = setTimeout(() => {
+            window.dispatchEvent(new CustomEvent('ribbon-skeleton-clear', { detail: { mode } }))
+            ribbonSkeletonClearTimer = null
+        }, 280)
+    }
+
     function initializeLazyLoad() {
         const lazyLoadContainers = document.querySelectorAll('.lazy-load-container')
 
@@ -36,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     })
 
                     container.setAttribute('data-loaded', 'true')
+                    scheduleRibbonSkeletonClear(container)
                     observer.unobserve(container)
                 }
             })

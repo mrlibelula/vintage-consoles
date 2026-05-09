@@ -10,8 +10,8 @@
                 <!-- main content -->
                 <div 
                     x-data="{ 
-                        skeletonSquare: false,
-                        skeletonGroup: false,
+                        skeletonSquare: {{ $ob === 'squares' ? 'true' : 'false' }},
+                        skeletonGroup: {{ $ob === 'group' ? 'true' : 'false' }},
                         skeletonLista: false,
                     }" 
                     
@@ -23,6 +23,12 @@
 
                     @skeleton-lista-off.window="skeletonLista = false"
                     @skeleton-lista-on.window="skeletonLista = true"
+
+                    @ribbon-skeleton-clear.window="
+                        const m = $event.detail?.mode;
+                        if (m === 'group') skeletonGroup = false;
+                        if (m === 'squares') skeletonSquare = false;
+                    "
 
                     class="flex flex-col gap-y-8 w-full xl:w-[70%] main-container">
                     

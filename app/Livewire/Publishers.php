@@ -76,10 +76,6 @@ class Publishers extends Component
             'loader-top-off',
             'skeleton-lista-off',
         ]);
-        $this->js("requestAnimationFrame(() => requestAnimationFrame(() => {
-            window.dispatchEvent(new CustomEvent('skeleton-group-off'));
-            window.dispatchEvent(new CustomEvent('skeleton-square-off'));
-        }))");
         $this->dispatch('fixed-modal-loader-off');
     }
 
