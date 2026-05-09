@@ -209,7 +209,13 @@
                         <div class="flex flex-col sm:flex-row sm:items-center gap-2 px-4 py-2.5 {{ $slot ? '' : 'opacity-70 dark:opacity-60' }}">
 
                           {{-- Slot label --}}
-                          <span class="shrink-0 w-auto sm:w-16 text-base font-mono text-cod-gray-700 dark:text-cod-gray-400 uppercase tracking-wider whitespace-nowrap">
+                          <span
+                            @class([
+                              'shrink-0 w-auto sm:w-16 text-base font-mono uppercase tracking-wider whitespace-nowrap',
+                              'text-emerald-700 dark:text-emerald-400 font-semibold' => $slot,
+                              'text-cod-gray-700 dark:text-cod-gray-400' => ! $slot,
+                            ])
+                          >
                             Slot {{ $slotNum }}
                           </span>
 
