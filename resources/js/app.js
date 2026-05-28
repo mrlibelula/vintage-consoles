@@ -233,7 +233,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     document.addEventListener('DOMContentLoaded', scheduleSwiperRefresh)
-    document.addEventListener('livewire:updated', scheduleSwiperRefresh)
     document.addEventListener('livewire:navigated', scheduleSwiperRefresh)
     window.addEventListener('resize', scheduleSwiperRefresh, { passive: true })
+
+    // Livewire v3: only refresh Swiper after a commit is fully processed.
+    // This avoids Swiper mutating DOM during Livewire's morph phase, which can
+    // lead to "Snapshot missing" errors on interactive lists.
+    document.addEventListener('livewire:initialized', () => {
+        if (typeof Livewire?.hook !== 'function') return
+
+        Livewire.hook('commit', ({ succeed }) => {
+            succeed(() => {
+                scheduleSwiperRefresh()
+            })
+        })
+    })
 })()
