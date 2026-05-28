@@ -25,6 +25,42 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
 
         <script>
+            (() => {
+                function computeIsDark(theme) {
+                    if (theme === 'dark') return true
+                    if (theme === 'light') return false
+                    return Boolean(
+                        window.matchMedia &&
+                        window.matchMedia('(prefers-color-scheme: dark)').matches
+                    )
+                }
+
+                function applyTheme() {
+                    const theme = localStorage.getItem('theme') || 'system'
+                    document.documentElement.classList.toggle('dark', computeIsDark(theme))
+                }
+
+                applyTheme()
+
+                // React to parent page theme changes (storage events fire across iframes).
+                window.addEventListener('storage', event => {
+                    if (event.key === 'theme') {
+                        applyTheme()
+                    }
+                })
+
+                // React to OS theme changes while in system mode.
+                window.matchMedia &&
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                        const theme = localStorage.getItem('theme') || 'system'
+                        if (theme === 'system') {
+                            applyTheme()
+                        }
+                    })
+            })()
+        </script>
+
+        <script>
             // Register the Cross-Origin Isolation service worker.
             // This is a JavaScript-side fallback that enables SharedArrayBuffer
             // when the server-side COOP/COEP headers are not yet active (e.g. nginx
@@ -54,6 +90,8 @@
         </script>
 
         @vite(['resources/js/player.js'])
+
+        @include('partials.pixel-cursors')
 
         @livewireStyles
     </head>

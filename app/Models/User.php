@@ -29,6 +29,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'cursor_style',
     ];
 
     /**
@@ -51,6 +52,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getCursorStyleAttribute($value): string
+    {
+        return in_array($value, ['default', 'alternate'], true) ? $value : 'alternate';
+    }
 
     /**
      * The accessors to append to the model's array form.

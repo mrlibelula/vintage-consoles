@@ -150,6 +150,25 @@
                                 {{ __('My Saves') }}
                             </x-dropdown-link>
 
+                            <button
+                                type="button"
+                                class="block w-full px-4 py-2 text-left text-xl leading-5 text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-100 dark:hover:bg-rose-600 dark:hover:text-white focus:outline-none focus:bg-cod-gray-100 dark:focus:bg-cod-gray-900 transition duration-150 ease-in-out sepia_"
+                                x-data="{
+                                  cursorStyle: localStorage.getItem('cursorStyle') || 'default',
+                                  label() {
+                                    return this.cursorStyle === 'alternate' ? 'Cursor: Alternate' : 'Cursor: Default';
+                                  },
+                                  toggle() {
+                                    this.cursorStyle = this.cursorStyle === 'alternate' ? 'default' : 'alternate';
+                                    localStorage.setItem('cursorStyle', this.cursorStyle);
+                                    document.documentElement.dataset.cursorStyle = this.cursorStyle;
+                                    $wire.setCursorStyle(this.cursorStyle);
+                                  },
+                                }"
+                                x-text="label()"
+                                @click="toggle()"
+                            ></button>
+
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
@@ -287,6 +306,26 @@
                         </div>
                     </div>
                 </div>
+
+                <button
+                    type="button"
+                    class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent dark:border-transparent hover:border-cod-gray-300 hover:dark:border-rose-600 dark:border-cod-gray-600 text-left text-lg text-cod-gray-600 dark:text-cod-gray-400 hover:text-cod-gray-700 hover:dark:text-cod-gray-300 hover:bg-cod-gray-50 hover:dark:bg-rose-900/50 focus:outline-none focus:text-cod-gray-800 dark:focus:text-cod-gray-200 focus:bg-cod-gray-100 dark:focus:bg-cod-gray-900 focus:border-cod-gray-700 dark:focus:border-cod-gray-300 smooth-300 cursor-pointer"
+                    x-data="{
+                      cursorStyle: localStorage.getItem('cursorStyle') || 'default',
+                      label() {
+                        return this.cursorStyle === 'alternate' ? 'Cursor: Alternate' : 'Cursor: Default';
+                      },
+                      toggle() {
+                        this.cursorStyle = this.cursorStyle === 'alternate' ? 'default' : 'alternate';
+                        localStorage.setItem('cursorStyle', this.cursorStyle);
+                        document.documentElement.dataset.cursorStyle = this.cursorStyle;
+                        $wire.setCursorStyle(this.cursorStyle);
+                      },
+                    }"
+                    x-text="label()"
+                    @click="toggle()"
+                ></button>
+
                 <!-- Account Management -->
                 @guest
                 <x-responsive-nav-link href="{{ route('login') }}">

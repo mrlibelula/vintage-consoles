@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Service\Tool;
 use App\Services\GameRepository;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Navigation extends Component
@@ -49,6 +50,21 @@ class Navigation extends Component
     {
         $this->search        = '';
         $this->search_results = [];
+    }
+
+    public function setCursorStyle(string $style): void
+    {
+        if (! Auth::check()) {
+            return;
+        }
+
+        if (! in_array($style, ['default', 'alternate'], true)) {
+            $style = 'alternate';
+        }
+
+        Auth::user()->forceFill([
+            'cursor_style' => $style,
+        ])->save();
     }
 
     public function gameRoute(array $console, array $game): string
