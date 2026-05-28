@@ -14,7 +14,7 @@
                class="relative z-0 flex h-[12rem] w-full shrink-0 items-center justify-center my-2 lazy-load-container"
                data-loaded="false"
             >
-                <livewire:game-card-classic :game="$game" :key="$game->id" />
+                <livewire:game-card-classic :game="$game" :show-console-label="false" :key="$game->id" />
             </a>
         </swiper-slide>
         @endforeach

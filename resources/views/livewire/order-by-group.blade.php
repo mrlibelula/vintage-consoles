@@ -23,7 +23,7 @@
                class="relative z-0 lazy-load-container"
                data-loaded="false"
             >
-                <livewire:game-card :game="$game" :key="$game->id" />
+                <livewire:game-card :game="$game" :show-console-label="false" :key="$game->id" />
             </a>
         </swiper-slide>
     @endforeach

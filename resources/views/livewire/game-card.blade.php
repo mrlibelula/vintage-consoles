@@ -199,7 +199,7 @@
     </style>
     <div class="group relative containerCards rounded-xl overflow-hidden bg-cod-gray-200/80 dark:bg-cod-gray-900/90 h-full border-2 border-cod-gray-300 dark:border-cod-gray-950 shadow">
         <div class="card h-full">
-            @if(isset($game->console) && $game->console)
+            @if($showConsoleLabel && isset($game->console) && $game->console)
             <div class="absolute z-20 text-center w-full bg-cod-gray-500/70 dark:bg-cod-gray-800/70 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400">
                 {{ $game->console->short_name === 'atari2600' ? 'Atari 2600' : $game->console->short_name }}
             </div>

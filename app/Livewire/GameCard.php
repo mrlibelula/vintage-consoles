@@ -9,6 +9,8 @@ class GameCard extends Component
 {
     public ?Game $game = null;
 
+    public bool $showConsoleLabel = true;
+
     public function render()
     {
         return view('livewire.game-card');
