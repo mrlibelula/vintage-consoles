@@ -26,6 +26,60 @@
     @apply w-6 h-6 p-[0.2rem] rounded bg-cod-gray-400/70 dark:bg-cod-gray-800 hover:bg-cod-gray-400 dark:hover:bg-rose-700 hover:text-cod-gray-100 dark:hover:text-cod-gray-50 transition duration-300 ease-in-out cursor-pointer shadow shadow-cod-gray-500 dark:shadow-black;
 }
 
+.btn-pixel {
+    @apply inline-flex h-8 w-8 items-center justify-center rounded bg-cod-gray-400/70 p-1 text-cod-gray-800 shadow shadow-cod-gray-500 transition duration-300 ease-in-out hover:bg-cod-gray-400 hover:text-cod-gray-100 dark:bg-cod-gray-800 dark:text-cod-gray-200 dark:shadow-black dark:hover:bg-rose-700 dark:hover:text-cod-gray-50;
+}
+
+.pixel-tooltip {
+    @apply relative;
+}
+
+.pixel-tooltip::before,
+.pixel-tooltip::after {
+    @apply pointer-events-none absolute left-1/2 z-50 -translate-x-1/2 opacity-0 transition duration-200 ease-out;
+}
+
+.pixel-tooltip::after {
+    content: attr(data-pixel-tooltip);
+    @apply bottom-[calc(100%+0.45rem)] whitespace-nowrap rounded border border-cod-gray-600/80 bg-cod-gray-900 px-2 py-1 text-[10px] font-mono uppercase tracking-wider text-cod-gray-100 shadow-lg shadow-black/40;
+}
+
+.pixel-tooltip::before {
+    content: '';
+    @apply bottom-[calc(100%+0.2rem)] h-0 w-0 border-x-[5px] border-t-[5px] border-x-transparent border-t-cod-gray-900;
+}
+
+.pixel-tooltip:hover::before,
+.pixel-tooltip:hover::after,
+.pixel-tooltip:focus-visible::before,
+.pixel-tooltip:focus-visible::after {
+    @apply opacity-100;
+}
+
+.pixel-icon-rose {
+    @apply text-rose-700 dark:text-rose-600;
+}
+
+.btn-pixel .pixel-icon-rose {
+    @apply transition-colors duration-300 ease-in-out;
+}
+
+.btn-pixel:hover .pixel-icon-rose {
+    @apply text-rose-100 dark:text-rose-200;
+}
+
+.pixel-icon-rose-faint {
+    @apply text-rose-100 dark:text-rose-200;
+}
+
+.game-card-rating-badge .pixel-icon-rose {
+    @apply text-rose-600 dark:text-rose-600;
+}
+
+.game-card-rating-badge .pixel-icon-rose-faint {
+    @apply text-rose-600/40 dark:text-rose-200;
+}
+
 .fade-hero-light {
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#c2c5cc+0,c2c5cc+100&0+0,0.2+0,1+100 */
     background: linear-gradient(to bottom,  rgba(194,197,204,0.2) 0%,rgba(194,197,204,1) 100%);
@@ -226,6 +280,26 @@ swiper-container {
     height: 100%;
     /* margin-bottom: 20px; */
     /* margin-top: 20px; */
+}
+
+.screenshot-carousel--admin swiper-container {
+    display: block;
+    height: 6rem;
+}
+
+.screenshot-carousel--admin swiper-slide {
+    width: 10rem;
+    height: 6rem;
+}
+
+.screenshot-carousel--player swiper-container {
+    display: block;
+    height: auto;
+}
+
+.screenshot-carousel--player swiper-slide {
+    width: auto;
+    height: auto;
 }
 
 swiper-slide {

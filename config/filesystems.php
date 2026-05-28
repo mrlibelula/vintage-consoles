@@ -62,6 +62,14 @@ return [
             'throw' => false,
         ],
 
+        'fonts' => [
+            'driver' => 'local',
+            'root' => public_path('fonts'),
+            'url' => env('APP_URL').'/fonts',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

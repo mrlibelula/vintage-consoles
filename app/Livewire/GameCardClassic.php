@@ -2,12 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Models\Game;
 use Livewire\Component;
 
 class GameCardClassic extends Component
 {
-    public $game;
-    
+    public ?Game $game = null;
+
     public function render()
     {
         return view('livewire.game-card-classic');

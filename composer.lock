@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0798a53943d392cc2e7fbcf94c31179a",
+    "content-hash": "3879ae6ec523e8509ab3095248fa06e7",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2412,6 +2412,75 @@
                 }
             ],
             "time": "2024-12-02T15:57:58+00:00"
+        },
+        {
+            "name": "marcreichel/igdb-laravel",
+            "version": "4.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marcreichel/igdb-laravel.git",
+                "reference": "46c385e2d9c754e8cac35f09f356ea1a5007af18"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marcreichel/igdb-laravel/zipball/46c385e2d9c754e8cac35f09f356ea1a5007af18",
+                "reference": "46c385e2d9c754e8cac35f09f356ea1a5007af18",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "~6.0|~7.0",
+                "illuminate/support": "^9.0|^10.0|^11.0",
+                "nesbot/carbon": "^2.53.1|^3.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "larastan/larastan": "^2.9.2",
+                "laravel/pint": "^1.13",
+                "nunomaduro/collision": "^5.3|^6.1|^7.0|^8.0",
+                "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0",
+                "pestphp/pest": "^2",
+                "pestphp/pest-plugin-type-coverage": "^2.8.3",
+                "phpunit/phpunit": "^9.5.4 || ^10.0.0",
+                "roave/security-advisories": "dev-latest"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MarcReichel\\IGDBLaravel\\IGDBLaravelServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MarcReichel\\IGDBLaravel\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marc Reichel",
+                    "email": "mail@marcreichel.de"
+                }
+            ],
+            "description": "A Laravel wrapper for version 4 of the IGDB API (Apicalypse) including webhook handling",
+            "keywords": [
+                "api-wrapper",
+                "apicalypse",
+                "igdb",
+                "igdb-api",
+                "laravel",
+                "wrapper"
+            ],
+            "support": {
+                "issues": "https://github.com/marcreichel/igdb-laravel/issues",
+                "source": "https://github.com/marcreichel/igdb-laravel/tree/4.3.0"
+            },
+            "time": "2024-07-01T09:48:24+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
@@ -10422,5 +10491,5 @@
         "php": "^8.1"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

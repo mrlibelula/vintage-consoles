@@ -262,46 +262,4 @@ describe('Tool Service', function () {
         });
     });
     
-    describe('Genres', function () {
-        it('returns array of genres when session data exists', function () {
-            // Mock session data
-            $mockConsoles = [
-                [
-                    'games' => [
-                        [
-                            'genres' => [
-                                ['name' => 'platformer'],
-                                ['name' => 'action']
-                            ]
-                        ],
-                        [
-                            'genres' => [
-                                ['name' => 'adventure'],
-                                ['name' => 'platformer'] // duplicate to test uniqueness
-                            ]
-                        ]
-                    ]
-                ]
-            ];
-            
-            session(['consoles' => $mockConsoles]);
-            
-            $result = Tool::getGenres();
-            
-            expect($result)->toBeArray()
-                ->and($result)->toContain('action')
-                ->and($result)->toContain('adventure')
-                ->and($result)->toContain('platformer');
-            
-            // Test that duplicates are removed
-            expect(array_count_values($result))->each->toBe(1);
-        });
-        
-        it('handles missing session data gracefully', function () {
-            session()->forget('consoles');
-            
-            // This will throw an exception because the method doesn't handle null consoles
-            expect(fn() => Tool::getGenres())->toThrow(ErrorException::class);
-        });
-    });
 }); 

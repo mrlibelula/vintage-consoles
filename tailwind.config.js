@@ -16,7 +16,7 @@ export default {
         extend: {
             fontFamily: {
                 // sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-                sans: ['VT323', ...defaultTheme.fontFamily.sans],
+                sans: ['var(--app-font-family)', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 'cod-gray': {

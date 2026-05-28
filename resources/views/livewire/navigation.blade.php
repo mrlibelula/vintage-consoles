@@ -162,6 +162,9 @@
                                 <x-dropdown-link href="{{ route('admin.games') }}">
                                     {{ __('Game Manager') }}
                                 </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('admin.fonts') }}">
+                                    {{ __('Font Manager') }}
+                                </x-dropdown-link>
                             @endif
 
                             <!-- Authentication -->

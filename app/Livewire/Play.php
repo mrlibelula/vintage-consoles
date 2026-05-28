@@ -3,31 +3,28 @@
 namespace App\Livewire;
 
 use App\Actions\UpsertEmulatorSaveState;
+use App\Models\Console;
 use App\Models\EmulatorSaveState;
-use App\Service\Game;
+use App\Models\Game;
 use App\Service\Tool;
-use Livewire\Component;
-use Illuminate\Support\Str;
-use App\Service\GameSession;
+use App\Services\GameRepository;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Livewire\Component;
 
 class Play extends Component
 {
-    protected string $console_short_name;
-    protected string $enc_game_id;
-    public array $console;
-    public array $game;
-    public string $game_url;
-    public string $player_route;
+    public Console $console;
+    public Game $game;
+    public string $game_url = '';
+    public string $player_route = '';
     public int $save_slots_used = 0;
     public int $save_slots_total = UpsertEmulatorSaveState::MAX_SLOTS;
     public string $input = '';
-    public int $current_screenshot_key = -1;
 
     public array $accordion_toggler = [
-        'description' => false, 
-        'genres' => false, 
-        'screenshots' => false, 
+        'description'  => true,
+        'screenshots'  => true,
     ];
 
     public array $tabs = [
@@ -35,92 +32,73 @@ class Play extends Component
         'chat' => false,
     ];
 
-    private int $take = 20;
     public array $modals = [
         'screenshots' => false,
-        'genres' => false,
     ];
 
-    protected $listeners = ['fixedModalClosed', 'keydownLeft', 'keydownRight'];
+    private int $take = 20;
 
-    /**
-     * 'game_title' intended for SEO purposes only
-     * Irrelevant if present or not
-     *
-     * @param string $enc_game_id
-     * @param string $console_short_name
-     * @param string $game_title
-     * @return void
-     */
-    public function mount(string $console_short_name, string $game_title_slug)
+    public function mount(string $console_short_name, string $game_title_slug): void
     {
-        new GameSession;
+        $repo = app(GameRepository::class);
 
-        // Find the game by slug in the console's games array
-        $game_obj = new Game($console_short_name);
-        $this->console = $game_obj->getConsole();
-        
-        // Find the game with matching slug
-        $game = collect($this->console['games'])->first(function($game) use ($game_title_slug) {
-            return $game['slug'] === $game_title_slug;
-        });
+        $game = $repo->getGameBySlug($console_short_name, $game_title_slug);
 
-        if (!$game) {
+        if (! $game) {
             abort(404);
         }
 
-        $this->game = $game;
+        $this->game    = $game;
+        $this->console = $game->console;
+
         $this->hydrateSaveSlots($console_short_name);
         $this->loadGameUrl();
-        
+
         $this->player_route = route('player', [
-            Tool::encode(json_encode($this->game)),
-            strtolower($this->console['short_name']),
+            Tool::encode(json_encode($this->game->toPlayerPayload())),
+            strtolower($this->console->short_name),
         ]);
     }
 
     private function hydrateSaveSlots(string $console_short_name): void
     {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             $this->save_slots_used = 0;
             return;
         }
 
-        if (!($this->game['save_state_support'] ?? false)) {
+        if (! $this->game->save_state_support) {
             $this->save_slots_used = 0;
             return;
         }
-
-        $console = strtolower($console_short_name);
-        $gameSlug = $this->game['slug'] ?? Str::slug($this->game['title'] ?? '');
 
         $this->save_slots_used = EmulatorSaveState::query()
             ->where('user_id', auth()->id())
-            ->where('console', $console)
-            ->where('game_slug', $gameSlug)
+            ->where('console', strtolower($console_short_name))
+            ->where('game_slug', $this->game->slug)
             ->count();
     }
 
-    public function updatedInput()
+    public function updatedInput(): void
     {
         if ($this->input) {
-            $user_id = auth()->user() ? auth()->user()->id : null;
-            $message = $this->input;
+            $userId    = auth()->id();
+            $message   = $this->input;
             $timestamp = date('Y-m-d H:i:s');
-            $message_id = $this->generateNewMessageId();
-    
-            $message_object = [
-                "id" => $message_id, 
-                "user_id" => $user_id,
-                "user_color" => "amber",
-                "message" => $message,
-                "timestamp" => $timestamp,
-                "ip" => "",
-                "is_mobile" => false
+            $messageId = $this->generateNewMessageId();
+
+            $messageObject = [
+                'id'        => $messageId,
+                'user_id'   => $userId,
+                'user_color'=> 'amber',
+                'message'   => $message,
+                'timestamp' => $timestamp,
+                'ip'        => '',
+                'is_mobile' => false,
             ];
-    
-            $messages = $this->getMessages();
-            $messages[] = $message_object;
+
+            $messages   = $this->getMessages();
+            $messages[] = $messageObject;
             $this->updateMessagesFile($messages);
             $messages = Tool::sortByDate($messages, 'timestamp');
             $messages = collect($messages)->take($this->take)->toArray();
@@ -129,132 +107,70 @@ class Play extends Component
         }
     }
 
-    /**
-     * Saves json chat data file on storage
-     *
-     * @return void
-     */
-    public function updateMessagesFile(array $messages)
+    public function updateMessagesFile(array $messages): void
     {
         Storage::disk('data')->put($this->chatFilePath(), json_encode($messages));
     }
 
     public function chatFilePath(): string
     {
-        return 'chat/' . $this->console['id'] . '.' . $this->game['id'] . '.json';
+        return 'chat/' . $this->console->id . '.' . $this->game->id . '.json';
     }
 
-    /**
-     * Gets last inserted ID in messages array
-     *
-     * @return integer|string
-     */
     public function getLastInsertedMessageId(): int|string
     {
         $messages = $this->getMessages();
         $messages = Tool::sortBy($messages, 'id', 'asc');
-        
-        // dd($messages);
-        
+
         if (count($messages)) {
             return end($messages)['id'];
         }
+
         return 0;
     }
-    
+
     public function getMessages(): array
     {
-        $messages = [];
-        $disk = 'data';
-        if (Storage::disk($disk)->exists($this->chatFilePath())) {
-            $messages = json_decode(Storage::disk('data')->get($this->chatFilePath()), true);
+        if (Storage::disk('data')->exists($this->chatFilePath())) {
+            return json_decode(Storage::disk('data')->get($this->chatFilePath()), true) ?? [];
         }
-        return $messages;
+
+        return [];
     }
 
-    /**
-     * Creates a new message ID for message
-     *
-     * @return integer|string
-     */
     public function generateNewMessageId(): int|string
     {
-        $last_id = $this->getLastInsertedMessageId();
-        return gettype($last_id) === 'integer' ? $last_id + 1 : Str::random(10);
+        $lastId = $this->getLastInsertedMessageId();
+        return gettype($lastId) === 'integer' ? $lastId + 1 : Str::random(10);
     }
 
-    public function keydownLeft()
+    public function toggle(string $accordion_name): void
     {
-        $this->changeScreenShot('left');
+        $key = strtolower($accordion_name);
+        $this->accordion_toggler[$key] = ! ($this->accordion_toggler[$key] ?? false);
     }
 
-    public function keydownRight()
+    public function changeTab(string $tab): void
     {
-        $this->changeScreenShot('right');
-    }
-    
-    public function changeTab(string $tab)
-    {
-        $this->tabs = array_map(function ($t) {
-            return $t = false;
-        }, $this->tabs);
-        
+        $this->tabs = array_map(fn () => false, $this->tabs);
         $this->tabs[$tab] = true;
     }
 
-    public function rendered()
+    public function loadGameUrl(): void
+    {
+        $shortName = strtolower($this->console->short_name);
+        if ($shortName !== 'pc') {
+            $this->game_url = route('game.serve', [
+                'console'  => $shortName,
+                'filename' => $this->game->rom,
+            ]);
+        }
+    }
+
+    public function rendered(): void
     {
         Tool::loadersOff($this);
         $this->dispatch('fixed-modal-loader-off');
-    }
-
-    public function changeScreenShot(string $direction)
-    {
-        $limit_left = 0;
-        $limit_right = count($this->game['screenshots']) - 1;
-        $current = $this->current_screenshot_key;
-
-        switch ($direction) {
-            case 'left':
-                $current--;
-                $this->current_screenshot_key = $current <= $limit_left ? $limit_left : $current;
-                break;
-            case 'right':
-                $current++;
-                $this->current_screenshot_key = $current >= $limit_right ? $limit_right : $current;
-                break;
-        }
-    }
-
-    public function fixedModalClosed()
-    {
-        $this->current_screenshot_key = -1;
-    }
-
-    public function screenshot(int $screenshot_key)
-    {
-        $this->current_screenshot_key = $screenshot_key;
-    }
-
-    public function toggle(string $accordion_name)
-    {
-        $this->accordion_toggler[strtolower($accordion_name)] = !$this->accordion_toggler[strtolower($accordion_name)];
-    }
-
-    /**
-     * For all consoles except 'PC'
-     *
-     * @return void
-     */
-    public function loadGameUrl()
-    {
-        $console_short_name = strtolower($this->console['short_name']);
-        if ($console_short_name !== 'pc') {
-            $this->game_url = route('game.serve', [
-                'console' => $console_short_name,
-                'filename' => $this->game['rom']
-            ]);
-        }
     }
 
     public function render()

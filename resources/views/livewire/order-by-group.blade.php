@@ -1,8 +1,7 @@
 <div class="overflow-x-auto" data-ribbon-view="group">
     <x-ribbon ob="group">
-    @foreach ($selected_console['games'] as $game)
+    @foreach ($games as $game)
         <swiper-slide class="relative">
-            {{-- Skeleton overlay; links stay in-flow (invisible) so IntersectionObserver can still run --}}
             <div x-show="skeletonGroup" class="absolute inset-0 z-10 flex items-start justify-center py-4">
                 <div class="group relative flex h-full flex-col overflow-hidden rounded-xl border-2 border-cod-gray-300 bg-cod-gray-200/80 shadow dark:border-cod-gray-950 dark:bg-cod-gray-900/90">
                     <div class="flex h-full w-[230px] shrink-0 flex-col overflow-hidden">
@@ -24,7 +23,7 @@
                class="relative z-0 lazy-load-container"
                data-loaded="false"
             >
-                <livewire:game-card :game="$game" :key="$game['id']" />
+                <livewire:game-card :game="$game" :key="$game->id" />
             </a>
         </swiper-slide>
     @endforeach

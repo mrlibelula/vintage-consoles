@@ -1,6 +1,6 @@
 <div class="overflow-x-auto" data-ribbon-view="squares">
     <x-ribbon ob="squares">
-        @foreach ($selected_console['games'] as $game)
+        @foreach ($games as $game)
         <swiper-slide class="relative">
             <div x-show="skeletonSquare" class="absolute inset-0 z-10 flex items-center justify-center">
                 <div class="group shrink-0 rounded-lg overflow-hidden border-[3px] border-cod-gray-500 bg-gradient-to-br from-cod-gray-700 via-cod-gray-700/50 to-cod-gray-800 opacity-75 shadow-md shadow-cod-gray-500 animate-pulse dark:border-cod-gray-700 dark:shadow-black dark:from-cod-gray-800 dark:via-cod-gray-800/50 dark:to-cod-gray-900">
@@ -14,7 +14,7 @@
                class="relative z-0 flex h-[12rem] w-full shrink-0 items-center justify-center my-2 lazy-load-container"
                data-loaded="false"
             >
-                <livewire:game-card-classic :game="$game" :key="$game['id']" />
+                <livewire:game-card-classic :game="$game" :key="$game->id" />
             </a>
         </swiper-slide>
         @endforeach

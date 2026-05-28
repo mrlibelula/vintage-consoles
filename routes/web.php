@@ -8,7 +8,6 @@ use App\Livewire\JsPlayer;
 use App\Livewire\Play;
 use App\Livewire\Publishers;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\EmulatorControlSettingController;
 use App\Http\Controllers\EmulatorSaveStateController;
 use App\Http\Controllers\LoginController;
@@ -49,21 +48,6 @@ Route::get('/debug-auth', function () {
     ]);
 })->name('debug.auth');
 
-// Debug route to monitor memory usage (remove in production)
-Route::get('/debug/memory', function () {
-    $sessionSize = strlen(serialize(session()->all()));
-    $consolesBasic = session('consoles_basic', []);
-    $consolesBasicSize = strlen(serialize($consolesBasic));
-    
-    return response()->json([
-        'php_memory_usage' => memory_get_usage(true) / 1024 / 1024 . ' MB',
-        'php_memory_peak' => memory_get_peak_usage(true) / 1024 / 1024 . ' MB',
-        'session_total_size' => $sessionSize . ' bytes',
-        'consoles_basic_size' => $consolesBasicSize . ' bytes',
-        'consoles_basic_count' => count($consolesBasic),
-        'json_file_size' => Storage::disk('data')->size('vintage-consoles.json') . ' bytes'
-    ]);
-})->name('debug.memory');
 
 // Route::get('/', function () {
 //     return view('landing');
@@ -128,5 +112,6 @@ Route::middleware([
     // Admin routes - protected by admin middleware
     Route::middleware(['admin'])->group(function () {
         Route::get('/admin/games', App\Livewire\Admin\GameManager::class)->name('admin.games');
+        Route::get('/admin/fonts', App\Livewire\Admin\FontManager::class)->name('admin.fonts');
     });
 });

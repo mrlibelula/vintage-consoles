@@ -62,8 +62,9 @@
         // "https://static.vecteezy.com/system/resources/previews/027/420/048/non_2x/gamepad-icon-on-light-background-vintage-game-console-joystick-symbol-oldschool-retro-gaming-sign-outline-flat-and-colored-style-flat-design-illustration-vector.jpg",
     ];
 
-    $dark_wallpaper = $dark_wallps[rand(0, count($dark_wallps) - 1)] ?? '';
-    $light_wallpaper = $light_wallps[rand(0, count($light_wallps) - 1)] ?? '';
+    $wallpaperSeed = crc32($ob . json_encode(array_values($customSlidesPerView)));
+    $dark_wallpaper = $dark_wallps[$wallpaperSeed % count($dark_wallps)] ?? '';
+    $light_wallpaper = $light_wallps[$wallpaperSeed % count($light_wallps)] ?? '';
 @endphp
 <swiper-container 
     navigation="true"

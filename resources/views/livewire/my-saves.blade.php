@@ -54,7 +54,7 @@
         <button
           type="button"
           wire:click="openGlobalUploadModal"
-          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white text-base sm:text-xl font-semibold smooth-300 shadow-sm"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white text-base sm:text-xl smooth-300 shadow-sm"
           title="Upload a .state file for any game on any slot"
         >
           <i class="fa fa-cloud-upload text-sm sm:text-base"></i>
@@ -65,75 +65,141 @@
 
     @if ($grouped)
       @php
+        $displayGrouped = $this->filteredGrouped;
+        $displayGameCount = collect($displayGrouped)->sum(fn ($consoleData) => count($consoleData['games']));
         // Keep the jump UI compact when the list is long.
-        $showGameJumpList = $totalGames <= 12;
+        $showGameJumpList = $displayGameCount <= 12;
       @endphp
 
       {{-- ──────────────────────── Jump Bar (mobile / small) ──────────────────────── --}}
-      @if (count($grouped) >= 2)
-        <div class="lg:hidden sticky top-16 z-40 -mx-4 xl:-mx-6 px-4 xl:px-6 mb-8 py-1 sm:py-2 bg-cod-gray-200/95 dark:bg-cod-gray-950/95 backdrop-blur-sm border-b border-cod-gray-300/50 dark:border-cod-gray-800/60">
-          <div class="flex flex-wrap gap-x-3 gap-y-1 items-center">
-            <span class="text-base sm:text-xl text-cod-gray-500 dark:text-cod-gray-600 shrink-0">Jump to:</span>
-            @foreach ($grouped as $consoleShort => $consoleData)
-              <a
-                href="#console-{{ $consoleShort }}"
-                class="text-base sm:text-xl text-cod-gray-600 dark:text-cod-gray-400 hover:text-rose-500 dark:hover:text-rose-400 smooth-300 uppercase tracking-wider"
-              >
-                {{ $consoleShort === 'atari2600' ? 'Atari 2600' : strtoupper($consoleShort) }}
-              </a>
-            @endforeach
-          </div>
+      <div class="lg:hidden mb-4">
+        <label for="my-saves-game-search-mobile" class="sr-only">Search saved games</label>
+        <div class="relative">
+          <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-cod-gray-500 dark:text-cod-gray-600 text-sm pointer-events-none" aria-hidden="true"></i>
+          <input
+            id="my-saves-game-search-mobile"
+            type="text"
+            role="searchbox"
+            wire:model.live.debounce.300ms="gameSearch"
+            placeholder="Search saved games"
+            autocomplete="off"
+            class="w-full rounded-lg border border-cod-gray-300/70 dark:border-cod-gray-800 bg-cod-gray-100/70 dark:bg-cod-gray-900/80 py-2 pl-9 pr-9 text-base sm:text-lg text-cod-gray-800 dark:text-cod-gray-100 placeholder:text-cod-gray-500 dark:placeholder:text-cod-gray-600 focus:outline-none focus:ring-2 focus:ring-rose-500/40 focus:border-rose-400/50 dark:focus:border-rose-600/50 smooth-300"
+          >
+          @if ($gameSearch !== '')
+            <button
+              type="button"
+              wire:click="clearGameSearch"
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 inline-flex items-center justify-center rounded-md text-cod-gray-500 dark:text-cod-gray-600 hover:text-rose-500 dark:hover:text-rose-400 smooth-300"
+              aria-label="Clear search"
+            >
+              <i class="fa fa-times text-sm" aria-hidden="true"></i>
+            </button>
+          @endif
         </div>
-      @endif
+      </div>
+
+      <div class="lg:hidden sticky top-16 z-40 -mx-4 xl:-mx-6 px-4 xl:px-6 mb-8 py-1 sm:py-2 bg-cod-gray-200/95 dark:bg-cod-gray-950/95 backdrop-blur-sm border-b border-cod-gray-300/50 dark:border-cod-gray-800/60">
+        <div class="flex flex-wrap gap-x-3 gap-y-1 items-center">
+          <span class="text-base sm:text-xl text-cod-gray-500 dark:text-cod-gray-600 shrink-0">Jump to:</span>
+          @foreach ($displayGrouped as $consoleShort => $consoleData)
+            <a
+              href="#console-{{ $consoleShort }}"
+              class="text-base sm:text-xl text-cod-gray-600 dark:text-cod-gray-400 hover:text-rose-500 dark:hover:text-rose-400 smooth-300 uppercase tracking-wider"
+            >
+              {{ $consoleShort === 'atari2600' ? 'Atari 2600' : strtoupper($consoleShort) }}
+            </a>
+          @endforeach
+        </div>
+      </div>
 
       {{-- ───────────────────── Desktop layout: vertical jump list + content ───────────────────── --}}
-      <div id="my-saves-scroll-spy" class="lg:flex lg:items-start lg:gap-6">
-        @if (count($grouped) >= 2)
-          <aside class="hidden lg:block lg:w-64 shrink-0 lg:sticky lg:top-20 lg:self-start">
-              <div class="rounded-xl border border-cod-gray-300/60 dark:border-cod-gray-800 bg-cod-gray-100/60 dark:bg-cod-gray-900/70 p-4 max-h-[calc(100vh-6rem)] overflow-y-auto">
-                <div class="text-base sm:text-xl text-cod-gray-500 dark:text-cod-gray-600 mb-3">
-                  Jump to
-                </div>
-
-                <nav class="space-y-3" aria-label="Jump list">
-                  @foreach ($grouped as $consoleShort => $consoleData)
-                    <div>
-                      <a
-                        href="#console-{{ $consoleShort }}"
-                        class="block text-base sm:text-xl text-cod-gray-700 dark:text-cod-gray-300 hover:text-rose-500 dark:hover:text-rose-400 smooth-300 uppercase tracking-wider"
-                      >
-                        {{ $consoleShort === 'atari2600' ? 'Atari 2600' : strtoupper($consoleShort) }}
-                      </a>
-
-                      @if ($showGameJumpList)
-                        <div class="mt-2 pl-3 border-l border-cod-gray-300/60 dark:border-cod-gray-800 space-y-1.5">
-                          @foreach ($consoleData['games'] as $gameKey => $game)
-                            <a
-                              href="#game-{{ $consoleShort }}-{{ $gameKey }}"
-                              class="block text-base sm:text-lg text-cod-gray-600 dark:text-cod-gray-400 hover:text-rose-500 dark:hover:text-rose-400 smooth-300 truncate"
-                              title="{{ $game['title'] }}"
-                            >
-                              {{ $game['title'] }}
-                            </a>
-                          @endforeach
-                        </div>
-                      @endif
-                    </div>
-                  @endforeach
-
-                  @if (! $showGameJumpList)
-                    <div class="pt-2 text-sm sm:text-base text-cod-gray-500 dark:text-cod-gray-600 leading-snug">
-                      Tip: game list hidden ({{ $totalGames }} games). Use the console links above.
-                    </div>
-                  @endif
-                </nav>
+      <div id="my-saves-scroll-spy" class="lg:grid lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-6">
+        <aside id="my-saves-desktop-sidebar" class="hidden lg:block lg:min-h-full">
+          <div class="lg:sticky lg:top-16 lg:z-10 flex w-full max-h-[calc(100vh-4rem)] flex-col gap-3 overflow-hidden">
+            <div class="shrink-0">
+              <label for="my-saves-game-search" class="sr-only">Search saved games</label>
+              <div class="relative">
+                <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-cod-gray-500 dark:text-cod-gray-600 text-sm pointer-events-none" aria-hidden="true"></i>
+                <input
+                  id="my-saves-game-search"
+                  type="text"
+                  role="searchbox"
+                  wire:model.live.debounce.300ms="gameSearch"
+                  placeholder="Search saved games"
+                  autocomplete="off"
+                  class="w-full rounded-lg border border-cod-gray-300/70 dark:border-cod-gray-800 bg-cod-gray-100/70 dark:bg-cod-gray-900/80 py-2 pl-9 pr-9 text-base sm:text-lg text-cod-gray-800 dark:text-cod-gray-100 placeholder:text-cod-gray-500 dark:placeholder:text-cod-gray-600 focus:outline-none focus:ring-2 focus:ring-rose-500/40 focus:border-rose-400/50 dark:focus:border-rose-600/50 smooth-300"
+                >
+                @if ($gameSearch !== '')
+                  <button
+                    type="button"
+                    wire:click="clearGameSearch"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 inline-flex items-center justify-center rounded-md text-cod-gray-500 dark:text-cod-gray-600 hover:text-rose-500 dark:hover:text-rose-400 smooth-300"
+                    aria-label="Clear search"
+                  >
+                    <i class="fa fa-times text-sm" aria-hidden="true"></i>
+                  </button>
+                @endif
               </div>
-          </aside>
-        @endif
+            </div>
 
-        <div class="min-w-0 flex-1 pb-24 lg:pb-[35vh]">
+            <div class="min-h-0 flex-1 overflow-y-auto rounded-xl border border-cod-gray-300/60 dark:border-cod-gray-800 bg-cod-gray-100/60 dark:bg-cod-gray-900/70 p-4">
+              <div class="text-base sm:text-xl text-cod-gray-500 dark:text-cod-gray-600 mb-3">
+                Jump to
+              </div>
+
+              <nav class="space-y-3" aria-label="Jump list">
+                @foreach ($displayGrouped as $consoleShort => $consoleData)
+                  <div>
+                    <a
+                      href="#console-{{ $consoleShort }}"
+                      class="block text-base sm:text-xl text-cod-gray-700 dark:text-cod-gray-300 hover:text-rose-500 dark:hover:text-rose-400 smooth-300 uppercase tracking-wider"
+                    >
+                      {{ $consoleShort === 'atari2600' ? 'Atari 2600' : strtoupper($consoleShort) }}
+                    </a>
+
+                    @if ($showGameJumpList)
+                      <div class="mt-2 pl-3 border-l border-cod-gray-300/60 dark:border-cod-gray-800 space-y-1.5">
+                        @foreach ($consoleData['games'] as $gameKey => $game)
+                          <a
+                            href="#game-{{ $consoleShort }}-{{ $gameKey }}"
+                            class="block text-base sm:text-lg text-cod-gray-600 dark:text-cod-gray-400 hover:text-rose-500 dark:hover:text-rose-400 smooth-300 truncate"
+                            title="{{ $game['title'] }}"
+                          >
+                            {{ $game['title'] }}
+                          </a>
+                        @endforeach
+                      </div>
+                    @endif
+                  </div>
+                @endforeach
+
+                @if (! $showGameJumpList)
+                  <div class="pt-2 text-sm sm:text-base text-cod-gray-500 dark:text-cod-gray-600 leading-snug">
+                    Tip: game list hidden ({{ $displayGameCount }} games). Use the console links above.
+                  </div>
+                @endif
+              </nav>
+            </div>
+          </div>
+        </aside>
+
+        <div class="min-w-0 pb-24">
+          @if (count($displayGrouped) === 0)
+            <div class="rounded-xl border border-cod-gray-300/60 dark:border-cod-gray-800 bg-cod-gray-100/60 dark:bg-cod-gray-900/70 px-4 py-8 text-center">
+              <p class="text-lg sm:text-xl text-cod-gray-700 dark:text-cod-gray-300">
+                No games match “{{ $gameSearch }}”.
+              </p>
+              <button
+                type="button"
+                wire:click="clearGameSearch"
+                class="mt-3 text-base sm:text-lg text-rose-600 dark:text-rose-400 hover:underline smooth-300"
+              >
+                Clear search
+              </button>
+            </div>
+          @else
           {{-- ─────────────────────────── Console Sections ─────────────────────────── --}}
-          @foreach ($grouped as $consoleShort => $consoleData)
+          @foreach ($displayGrouped as $consoleShort => $consoleData)
             <section id="console-{{ $consoleShort }}" class="mb-14 scroll-mt-20">
 
               {{-- Console heading --}}
@@ -165,10 +231,10 @@
 
                       {{-- Box art --}}
                       <div class="shrink-0 w-10 h-14 rounded overflow-hidden bg-cod-gray-300/40 dark:bg-cod-gray-800/60">
-                        @if ($game['poster'] ?? $game['box'] ?? null)
+                        @if ($game['poster'] ?? $game['game_preview'] ?? null)
                           <img
                             class="w-full h-full object-cover"
-                            src="{{ $game['poster'] ?? $game['box'] }}"
+                            src="{{ $game['poster'] ?? $game['game_preview'] }}"
                             alt="{{ $game['title'] }}"
                             loading="lazy"
                           >
@@ -304,6 +370,7 @@
 
             </section>
           @endforeach
+          @endif
         </div>
       </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\GameRepository;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
@@ -13,7 +14,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(GameRepository::class);
+        $this->app->singleton(\App\Services\AppFontService::class);
     }
 
     /**

@@ -16,6 +16,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "pixelarticons": "^2.1.0",
         "swiper": "^11.2.10"
     }
 }

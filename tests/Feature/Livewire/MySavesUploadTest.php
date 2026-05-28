@@ -1,39 +1,58 @@
 <?php
 
 use App\Livewire\MySaves;
+use App\Models\Console;
 use App\Models\EmulatorSaveState;
+use App\Models\Game;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Seed helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+function seedSaveConsoles(): void
+{
+    $nes = Console::factory()->create([
+        'short_name' => 'nes',
+        'long_name'  => 'Nintendo Entertainment System',
+    ]);
+
+    Game::factory()->create([
+        'console_id'        => $nes->id,
+        'title'             => 'Super Mario Bros.',
+        'slug'              => 'super-mario-bros',
+        'save_state_support'=> true,
+    ]);
+    Game::factory()->create([
+        'console_id'        => $nes->id,
+        'title'             => 'Zelda',
+        'slug'              => 'zelda',
+        'save_state_support'=> true,
+    ]);
+
+    $snes = Console::factory()->create([
+        'short_name' => 'snes',
+        'long_name'  => 'Super Nintendo',
+    ]);
+
+    // Force id=10 for the legacy numeric-key back-compat test.
+    Game::factory()->create([
+        'id'                => 10,
+        'console_id'        => $snes->id,
+        'title'             => 'Donkey Kong Country',
+        'slug'              => 'donkey-kong-country',
+        'save_state_support'=> true,
+    ]);
+}
+
 beforeEach(function () {
     Storage::fake('savestates');
-
-    Session::put('consoles', [
-        [
-            'short_name' => 'nes',
-            'long_name' => 'Nintendo Entertainment System',
-            'console_icon' => null,
-            'console_logo' => null,
-            'games' => [
-                ['id' => 1, 'title' => 'Super Mario Bros.', 'slug' => 'super-mario-bros'],
-                ['id' => 2, 'title' => 'Zelda', 'slug' => 'zelda'],
-            ],
-        ],
-        [
-            'short_name' => 'snes',
-            'long_name' => 'Super Nintendo',
-            'console_icon' => null,
-            'console_logo' => null,
-            'games' => [
-                ['id' => 10, 'title' => 'Donkey Kong Country', 'slug' => 'donkey-kong-country'],
-            ],
-        ],
-    ]);
+    seedSaveConsoles();
 });
 
 it('stores an uploaded save via My Saves flow', function () {
@@ -202,4 +221,45 @@ it('shows the correct game title when legacy numeric ids are stored in game_slug
     expect($games)->toHaveKey('10');
     expect($games['10']['title'])->toBe('Donkey Kong Country');
     expect($games['10']['slug'])->toBe('donkey-kong-country');
+});
+
+it('filters saved games by search term', function () {
+    $user = User::factory()->create();
+
+    foreach ([
+        ['console' => 'nes', 'game_slug' => 'super-mario-bros', 'slot' => 1],
+        ['console' => 'nes', 'game_slug' => 'zelda', 'slot' => 1],
+        ['console' => 'snes', 'game_slug' => 'donkey-kong-country', 'slot' => 1],
+    ] as $save) {
+        EmulatorSaveState::create([
+            'user_id' => $user->id,
+            'console' => $save['console'],
+            'game_slug' => $save['game_slug'],
+            'slot' => $save['slot'],
+            'disk_path' => "{$user->id}/{$save['console']}/{$save['game_slug']}/{$save['game_slug']}-slot-{$save['slot']}.state",
+            'size_bytes' => 1,
+            'checksum' => hash('sha256', $save['game_slug']),
+        ]);
+    }
+
+    $component = Livewire::actingAs($user)->test(MySaves::class);
+
+    $filtered = $component->get('filteredGrouped');
+    expect($filtered)->toHaveKeys(['nes', 'snes']);
+
+    $component
+        ->set('gameSearch', 'zelda')
+        ->assertSee('Zelda')
+        ->assertDontSee('Super Mario Bros.');
+
+    $filtered = $component->get('filteredGrouped');
+    expect($filtered)->toHaveKey('nes')
+        ->and($filtered['nes']['games'])->toHaveKey('zelda')
+        ->and($filtered)->not->toHaveKey('snes');
+
+    $component
+        ->call('clearGameSearch')
+        ->assertSet('gameSearch', '');
+
+    expect($component->get('filteredGrouped'))->toHaveKeys(['nes', 'snes']);
 });

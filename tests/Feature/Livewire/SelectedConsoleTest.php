@@ -1,381 +1,255 @@
 <?php
 
 use App\Livewire\SelectedConsole;
-use App\Service\Tool;
+use App\Models\Console;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
 
-function getMockSelectedConsole()
+uses(RefreshDatabase::class);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Seed helper
+// ─────────────────────────────────────────────────────────────────────────────
+
+function makeSelectedConsole(array $attrs = []): Console
 {
-    return [
-        'id' => 1,
+    return Console::factory()->create(array_merge([
+        'id'         => 1,
         'short_name' => 'NES',
-        'name' => 'Nintendo Entertainment System',
-        'long_name' => 'Nintendo Entertainment System',
-        'description' => 'Classic 8-bit gaming console from Nintendo',
-        'console_logo' => 'path/to/nes_logo.png',
-        'console_icon' => 'path/to/nes_icon.png',
-        'console_bgs' => ['path/to/nes_bg.jpg'],
-        'release_date' => '1985',
-        'release_year' => '1985',
-        'manufacturer' => 'Nintendo',
-        'emulator' => [
-            'name' => 'EmulatorJS',
-            'version' => '4.2.3'
-        ],
-        'specs' => [
-            'cpu' => '8-bit MOS 6502',
-            'memory' => '2KB RAM',
-            'graphics' => '256x240 resolution',
-            'audio' => 'Mono audio',
-            'input' => 'Controller'
-        ],
-        'community_links' => [
-            [
-                'community_name' => 'NES Community',
-                'url' => 'https://nes.community',
-                'description' => 'NES enthusiasts community'
-            ],
-            [
-                'community_name' => 'Retro Gaming',
-                'url' => 'https://retro.gaming',
-                'description' => 'General retro gaming community'
-            ]
-        ],
-        'games' => [
-            [
-                'id' => 1,
-                'title' => 'Super Mario Bros.',
-                'slug' => 'super-mario-bros',
-                'description' => 'Classic platformer',
-                'box' => 'images/games/mario.jpg',
-                'poster' => 'images/games/mario-poster.jpg',
-                'release_year' => '1985',
-                'rating' => '0.89',
-                'rom' => 'mario.nes',
-                'publisher' => 'Nintendo'
-            ],
-            [
-                'id' => 2,
-                'title' => 'The Legend of Zelda',
-                'slug' => 'legend-of-zelda',
-                'description' => 'Adventure game',
-                'box' => 'images/games/zelda.jpg',
-                'poster' => 'images/games/zelda-poster.jpg',
-                'release_year' => '1986',
-                'rating' => '0.91',
-                'rom' => 'zelda.nes',
-                'publisher' => 'Nintendo'
-            ]
-        ]
-    ];
+        'long_name'  => 'Nintendo Entertainment System',
+        'description'=> 'Classic 8-bit gaming console from Nintendo',
+    ], $attrs));
 }
 
 beforeEach(function () {
-    // Use in-memory SQLite database for testing
-    config(['database.default' => 'testing']);
-    config(['database.connections.testing' => [
-        'driver' => 'sqlite',
-        'database' => ':memory:',
-    ]]);
-    
-    // Run migrations in memory only
-    $this->artisan('migrate', ['--database' => 'testing']);
-    
     Session::flush();
 });
 
-describe('SelectedConsole Component Initialization', function () {
+// ─────────────────────────────────────────────────────────────────────────────
+// Rendering
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('SelectedConsole rendering', function () {
     it('can be rendered', function () {
-        $mockConsole = getMockSelectedConsole();
-        
-        Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ])->assertStatus(200);
+        $console = makeSelectedConsole();
+
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->assertStatus(200);
     });
 
-    it('initializes with default values', function () {
-        $mockConsole = getMockSelectedConsole();
-        
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
+    it('renders the correct view', function () {
+        $console = makeSelectedConsole();
 
-        $component->assertSet('is_selected_tab_first', false)
-                 ->assertSet('is_selected_tab_last', false)
-                 ->assertSet('selected_console', $mockConsole)
-                 ->assertSet('console_data_accordion', true)
-                 ->assertSet('specs_accordion', false)
-                 ->assertSet('community_accordion', true)
-                 ->assertSet('ob', 'group');
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->assertViewIs('livewire.selected-console');
     });
 
-    it('initializes with custom selected console', function () {
-        $mockConsole = getMockSelectedConsole();
-        
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
+    it('renders carousel sort controls with icons', function () {
+        $console = makeSelectedConsole();
+        $console->setRelation('games', collect());
 
-        $component->assertSet('selected_console', $mockConsole);
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->assertSee('Sort by title', false)
+            ->assertSee('Sort by rating', false)
+            ->assertSee('M14 9h7v2h-7zm0-6h7v2h-7', false)
+            ->assertSee('M7 1h10v2H7zM5 3h2v2H5', false);
+    });
+
+    it('initializes with correct defaults', function () {
+        $console = makeSelectedConsole();
+
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->assertSet('is_selected_tab_first', false)
+            ->assertSet('is_selected_tab_last', false)
+            ->assertSet('console_data_accordion', true)
+            ->assertSet('specs_accordion', false)
+            ->assertSet('community_accordion', true)
+            ->assertSet('ob', 'group')
+            ->assertSet('gameSortField', 'rating')
+            ->assertSet('gameSortDirection', 'desc');
     });
 });
 
-describe('Accordion Management', function () {
-    it('toggles console_data_accordion correctly', function () {
-        $mockConsole = getMockSelectedConsole();
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
+// ─────────────────────────────────────────────────────────────────────────────
+// Accordion Management
+// ─────────────────────────────────────────────────────────────────────────────
 
-        // Initially true
-        $component->assertSet('console_data_accordion', true);
+describe('Accordion management', function () {
+    it('toggles console_data_accordion on and off', function () {
+        $console = makeSelectedConsole();
 
-        // Toggle to false
-        $component->call('toggleAccordion', 'console_data_accordion');
-        $component->assertSet('console_data_accordion', false);
-
-        // Toggle back to true
-        $component->call('toggleAccordion', 'console_data_accordion');
-        $component->assertSet('console_data_accordion', true);
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->assertSet('console_data_accordion', true)
+            ->call('toggleAccordion', 'console_data_accordion')
+            ->assertSet('console_data_accordion', false)
+            ->call('toggleAccordion', 'console_data_accordion')
+            ->assertSet('console_data_accordion', true);
     });
 
-    it('toggles specs_accordion correctly', function () {
-        $mockConsole = getMockSelectedConsole();
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
+    it('toggles specs_accordion on and off', function () {
+        $console = makeSelectedConsole();
 
-        // Initially false
-        $component->assertSet('specs_accordion', false);
-
-        // Toggle to true
-        $component->call('toggleAccordion', 'specs_accordion');
-        $component->assertSet('specs_accordion', true);
-
-        // Toggle back to false
-        $component->call('toggleAccordion', 'specs_accordion');
-        $component->assertSet('specs_accordion', false);
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->assertSet('specs_accordion', false)
+            ->call('toggleAccordion', 'specs_accordion')
+            ->assertSet('specs_accordion', true)
+            ->call('toggleAccordion', 'specs_accordion')
+            ->assertSet('specs_accordion', false);
     });
 
-    it('toggles community_accordion correctly', function () {
-        $mockConsole = getMockSelectedConsole();
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
+    it('toggles community_accordion on and off', function () {
+        $console = makeSelectedConsole();
 
-        // Initially true
-        $component->assertSet('community_accordion', true);
-
-        // Toggle to false
-        $component->call('toggleAccordion', 'community_accordion');
-        $component->assertSet('community_accordion', false);
-
-        // Toggle back to true
-        $component->call('toggleAccordion', 'community_accordion');
-        $component->assertSet('community_accordion', true);
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->assertSet('community_accordion', true)
+            ->call('toggleAccordion', 'community_accordion')
+            ->assertSet('community_accordion', false)
+            ->call('toggleAccordion', 'community_accordion')
+            ->assertSet('community_accordion', true);
     });
 
     it('only toggles the specified accordion', function () {
-        $mockConsole = getMockSelectedConsole();
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
+        $console = makeSelectedConsole();
 
-        // Toggle specs_accordion
-        $component->call('toggleAccordion', 'specs_accordion');
-
-        // Check that only specs_accordion changed
-        $component->assertSet('specs_accordion', true)
-                 ->assertSet('console_data_accordion', true) // Should remain unchanged
-                 ->assertSet('community_accordion', true); // Should remain unchanged
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->call('toggleAccordion', 'specs_accordion')
+            ->assertSet('specs_accordion', true)
+            ->assertSet('console_data_accordion', true)
+            ->assertSet('community_accordion', true);
     });
 });
 
-describe('Session Management', function () {
-    it('uses default ob value when session does not exist', function () {
-        $mockConsole = getMockSelectedConsole();
-        // Don't set session value, should use default
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
-        $component->assertSet('ob', 'group');
+// ─────────────────────────────────────────────────────────────────────────────
+// Session ob handling
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('Session ob handling', function () {
+    it('defaults to "group" when session has no ob', function () {
+        $console = makeSelectedConsole();
+
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->assertSet('ob', 'group');
     });
 
-    it('uses session ob value when it exists', function () {
-        $mockConsole = getMockSelectedConsole();
+    it('picks up ob from session', function () {
+        $console = makeSelectedConsole();
         Session::put('ob', 'squares');
-        
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
-        $component->assertSet('ob', 'squares');
+
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->assertSet('ob', 'squares');
     });
 
-    it('handles different ob values from session', function () {
-        $mockConsole = getMockSelectedConsole();
-        $testValues = ['group', 'squares', 'lista'];
+    it('handles all valid ob values from session', function () {
+        $console = makeSelectedConsole();
 
-        foreach ($testValues as $value) {
+        foreach (['group', 'squares', 'lista'] as $value) {
             Session::put('ob', $value);
-            
-            $component = Livewire::test(SelectedConsole::class, [
-                'selected_console' => $mockConsole
-            ]);
-            $component->assertSet('ob', $value);
+
+            Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+                ->assertSet('ob', $value);
         }
     });
 });
 
-describe('Tab Position Properties', function () {
-    it('handles tab position properties correctly', function () {
-        $mockConsole = getMockSelectedConsole();
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole,
+// ─────────────────────────────────────────────────────────────────────────────
+// Tab position properties
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('Tab position properties', function () {
+    it('accepts is_selected_tab_first on initialisation', function () {
+        $console = makeSelectedConsole();
+
+        Livewire::test(SelectedConsole::class, [
+            'selected_console'    => $console,
             'is_selected_tab_first' => true,
-            'is_selected_tab_last' => false
-        ]);
-
-        $component->assertSet('is_selected_tab_first', true)
-                 ->assertSet('is_selected_tab_last', false);
+            'is_selected_tab_last'  => false,
+        ])
+        ->assertSet('is_selected_tab_first', true)
+        ->assertSet('is_selected_tab_last', false);
     });
 
-    it('can update tab position properties', function () {
-        $mockConsole = getMockSelectedConsole();
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
+    it('can update tab position properties at runtime', function () {
+        $console = makeSelectedConsole();
 
-        $component->set('is_selected_tab_first', true);
-        $component->assertSet('is_selected_tab_first', true);
-
-        $component->set('is_selected_tab_last', true);
-        $component->assertSet('is_selected_tab_last', true);
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->set('is_selected_tab_first', true)
+            ->assertSet('is_selected_tab_first', true)
+            ->set('is_selected_tab_last', true)
+            ->assertSet('is_selected_tab_last', true);
     });
 });
 
-describe('Component Lifecycle', function () {
-    it('calls rendered method correctly', function () {
-        $mockConsole = getMockSelectedConsole();
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
-        $component->call('rendered');
-        
-        // Should not throw errors
-        expect(true)->toBeTrue();
+// ─────────────────────────────────────────────────────────────────────────────
+// Component properties and data
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('Component properties', function () {
+    it('exposes the console model as a component property', function () {
+        $console = makeSelectedConsole();
+
+        $component = Livewire::test(SelectedConsole::class, ['selected_console' => $console]);
+
+        $instance = $component->instance();
+        expect($instance->selected_console)->toBeInstanceOf(Console::class)
+            ->and($instance->selected_console->short_name)->toBe('NES');
     });
 
-    it('calls mount method correctly', function () {
-        $mockConsole = getMockSelectedConsole();
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
-        
-        // Mount is called automatically during component initialization
-        // Just check that the component initializes without errors
-        expect(true)->toBeTrue();
-    });
-});
-
-describe('View Rendering', function () {
-    it('renders the correct view', function () {
-        $mockConsole = getMockSelectedConsole();
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
-        $component->assertViewIs('livewire.selected-console');
-    });
-
-    it('passes correct data to view', function () {
-        $mockConsole = getMockSelectedConsole();
-        
+    it('passes correct data to the view', function () {
+        $console = makeSelectedConsole();
         Session::put('ob', 'squares');
 
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole,
+        Livewire::test(SelectedConsole::class, [
+            'selected_console'    => $console,
             'is_selected_tab_first' => true,
-            'console_data_accordion' => false
-        ]);
+            'console_data_accordion' => false,
+        ])
+        ->assertViewHas('is_selected_tab_first', true)
+        ->assertViewHas('console_data_accordion', false)
+        ->assertViewHas('ob', 'squares');
+    });
 
-        $component->assertViewHas('selected_console', $mockConsole)
-                 ->assertViewHas('is_selected_tab_first', true)
-                 ->assertViewHas('console_data_accordion', false)
-                 ->assertViewHas('ob', 'squares');
+    it('rendered method can be called without errors', function () {
+        $console = makeSelectedConsole();
+
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->call('rendered');
+
+        expect(true)->toBeTrue();
     });
 });
 
-describe('Component Properties Validation', function () {
-    it('handles console with all required properties', function () {
-        $mockConsole = getMockSelectedConsole();
-        
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
+// ─────────────────────────────────────────────────────────────────────────────
+// Carousel sorting
+// ─────────────────────────────────────────────────────────────────────────────
 
-        $component->assertSet('selected_console', function ($console) {
-            return isset($console['short_name']) &&
-                   isset($console['specs']) &&
-                   isset($console['community_links']) &&
-                   isset($console['games']);
-        });
+describe('Carousel sorting', function () {
+    it('toggles sort direction when the same field is selected twice', function () {
+        $console = makeSelectedConsole();
+        $console->setRelation('games', collect());
+
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->assertSet('gameSortField', 'rating')
+            ->assertSet('gameSortDirection', 'desc')
+            ->call('sortCarouselBy', 'rating')
+            ->assertSet('gameSortDirection', 'asc')
+            ->call('sortCarouselBy', 'rating')
+            ->assertSet('gameSortDirection', 'desc');
     });
 
-    it('handles console with missing optional properties', function () {
-        $minimalConsole = [
-            'id' => 1,
-            'short_name' => 'TEST',
-            'name' => 'Test Console',
-            'long_name' => 'Test Console Full Name',
-            'description' => 'Test Console Description',
-            'console_icon' => 'test.png',
-            'manufacturer' => 'Test Manufacturer',
-            'release_year' => '2023',
-            'emulator' => ['name' => 'Test Emulator', 'version' => '1.0'],
-            'specs' => [
-                'cpu' => 'Test CPU',
-                'memory' => 'Test Memory',
-                'graphics' => 'Test Graphics'
-            ],
-            'community_links' => [],
-            'games' => []
-        ];
-        
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $minimalConsole
-        ]);
+    it('uses each field default direction when switching sort fields', function () {
+        $console = makeSelectedConsole();
+        $console->setRelation('games', collect());
 
-        $component->assertSet('selected_console', $minimalConsole);
-    });
-
-    it('validates game count display', function () {
-        $mockConsole = getMockSelectedConsole();
-        
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
-
-        expect(count($mockConsole['games']))->toBe(2);
-        $component->assertSet('selected_console', function ($console) {
-            return count($console['games']) === 2;
-        });
+        Livewire::test(SelectedConsole::class, ['selected_console' => $console])
+            ->call('sortCarouselBy', 'rating')
+            ->assertSet('gameSortField', 'rating')
+            ->assertSet('gameSortDirection', 'asc')
+            ->call('sortCarouselBy', 'title')
+            ->assertSet('gameSortField', 'title')
+            ->assertSet('gameSortDirection', 'asc')
+            ->call('sortCarouselBy', 'rating')
+            ->assertSet('gameSortField', 'rating')
+            ->assertSet('gameSortDirection', 'desc');
     });
 });
-
-describe('Error Handling', function () {
-    it('handles invalid accordion property gracefully', function () {
-        $mockConsole = getMockSelectedConsole();
-        $component = Livewire::test(SelectedConsole::class, [
-            'selected_console' => $mockConsole
-        ]);
-
-        // Check that proper accordions exist and work correctly
-        $component->assertSet('console_data_accordion', true)
-                 ->assertSet('specs_accordion', false)
-                 ->assertSet('community_accordion', true);
-                 
-        // Test that valid accordions still work
-        $component->call('toggleAccordion', 'specs_accordion');
-        $component->assertSet('specs_accordion', true);
-    });
-}); 

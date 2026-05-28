@@ -2,36 +2,54 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Concerns\RendersSortedConsoleGames;
+use App\Models\Console;
+use App\Models\Game;
 use App\Service\Tool;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class OrderByLista extends Component
 {
+    use RendersSortedConsoleGames;
     use WithPagination;
 
-    public $selected_console;
+    public ?Console $selected_console = null;
     public int $paginate = 3;
 
-    /**
-     * Generates game route
-     *
-     * @param array $game
-     * @return string
-     */
-    public function gameRoute(array $game): string
+    public function gameRoute(Game $game): string
     {
-        return Tool::gameRoute($this->selected_console, $game);
+        return Tool::gameRoute(
+            $this->selected_console->toArray(),
+            $game->toArray()
+        );
     }
-    
-    public function updatedPage()
+
+    public function updatedPage(): void
     {
         Tool::loadersOff($this);
     }
 
     public function render()
     {
-        $games = collect($this->selected_console['games'])->paginate($this->paginate);
+        if (! $this->selected_console) {
+            $games = collect()->paginate($this->paginate);
+
+            return view('livewire.order-by-lista', compact('games'));
+        }
+
+        $field = in_array($this->gameSortField, ['title', 'rating'], true)
+            ? $this->gameSortField
+            : 'rating';
+        $direction = in_array($this->gameSortDirection, ['asc', 'desc'], true)
+            ? $this->gameSortDirection
+            : 'desc';
+
+        $games = $this->selected_console->games()
+            ->with(['genres', 'screenshots'])
+            ->orderBy($field, $direction)
+            ->paginate($this->paginate);
+
         return view('livewire.order-by-lista', compact('games'));
     }
 }

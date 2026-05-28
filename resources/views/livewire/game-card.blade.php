@@ -199,13 +199,13 @@
     </style>
     <div class="group relative containerCards rounded-xl overflow-hidden bg-cod-gray-200/80 dark:bg-cod-gray-900/90 h-full border-2 border-cod-gray-300 dark:border-cod-gray-950 shadow">
         <div class="card h-full">
-            @isset($game['console_short_name'])
+            @if(isset($game->console) && $game->console)
             <div class="absolute z-20 text-center w-full bg-cod-gray-500/70 dark:bg-cod-gray-800/70 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400">
-                {{ $game['console_short_name'] === 'atari2600' ? 'Atari 2600' : $game['console_short_name'] }}
+                {{ $game->console->short_name === 'atari2600' ? 'Atari 2600' : $game->console->short_name }}
             </div>
-            @endisset
+        @endif
             @php
-                $boxUrl   = $game['box'] ?? '';
+                $boxUrl   = $game->game_preview ?? '';
                 $boxLower = strtolower($boxUrl);
                 $isWebm   = str_contains($boxLower, '.webm');
                 $isMp4    = str_contains($boxLower, '.mp4');
@@ -233,6 +233,10 @@
                             data-bg-url="{{ $boxUrl }}"
                         ></div>
                     @endif
+                    <x-game-card-rating
+                        :rating="$game->rating"
+                        class="absolute bottom-3 right-1.5 z-10"
+                    />
                 </div>
                 <div class="absolute top-0 w-full h-[177px] bg-gradient-to-b from-transparent/30 via-transparent to-cod-gray-200 dark:from-transparent dark:via-transparent dark:to-cod-gray-900 pointer-events-none">
                 </div>
@@ -245,7 +249,7 @@
                 </div>
                 <div class="infoProd absolute inset-x-0 bottom-0 top-[177px] flex items-center justify-center text-center">
                     <p class="flex min-w-0 w-full items-center justify-center whitespace-normal px-2 py-2 text-center text-base_ text-[1rem] font-thin leading-none tracking-wider text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
-                        {{ Str::limit($game['title'], 55) }}
+                        {{ Str::limit($game->title, 55) }}
                     </p>
                     
                 </div>

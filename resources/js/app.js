@@ -1,4 +1,7 @@
 import './bootstrap';
+import { register } from 'swiper/element/bundle';
+
+register();
 
 /**
  * Lazy load all css background images
@@ -140,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return
         }
 
-        const aside = root.querySelector('aside')
+        const aside = document.getElementById('my-saves-desktop-sidebar')
         if (!aside) {
             return
         }
@@ -206,4 +209,31 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('DOMContentLoaded', tickMySavesJumpHighlight)
     document.addEventListener('livewire:navigated', tickMySavesJumpHighlight)
     document.addEventListener('livewire:updated', scheduleMySavesJumpHighlight)
+})()
+
+;(function initSwiperAfterLivewire() {
+    function refreshSwiperContainers() {
+        document.querySelectorAll('swiper-container').forEach((container) => {
+            if (container.swiper) {
+                container.swiper.update()
+                return
+            }
+
+            if (typeof container.initialize === 'function') {
+                container.initialize()
+            }
+        })
+    }
+
+    function scheduleSwiperRefresh() {
+        requestAnimationFrame(() => {
+            refreshSwiperContainers()
+            requestAnimationFrame(refreshSwiperContainers)
+        })
+    }
+
+    document.addEventListener('DOMContentLoaded', scheduleSwiperRefresh)
+    document.addEventListener('livewire:updated', scheduleSwiperRefresh)
+    document.addEventListener('livewire:navigated', scheduleSwiperRefresh)
+    window.addEventListener('resize', scheduleSwiperRefresh, { passive: true })
 })()

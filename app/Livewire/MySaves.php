@@ -5,10 +5,9 @@ namespace App\Livewire;
 use App\Actions\SyncEmulatorSaveStatesFromDisk;
 use App\Actions\UpsertEmulatorSaveState;
 use App\Models\EmulatorSaveState;
-use App\Service\GameSession;
 use App\Service\Tool;
+use App\Services\GameRepository;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -19,6 +18,8 @@ class MySaves extends Component
     private const SAVE_STATE_UNSUPPORTED_CONSOLES = ['pc'];
 
     public array $grouped = [];
+
+    public string $gameSearch = '';
 
     public int $totalSlots = 0;
 
@@ -218,21 +219,12 @@ class MySaves extends Component
             return;
         }
 
-        $gameSession = new GameSession;
-        $consoles = $gameSession->getFullConsoleData();
-
+        $games   = app(GameRepository::class)->getGamesByConsole($this->globalConsole);
         $options = [];
-        foreach ($consoles as $console) {
-            if (strtolower((string) ($console['short_name'] ?? '')) !== $this->globalConsole) {
-                continue;
+        foreach ($games as $game) {
+            if ($game->slug) {
+                $options[$game->slug] = $game->title;
             }
-            foreach ($console['games'] ?? [] as $game) {
-                $slug = (string) ($game['slug'] ?? \Illuminate\Support\Str::slug($game['title'] ?? ''));
-                if ($slug !== '') {
-                    $options[$slug] = $game['title'] ?? $slug;
-                }
-            }
-            break;
         }
 
         asort($options);
@@ -279,17 +271,16 @@ class MySaves extends Component
 
     private function loadConsoleOptions(): void
     {
-        $gameSession = new GameSession;
-        $consoles = $gameSession->getFullConsoleData();
+        $consoles = app(GameRepository::class)->getConsoles();
 
         $options = [];
         foreach ($consoles as $console) {
-            $short = strtolower((string) ($console['short_name'] ?? ''));
+            $short = strtolower((string) $console->short_name);
             if (in_array($short, self::SAVE_STATE_UNSUPPORTED_CONSOLES, true)) {
                 continue;
             }
             if ($short !== '') {
-                $options[$short] = $console['long_name'] ?? strtoupper($short);
+                $options[$short] = $console->long_name ?? strtoupper($short);
             }
         }
 
@@ -326,12 +317,12 @@ class MySaves extends Component
             if (! isset($grouped[$console]['games'][$gameSlug])) {
                 $gameMeta = $gameMap['games'][$console][$gameSlug] ?? null;
                 $grouped[$console]['games'][$gameSlug] = [
-                    'game_slug' => $gameSlug,
-                    'title'     => $gameMeta['title'] ?? $gameSlug,
-                    'slug'      => $gameMeta['slug'] ?? $gameSlug,
-                    'poster'    => $gameMeta['poster'] ?? null,
-                    'box'       => $gameMeta['box'] ?? null,
-                    'slots'     => array_fill(1, 5, null),
+                    'game_slug'    => $gameSlug,
+                    'title'        => $gameMeta['title'] ?? $gameSlug,
+                    'slug'         => $gameMeta['slug'] ?? $gameSlug,
+                    'poster'       => $gameMeta['poster'] ?? null,
+                    'game_preview' => $gameMeta['game_preview'] ?? null,
+                    'slots'        => array_fill(1, 5, null),
                 ];
             }
 
@@ -353,43 +344,38 @@ class MySaves extends Component
 
     private function buildGameMap(): array
     {
-        $gameSession = new GameSession;
-        $consoles = $gameSession->getFullConsoleData();
-
-        $map = ['games' => [], 'consoles' => []];
+        $repo     = app(GameRepository::class);
+        $consoles = $repo->getConsoles();
+        $map      = ['games' => [], 'consoles' => []];
 
         foreach ($consoles as $console) {
-            $short = $console['short_name'] ?? null;
-            if (! $short) {
-                continue;
-            }
+            $shortKey = strtolower((string) $console->short_name);
 
-            $shortKey = strtolower((string) $short);
             $map['consoles'][$shortKey] = [
-                'long_name'    => $console['long_name'] ?? strtoupper($short),
-                'console_icon' => $console['console_icon'] ?? null,
-                'console_logo' => $console['console_logo'] ?? null,
+                'long_name'    => $console->long_name ?? strtoupper($shortKey),
+                'console_icon' => $console->console_icon ?? null,
+                'console_logo' => $console->console_logo ?? null,
             ];
 
-            foreach ($console['games'] ?? [] as $game) {
-                $idKey = isset($game['id']) && $game['id'] !== null ? (string) $game['id'] : null;
-                $slug = (string) ($game['slug'] ?? \Illuminate\Support\Str::slug($game['title'] ?? ''));
+            $games = $repo->getGamesByConsole($shortKey);
+            foreach ($games as $game) {
+                $slug = (string) $game->slug;
                 if ($slug === '') {
                     continue;
                 }
 
                 $meta = [
-                    'title'  => $game['title'] ?? null,
-                    'slug'   => $slug,
-                    'poster' => $game['poster'] ?? null,
-                    'box'    => $game['box'] ?? null,
+                    'title'        => $game->title,
+                    'slug'         => $slug,
+                    'poster'       => $game->poster,
+                    'game_preview' => $game->game_preview,
                 ];
 
-                // Primary lookup by slug (new schema).
                 $map['games'][$shortKey][$slug] = $meta;
 
-                // Back-compat: older production rows may store numeric IDs in `game_slug`.
-                if ($idKey && ! isset($map['games'][$shortKey][$idKey])) {
+                // Back-compat: older save rows may reference numeric IDs as game_slug.
+                $idKey = (string) $game->id;
+                if (! isset($map['games'][$shortKey][$idKey])) {
                     $map['games'][$shortKey][$idKey] = $meta;
                 }
             }
@@ -404,6 +390,48 @@ class MySaves extends Component
             ['short_name' => $console],
             ['slug' => $game['slug'], 'title' => $game['title']],
         );
+    }
+
+    public function clearGameSearch(): void
+    {
+        $this->gameSearch = '';
+    }
+
+    public function getFilteredGroupedProperty(): array
+    {
+        $query = trim($this->gameSearch);
+        if ($query === '') {
+            return $this->grouped;
+        }
+
+        $needle = mb_strtolower($query);
+        $filtered = [];
+
+        foreach ($this->grouped as $consoleShort => $consoleData) {
+            $matchingGames = [];
+
+            foreach ($consoleData['games'] as $gameKey => $game) {
+                $title = mb_strtolower((string) ($game['title'] ?? ''));
+                $slug = mb_strtolower((string) ($game['game_slug'] ?? ''));
+                $consoleLabel = mb_strtolower((string) ($consoleData['long_name'] ?? $consoleShort));
+
+                if (
+                    str_contains($title, $needle)
+                    || str_contains($slug, $needle)
+                    || str_contains(mb_strtolower($consoleShort), $needle)
+                    || str_contains($consoleLabel, $needle)
+                ) {
+                    $matchingGames[$gameKey] = $game;
+                }
+            }
+
+            if ($matchingGames !== []) {
+                $filtered[$consoleShort] = $consoleData;
+                $filtered[$consoleShort]['games'] = $matchingGames;
+            }
+        }
+
+        return $filtered;
     }
 
     public function render()
