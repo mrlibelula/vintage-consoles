@@ -18,51 +18,79 @@
         font-size: 1.32rem;
     }
 
-    body {
-        color: transparent;
-        transition: color 0.2s ease-in-out;
-        background-color: inherit;
+    html:not(.fonts-loaded) body {
+        visibility: hidden;
     }
 
     html.fonts-loaded body {
-        color: inherit;
+        visibility: visible;
     }
 </style>
+
+<noscript>
+    <style>html body { visibility: visible !important; }</style>
+</noscript>
 
 <script>
     (() => {
         const familyName = @json($font->family_name);
-        const fontSpec = `16px ${familyName}`;
+        const fontSpec = `400 1.32rem "${familyName}"`;
+        const maxWaitMs = 15000;
+        let revealed = false;
 
         const showContent = () => {
-            document.documentElement.classList.add('fonts-loaded');
-        };
-
-        const waitForFont = () => {
-            if (!document.fonts || !document.fonts.load) {
-                showContent();
+            if (revealed) {
                 return;
             }
 
-            document.fonts.load(fontSpec).then(showContent).catch(showContent);
+            revealed = true;
+            document.documentElement.classList.add('fonts-loaded');
+        };
+
+        const waitForFont = async () => {
+            if (!document.fonts?.load) {
+                showContent();
+
+                return;
+            }
+
+            try {
+                await document.fonts.load(fontSpec);
+            } catch {
+                // Fall through to polling / timeout.
+            }
+
+            if (document.fonts.check(fontSpec)) {
+                showContent();
+
+                return;
+            }
+
+            const deadline = Date.now() + maxWaitMs;
 
             const poll = () => {
                 if (document.fonts.check(fontSpec)) {
                     showContent();
+
                     return;
                 }
 
-                setTimeout(poll, 10);
+                if (Date.now() < deadline) {
+                    setTimeout(poll, 50);
+
+                    return;
+                }
+
+                showContent();
             };
 
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', poll);
-            } else {
-                poll();
-            }
+            poll();
         };
 
-        waitForFont();
-        setTimeout(showContent, 1000);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => waitForFont());
+        } else {
+            waitForFont();
+        }
     })();
 </script>

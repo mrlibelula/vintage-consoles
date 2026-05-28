@@ -74,7 +74,7 @@ describe('Font management', function () {
             ->assertSee('--app-font-family', false)
             ->assertSee('HackerNoonV2-Regular.otf', false)
             ->assertSee('fonts-loaded', false)
-            ->assertSee('color: transparent', false);
+            ->assertSee('visibility: hidden', false);
     });
 
     it('installs uploaded fonts on the fonts disk', function () {
