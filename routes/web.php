@@ -113,5 +113,6 @@ Route::middleware([
     Route::middleware(['admin'])->group(function () {
         Route::get('/admin/games', App\Livewire\Admin\GameManager::class)->name('admin.games');
         Route::get('/admin/fonts', App\Livewire\Admin\FontManager::class)->name('admin.fonts');
+        Route::get('/admin/backup', App\Livewire\Admin\BackupManager::class)->name('admin.backup');
     });
 });

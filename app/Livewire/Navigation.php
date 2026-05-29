@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Notifications\SiteDataRestored;
 use App\Service\Tool;
 use App\Services\GameRepository;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -72,8 +74,32 @@ class Navigation extends Component
         return Tool::gameRoute($console, $game);
     }
 
+    public function dismissRestoreNotification(string $id): void
+    {
+        if (! Auth::check()) {
+            return;
+        }
+
+        Auth::user()
+            ->notifications()
+            ->where('id', $id)
+            ->update(['read_at' => now()]);
+    }
+
     public function render()
     {
-        return view('livewire.navigation');
+        $restoreNotification = null;
+
+        if (Auth::check()) {
+            $restoreNotification = Auth::user()
+                ->unreadNotifications()
+                ->where('type', SiteDataRestored::class)
+                ->latest()
+                ->first();
+        }
+
+        return view('livewire.navigation', [
+            'restoreNotification' => $restoreNotification,
+        ]);
     }
 }

@@ -184,6 +184,9 @@
                                 <x-dropdown-link href="{{ route('admin.fonts') }}">
                                     {{ __('Font Manager') }}
                                 </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('admin.backup') }}">
+                                    {{ __('Backup / Restore') }}
+                                </x-dropdown-link>
                             @endif
 
                             <!-- Authentication -->
@@ -231,6 +234,34 @@
             </div>
         </div>
     </div>
+
+    <!-- restore notification banner -->
+    @if(isset($restoreNotification) && $restoreNotification)
+    <div
+        x-data="{ visible: true }"
+        x-show="visible"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="w-full bg-amber-500/90 dark:bg-amber-600/90 text-amber-950 dark:text-amber-50 text-base py-2 px-4 flex items-center justify-between gap-x-4"
+    >
+        <div class="flex items-center gap-x-2">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>{{ $restoreNotification->data['message'] ?? 'Site data was recently restored from backup.' }}</span>
+        </div>
+        <button
+            @click="visible = false; $wire.dismissRestoreNotification('{{ $restoreNotification->id }}')"
+            class="shrink-0 hover:opacity-70 smooth-300"
+            aria-label="Dismiss"
+        >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+    @endif
 
     <!-- search results -->
     @if ($search_results)
