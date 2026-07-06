@@ -14,9 +14,9 @@
     }
     if ($ob === 'group') {
         $slides_per_view = [ 
-            'sm' => 1,
-            'md' => 2,
-            'xl' => 3,  
+            'sm' => 2,
+            'md' => 3,
+            'xl' => 4,  
         ]; 
         $space_between = [
             'sm' => 10,
@@ -25,18 +25,18 @@
         ];
     }
 
-    if ($ob === 'group') {
-        $slides_per_view = [ 
-            'sm' => 1,
-            'md' => 2,
-            'xl' => 3,
-        ]; 
-        $space_between = [
-            'sm' => 10,
-            'md' => 20,
-            'xl' => 30,
-        ];
-    }
+    // if ($ob === 'group') {
+    //     $slides_per_view = [ 
+    //         'sm' => 1,
+    //         'md' => 2,
+    //         'xl' => 3,
+    //     ]; 
+    //     $space_between = [
+    //         'sm' => 10,
+    //         'md' => 20,
+    //         'xl' => 30,
+    //     ];
+    // }
 
     if(count($customSlidesPerView)) {
         $slides_per_view = $customSlidesPerView; 

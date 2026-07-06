@@ -279,6 +279,25 @@ describe('Tab management', function () {
         ->assertSet('tabs.info', true)
         ->assertSet('tabs.chat', false);
     });
+
+    it('renders chat tab for guests when messages omit user_id', function () {
+        $console  = playNesConsole();
+        $game     = playNesGame($console);
+        $messages = [
+            ['id' => 1, 'message' => 'Hello from legacy chat!', 'timestamp' => '2024-01-01 10:00:00'],
+        ];
+
+        Storage::disk('data')->put("chat/{$console->id}.{$game->id}.json", json_encode($messages));
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->call('changeTab', 'chat')
+            ->assertSet('tabs.chat', true)
+            ->assertSee('Hello from legacy chat!')
+            ->assertSee('Guest');
+    });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

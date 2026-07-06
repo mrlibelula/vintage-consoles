@@ -1,11 +1,11 @@
 <div class="flex flex-col gap-y-6 w-full bg-cod-gray-600/20_ bg-[#3f3f3f]_ bg-white/50 dark:bg-black/50 p-0 lg:p-2
     {{ $is_selected_tab_first ? 'rounded-b-xl rounded-tr-xl' : ($is_selected_tab_last ? 'rounded-b-xl rounded-tl-xl' : 'rounded-xl') }}
 ">
-    <div class="flex flex-col-reverse xl:flex-row items-start justify-between gap-x-10 w-full">
+    <div class="flex flex-col-reverse rounded-lg bg-transparent 2xl:flex-row items-start justify-between gap-x-10 w-full">
         <!-- main -->
         <div class="w-full flex flex-col gap-y-8 items-start justify-start p-4">
 
-            <div class="w-full flex flex-col xl:flex-row gap-y-8 gap-x-[4rem] items-start justify-start">
+            <div class="w-full flex flex-col 2xl:flex-row gap-y-8 gap-x-[4rem] items-start justify-start">
 
                 <!-- main content -->
                 <div
@@ -25,7 +25,7 @@
                         if (m === 'group') skeletonGroup = false;
                         if (m === 'squares') skeletonSquare = false;
                     "
-                    class="flex flex-col gap-y-8 w-full xl:w-[70%] main-container">
+                    class="flex flex-col gap-y-8 w-full 2xl:w-[72%] main-container">
 
                     <!-- game list display options -->
                     <div class="flex items-center justify-between gap-x-3 w-full dark:text-cod-gray-500 leading-none -mb-8">
@@ -160,8 +160,8 @@
                 </div>
 
                 <!-- right panel -->
-                <div class="w-full xl:w-[30%] flex flex-col gap-y-4 items-start justify-start shadow-md shadow-cod-gray-400 dark:shadow-black border-[3.5px] border-cod-gray-200 dark:border-cod-gray-900 rounded-xl p-6 bg-cod-gray-100 dark:bg-cod-gray-900/60">
-                    <div class="flex items-center justify-center w-full hover:scale-[1.4] xl:scale-[1.7] xl:hover:scale-[1.8] xl:hover:-translate-y-2 smooth-300">
+                <div class="w-full 2xl:w-[22vw] flex flex-col gap-y-4 items-start justify-start shadow-md shadow-cod-gray-400 dark:shadow-black border-[3.5px] border-cod-gray-200 dark:border-cod-gray-900 rounded-xl p-6 bg-cod-gray-100 dark:bg-cod-gray-900/60">
+                    <div class="flex items-center justify-center w-full _hover:scale-[1.4] 2xl:scale-[1.5] 2xl:hover:scale-[1.55] 2xl:hover:-translate-y-2 smooth-300">
                         @if($selected_console->console_icon)
                         <img class="my-6 w-full" src="{{ url($selected_console->console_icon) }}" alt="{{ $selected_console->short_name }}">
                         @endif

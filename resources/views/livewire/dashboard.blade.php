@@ -1,5 +1,5 @@
 <div>
-    <div class="{{ $show_hero ? 'relative h-[10rem] sm:h-[36vh] bg-cover bg-center bg-no-repeat' : '' }}"
+    <div class="{{ $show_hero ? 'relative h-[10rem] sm:h-[30vh] bg-cover bg-center bg-no-repeat' : '' }}"
         @if ($show_hero)
         style="filter: grayscale(1); background-image: url({{ $hero_image }});"
         @endif
@@ -39,10 +39,10 @@
             <a
                 @click="$dispatch('loader-top-on')"
                 wire:navigate href="{{ '/' . $console->short_name }}"
-                class="z-40 group flex cursor-pointer {{ $selected_console_id !== $console->id ? '' : 'bg-cod-gray-600/20_ bg-white/50 dark:bg-black/50 rounded-t-lg md:rounded-t-xl' }} px-4 py-2 xl:py-6 items-center justify-center w-full text-xl md:text-2xl overflow-hidden"
+                class="z-40 group flex cursor-pointer {{ $selected_console_id !== $console->id ? '' : 'bg-white/50 dark:bg-black/50 rounded-t-lg md:rounded-t-xl' }} px-4 py-2 xl:py-4 items-center justify-center w-full text-xl md:text-2xl overflow-hidden"
             >
                 <div class="flex flex-col gap-y-4 sm:gap-y-0 justify-between items-center text-center h-full w-full">
-                    <img class="hidden xl:block h-[2.8rem] {{ $selected_console_id !== $console->id ? 'grayscale' : '' }} group-hover:grayscale-0 smooth-500" src="{{ $console->console_logo }}" alt="{{ $console->short_name }}">
+                    <img class="hidden xl:block h-[2.8rem]_ h-[2rem] {{ $selected_console_id !== $console->id ? 'grayscale' : '' }} group-hover:grayscale-0 smooth-500" src="{{ $console->console_logo }}" alt="{{ $console->short_name }}">
                     <div class="block xl:hidden whitespace-nowrap text-base md:text-xl {{ $selected_console_id !== $console->id ? 'text-gray-500 dark:text-cod-gray-600' : 'text-cod-gray-900 dark:text-cod-gray-200' }}">
                         @if (strtoupper($console->short_name) === 'ATARI2600')
                         ATARI

@@ -14,6 +14,9 @@ export default {
 
     theme: {
         extend: {
+            screens: {
+                play: '1080px',
+            },
             fontFamily: {
                 // sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 sans: ['var(--app-font-family)', ...defaultTheme.fontFamily.sans],

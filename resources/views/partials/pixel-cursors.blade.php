@@ -90,6 +90,7 @@
     cursor: url('{{ asset('cursor-pointers/png/pointer.png') }}') 12 1, pointer;
   }
 
+  input:not([type]),
   input[type='text'],
   input[type='search'],
   input[type='email'],
@@ -280,5 +281,17 @@
 
   html.dark .cursor-wait {
     cursor: url('{{ asset('cursor-pointers/png/wait-dark.png') }}') 16 16, wait;
+  }
+
+  html.dark input:not([type]),
+  html.dark input[type='text'],
+  html.dark input[type='search'],
+  html.dark input[type='email'],
+  html.dark input[type='url'],
+  html.dark input[type='password'],
+  html.dark input[type='number'],
+  html.dark textarea,
+  html.dark .cursor-text {
+    cursor: url('{{ asset('cursor-pointers/png/text.png') }}') 16 16, text;
   }
 </style>

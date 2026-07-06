@@ -9,8 +9,51 @@
 /* Pixel Art Cursors (PNG) */
 /* Defined in `resources/views/partials/pixel-cursors.blade.php` via asset() so HTTPS/dev works. */
 
+/* Play page: 16:9 frame below fixed nav (4rem) + page py-6 (3rem); mobile keeps viewport-based iframe height */
+.play-game-frame {
+    @apply max-play:block play:aspect-video;
+    max-height: calc(100dvh - 7rem);
+}
+
+.play-viewport-max-h {
+    max-height: calc(100dvh - 7rem);
+}
+
+/* Play stage: game keeps 16:9; side panel fills viewport below nav + py-6 */
+.play-stage {
+    @apply w-full;
+}
+
+.play-side-panel {
+    @apply mb-4 flex w-full min-h-0 flex-col;
+    height: 44vh;
+    max-height: 44vh;
+}
+
+@media (min-width: 1080px) {
+    .play-stage {
+        @apply flex flex-row items-start gap-0;
+    }
+
+    .play-game-column {
+        @apply w-[70%] min-w-0 shrink-0;
+    }
+
+    .play-side-panel {
+        height: calc(100dvh - 7rem);
+        max-height: calc(100dvh - 7rem);
+        @apply mb-0 flex w-[30%] min-h-0 shrink-0 flex-col overflow-hidden;
+    }
+}
+
 .game-arena {
-    @apply block w-full h-[30vh] sm:h-[35vh] md:h-[36vh] lg:h-[37vh] xl:h-[47vh] border-0 m-0 p-0 overflow-hidden;
+    @apply block w-full min-h-0 h-[30vh] sm:h-[35vh] md:h-[36vh] lg:h-[37vh] border-0 m-0 p-0 overflow-hidden;
+}
+
+@media (min-width: 1080px) {
+    .play-game-frame .game-arena {
+        @apply absolute inset-0 h-full w-full;
+    }
 }
 
 .smooth-300 {

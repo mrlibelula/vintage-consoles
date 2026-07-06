@@ -1,4 +1,4 @@
-<div class="flex h-[calc(290px+2rem)] shrink-0 items-start justify-start py-4">
+<div class="flex h-[calc(290px+2rem)]_ shrink-0 items-start justify-start py-4">
     <style>
         .containerCards {
             display: flex;
@@ -50,7 +50,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 177px;
+            height: 176px;
             overflow: hidden;
         }
 
@@ -197,7 +197,7 @@
             transform: scale(0);
         }
     </style>
-    <div class="group relative containerCards rounded-xl overflow-hidden bg-cod-gray-200/80 dark:bg-cod-gray-900/90 h-full border-2 border-cod-gray-300 dark:border-cod-gray-950 shadow">
+    <div class="group relative containerCards rounded-xl overflow-hidden bg-cod-gray-200/80 dark:bg-cod-gray-900/90 h-full border-2_ border-cod-gray-300 dark:border-cod-gray-950 shadow">
         <div class="card h-full">
             @if($showConsoleLabel && isset($game->console) && $game->console)
             <div class="absolute z-20 text-center w-full bg-cod-gray-500/70 dark:bg-cod-gray-800/70 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400">
@@ -212,7 +212,7 @@
                 $isVideo  = $isWebm || $isMp4;
                 $mp4Url   = $isWebm ? str_replace('.webm', '.mp4', $boxUrl) : ($isMp4 ? $boxUrl : '');
             @endphp
-            <div class="wrapper overflow-hidden w-full h-full flex justify-between items-center">
+            <div class="wrapper overflow-hidden w-full h-full flex justify-between items-center border-2 rounded-xl border-cod-gray-500 dark:border-cod-gray-700/50">
                 <div class="mediaContainer">
                     @if ($isVideo)
                         <!-- Video box background -->

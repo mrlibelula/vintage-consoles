@@ -17,7 +17,7 @@
     </template>
 
     <!-- Primary Navigation Menu -->
-    <div class="max-w-5xl mx-auto px-4 xl:px-6 lg:px-8">
+    <div class="max-w-[85rem] mx-auto px-4 xl:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex w-full">
                 <!-- Logo -->
