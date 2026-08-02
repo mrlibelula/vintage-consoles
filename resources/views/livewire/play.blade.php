@@ -27,6 +27,7 @@
                             :game="$game"
                             :save-slots-used="$save_slots_used"
                             :save-slots-total="$save_slots_total"
+                            :save-slots-occupied="$save_slots_occupied"
                         />
                     </div>
                 </div>
@@ -36,20 +37,20 @@
 
                 {{-- Live chat: fills remaining viewport below the emulator; scrolls with the page --}}
                 <div class="play-chat-block flex min-h-0 flex-col max-play:px-3">
-                    <div class="play-live-chat flex min-h-0 flex-col overflow-hidden rounded-md border border-cod-gray-300 dark:border-cod-gray-800">
+                    <div class="play-live-chat flex min-h-0 flex-col overflow-hidden">
                         <div class="flex-1 min-h-0 overflow-hidden">
                             @livewire('chat', [
                                 'console_id' => $console->id,
                                 'game' => $game->toArray(),
                             ], uniqid())
                         </div>
-                        <div class="shrink-0 flex items-center justify-center py-1 rounded-b-md border-t border-cod-gray-300 bg-cod-gray-100 dark:border-cod-gray-800 dark:bg-cod-gray-950">
-                            <div class="w-full px-0.5">
+                        <div class="shrink-0 flex items-center justify-center py-1">
+                            <div class="w-full">
                                 <x-input
                                     type="text"
                                     wire:model.live.lazy="input"
                                     placeholder="New message here..."
-                                    class="cursor-text h-[1.7rem] w-full border-none bg-white text-cod-gray-800 placeholder-cod-gray-500 focus:ring-2 focus:ring-rose-500/40 rounded-b-md rounded-t-none text-base dark:bg-cod-gray-800/60 dark:text-cod-gray-200 dark:placeholder-cod-gray-500 dark:focus:ring-rose-600/50"
+                                    class="h-[1.7rem] w-full text-base"
                                 />
                             </div>
                         </div>

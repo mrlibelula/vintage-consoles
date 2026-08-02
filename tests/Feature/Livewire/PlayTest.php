@@ -471,6 +471,7 @@ describe('Save slot counting', function () {
         ]);
 
         expect($component->get('save_slots_used'))->toBe(0);
+        expect($component->get('save_slots_occupied'))->toBe([]);
     });
 
     it('shows 0 save slots used for games without save state support', function () {
@@ -484,5 +485,6 @@ describe('Save slot counting', function () {
         ]);
 
         expect($component->get('save_slots_used'))->toBe(0);
+        expect($component->get('save_slots_occupied'))->toBe([]);
     });
 });

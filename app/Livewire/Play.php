@@ -22,6 +22,9 @@ class Play extends Component
     public string $player_route = '';
     public int $save_slots_used = 0;
     public int $save_slots_total = UpsertEmulatorSaveState::MAX_SLOTS;
+
+    /** @var array<int, int> */
+    public array $save_slots_occupied = [];
     public string $input = '';
 
     /** @var array<string, mixed> */
@@ -115,19 +118,27 @@ class Play extends Component
     {
         if (! auth()->check()) {
             $this->save_slots_used = 0;
+            $this->save_slots_occupied = [];
             return;
         }
 
         if (! $this->game->save_state_support) {
             $this->save_slots_used = 0;
+            $this->save_slots_occupied = [];
             return;
         }
 
-        $this->save_slots_used = EmulatorSaveState::query()
+        $this->save_slots_occupied = EmulatorSaveState::query()
             ->where('user_id', auth()->id())
             ->where('console', strtolower($console_short_name))
             ->where('game_slug', $this->game->slug)
-            ->count();
+            ->orderBy('slot')
+            ->pluck('slot')
+            ->map(fn ($slot) => (int) $slot)
+            ->values()
+            ->all();
+
+        $this->save_slots_used = count($this->save_slots_occupied);
     }
 
     public function updatedInput(): void

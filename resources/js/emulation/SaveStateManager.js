@@ -250,6 +250,7 @@ export class SaveStateManager {
         this.keydownHandler = event => this.handleKeydown(event)
         this.pointerDownHandler = event => this.handlePointerDown(event)
         this.fullscreenChangeHandler = () => this.handleFullscreenChange()
+        this.parentMessageHandler = event => this.handleParentMessage(event)
         this.panelHome = null
         this.iframeKeyTarget = null
         this.iframeKeyRetryTimer = null
@@ -261,6 +262,7 @@ export class SaveStateManager {
         document.addEventListener('pointerdown', this.pointerDownHandler, true)
         document.addEventListener('fullscreenchange', this.fullscreenChangeHandler)
         document.addEventListener('webkitfullscreenchange', this.fullscreenChangeHandler)
+        window.addEventListener('message', this.parentMessageHandler)
         this.panelHome = this.panel?.parentNode || document.body
         this.createStateDownloadIndicator()
         this.handleFullscreenChange()
@@ -747,6 +749,41 @@ export class SaveStateManager {
         this.currentSlot = Math.min(Math.max(Number(slot) || 1, 1), slots)
         this.renderSlots()
         this.notify(`Selected slot ${this.currentSlot}`, 'info', notify)
+    }
+
+    broadcastSlotSelection() {
+        if (window.parent === window) {
+            return
+        }
+
+        const slots = Number(this.config.slots || 5)
+        const used = this.saves
+            .map(item => Number(item.slot))
+            .filter(slot => slot >= 1 && slot <= slots)
+        try {
+            window.parent.postMessage({
+                type: 'vintage-player-slot-selected',
+                slot: this.currentSlot,
+                total: slots,
+                used,
+            }, window.location.origin)
+        } catch (_error) {
+            // Ignore cross-origin / detached frame failures.
+        }
+    }
+
+    handleParentMessage(event) {
+        if (event.origin !== window.location.origin) {
+            return
+        }
+        if (!event.data || event.data.type !== 'vintage-player-select-slot') {
+            return
+        }
+        if (!this.config.authenticated) {
+            return
+        }
+        this.selectSlot(Number(event.data.slot), { notify: true })
+        this.setStatus(`Selected slot ${this.currentSlot}.`)
     }
 
     handleKeydown(event) {
@@ -2071,6 +2108,8 @@ export class SaveStateManager {
             row.querySelector('[data-action="delete"]').addEventListener('click', () => this.deleteSlot(slot))
             container.appendChild(row)
         }
+
+        this.broadcastSlotSelection()
 
         const syncBtn = this.panel.querySelector('.vintage-control-sync')
         if (syncBtn) {
