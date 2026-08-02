@@ -1,4 +1,4 @@
-<div class="flex h-[calc(275px+2rem)] w-full min-w-0 shrink-0 items-stretch justify-start py-4">
+<div class="flex w-full min-w-0 shrink-0 items-stretch justify-start py-4">
     <style>
         .containerCards {
             display: flex;
@@ -13,6 +13,7 @@
     
         .containerCards .card {
             width: 100%;
+            height: 100%;
             transition: ease all 0.3s;
         }
     
@@ -36,9 +37,10 @@
     
         .containerCards .card .wrapper {
             margin: 0px 0px 0px 0px;
-            padding-top: 275px;
             box-sizing: border-box;
             position: relative;
+            width: 100%;
+            height: 100%;
             transition: ease all 0.3s;
         }
     
@@ -48,11 +50,35 @@
     
         .containerCards .card .wrapper .mediaContainer {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
-            height: 165px;
+            height: 100%;
             overflow: hidden;
+        }
+
+        .containerCards .card .wrapper .previewFade {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                transparent 30%,
+                rgba(194, 197, 204, 0.4) 58%,
+                rgba(194, 197, 204, 0.75) 78%,
+                #C2C5CC 92%
+            );
+        }
+
+        .dark .containerCards .card .wrapper .previewFade {
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                transparent 30%,
+                rgba(30, 32, 36, 0.4) 58%,
+                rgba(30, 32, 36, 0.75) 78%,
+                #1E2024 92%
+            );
         }
 
         .containerCards .card .wrapper:hover .colorProd {
@@ -110,11 +136,13 @@
         }
     
         .containerCards .card .wrapper .infoProd .nombreProd {
-            -webkit-line-clamp: 2;
+            display: -webkit-box;
             -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
             overflow: hidden;
             text-overflow: ellipsis;
-            display: -webkit-box;
+            max-height: 2.5rem; /* 2 lines at 1rem / leading-tight */
         }
     
         .containerCards .card .wrapper .infoProd .extraInfo {
@@ -208,7 +236,7 @@
             transform: scale(0);
         }
     </style>
-    <div class="group relative containerCards h-full w-full overflow-hidden rounded-xl border-2 border-cod-gray-500 bg-cod-gray-200/80 shadow dark:border-cod-gray-700/50 dark:bg-cod-gray-900/90">
+    <div class="group relative containerCards aspect-square h-auto w-full overflow-hidden rounded-xl border-2 border-cod-gray-500 bg-cod-gray-200/80 shadow dark:border-cod-gray-700/50 dark:bg-cod-gray-900/90">
         <div class="card h-full">
             @if($showConsoleLabel && isset($game->console) && $game->console)
             <div class="absolute z-20 text-center w-full bg-cod-gray-500/70 dark:bg-cod-gray-800/70 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400">
@@ -245,8 +273,8 @@
                         ></div>
                     @endif
                 </div>
-                <div class="absolute top-0 w-full h-[165px] bg-gradient-to-b from-transparent/30 via-transparent to-cod-gray-200 dark:from-transparent dark:via-transparent dark:to-cod-gray-900 pointer-events-none">
-                </div>
+                {{-- Bottom fade keeps titles readable over the full-bleed preview --}}
+                <div class="previewFade" aria-hidden="true"></div>
                 <!-- Placeholder for the poster background -->
                 
                 <div class="imgProd flex items-center justify-center lazy-load-bg opacity-70 group-hover:opacity-90 smooth-300" 
@@ -254,9 +282,9 @@
                     {{-- style="background-image: url({{ asset('images/placeholder-poster-homer.jpg') }});" --}}
                 >
                 </div>
-                <div class="infoProd absolute inset-x-0 bottom-0 top-[165px] flex items-center justify-center text-center">
-                    <p class="nombreProd min-h-[2.5rem] min-w-0 w-full px-2 py-2 text-center text-[1rem] font-thin leading-tight tracking-wider text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
-                        {{ Str::limit($game->title, 55) }}
+                <div class="infoProd absolute inset-x-0 bottom-0 z-10 flex items-center justify-center text-center pb-3 pt-8">
+                    <p class="nombreProd min-w-0 w-full px-2 text-center text-[1rem] font-thin leading-tight tracking-wider text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
+                        {{ $game->title }}
                     </p>
                     
                 </div>
