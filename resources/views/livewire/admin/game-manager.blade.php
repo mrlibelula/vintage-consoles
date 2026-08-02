@@ -364,6 +364,25 @@
                                             </div>
 
                                             <div>
+                                                <div class="flex items-center justify-between gap-x-2">
+                                                    <label class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Walkthrough videos</label>
+                                                    <button type="button" wire:click="addWalkthroughVideo" class="text-sm text-rose-600 dark:text-rose-400 hover:underline">+ Add</button>
+                                                </div>
+                                                <p class="mt-1 text-sm text-cod-gray-500 dark:text-cod-gray-400">YouTube URL or 11-char video ID. Shown before IGDB trailers on the play page.</p>
+                                                <div class="mt-2 space-y-2">
+                                                    @foreach ($walkthroughVideos as $index => $row)
+                                                    <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+                                                        <input wire:model="walkthroughVideos.{{ $index }}.title" type="text" placeholder="Title"
+                                                            class="form-field block w-full sm:w-1/3">
+                                                        <input wire:model="walkthroughVideos.{{ $index }}.youtube_id" type="text" placeholder="https://youtu.be/... or video id"
+                                                            class="form-field block w-full sm:flex-1">
+                                                        <button type="button" wire:click="removeWalkthroughVideo({{ $index }})" class="text-sm text-cod-gray-500 hover:text-rose-500 px-1">Remove</button>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+
+                                            <div>
                                                 <label for="cartridge" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Cartridge URL</label>
                                                 <input wire:model="cartridge" type="text" id="cartridge" placeholder="https://example.com/cartridge.jpg"
                                                     class="form-field mt-1 block w-full">

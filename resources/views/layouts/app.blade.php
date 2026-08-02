@@ -107,9 +107,6 @@
                 </main>
             </div>
 
-            @if (request()->routeIs('play'))
-            <div></div>
-            @else
             <footer class="relative mt-12 overflow-hidden">
                 {{-- pixel grid on exact #e11d48 tone; fades right; light/dark opacity --}}
                 <div class="footer-grid pointer-events-none absolute inset-0" aria-hidden="true">
@@ -139,14 +136,21 @@
                             :size="18"
                             class="opacity-95 group-hover:opacity-100 text-white group-hover:text-white/80 dark:text-cod-gray-400 dark:opacity-70 dark:group-hover:opacity-100 dark:group-hover:text-[#e11d48] smooth-300"
                         />
-                        <span class="border-b border-transparent group-hover:border-white/50 dark:group-hover:border-[#e11d48]/50 pb-0.5">{{ __('About') }}</span>
+                        <span>{{ __('About') }}</span>
                     </a>
 
-                    <div class="hidden sm:flex items-center gap-x-1.5 text-cod-gray-500/30" aria-hidden="true">
-                        <span class="h-1 w-1 rounded-sm bg-current"></span>
-                        <span class="h-1 w-1 rounded-sm bg-current opacity-70"></span>
-                        <span class="h-1 w-1 rounded-sm bg-current opacity-40"></span>
-                    </div>
+                    <nav class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm tracking-wider" aria-label="{{ __('Consoles') }}">
+                        @foreach (app(\App\Services\GameRepository::class)->getConsoles() as $console)
+                        <a
+                            wire:navigate
+                            href="/{{ $console->short_name }}"
+                            @click="$dispatch('loader-top-on')"
+                            class="text-white/70 hover:text-white dark:text-cod-gray-500 dark:hover:text-[#e11d48] smooth-300"
+                        >
+                            {{ strtoupper($console->short_name) }}
+                        </a>
+                        @endforeach
+                    </nav>
 
                     <a href="https://libe.dev" target="_other_LIBEDEV_{{ uniqid() }}" class="group flex items-center gap-x-2">
                         <div class="h-4 w-4 opacity-30 group-hover:opacity-50 smooth-300 rounded-sm overflow-hidden">
@@ -158,11 +162,28 @@
                     </a>
                 </div>
             </footer>
-            @endif
     
             @stack('modals')
 
             @stack('scripts')
+
+            {{-- Drop the old site-wide COI worker; it stamped COEP on the play page and killed YouTube. Emulator iframe re-registers a scoped worker. --}}
+            <script>
+                (function () {
+                    if (!('serviceWorker' in navigator)) return;
+                    navigator.serviceWorker.getRegistrations().then(function (regs) {
+                        regs.forEach(function (reg) {
+                            var url = (reg.active && reg.active.scriptURL)
+                                || (reg.waiting && reg.waiting.scriptURL)
+                                || (reg.installing && reg.installing.scriptURL)
+                                || '';
+                            if (url.indexOf('coi-serviceworker') !== -1 && url.indexOf('v=2') === -1) {
+                                reg.unregister();
+                            }
+                        });
+                    }).catch(function () {});
+                })();
+            </script>
     
             @livewireScripts
         </div>

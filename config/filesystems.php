@@ -51,7 +51,7 @@ return [
         'savestates' => [
             'driver' => 'local',
             'root' => storage_path('app/savestates'),
-            'throw' => false,
+            'throw' => true,
         ],
 
         'public' => [

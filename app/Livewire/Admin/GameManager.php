@@ -6,6 +6,7 @@ use App\Models\Console;
 use App\Services\GameRepository;
 use App\Services\Igdb\IgdbClient;
 use App\Services\Igdb\IgdbImage;
+use App\Support\YouTubeUrl;
 use App\Models\Screenshot;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
@@ -61,6 +62,7 @@ class GameManager extends Component
     public array $screenshots = [];
     public array $igdbResponse = [];
     public bool $igdbScreenshotsShouldSync = false;
+    public array $walkthroughVideos = [['title' => '', 'youtube_id' => '']];
 
     protected GameRepository $repo;
 
@@ -300,6 +302,7 @@ class GameManager extends Component
             'is_free'             => $this->is_free,
             'genres'              => $processedGenres,
             'needs_igdb_sync'     => empty($this->igdbResponse),
+            'walkthrough_videos'  => YouTubeUrl::normalizeWalkthroughRows($this->walkthroughVideos),
         ];
 
         if (! empty($this->igdbResponse)) {
@@ -412,6 +415,21 @@ class GameManager extends Component
         }
     }
 
+    public function addWalkthroughVideo(): void
+    {
+        $this->walkthroughVideos[] = ['title' => '', 'youtube_id' => ''];
+    }
+
+    public function removeWalkthroughVideo(int $index): void
+    {
+        if (count($this->walkthroughVideos) > 1) {
+            unset($this->walkthroughVideos[$index]);
+            $this->walkthroughVideos = array_values($this->walkthroughVideos);
+        } else {
+            $this->walkthroughVideos = [['title' => '', 'youtube_id' => '']];
+        }
+    }
+
     /**
      * Fetch game metadata from the IGDB API (replaces the old AI Fill).
      */
@@ -510,6 +528,7 @@ class GameManager extends Component
         $this->screenshots         = [];
         $this->igdbResponse        = [];
         $this->igdbScreenshotsShouldSync = false;
+        $this->walkthroughVideos   = [['title' => '', 'youtube_id' => '']];
     }
 
     private function fillForm(\App\Models\Game $game): void
@@ -541,6 +560,13 @@ class GameManager extends Component
             ->all();
         $this->igdbResponse        = $game->igdb_response ?? [];
         $this->igdbScreenshotsShouldSync = false;
+        $walkthroughs = is_array($game->walkthrough_videos) ? $game->walkthrough_videos : [];
+        $this->walkthroughVideos = $walkthroughs !== []
+            ? collect($walkthroughs)->map(fn ($row) => [
+                'title' => (string) ($row['title'] ?? ''),
+                'youtube_id' => (string) ($row['youtube_id'] ?? ''),
+            ])->values()->all()
+            : [['title' => '', 'youtube_id' => '']];
     }
 
     private function validateRomUrl(string $url): array

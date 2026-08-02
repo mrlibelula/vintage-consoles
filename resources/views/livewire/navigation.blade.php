@@ -18,7 +18,7 @@
 
     <!-- Primary Navigation Menu -->
     <div class="max-w-site mx-auto px-4 xl:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16 w-full">
+        <div class="flex items-center justify-between gap-x-2 sm:gap-x-3 h-16 w-full">
             <!-- Logo -->
             <div class="shrink-0 flex items-center">
                 <x-logo />
@@ -40,7 +40,7 @@
             </div>
 
             <!-- search bar -->
-            <div class="relative w-40 sm:w-56 md:w-72 lg:w-96 shrink-0 flex items-center h-[2.2rem]">
+            <div class="relative flex-1 min-w-0 xl:flex-none xl:w-96 flex items-center h-[2.2rem]">
                 <form autocomplete="off" class="absolute inset-0 w-full" @submit.prevent>
                     <x-input 
                         @keydown.enter.prevent="$dispatch('loader-top-on'); $wire.set('search', $event.target.value, true)" 

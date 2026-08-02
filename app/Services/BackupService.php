@@ -33,10 +33,11 @@ class BackupService
         'app_settings' => 'key',
     ];
 
-    // Emulator tables, only when savestates included
+    // Emulator / per-user play data — only when savestates included
     private const EMULATOR_TABLES = [
         'emulator_save_states',
         'emulator_control_settings',
+        'youtube_video_progress',
     ];
 
     // ─────────────────────────────────────────────────────────────────────────

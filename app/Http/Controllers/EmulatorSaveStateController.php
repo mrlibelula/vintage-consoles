@@ -36,7 +36,15 @@ class EmulatorSaveStateController extends Controller
             'state' => ['required', 'file', 'max:102400'],
         ]);
 
-        $contents = $request->file('state')->get();
+        $uploaded = $request->file('state');
+        abort_if($uploaded->getSize() === 0 || $uploaded->getSize() === false, 422, 'Save state file is empty.');
+
+        // Prefer reading from the temp path (streamable) over loading via UploadedFile::get().
+        $path = $uploaded->getRealPath();
+        abort_unless(is_string($path) && is_readable($path), 422, 'Could not read uploaded save state.');
+
+        $contents = file_get_contents($path);
+        abort_if($contents === false || $contents === '', 422, 'Save state file is empty.');
 
         $save = app(UpsertEmulatorSaveState::class)->execute(
             $request->user(),

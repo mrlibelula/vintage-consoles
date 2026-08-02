@@ -9,17 +9,17 @@
 /* Pixel Art Cursors (PNG) */
 /* Defined in `resources/views/partials/pixel-cursors.blade.php` via asset() so HTTPS/dev works. */
 
-/* Play page: 16:9 frame below fixed nav (4rem) + page py-6 (3rem); mobile keeps viewport-based iframe height */
+/* Play page: 16:9 frame flush under fixed nav (4rem); mobile keeps viewport-based iframe height */
 .play-game-frame {
     @apply max-play:block play:aspect-video;
-    max-height: calc(100dvh - 7rem);
+    max-height: calc(100dvh - 4rem);
 }
 
 .play-viewport-max-h {
-    max-height: calc(100dvh - 7rem);
+    max-height: calc(100dvh - 4rem);
 }
 
-/* Play stage: game keeps 16:9; side panel fills viewport below nav + py-6 */
+/* Play stage: desktop pins emulator dock fixed; chat + side panel scroll normally */
 .play-stage {
     @apply w-full;
 }
@@ -30,19 +30,85 @@
     max-height: 44vh;
 }
 
+/* Live chat: normal flow; fixed height so messages can scroll inside */
+.play-live-chat {
+    height: 16rem;
+}
+
 @media (min-width: 1080px) {
     .play-stage {
-        @apply flex flex-row items-start gap-0;
+        /* Match <x-container> max-w-site + horizontal padding for fixed dock fallback.
+         * Prefer 100% (layout width) over 100vw so scrollbar gutters do not shift the dock.
+         * JS still pins left/width to .play-game-rail for pixel-perfect iframe↔chat alignment. */
+        --play-site: 60rem;
+        --play-pad-x: 2rem; /* lg:px-8 */
+        --play-col-gap: 1.5rem;
+        --play-content-width: calc(min(100%, var(--play-site)) - 2 * var(--play-pad-x));
+        --play-rail-width: calc((var(--play-content-width) - var(--play-col-gap)) * 0.7);
+        --play-rail-left: calc(max(0px, (100% - var(--play-site)) / 2) + var(--play-pad-x));
+        @apply relative flex flex-row items-start;
+        gap: var(--play-col-gap);
     }
 
-    .play-game-column {
-        @apply w-[70%] min-w-0 shrink-0;
+    .play-game-rail {
+        @apply relative flex min-w-0 shrink-0 flex-col;
+        width: calc((100% - var(--play-col-gap)) * 0.7);
+        /* Exact viewport under nav → chat flexes into leftover space below the spacer */
+        min-height: calc(100dvh - 4rem);
+        height: calc(100dvh - 4rem);
+        padding-bottom: 0.75rem;
+        box-sizing: border-box;
+    }
+
+    /*
+     * Only the emulator (iframe + session chrome) is fixed.
+     * Chat stays in normal flow below the spacer and scrolls with the page.
+     */
+    .play-emulator-dock {
+        position: fixed;
+        top: 4rem;
+        left: var(--play-rail-left);
+        z-index: 10;
+        width: var(--play-rail-width);
+        @apply bg-cod-gray-200 dark:bg-cod-gray-950;
+    }
+
+    .play-game-frame {
+        @apply w-full;
+        aspect-ratio: 16 / 9;
+        max-height: calc(100dvh - 4rem - 4.5rem);
+    }
+
+    /* Spacer height is set from the fixed dock via JS for an exact chat fill */
+    .play-emulator-spacer {
+        @apply shrink-0;
+    }
+
+    .play-chat-block {
+        @apply relative z-0 flex min-h-0 flex-1 flex-col;
+    }
+
+    .play-live-chat {
+        @apply flex min-h-0 flex-1 flex-col;
+        height: auto;
     }
 
     .play-side-panel {
-        height: calc(100dvh - 7rem);
-        max-height: calc(100dvh - 7rem);
-        @apply mb-0 flex w-[30%] min-h-0 shrink-0 flex-col overflow-hidden;
+        height: auto;
+        max-height: none;
+        min-height: calc(100dvh - 4rem);
+        @apply mb-0 flex min-w-0 shrink-0 flex-col;
+        width: calc((100% - var(--play-col-gap)) * 0.3);
+    }
+
+    .play-side-panel-header {
+        @apply sticky top-16 z-20 bg-[#c2c5cc] dark:bg-[#1e1f21];
+    }
+}
+
+@media (min-width: 1280px) {
+    .play-stage {
+        --play-pad-x: 1.5rem; /* xl:px-6 */
     }
 }
 
@@ -108,6 +174,26 @@
 .pixel-tooltip:focus-visible::before,
 .pixel-tooltip:focus-visible::after {
     @apply opacity-100;
+}
+
+/* Tooltip below the trigger (top-nav / fixed headers) */
+.pixel-tooltip-below::before,
+.pixel-tooltip-below::after {
+    @apply bottom-auto top-[calc(100%+0.45rem)];
+}
+
+.pixel-tooltip-below::before {
+    @apply top-[calc(100%+0.2rem)] border-t-0 border-b-[5px] border-b-cod-gray-900;
+}
+
+/* Keep right-edge triggers from clipping off-screen */
+.pixel-tooltip-end::before,
+.pixel-tooltip-end::after {
+    @apply left-auto right-0 translate-x-0;
+}
+
+.pixel-tooltip-end::before {
+    @apply right-2.5;
 }
 
 /* Theme-aware tooltip using the active app font (admin / icon actions) */
@@ -479,6 +565,26 @@ swiper-slide {
 .game-ribbon::part(container) {
     overflow: clip;
     overflow-clip-margin: 8px;
+}
+
+/*
+ * Video thumbs: ring-2 sits outside the button. Pad slides and leave a little
+ * clip margin so the active border is not cut off by Swiper's overflow.
+ */
+.video-thumb-carousel {
+    overflow: visible;
+    height: auto;
+}
+
+.video-thumb-carousel::part(container) {
+    overflow: clip;
+    overflow-clip-margin: 4px;
+}
+
+.video-thumb-carousel swiper-slide {
+    box-sizing: border-box;
+    padding-block: 3px;
+    align-items: stretch;
 }
 
 .parallax-bg {

@@ -34,6 +34,7 @@ class GameFactory extends Factory
             'cartridge' => null,
             'needs_igdb_sync' => false,
             'igdb_response' => null,
+            'walkthrough_videos' => null,
         ];
     }
 

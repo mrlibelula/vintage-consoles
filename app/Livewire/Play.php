@@ -6,8 +6,10 @@ use App\Actions\UpsertEmulatorSaveState;
 use App\Models\Console;
 use App\Models\EmulatorSaveState;
 use App\Models\Game;
+use App\Models\YoutubeVideoProgress;
 use App\Service\Tool;
 use App\Services\GameRepository;
+use App\Support\GameIgdbPresenter;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -22,6 +24,12 @@ class Play extends Component
     public int $save_slots_total = UpsertEmulatorSaveState::MAX_SLOTS;
     public string $input = '';
 
+    /** @var array<string, mixed> */
+    public array $igdb = [];
+
+    /** @var array<string, int> youtube_id => position_seconds */
+    public array $video_progress = [];
+
     public array $accordion_toggler = [
         'description'  => true,
         'screenshots'  => true,
@@ -29,7 +37,7 @@ class Play extends Component
 
     public array $tabs = [
         'info' => true,
-        'chat' => false,
+        'media' => false,
     ];
 
     public array $modals = [
@@ -51,7 +59,9 @@ class Play extends Component
         $this->game    = $game;
         $this->console = $game->console;
 
-        $this->hydrateSaveSlots($console_short_name);
+        $this->loadSaveSlots($console_short_name);
+        $this->loadIgdb();
+        $this->loadVideoProgress();
         $this->loadGameUrl();
 
         $this->player_route = route('player', [
@@ -60,7 +70,48 @@ class Play extends Component
         ]);
     }
 
-    private function hydrateSaveSlots(string $console_short_name): void
+    private function loadIgdb(): void
+    {
+        $payload = is_array($this->game->igdb_response) ? $this->game->igdb_response : [];
+        $similarIds = collect($payload['similar_games'] ?? [])
+            ->map(fn ($item) => is_array($item) ? (int) ($item['id'] ?? 0) : 0)
+            ->filter(fn ($id) => $id > 0)
+            ->unique()
+            ->values();
+
+        $localByIgdbId = collect();
+        if ($similarIds->isNotEmpty()) {
+            $localByIgdbId = Game::query()
+                ->whereIn('igdb_id', $similarIds->all())
+                ->with('console')
+                ->get()
+                ->keyBy('igdb_id');
+        }
+
+        $this->igdb = app(GameIgdbPresenter::class)->present($this->game, $localByIgdbId);
+
+        $this->tabs = ['info' => true, 'media' => false];
+    }
+
+    private function loadVideoProgress(): void
+    {
+        $this->video_progress = [];
+
+        if (! auth()->check()) {
+            return;
+        }
+
+        $rows = YoutubeVideoProgress::query()
+            ->where('user_id', auth()->id())
+            ->where('game_id', $this->game->id)
+            ->get(['youtube_id', 'position_seconds']);
+
+        foreach ($rows as $row) {
+            $this->video_progress[$row->youtube_id] = (int) $row->position_seconds;
+        }
+    }
+
+    private function loadSaveSlots(string $console_short_name): void
     {
         if (! auth()->check()) {
             $this->save_slots_used = 0;
@@ -152,6 +203,14 @@ class Play extends Component
 
     public function changeTab(string $tab): void
     {
+        if (! array_key_exists($tab, $this->tabs)) {
+            return;
+        }
+
+        if ($tab === 'media' && ! ($this->igdb['has_media'] ?? false)) {
+            return;
+        }
+
         $this->tabs = array_map(fn () => false, $this->tabs);
         $this->tabs[$tab] = true;
     }

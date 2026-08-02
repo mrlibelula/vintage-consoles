@@ -32,6 +32,7 @@ class Game extends Model
         'cartridge',
         'needs_igdb_sync',
         'igdb_response',
+        'walkthrough_videos',
     ];
 
     protected $casts = [
@@ -42,6 +43,7 @@ class Game extends Model
         'is_free' => 'boolean',
         'needs_igdb_sync' => 'boolean',
         'igdb_response' => 'array',
+        'walkthrough_videos' => 'array',
     ];
 
     public function console(): BelongsTo

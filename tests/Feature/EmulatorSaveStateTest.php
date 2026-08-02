@@ -38,8 +38,28 @@ it('stores an authenticated user save state on the savestates disk', function ()
 
     expect(Storage::disk('savestates')->exists($save->disk_path))->toBeTrue();
 
+    // Checksum/size must match bytes actually on disk (not only the upload buffer).
+    $onDisk = Storage::disk('savestates')->get($save->disk_path);
+    expect($onDisk)->toBe('binary-state-data')
+        ->and($save->size_bytes)->toBe(strlen($onDisk))
+        ->and($save->checksum)->toBe(hash('sha256', $onDisk));
+
     $expectedPath = "{$user->id}/nes/megaman-2/megaman-2-slot-1.state";
     expect($save->disk_path)->toBe($expectedPath);
+});
+
+it('rejects an empty save state upload', function () {
+    $user = User::factory()->create();
+    $file = UploadedFile::fake()->createWithContent('empty-slot-1.state', '');
+
+    $this->actingAs($user)->postJson(route('player-data.save-states.store'), [
+        'console'   => 'snes',
+        'game_slug' => 'dkc',
+        'slot'      => 1,
+        'state'     => $file,
+    ])->assertStatus(422);
+
+    expect(EmulatorSaveState::query()->count())->toBe(0);
 });
 
 it('lists only the current users slots for a game', function () {

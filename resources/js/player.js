@@ -256,3 +256,87 @@ function vintagePlayerPlayPauseKeydown(event) {
 
 window.addEventListener('keydown', vintagePlayerFullscreenKeydown, true)
 window.addEventListener('keydown', vintagePlayerPlayPauseKeydown, true)
+
+const KEY_CODE_FALLBACKS = {
+    KeyX: 88,
+    KeyZ: 90,
+    KeyV: 86,
+    Enter: 13,
+    ShiftRight: 16,
+}
+
+// EmulatorJS / RetroPad: select (2) = coin, start (3) = P1 start.
+const ARCADE_SIMULATE_BUTTONS = {
+    coin: 2,
+    start: 3,
+}
+
+// EmulatorJS defaults bind Digit1/2/3 to quick-save/load/slot — never synthesize those.
+// Fall back to EmulatorJS's own select/start keys (v / Enter) only when simulateInput is unavailable.
+const ARCADE_KEYBOARD_FALLBACKS = {
+    coin: { code: 'KeyV', key: 'v' },
+    start: { code: 'Enter', key: 'Enter' },
+}
+
+function createArcadeKeyboardEvent(type, code, key) {
+    const keyCode = KEY_CODE_FALLBACKS[code] || 0
+    const event = new KeyboardEvent(type, {
+        key: key || code,
+        code,
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+    })
+
+    // KeyboardEvent constructor ignores keyCode/which; EmulatorJS still reads them.
+    Object.defineProperties(event, {
+        keyCode: { get: () => keyCode },
+        which: { get: () => keyCode },
+    })
+
+    return event
+}
+
+function dispatchArcadeKey({ action, code, key, down }) {
+    const value = down ? 1 : 0
+    const button = action ? ARCADE_SIMULATE_BUTTONS[action] : undefined
+    const simulate = window.EJS_emulator?.gameManager?.simulateInput
+
+    if (typeof button === 'number' && typeof simulate === 'function') {
+        try {
+            simulate.call(window.EJS_emulator.gameManager, 0, button, value)
+            return
+        } catch (error) {
+            console.warn('[Vintage] arcade simulateInput failed', error)
+        }
+    }
+
+    const mapped = (action && ARCADE_KEYBOARD_FALLBACKS[action])
+        || (code ? { code, key } : null)
+
+    // Refuse Digit1–3: EmulatorJS maps them to quick save/load/slot change.
+    if (!mapped || /^Digit[123]$/.test(mapped.code)) {
+        return
+    }
+
+    const eventType = down ? 'keydown' : 'keyup'
+    const canvas = document.querySelector('#game canvas, canvas')
+
+    if (canvas instanceof HTMLElement && down) {
+        canvas.focus?.({ preventScroll: true })
+    }
+
+    ;[canvas, document, window].filter(Boolean).forEach(target => {
+        target.dispatchEvent(createArcadeKeyboardEvent(eventType, mapped.code, mapped.key))
+    })
+}
+
+window.addEventListener('message', (event) => {
+    if (event.origin !== window.location.origin) {
+        return
+    }
+    if (!event.data || event.data.type !== 'vintage-arcade-key') {
+        return
+    }
+    dispatchArcadeKey(event.data)
+})

@@ -1,10 +1,6 @@
-<IfModule mod_headers.c>
-    # Enable SharedArrayBuffer for EmulatorJS threaded WASM cores.
-    # Applied to ALL responses so the player HTML document is cross-origin isolated.
-    Header always set Cross-Origin-Opener-Policy "same-origin"
-    Header always set Cross-Origin-Embedder-Policy "credentialless"
-    Header always set Cross-Origin-Resource-Policy "cross-origin"
-</IfModule>
+# COOP/COEP must NOT be set globally — they break YouTube embeds on the play page.
+# Cross-origin isolation is applied only to /player and /dosplayer via the
+# cross-origin-isolation middleware (+ coi-serviceworker.js as a fallback).
 
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>

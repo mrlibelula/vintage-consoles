@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmulatorControlSettingController;
 use App\Http\Controllers\EmulatorSaveStateController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\YoutubeVideoProgressController;
 
 
 /*
@@ -67,6 +68,11 @@ Route::middleware(['auth'])->prefix('player-data')->name('player-data.')->group(
 
     Route::get('/control-settings', [EmulatorControlSettingController::class, 'show'])->name('control-settings.show');
     Route::put('/control-settings', [EmulatorControlSettingController::class, 'store'])->name('control-settings.store');
+
+    Route::get('/youtube-progress/{game}', [YoutubeVideoProgressController::class, 'index'])
+        ->name('youtube-progress.index');
+    Route::put('/youtube-progress/{game}', [YoutubeVideoProgressController::class, 'upsert'])
+        ->name('youtube-progress.upsert');
 });
 
 Route::get('/{console_short_name?}', Dashboard::class)->name('home');

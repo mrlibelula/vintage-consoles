@@ -24,15 +24,16 @@ function toQuery(params) {
 }
 
 function toBytes(data) {
+    // Always return an owned copy so hashing/upload never share a live WASM heap view.
     if (data instanceof Uint8Array) {
-        return data
+        return data.slice()
     }
 
     if (data instanceof ArrayBuffer) {
-        return new Uint8Array(data)
+        return new Uint8Array(data).slice()
     }
 
-    return new Uint8Array(data || [])
+    return new Uint8Array(data || []).slice()
 }
 
 async function sha256Hex(bytes) {
@@ -364,6 +365,14 @@ export class SaveStateManager {
             this.setStateDownloadIndicatorVisible(true)
             this.setStatus(`Saving slot ${slot}...`)
             const bytes = toBytes(await this.adapter.captureState())
+
+            if (bytes.byteLength < 64) {
+                this.setStatus('Save state was empty — not uploaded.')
+                this.notify('Save state was empty — not uploaded.', 'error', true)
+                revertActiveSlotIfNeeded()
+                return
+            }
+
             const localChecksum = await sha256Hex(bytes)
             const formData = new FormData()
 
@@ -383,19 +392,28 @@ export class SaveStateManager {
                 storedSave = null
             }
 
-            if (storedSave) {
-                const sizeMatches = Number(storedSave.size_bytes) === Number(bytes.byteLength)
-                const checksumMatches = localChecksum
-                    ? String(storedSave.checksum || '').toLowerCase() === String(localChecksum).toLowerCase()
-                    : true
+            // Fail closed: missing metadata or mismatch means we must not keep a bad primary.
+            const sizeMatches = storedSave
+                ? Number(storedSave.size_bytes) === Number(bytes.byteLength)
+                : false
+            const checksumMatches = storedSave && localChecksum
+                ? String(storedSave.checksum || '').toLowerCase() === String(localChecksum).toLowerCase()
+                : Boolean(storedSave && !localChecksum)
 
-                if (!sizeMatches || !checksumMatches) {
-                    await purgeAllCachedSaveVersions(existingSave || storedSave)
-                    this.setStatus('Save failed integrity check (upload corruption).')
-                    this.notify('Save corrupted in transit (integrity check failed).', 'error', true)
-                    revertActiveSlotIfNeeded()
-                    return
-                }
+            if (!storedSave || !sizeMatches || !checksumMatches) {
+                await purgeAllCachedSaveVersions(existingSave || storedSave)
+                const rolledBack = await this.rollbackCorruptUpload(storedSave)
+                await this.refreshSaves()
+                this.setStatus(
+                    rolledBack === 'restored'
+                        ? 'Save rejected (integrity). Previous checkpoint kept.'
+                        : rolledBack === 'deleted'
+                            ? 'Save rejected (integrity). Slot cleared.'
+                            : 'Save failed integrity check (upload corruption).',
+                )
+                this.notify('Save corrupted in transit (integrity check failed).', 'error', true)
+                revertActiveSlotIfNeeded()
+                return
             }
 
             await this.saveControlSettings({ silent: true })
@@ -413,6 +431,33 @@ export class SaveStateManager {
         } finally {
             this.setStateDownloadIndicatorVisible(false)
         }
+    }
+
+    /**
+     * After a failed integrity check the corrupt primary is already on the server
+     * (and a previous good state may be in .backup). Restore backup or delete the slot.
+     * @returns {'restored'|'deleted'|null}
+     */
+    async rollbackCorruptUpload(storedSave) {
+        if (!storedSave) {
+            return null
+        }
+
+        try {
+            if (storedSave.has_backup && storedSave.restore_backup_url) {
+                await this.request(storedSave.restore_backup_url, { method: 'POST' })
+                return 'restored'
+            }
+
+            if (storedSave.delete_url) {
+                await this.request(storedSave.delete_url, { method: 'DELETE' })
+                return 'deleted'
+            }
+        } catch (error) {
+            console.error('[Vintage] Failed to roll back corrupt save upload.', error)
+        }
+
+        return null
     }
 
     /**
@@ -452,18 +497,50 @@ export class SaveStateManager {
 
         try {
             this.setStatus(`Uploading slot ${slot}...`)
+            const fileBytes = toBytes(await file.arrayBuffer())
+            const localChecksum = await sha256Hex(fileBytes)
             const formData = new FormData()
 
             Object.entries(this.saveStateParams()).forEach(([key, value]) => formData.append(key, value))
             formData.append('slot', slot)
 
             const name = /\.state$/i.test(file.name) ? file.name : `${file.name.replace(/[/\\\\]/g, '_')}.state`
-            formData.append('state', file, name)
+            formData.append('state', new Blob([fileBytes], { type: 'application/octet-stream' }), name)
 
-            await this.request(this.config.endpoints.saveStates, {
+            const storeResponse = await this.request(this.config.endpoints.saveStates, {
                 method: 'POST',
                 body: formData,
             })
+            let storedSave = null
+            try {
+                const payload = await storeResponse.json()
+                storedSave = payload?.data || null
+            } catch {
+                storedSave = null
+            }
+
+            const sizeMatches = storedSave
+                ? Number(storedSave.size_bytes) === Number(fileBytes.byteLength)
+                : false
+            const checksumMatches = storedSave && localChecksum
+                ? String(storedSave.checksum || '').toLowerCase() === String(localChecksum).toLowerCase()
+                : Boolean(storedSave && !localChecksum)
+
+            if (!storedSave || !sizeMatches || !checksumMatches) {
+                await purgeAllCachedSaveVersions(existingSave || storedSave)
+                const rolledBack = await this.rollbackCorruptUpload(storedSave)
+                await this.refreshSaves()
+                this.setStatus(
+                    rolledBack === 'restored'
+                        ? 'Upload rejected (integrity). Previous checkpoint kept.'
+                        : rolledBack === 'deleted'
+                            ? 'Upload rejected (integrity). Slot cleared.'
+                            : 'Upload failed integrity check.',
+                )
+                this.notify('Upload corrupted in transit (integrity check failed).', 'error', true)
+                return
+            }
+
             await this.saveControlSettings({ silent: true })
             await this.refreshSaves()
             const latestSave = this.saves.find(item => item.slot === slot) || null

@@ -109,7 +109,13 @@ class MySaves extends Component
         $ownerUserId = (string) ($save?->user_id ?? '');
         abort_unless($save && $ownerUserId === $requestUserId, 403);
 
-        Storage::disk('savestates')->delete($save->disk_path);
+        $disk = Storage::disk('savestates');
+        $disk->delete($save->disk_path);
+        if ($save->backup_disk_path) {
+            $disk->delete($save->backup_disk_path);
+        } else {
+            $disk->delete("{$save->disk_path}.backup");
+        }
         $save->delete();
 
         $this->cancelDelete();
@@ -158,8 +164,8 @@ class MySaves extends Component
         $label = trim($this->uploadLabel);
 
         $contents = file_get_contents($this->uploadStateFile->getRealPath());
-        if ($contents === false) {
-            $this->addError('uploadStateFile', 'Could not read the uploaded file.');
+        if ($contents === false || $contents === '') {
+            $this->addError('uploadStateFile', 'Could not read the uploaded file (empty or unreadable).');
 
             return;
         }
@@ -248,8 +254,8 @@ class MySaves extends Component
         }
 
         $contents = file_get_contents($this->globalStateFile->getRealPath());
-        if ($contents === false) {
-            $this->addError('globalStateFile', 'Could not read the uploaded file.');
+        if ($contents === false || $contents === '') {
+            $this->addError('globalStateFile', 'Could not read the uploaded file (empty or unreadable).');
 
             return;
         }

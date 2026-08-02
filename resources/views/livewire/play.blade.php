@@ -1,100 +1,134 @@
-<x-container class="items-start py-6">
+<x-container class="items-start pb-6">
     <div class="flex flex-col gap-y-4 max-play:gap-y-8 w-full">
 
         <!-- player & user data: game 16:9; side panel full viewport height on desktop -->
         <div class="play-stage flex flex-col gap-y-1 max-play:overflow-visible">
-            <div class="play-game-column w-full shrink-0 max-play:relative max-play:left-1/2 max-play:-translate-x-1/2 max-play:w-screen max-play:max-w-none play:left-0 play:translate-x-0">
-                <div id="game-container" class="play-game-frame relative w-full bg-black max-play:rounded-none rounded-lg overflow-hidden">
-                    <iframe id="game-iframe" class="game-arena" frameborder="0" scrolling="no"
-                        allow="fullscreen"
-                        @if (strtolower($console->short_name) === 'pc')
-                        src="{{ route('dosplayer', [
-                            \App\Service\Tool::encode(json_encode($game->toPlayerPayload())),
-                            strtolower($console->short_name),
-                        ]) }}"
-                        onload="hideDosIframeLoader()"
-                        @else
-                        src="{{ $player_route }}"
-                        @endif>
-                    </iframe>
+            <div class="play-game-rail w-full shrink-0 max-play:relative max-play:left-1/2 max-play:-translate-x-1/2 max-play:w-screen max-play:max-w-none">
+                {{-- Fixed emulator dock (iframe + controls only; chat stays in normal flow) --}}
+                <div class="play-emulator-dock">
+                    <div id="game-container" class="play-game-frame relative w-full bg-black max-play:rounded-none rounded-lg overflow-hidden">
+                        <iframe id="game-iframe" class="game-arena" frameborder="0" scrolling="no"
+                            allow="fullscreen"
+                            @if (strtolower($console->short_name) === 'pc')
+                            src="{{ route('dosplayer', [
+                                \App\Service\Tool::encode(json_encode($game->toPlayerPayload())),
+                                strtolower($console->short_name),
+                            ]) }}"
+                            onload="hideDosIframeLoader()"
+                            @else
+                            src="{{ $player_route }}"
+                            @endif>
+                        </iframe>
+                    </div>
+                    <x-play.arcade-controls :console="$console" />
+                    <div class="shrink-0">
+                        <x-play.session-bar
+                            :console="$console"
+                            :game="$game"
+                            :save-slots-used="$save_slots_used"
+                            :save-slots-total="$save_slots_total"
+                        />
+                    </div>
+                </div>
+
+                {{-- In-flow spacer; height synced to fixed dock via script --}}
+                <div class="play-emulator-spacer max-play:hidden" aria-hidden="true"></div>
+
+                {{-- Live chat: fills remaining viewport below the emulator; scrolls with the page --}}
+                <div class="play-chat-block flex min-h-0 flex-col max-play:px-3">
+                    <div class="play-live-chat flex min-h-0 flex-col overflow-hidden rounded-md">
+                        <div class="flex-1 min-h-0 overflow-hidden">
+                            @livewire('chat', [
+                                'console_id' => $console->id,
+                                'game' => $game->toArray(),
+                            ], uniqid())
+                        </div>
+                        <div class="shrink-0 flex items-center justify-center py-1 rounded-b-md bg-cod-gray-950">
+                            <div class="w-full px-0.5">
+                                <x-input
+                                    type="text"
+                                    wire:model.live.lazy="input"
+                                    placeholder="New message here..."
+                                    class="cursor-text h-[1.7rem] w-full border-none dark:placeholder-cod-gray-600/70 bg-cod-gray-300 dark:bg-cod-gray-600/25 focus:ring-2 rounded-b-md rounded-t-none text-base"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- game panel -->
-            <div class="play-side-panel pl-2">
+            <div class="play-side-panel">
 
-                <div class="shrink-0 pb-3 lg:pb-2">
-                    <div class="flex flex-col gap-y-1">
-                        <div class="leading-none text-2xl text-black dark:text-cod-gray-50">
-                            {{ $game->title }}
+                <div class="play-side-panel-header shrink-0">
+                    <div class="pb-3 lg:pb-2">
+                        <div class="flex flex-col gap-y-1">
+                            <div class="leading-none text-2xl text-black dark:text-cod-gray-50">
+                                {{ $game->title }}
+                            </div>
+                            <div class="leading-none text-cod-gray-900 dark:text-cod-gray-400">
+                                {{ $game->publisher }}
+                            </div>
                         </div>
-                        <div class="leading-none text-cod-gray-900 dark:text-cod-gray-400">
-                            {{ $game->publisher }}
+                    </div>
+
+                    @guest
+                    @if (strtolower($console->short_name) !== 'pc')
+                    {{-- Cloud Save CTA Banner (guests; above tabs, shared across tab panels) --}}
+                    <div
+                        class="pb-6 lg:pb-3 pt-3 lg:pt-0"
+                        x-data="{ show: !sessionStorage.getItem('save-cta-dismissed') }"
+                        x-show="show"
+                        x-transition:leave="transition ease-in duration-200"
+                        x-transition:leave-start="opacity-100 scale-y-100"
+                        x-transition:leave-end="opacity-0 scale-y-0"
+                        x-cloak
+                    >
+                        <div class="relative flex flex-col items-stretch gap-2 rounded-lg _border-2 border-fuchsia-200/80 dark:border-fuchsia-900/40 bg-gradient-to-br from-white via-fuchsia-50/70 to-white dark:from-fuchsia-950 dark:via-fuchsia-950/30 dark:to-fuchsia-900/70 px-3 py-2 shadow-md shadow-black/10 dark:shadow-black/90">
+                            <div class="flex items-start gap-x-2 min-w-0">
+                                <p class="min-w-0 flex-1 text-base leading-tight text-cod-gray-900 dark:text-cod-gray-100">
+                                    <span class="text-base">Save your game progress in Cloud.</span>
+                                    <span class="text-base"><br/>Get <span class=" text-base text-fuchsia-900 dark:text-fuchsia-400">5 free</span> save slots per game.</span>
+                                </p>
+                                <button
+                                    @click="show = false; sessionStorage.setItem('save-cta-dismissed', '1')"
+                                    class="flex-shrink-0 -mt-0.5_ -mr-1.5 p-0.5 rounded text-cod-gray-500 hover:text-cod-gray-800 dark:hover:text-cod-gray-300 transition duration-200"
+                                    aria-label="Dismiss"
+                                >
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <a href="{{ route('login') }}"
+                                class="flex w-full items-center justify-center gap-x-1.5 rounded-md bg-fuchsia-600 hover:bg-fuchsia-500 px-2 py-1 text-white text-sm tracking-wider _font-semibold transition duration-200 shadow shadow-black/30">
+                                <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                Sign up free
+                            </a>
                         </div>
+                    </div>
+                    @endif
+                    @endguest
+
+                    <!-- tabs -->
+                    <div class="flex items-center justify-between gap-x-1">
+                        <x-tab-item wire:click="changeTab('info')" @click="$dispatch('loader-top-on')" :active="$tabs['info']">
+                            Info
+                        </x-tab-item>
+                        @if ($igdb['has_media'] ?? false)
+                        <x-tab-item wire:click="changeTab('media')" @click="$dispatch('loader-top-on')" :active="$tabs['media']">
+                            Media
+                        </x-tab-item>
+                        @endif
                     </div>
                 </div>
 
-                @guest
-                @if (strtolower($console->short_name) !== 'pc')
-                {{-- Cloud Save CTA Banner (guests; above tabs, shared across tab panels) --}}
-                <div
-                    class="shrink-0 pb-6 lg:pb-3 pt-3 lg:pt-0"
-                    x-data="{ show: !sessionStorage.getItem('save-cta-dismissed') }"
-                    x-show="show"
-                    x-transition:leave="transition ease-in duration-200"
-                    x-transition:leave-start="opacity-100 scale-y-100"
-                    x-transition:leave-end="opacity-0 scale-y-0"
-                    x-cloak
-                >
-                    <div class="relative flex flex-col items-stretch gap-2 rounded-lg _border-2 border-fuchsia-200/80 dark:border-fuchsia-900/40 bg-gradient-to-br from-white via-fuchsia-50/70 to-white dark:from-fuchsia-950 dark:via-fuchsia-950/30 dark:to-fuchsia-900/70 px-3 py-2 shadow-md shadow-black/10 dark:shadow-black/90">
-                        <div class="flex items-start gap-x-2 min-w-0">
-                            {{-- <div class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-fuchsia-500/10 dark:bg-fuchsia-600/15 border border-fuchsia-300/70 dark:border-fuchsia-600/25">
-                                <svg class="w-3.5 h-3.5 text-fuchsia-600 dark:text-fuchsia-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6H16a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                </svg>
-                            </div> --}}
-                            <p class="min-w-0 flex-1 text-base leading-tight text-cod-gray-900 dark:text-cod-gray-100">
-                                <span class="text-base">Save your game progress in Cloud.</span>
-                                <span class="text-base"><br/>Get <span class=" text-base text-fuchsia-900 dark:text-fuchsia-400">5 free</span> save slots per game.</span>
-                            </p>
-                            <button
-                                @click="show = false; sessionStorage.setItem('save-cta-dismissed', '1')"
-                                class="flex-shrink-0 -mt-0.5_ -mr-1.5 p-0.5 rounded text-cod-gray-500 hover:text-cod-gray-800 dark:hover:text-cod-gray-300 transition duration-200"
-                                aria-label="Dismiss"
-                            >
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-                        <a href="{{ route('login') }}"
-                            class="flex w-full items-center justify-center gap-x-1.5 rounded-md bg-fuchsia-600 hover:bg-fuchsia-500 px-2 py-1 text-white text-sm tracking-wider _font-semibold transition duration-200 shadow shadow-black/30">
-                            <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                            Sign up free
-                        </a>
-                    </div>
-                </div>
-                @endif
-                @endguest
-
-                <!-- tabs -->
-                <div class="flex shrink-0 items-center justify-between gap-x-1">
-                    <x-tab-item wire:click="changeTab('info')" @click="$dispatch('loader-top-on')" :active="$tabs['info']">
-                        Game info
-                    </x-tab-item>
-                    <x-tab-item wire:click="changeTab('chat')" @click="$dispatch('loader-top-on')" :active="$tabs['chat']">
-                        <div class="flex items-center justify-center text-base md:text-xl">
-                            <x-red-dot /> Live chat
-                        </div>
-                    </x-tab-item>
-                </div>
-
-                <!-- info tab -->
-                <x-tab-content>
+                <!-- info / media tabs -->
+                <x-tab-content :contain="false">
                     @if ($tabs['info'])
-                    <div class="flex flex-1 min-h-0 flex-col overflow-y-auto">
+                    <div class="flex flex-1 min-h-0 flex-col play:overflow-visible overflow-y-auto">
                     <div class="flex flex-col gap-y-4 p-4">
                         @if ($game->genres->isNotEmpty())
                         <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 w-full">
@@ -112,25 +146,7 @@
 
                         <!-- header -->
                         <div class="flex flex-row-reverse items-start justify-center gap-x-4">
-                            <div class="w-[38%] hidden">
-                                @if ($game->cartridge)
-                                <a wire:navigate href="/{{ $console->short_name }}" class="bg-black flex flex-col-reverse items-center justify-center overflow-hidden rounded-md shadow-md shadow-black">
-                                    <img class="w-full" src="{{ $game->cartridge }}" alt="{{ $game->title }}">
-                                    <div class="my-2 flex justify-center">
-                                        <img class="w-[75%]" src="{{ $console->console_logo }}" alt="{{ $console->short_name }}">
-                                    </div>
-                                </a>
-                                @else
-                                <a wire:navigate href="/{{ $console->short_name }}" class="bg-black flex flex-col-reverse items-center justify-center overflow-hidden rounded-md shadow-md shadow-black">
-                                    <img class="w-full" src="{{ $game->poster }}" alt="{{ $game->title }}">
-                                    <div class="my-2 flex justify-center">
-                                        <img class="w-[75%]" src="{{ $console->console_logo }}" alt="{{ $console->short_name }}">
-                                    </div>
-                                </a>
-                                @endif
-                            </div>
-
-                            <div class="w-[62%]_ w-full">
+                            <div class="w-full">
                                 <div class="flex flex-col gap-y-1">
                                     <div class="flex items-center gap-x-1 justify-start">
                                         <div class="leading-none text-cod-gray-900 dark:text-cod-gray-200">
@@ -189,23 +205,36 @@
                     </div>
                     @endif
 
-                    @if ($tabs['chat'])
-                    <div class="flex flex-1 min-h-0 flex-col h-full">
-                        <div class="flex-1 min-h-0 overflow-hidden">
-                            @livewire('chat', [
-                                'console_id' => $console->id,
-                                'game' => $game->toArray(),
-                            ], uniqid())
-                        </div>
-                        <div class="shrink-0 flex items-center justify-center py-1 rounded-b-md bg-cod-gray-950">
-                            <div class="w-full px-0.5">
-                                <x-input
-                                    type="text"
-                                    wire:model.live.lazy="input"
-                                    placeholder="New message here..."
-                                    class="cursor-text h-[1.7rem] w-full border-none dark:placeholder-cod-gray-600/70 bg-cod-gray-300 dark:bg-cod-gray-600/25 focus:ring-2 rounded-b-md rounded-t-none text-base"
+                    @if ($tabs['media'] && ($igdb['has_media'] ?? false))
+                    <div class="flex flex-1 min-h-0 flex-col play:overflow-visible overflow-y-auto">
+                        <div class="flex flex-col divide-y divide-cod-gray-700/60 dark:divide-cod-gray-600/50 p-4">
+                            @if ($igdb['has_videos'] ?? false)
+                            <div class="flex flex-col gap-y-2 py-4 first:pt-0 last:pb-0">
+                                <div class="text-rose-700 dark:text-rose-300 text-base">Videos</div>
+                                <x-play.video-carousel
+                                    :videos="$igdb['videos']"
+                                    :game-id="$game->id"
+                                    :progress-url="auth()->check() ? route('player-data.youtube-progress.upsert', $game) : null"
+                                    :progress="$video_progress"
+                                    :csrf="csrf_token()"
+                                    :can-sync="auth()->check()"
                                 />
                             </div>
+                            @endif
+
+                            @if (! empty($igdb['artworks']))
+                            <div class="flex flex-col gap-y-2 py-4 first:pt-0 last:pb-0">
+                                <div class="text-rose-700 dark:text-rose-300 text-base">Artworks</div>
+                                <x-play.artworks :artworks="$igdb['artworks']" :game-title="$game->title" />
+                            </div>
+                            @endif
+
+                            @if (! empty($igdb['similar_games']))
+                            <div class="flex flex-col gap-y-2 py-4 first:pt-0 last:pb-0">
+                                <div class="text-rose-700 dark:text-rose-300 text-base">Similar</div>
+                                <x-play.similar-games :games="$igdb['similar_games']" />
+                            </div>
+                            @endif
                         </div>
                     </div>
                     @endif
@@ -216,6 +245,51 @@
 </x-container>
 
 @push('scripts')
+<script>
+(function () {
+    if (window.__vintagePlayEmulatorSpacerSync) return
+    window.__vintagePlayEmulatorSpacerSync = true
+
+    function syncPlayEmulatorSpacer() {
+        const dock = document.querySelector('.play-emulator-dock')
+        const spacer = document.querySelector('.play-emulator-spacer')
+        const rail = document.querySelector('.play-game-rail')
+        if (!dock || !spacer || !rail) return
+        // Desktop only: spacer is hidden below the play breakpoint
+        if (window.matchMedia('(max-width: 1079px)').matches) {
+            spacer.style.height = ''
+            dock.style.left = ''
+            dock.style.width = ''
+            return
+        }
+        // Pin dock to the in-flow rail box so iframe width matches chat
+        // (CSS 100vw math drifts when a scrollbar is present).
+        const rect = rail.getBoundingClientRect()
+        dock.style.left = rect.left + 'px'
+        dock.style.width = rect.width + 'px'
+        spacer.style.height = dock.offsetHeight + 'px'
+    }
+
+    function boot() {
+        syncPlayEmulatorSpacer()
+        const dock = document.querySelector('.play-emulator-dock')
+        const rail = document.querySelector('.play-game-rail')
+        if (typeof ResizeObserver !== 'undefined') {
+            if (dock) new ResizeObserver(syncPlayEmulatorSpacer).observe(dock)
+            if (rail) new ResizeObserver(syncPlayEmulatorSpacer).observe(rail)
+        }
+        window.addEventListener('resize', syncPlayEmulatorSpacer)
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot)
+    } else {
+        boot()
+    }
+    document.addEventListener('livewire:navigated', syncPlayEmulatorSpacer)
+    document.addEventListener('livewire:updated', syncPlayEmulatorSpacer)
+})()
+</script>
 <script>
 (function () {
     if (window.__vintagePlayPageFullscreenHotkey) return

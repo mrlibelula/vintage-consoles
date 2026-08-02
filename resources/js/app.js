@@ -1,4 +1,5 @@
 import './bootstrap';
+import './play-media';
 import { register } from 'swiper/element/bundle';
 
 register();

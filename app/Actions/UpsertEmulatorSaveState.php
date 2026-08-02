@@ -6,6 +6,7 @@ use App\Models\EmulatorSaveState;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
 
 final class UpsertEmulatorSaveState
 {
@@ -19,6 +20,10 @@ final class UpsertEmulatorSaveState
         ?string $label,
         string $binaryContents,
     ): EmulatorSaveState {
+        if ($binaryContents === '') {
+            throw new RuntimeException('Save state contents must not be empty.');
+        }
+
         $diskPath = $this->diskPath($user->id, $console, $gameSlug, $slot);
         $backupPath = "{$diskPath}.backup";
         $disk = Storage::disk('savestates');
@@ -33,7 +38,10 @@ final class UpsertEmulatorSaveState
         // Rotation: if a primary state exists, copy it to .backup (overwriting old backup),
         // then overwrite primary with the new bytes. This keeps max 2 files per slot.
         if ($disk->exists($diskPath)) {
-            $disk->copy($diskPath, $backupPath);
+            if (! $disk->copy($diskPath, $backupPath)) {
+                throw new RuntimeException("Failed to rotate save state backup to {$backupPath}.");
+            }
+
             [$backupChecksum, $backupBytes] = $this->checksumAndSize($disk, $backupPath);
 
             $backupMeta = [
@@ -44,7 +52,17 @@ final class UpsertEmulatorSaveState
             ];
         }
 
-        $disk->put($diskPath, $binaryContents);
+        if (! $disk->put($diskPath, $binaryContents)) {
+            throw new RuntimeException("Failed to write save state to {$diskPath}.");
+        }
+
+        // Source of truth = bytes on disk (not the in-memory upload buffer).
+        [$checksum, $sizeBytes] = $this->checksumAndSize($disk, $diskPath);
+
+        if ($sizeBytes === 0 || $checksum === '') {
+            $disk->delete($diskPath);
+            throw new RuntimeException('Save state write produced an empty or unreadable file.');
+        }
 
         $save = EmulatorSaveState::updateOrCreate(
             [
@@ -56,8 +74,8 @@ final class UpsertEmulatorSaveState
             [
                 'label' => $label,
                 'disk_path' => $diskPath,
-                'size_bytes' => strlen($binaryContents),
-                'checksum' => hash('sha256', $binaryContents),
+                'size_bytes' => $sizeBytes,
+                'checksum' => $checksum,
                 ...$backupMeta,
             ],
         );

@@ -72,7 +72,8 @@
                 if (window.crossOriginIsolated) return;       // Server headers already set
                 if (!('serviceWorker' in navigator)) return;
 
-                navigator.serviceWorker.register('/coi-serviceworker.js').then(function (reg) {
+                // ?v= busts the old global COEP worker that broke YouTube on the play page.
+                navigator.serviceWorker.register('/coi-serviceworker.js?v=2').then(function (reg) {
                     if (!navigator.serviceWorker.controller) {
                         // Worker just installed for the first time — reload to activate.
                         reg.installing && reg.installing.addEventListener('statechange', function (e) {

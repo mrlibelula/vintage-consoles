@@ -214,9 +214,56 @@
 
             window.VintageEmulatorSaveStates = new window.VintageSaveStateManager(window.VintageSaveStateConfig, {
                 async captureState() {
-                    const state = window.EJS_emulator?.gameManager?.getState?.();
+                    // Serialize captures so concurrent F2 presses cannot race the core.
+                    window.__vintageSaveStateQueue = (window.__vintageSaveStateQueue || Promise.resolve()).then(async () => {
+                        const ejs = window.EJS_emulator;
+                        const getState = ejs?.gameManager?.getState;
+                        if (typeof getState !== 'function') {
+                            throw new Error('Emulator getState not ready.');
+                        }
 
-                    return state instanceof Promise ? await state : state;
+                        const wasPaused = Boolean(ejs.paused);
+                        let wePaused = false;
+
+                        try {
+                            // Pause before serializing: reading a live SNES/heavy core races the
+                            // WASM heap and yields torn .state buffers that still hash cleanly
+                            // but never load (RomM / EmulatorJS known failure mode).
+                            if (!wasPaused && typeof ejs.pause === 'function') {
+                                ejs.pause();
+                                wePaused = true;
+                                await new Promise(resolve => setTimeout(resolve, 50));
+                            }
+
+                            const state = getState.call(ejs.gameManager);
+                            const resolved = state instanceof Promise ? await state : state;
+
+                            // Own a private copy immediately — do not keep a live WASM heap view.
+                            let bytes;
+                            if (resolved instanceof Uint8Array) {
+                                bytes = resolved.slice();
+                            } else if (resolved instanceof ArrayBuffer) {
+                                bytes = new Uint8Array(resolved).slice();
+                            } else {
+                                bytes = new Uint8Array(resolved || []).slice();
+                            }
+
+                            if (bytes.byteLength < 64) {
+                                throw new Error('Captured save state is empty or too small.');
+                            }
+
+                            return bytes;
+                        } finally {
+                            if (wePaused && typeof ejs.play === 'function') {
+                                ejs.play();
+                            } else if (wePaused && typeof ejs.pause === 'function' && ejs.paused && typeof ejs.togglePlaying === 'function') {
+                                // Fallback if play() is unavailable.
+                                ejs.togglePlaying();
+                            }
+                        }
+                    });
+
+                    return window.__vintageSaveStateQueue;
                 },
                 async restoreState(bytes) {
                     // Serialize restore requests; EmulatorJS cores can crash if loadState is re-entered.
@@ -244,16 +291,34 @@
                             return new Uint8Array(value || []).slice();
                         };
 
+                        const ejs = window.EJS_emulator;
+                        const wasPaused = Boolean(ejs?.paused);
+                        let wePaused = false;
+
                         try {
                             await waitUntilReady();
+
+                            // Pause briefly so loadState is not applied mid-frame on heavy cores.
+                            if (ejs && !wasPaused && typeof ejs.pause === 'function') {
+                                ejs.pause();
+                                wePaused = true;
+                                await new Promise(resolve => setTimeout(resolve, 50));
+                            }
+
                             const safeBytes = normalizeBytes(bytes);
-                            const result = window.EJS_emulator?.gameManager?.loadState?.(safeBytes);
+                            const result = ejs?.gameManager?.loadState?.(safeBytes);
                             if (result instanceof Promise) {
                                 await result;
                             }
                         } catch (err) {
                             console.error('[Vintage] loadState failed:', err);
                             throw err;
+                        } finally {
+                            if (wePaused && typeof ejs?.play === 'function') {
+                                ejs.play();
+                            } else if (wePaused && ejs?.paused && typeof ejs.togglePlaying === 'function') {
+                                ejs.togglePlaying();
+                            }
                         }
                     });
 

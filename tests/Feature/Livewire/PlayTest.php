@@ -251,36 +251,139 @@ describe('Accordion management', function () {
 });
 
 describe('Tab management', function () {
-    it('switches to chat tab and resets info tab', function () {
+    it('switches to media tab and resets info tab', function () {
         $console = playNesConsole();
-        playNesGame($console);
+        playNesGame($console, [
+            'walkthrough_videos' => [
+                ['title' => 'Guide', 'youtube_id' => 'dQw4w9WgXcQ'],
+            ],
+        ]);
 
         Livewire::test(Play::class, [
             'console_short_name' => 'nes',
             'game_title_slug'    => 'super-mario-bros',
         ])
         ->assertSet('tabs.info', true)
-        ->assertSet('tabs.chat', false)
-        ->call('changeTab', 'chat')
+        ->assertSet('tabs.media', false)
+        ->call('changeTab', 'media')
         ->assertSet('tabs.info', false)
-        ->assertSet('tabs.chat', true);
+        ->assertSet('tabs.media', true);
     });
 
     it('can switch back to info tab', function () {
         $console = playNesConsole();
+        playNesGame($console, [
+            'walkthrough_videos' => [
+                ['title' => 'Guide', 'youtube_id' => 'dQw4w9WgXcQ'],
+            ],
+        ]);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+        ->call('changeTab', 'media')
+        ->call('changeTab', 'info')
+        ->assertSet('tabs.info', true)
+        ->assertSet('tabs.media', false);
+    });
+
+    it('ignores the removed chat tab', function () {
+        $console = playNesConsole();
         playNesGame($console);
 
         Livewire::test(Play::class, [
             'console_short_name' => 'nes',
             'game_title_slug'    => 'super-mario-bros',
         ])
-        ->call('changeTab', 'chat')
-        ->call('changeTab', 'info')
         ->assertSet('tabs.info', true)
-        ->assertSet('tabs.chat', false);
+        ->call('changeTab', 'chat')
+        ->assertSet('tabs.info', true)
+        ->assertSet('tabs.media', false);
     });
 
-    it('renders chat tab for guests when messages omit user_id', function () {
+    it('defaults to info tab even when media exists', function () {
+        $console = playNesConsole();
+        playNesGame($console, [
+            'walkthrough_videos' => [
+                ['title' => 'Guide', 'youtube_id' => 'dQw4w9WgXcQ'],
+            ],
+        ]);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->assertSet('igdb.has_media', true)
+            ->assertSet('tabs.info', true)
+            ->assertSet('tabs.media', false)
+            ->assertSee('Info')
+            ->assertSee('Media')
+            ->assertSee('live chat room');
+    });
+
+    it('shows artworks in the media tab', function () {
+        $console = playNesConsole();
+        playNesGame($console, [
+            'igdb_response' => [
+                'artworks' => [
+                    ['image_id' => 'ar123'],
+                ],
+            ],
+        ]);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->assertSet('igdb.has_media', true)
+            ->assertDontSee('Artworks')
+            ->call('changeTab', 'media')
+            ->assertSee('Artworks');
+    });
+
+    it('renders session bar and hotkeys under the emulator', function () {
+        $console = playNesConsole();
+        playNesGame($console);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->assertSee('Hotkeys')
+            ->assertSee('nes');
+    });
+
+    it('renders arcade controls only for arcade consoles', function () {
+        $arcade = Console::factory()->create([
+            'short_name' => 'arcade',
+            'long_name' => 'Arcade',
+        ]);
+        Game::factory()->create([
+            'console_id' => $arcade->id,
+            'title' => 'Galaga',
+            'slug' => 'galaga',
+            'rom' => 'galaga.zip',
+        ]);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'arcade',
+            'game_title_slug' => 'galaga',
+        ])
+            ->assertSee('Insert Coin')
+            ->assertSee('Start')
+            ->assertSee('Hotkeys');
+
+        $console = playNesConsole();
+        playNesGame($console);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug' => 'super-mario-bros',
+        ])->assertDontSee('Insert Coin');
+    });
+
+    it('renders live chat below the emulator for guests when messages omit user_id', function () {
         $console  = playNesConsole();
         $game     = playNesGame($console);
         $messages = [
@@ -293,13 +396,28 @@ describe('Tab management', function () {
             'console_short_name' => 'nes',
             'game_title_slug'    => 'super-mario-bros',
         ])
-            ->call('changeTab', 'chat')
-            ->assertSet('tabs.chat', true)
             ->assertSee('Hello from legacy chat!')
-            ->assertSee('Guest');
+            ->assertSee('Guest')
+            ->assertSee('live chat room');
     });
 });
 
+describe('Live chat input', function () {
+    it('clears input after sending a message', function () {
+        $user    = User::factory()->create();
+        $console = playNesConsole();
+        playNesGame($console);
+
+        $this->actingAs($user);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->set('input', 'Hello from me')
+            ->assertSet('input', '');
+    });
+});
 // ─────────────────────────────────────────────────────────────────────────────
 // Game URL Loading
 // ─────────────────────────────────────────────────────────────────────────────

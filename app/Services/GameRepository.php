@@ -133,6 +133,7 @@ class GameRepository
             'cartridge'           => $gameData['cartridge'] ?? null,
             'needs_igdb_sync'     => (bool) ($gameData['needs_igdb_sync'] ?? true),
             'igdb_response'       => $gameData['igdb_response'] ?? null,
+            'walkthrough_videos'  => $gameData['walkthrough_videos'] ?? null,
         ]);
 
         $this->syncGenres($game, $gameData['genres'] ?? []);
