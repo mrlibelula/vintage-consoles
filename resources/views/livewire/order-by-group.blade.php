@@ -1,11 +1,11 @@
-<div class="overflow-x-auto" data-ribbon-view="group">
+<div data-ribbon-view="group">
     <x-ribbon ob="group">
     @foreach ($games as $game)
         <swiper-slide class="relative">
-            <div x-show="skeletonGroup" class="absolute inset-0 z-10 flex items-start justify-center py-4">
-                <div class="group relative flex h-full flex-col overflow-hidden rounded-xl border-2 border-cod-gray-300 bg-cod-gray-200/80 shadow dark:border-cod-gray-950 dark:bg-cod-gray-900/90">
-                    <div class="flex h-full w-[230px] shrink-0 flex-col overflow-hidden">
-                        <div class="relative h-[177px] w-full shrink-0 skeleton">
+            <div x-show="skeletonGroup" class="absolute inset-0 z-10 flex w-full items-start py-4">
+                <div class="group relative flex h-full w-full flex-col overflow-hidden rounded-xl border-2 border-cod-gray-500 bg-cod-gray-200/80 shadow dark:border-cod-gray-700/50 dark:bg-cod-gray-900/90">
+                    <div class="flex h-full w-full min-w-0 flex-col overflow-hidden">
+                        <div class="relative h-[165px] w-full shrink-0 skeleton">
                             <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent/30 via-transparent to-cod-gray-200 dark:from-transparent dark:via-transparent dark:to-cod-gray-900"></div>
                         </div>
                         <div class="flex min-h-0 flex-1 flex-col items-center justify-center gap-1.5 bg-cod-gray-200/80 px-2 py-2 dark:bg-cod-gray-900/90">

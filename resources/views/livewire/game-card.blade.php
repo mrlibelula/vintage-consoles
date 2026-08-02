@@ -1,4 +1,4 @@
-<div class="flex h-[calc(290px+2rem)]_ shrink-0 items-start justify-start py-4">
+<div class="flex h-[calc(275px+2rem)] w-full min-w-0 shrink-0 items-stretch justify-start py-4">
     <style>
         .containerCards {
             display: flex;
@@ -8,10 +8,11 @@
             justify-content: center;
             align-content: center;
             box-sizing: border-box;
+            width: 100%;
         }
     
         .containerCards .card {
-            width: 230px;
+            width: 100%;
             transition: ease all 0.3s;
         }
     
@@ -35,14 +36,14 @@
     
         .containerCards .card .wrapper {
             margin: 0px 0px 0px 0px;
-            padding-top: 290px;
+            padding-top: 275px;
             box-sizing: border-box;
             position: relative;
             transition: ease all 0.3s;
         }
     
         .containerCards .card .wrapper:hover .imgProd {
-            height: 80px;
+            height: 88px;
         }
     
         .containerCards .card .wrapper .mediaContainer {
@@ -50,26 +51,36 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 176px;
+            height: 165px;
             overflow: hidden;
         }
 
         .containerCards .card .wrapper:hover .colorProd {
-            transform: scale(1.08);
+            transform: scale(1.06);
         }
     
         .containerCards .card .wrapper .colorProd {
             display: block;
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            /* Slightly oversized + left-biased so cover crops baked-in left letterboxing on tall GIFs */
+            top: -7.5%;
+            left: -10%;
+            width: 120%;
+            height: 115%;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             transform-origin: center center;
             transition: ease all 0.3s;
+        }
+
+        .containerCards .card .wrapper .colorProd video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
         }
     
         .containerCards .card .wrapper .imgProd {
@@ -77,9 +88,9 @@
             background-position: center bottom;
             background-repeat: no-repeat;
             position: absolute;
-            bottom: calc(100% - 255px);
+            bottom: calc(100% - 242px);
             width: 100%;
-            height: 60px;
+            height: 66px;
             transition: ease all 0.3s;
         }
     
@@ -197,7 +208,7 @@
             transform: scale(0);
         }
     </style>
-    <div class="group relative containerCards rounded-xl overflow-hidden bg-cod-gray-200/80 dark:bg-cod-gray-900/90 h-full border-2_ border-cod-gray-300 dark:border-cod-gray-950 shadow">
+    <div class="group relative containerCards h-full w-full overflow-hidden rounded-xl border-2 border-cod-gray-500 bg-cod-gray-200/80 shadow dark:border-cod-gray-700/50 dark:bg-cod-gray-900/90">
         <div class="card h-full">
             @if($showConsoleLabel && isset($game->console) && $game->console)
             <div class="absolute z-20 text-center w-full bg-cod-gray-500/70 dark:bg-cod-gray-800/70 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400">
@@ -212,12 +223,12 @@
                 $isVideo  = $isWebm || $isMp4;
                 $mp4Url   = $isWebm ? str_replace('.webm', '.mp4', $boxUrl) : ($isMp4 ? $boxUrl : '');
             @endphp
-            <div class="wrapper overflow-hidden w-full h-full flex justify-between items-center border-2 rounded-xl border-cod-gray-500 dark:border-cod-gray-700/50">
+            <div class="wrapper flex h-full w-full items-center justify-between">
                 <div class="mediaContainer">
                     @if ($isVideo)
                         <!-- Video box background -->
                         <div class="colorProd lazy-load-video">
-                            <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline>
+                            <video autoplay muted loop playsinline>
                                 @if ($isWebm)
                                     <source data-src="{{ $boxUrl }}" type="video/webm">
                                 @endif
@@ -233,12 +244,8 @@
                             data-bg-url="{{ $boxUrl }}"
                         ></div>
                     @endif
-                    <x-game-card-rating
-                        :rating="$game->rating"
-                        class="absolute bottom-3 right-1.5 z-10"
-                    />
                 </div>
-                <div class="absolute top-0 w-full h-[177px] bg-gradient-to-b from-transparent/30 via-transparent to-cod-gray-200 dark:from-transparent dark:via-transparent dark:to-cod-gray-900 pointer-events-none">
+                <div class="absolute top-0 w-full h-[165px] bg-gradient-to-b from-transparent/30 via-transparent to-cod-gray-200 dark:from-transparent dark:via-transparent dark:to-cod-gray-900 pointer-events-none">
                 </div>
                 <!-- Placeholder for the poster background -->
                 
@@ -247,8 +254,8 @@
                     {{-- style="background-image: url({{ asset('images/placeholder-poster-homer.jpg') }});" --}}
                 >
                 </div>
-                <div class="infoProd absolute inset-x-0 bottom-0 top-[177px] flex items-center justify-center text-center">
-                    <p class="flex min-w-0 w-full items-center justify-center whitespace-normal px-2 py-2 text-center text-base_ text-[1rem] font-thin leading-none tracking-wider text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
+                <div class="infoProd absolute inset-x-0 bottom-0 top-[165px] flex items-center justify-center text-center">
+                    <p class="nombreProd min-h-[2.5rem] min-w-0 w-full px-2 py-2 text-center text-[1rem] font-thin leading-tight tracking-wider text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
                         {{ Str::limit($game->title, 55) }}
                     </p>
                     

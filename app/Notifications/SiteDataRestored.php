@@ -28,8 +28,13 @@ class SiteDataRestored extends Notification
             : 'Your save games were not changed.';
 
         $date = Carbon::now()->format('M j, Y');
-        if (preg_match('/backup_(\d{4}-\d{2}-\d{2})/', $this->backupFilename, $m)) {
-            $date = Carbon::parse($m[1])->format('M j, Y');
+        // Match dates in backup_YYYY-MM-DD… or vintage-backup_YYYY-MM-DD… filenames
+        if (preg_match('/(\d{4}-\d{2}-\d{2})/', $this->backupFilename, $m)) {
+            try {
+                $date = Carbon::parse($m[1])->format('M j, Y');
+            } catch (\Throwable) {
+                // keep "now" fallback
+            }
         }
 
         return [

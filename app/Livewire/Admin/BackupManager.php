@@ -2,20 +2,31 @@
 
 namespace App\Livewire\Admin;
 
+use App\Livewire\Concerns\WithToasts;
 use App\Models\User;
 use App\Notifications\SiteDataRestored;
 use App\Services\BackupService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\File;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.app')]
 
 class BackupManager extends Component
 {
+    use WithFileUploads;
+    use WithToasts;
+
     public bool $includeSavestates = true;
     public array $backups = [];
     public bool $isCreating = false;
+
+    /** @var mixed Livewire temporary upload */
+    public $uploadFile = null;
+
+    public bool $isUploading = false;
 
     // Preview modal
     public bool $showPreviewModal = false;
@@ -49,11 +60,40 @@ class BackupManager extends Component
         try {
             $filename = app(BackupService::class)->createBackup($this->includeSavestates);
             $this->loadBackups();
-            session()->flash('success', "Backup created: {$filename}");
+            $this->toast('success', "Backup created: {$filename}");
         } catch (\Throwable $e) {
-            session()->flash('error', "Failed to create backup: {$e->getMessage()}");
+            report($e);
+            $this->toast('error', "Failed to create backup: {$e->getMessage()}");
         } finally {
             $this->isCreating = false;
+        }
+    }
+
+    public function uploadBackup(): void
+    {
+        $this->validate([
+            'uploadFile' => [
+                'required',
+                File::default()->extensions(['zip'])->max(524288), // 512 MB
+            ],
+        ]);
+
+        $this->isUploading = true;
+
+        try {
+            $filename = app(BackupService::class)->storeUploadedBackup($this->uploadFile);
+            $this->reset('uploadFile');
+            $this->loadBackups();
+            $this->toast('success', "Backup uploaded: {$filename}");
+            $this->openPreview($filename);
+        } catch (\InvalidArgumentException $e) {
+            $this->addError('uploadFile', $e->getMessage());
+            $this->toast('error', $e->getMessage());
+        } catch (\Throwable $e) {
+            report($e);
+            $this->toast('error', "Failed to upload backup: {$e->getMessage()}");
+        } finally {
+            $this->isUploading = false;
         }
     }
 
@@ -68,8 +108,9 @@ class BackupManager extends Component
         try {
             $this->previewData = app(BackupService::class)->previewBackup($filename);
         } catch (\Throwable $e) {
+            report($e);
             $this->previewError = "Failed to load preview: {$e->getMessage()}";
-            session()->flash('error', $this->previewError);
+            $this->toast('error', $this->previewError);
         } finally {
             $this->isPreviewLoading = false;
         }
@@ -82,6 +123,7 @@ class BackupManager extends Component
         $this->previewData      = [];
         $this->previewError     = null;
         $this->isPreviewLoading = false;
+        $this->unlockBodyScroll();
     }
 
     public function openRestoreModal(string $filename): void
@@ -91,6 +133,7 @@ class BackupManager extends Component
         $this->restorePasswordError = null;
         $this->showRestoreModal     = true;
         $this->showPreviewModal     = false;
+        // Keep body locked — restore modal is still open.
     }
 
     public function confirmRestore(): void
@@ -106,28 +149,34 @@ class BackupManager extends Component
         $filename = $this->restoringFile;
 
         try {
-            $service  = app(BackupService::class);
-            $preview  = $service->previewBackup($filename);
+            $service = app(BackupService::class);
+            $preview = $service->previewBackup($filename);
             $service->restoreBackup($filename);
 
-            $includesSavestates = $preview['manifest']['includes_savestates'];
+            $includesSavestates = (bool) ($preview['manifest']['includes_savestates'] ?? false);
             $adminName          = auth()->user()->name;
 
-            User::query()->each(function (User $user) use ($filename, $includesSavestates, $adminName) {
-                $user->notify(new SiteDataRestored(
-                    backupFilename:    $filename,
-                    includesSavestates: $includesSavestates,
-                    adminName:         $adminName,
-                ));
-            });
+            // Notify separately — restore already succeeded; don't leave the modal open on notify errors.
+            try {
+                User::query()->each(function (User $user) use ($filename, $includesSavestates, $adminName) {
+                    $user->notify(new SiteDataRestored(
+                        backupFilename:     $filename,
+                        includesSavestates: $includesSavestates,
+                        adminName:          $adminName,
+                    ));
+                });
+            } catch (\Throwable $e) {
+                report($e);
+                $this->finishRestoreUi($filename, notified: false);
 
-            $this->showRestoreModal = false;
-            $this->restoringFile    = null;
-            $this->restorePassword  = '';
-            $this->loadBackups();
-            session()->flash('success', "Restore from {$filename} completed successfully.");
+                return;
+            }
+
+            $this->finishRestoreUi($filename, notified: true);
         } catch (\Throwable $e) {
-            session()->flash('error', "Restore failed: {$e->getMessage()}");
+            report($e);
+            $this->closeRestoreModal();
+            $this->toast('error', "Restore failed: {$e->getMessage()}");
         } finally {
             $this->isRestoring = false;
         }
@@ -139,6 +188,8 @@ class BackupManager extends Component
         $this->restoringFile        = null;
         $this->restorePassword      = '';
         $this->restorePasswordError = null;
+        $this->isRestoring          = false;
+        $this->unlockBodyScroll();
     }
 
     public function openDeleteModal(string $filename): void
@@ -151,6 +202,7 @@ class BackupManager extends Component
     {
         $this->showDeleteModal = false;
         $this->deletingFile    = null;
+        $this->unlockBodyScroll();
     }
 
     public function confirmDelete(): void
@@ -165,10 +217,58 @@ class BackupManager extends Component
             app(BackupService::class)->deleteBackup($filename);
             $this->closeDeleteModal();
             $this->loadBackups();
-            session()->flash('success', "Backup {$filename} deleted.");
+            $this->toast('success', "Backup {$filename} deleted.");
         } catch (\Throwable $e) {
-            session()->flash('error', "Failed to delete: {$e->getMessage()}");
+            report($e);
+            $this->closeDeleteModal();
+            $this->toast('error', "Failed to delete: {$e->getMessage()}");
         }
+    }
+
+    public function downloadBackup(string $filename)
+    {
+        try {
+            return app(BackupService::class)->downloadBackup($filename);
+        } catch (\Throwable $e) {
+            report($e);
+            $this->toast('error', "Failed to download: {$e->getMessage()}");
+
+            return null;
+        }
+    }
+
+    private function finishRestoreUi(string $filename, bool $notified): void
+    {
+        $this->showRestoreModal     = false;
+        $this->restoringFile        = null;
+        $this->restorePassword      = '';
+        $this->restorePasswordError = null;
+        $this->isRestoring          = false;
+        $this->showPreviewModal     = false;
+        $this->previewingFile       = null;
+        $this->previewData          = [];
+        $this->previewError         = null;
+        $this->isPreviewLoading     = false;
+        $this->unlockBodyScroll();
+        $this->loadBackups();
+
+        if ($notified) {
+            $this->toast('success', "Restore from {$filename} completed successfully.");
+        } else {
+            $this->toast(
+                'warning',
+                "Restore from {$filename} completed, but notifying users failed. Check the log."
+            );
+        }
+
+        // Refresh nav so the site-restored banner can appear for this admin.
+        $this->dispatch('site-data-restored');
+    }
+
+    /** Livewire often removes modal DOM without Alpine destroy — unlock explicitly. */
+    private function unlockBodyScroll(): void
+    {
+        $this->js('document.body.style.overflow = ""');
     }
 
     private function loadBackups(): void

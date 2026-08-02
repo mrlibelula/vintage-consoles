@@ -1,4 +1,4 @@
-<div class="overflow-x-auto" data-ribbon-view="{{ $ob }}">
+<div data-ribbon-view="{{ $ob }}">
     <x-ribbon
         :ob="$ob"
         :customSlidesPerView="$ob === 'squares'
@@ -9,10 +9,10 @@
         @foreach ($games as $game)
             <swiper-slide class="relative {{ $ob === 'squares' ? 'py-0' : '' }}">
                 @if ($ob === 'group')
-                    <div x-show="skeletonGroup" class="absolute inset-0 z-10 flex items-start justify-center py-4">
-                        <div class="group relative flex h-full flex-col overflow-hidden rounded-xl border-2 border-cod-gray-300 bg-cod-gray-200/80 shadow dark:border-cod-gray-950 dark:bg-cod-gray-900/90">
-                            <div class="flex h-full w-[230px] shrink-0 flex-col overflow-hidden">
-                                <div class="relative h-[177px] w-full shrink-0 skeleton">
+                    <div x-show="skeletonGroup" class="absolute inset-0 z-10 flex w-full items-start py-4">
+                        <div class="group relative flex h-full w-full flex-col overflow-hidden rounded-xl border-2 border-cod-gray-500 bg-cod-gray-200/80 shadow dark:border-cod-gray-700/50 dark:bg-cod-gray-900/90">
+                            <div class="flex h-full w-full min-w-0 flex-col overflow-hidden">
+                                <div class="relative h-[165px] w-full shrink-0 skeleton">
                                     <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent/30 via-transparent to-cod-gray-200 dark:from-transparent dark:via-transparent dark:to-cod-gray-900"></div>
                                 </div>
                                 <div class="flex min-h-0 flex-1 flex-col items-center justify-center gap-1.5 bg-cod-gray-200/80 px-2 py-2 dark:bg-cod-gray-900/90">
@@ -33,16 +33,16 @@
                         <livewire:game-card :game="$game" :key="'fg-card-'.$game->id" />
                     </a>
                 @else
-                    <div x-show="skeletonSquare" class="absolute inset-0 z-10 flex items-center justify-center">
-                        <div class="group shrink-0 rounded-lg overflow-hidden border-[3px] border-cod-gray-500 bg-gradient-to-br from-cod-gray-700 via-cod-gray-700/50 to-cod-gray-800 opacity-75 shadow-md shadow-cod-gray-500 animate-pulse dark:border-cod-gray-700 dark:shadow-black dark:from-cod-gray-800 dark:via-cod-gray-800/50 dark:to-cod-gray-900">
-                            <div class="pointer-events-none h-[12rem] w-[8.5rem] bg-gradient-to-b from-cod-gray-600/45 via-cod-gray-700/55 to-cod-gray-900/85 dark:from-cod-gray-700/50 dark:via-cod-gray-800/60 dark:to-black/35"></div>
+                    <div x-show="skeletonSquare" class="absolute inset-0 z-10 flex w-full items-center">
+                        <div class="group w-full min-w-0 rounded-lg overflow-hidden border-[3px] border-cod-gray-500 bg-gradient-to-br from-cod-gray-700 via-cod-gray-700/50 to-cod-gray-800 opacity-75 shadow-md shadow-cod-gray-500 animate-pulse dark:border-cod-gray-700 dark:shadow-black dark:from-cod-gray-800 dark:via-cod-gray-800/50 dark:to-cod-gray-900">
+                            <div class="pointer-events-none w-full aspect-[8.5/12] bg-gradient-to-b from-cod-gray-600/45 via-cod-gray-700/55 to-cod-gray-900/85 dark:from-cod-gray-700/50 dark:via-cod-gray-800/60 dark:to-black/35"></div>
                         </div>
                     </div>
                     <a
                         href="{{ route('play', ['console_short_name' => $game->console->short_name, 'game_title_slug' => $game->slug]) }}"
                         @click="$dispatch('loader-top-on')"
                         :class="skeletonSquare ? 'invisible pointer-events-none' : ''"
-                        class="relative z-0 flex h-[12rem] w-full shrink-0 items-center justify-center my-2 lazy-load-container"
+                        class="relative z-0 flex w-full min-w-0 shrink-0 items-center my-2 lazy-load-container"
                         data-loaded="false"
                     >
                         <livewire:game-card-classic :game="$game" :key="'fg-classic-'.$game->id" class="p-4" />

@@ -56,6 +56,14 @@
     }
 }
 
+/* Canonical text/select field chrome — match header <x-input> */
+.form-field {
+    @apply border-2 border-cod-gray-300 bg-cod-gray-100/60 shadow-sm rounded-md
+        text-xl dark:border-cod-gray-700 dark:bg-cod-gray-800/50 dark:text-rose-200 dark:placeholder-cod-gray-400
+        focus:border-rose-500 focus:ring-rose-500
+        dark:focus:border-rose-600 dark:focus:ring-rose-600;
+}
+
 .smooth-300 {
     @apply transition duration-300 ease-in-out;
 }
@@ -102,6 +110,44 @@
     @apply opacity-100;
 }
 
+/* Theme-aware tooltip using the active app font (admin / icon actions) */
+.app-tooltip {
+    @apply relative;
+}
+
+.app-tooltip::before,
+.app-tooltip::after {
+    @apply pointer-events-none absolute left-1/2 z-50 -translate-x-1/2 opacity-0 transition duration-150 ease-out;
+}
+
+.app-tooltip::after {
+    content: attr(data-tooltip);
+    font-family: var(--app-font-family);
+    @apply top-[calc(100%+0.5rem)] whitespace-nowrap rounded-md border border-cod-gray-300 bg-white px-2.5 py-1 text-base leading-none text-cod-gray-800 shadow-md shadow-cod-gray-500/25 dark:border-cod-gray-600 dark:bg-cod-gray-900 dark:text-cod-gray-100 dark:shadow-black/50;
+}
+
+.app-tooltip::before {
+    content: '';
+    @apply top-[calc(100%+0.25rem)] h-0 w-0 border-x-[5px] border-b-[5px] border-x-transparent border-b-white dark:border-b-cod-gray-900;
+}
+
+.app-tooltip:hover::before,
+.app-tooltip:hover::after,
+.app-tooltip:focus-visible::before,
+.app-tooltip:focus-visible::after {
+    @apply opacity-100;
+}
+
+/* Keep right-edge actions from clipping off-screen */
+.app-tooltip-end::before,
+.app-tooltip-end::after {
+    @apply left-auto right-0 translate-x-0;
+}
+
+.app-tooltip-end::before {
+    @apply right-2.5;
+}
+
 .pixel-icon-rose {
     @apply text-rose-700 dark:text-rose-600;
 }
@@ -124,6 +170,53 @@
 
 .game-card-rating-badge .pixel-icon-rose-faint {
     @apply text-rose-600/40 dark:text-rose-200;
+}
+
+/* Footer pixel grid tinted to exact #e11d48 (light + dark) */
+.footer-grid {
+    background-color: #e11d48;
+    opacity: 0.42;
+}
+
+.dark .footer-grid {
+    opacity: 0.55;
+}
+
+.footer-grid-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+    mix-blend-mode: multiply;
+    filter: grayscale(1) contrast(1.25) brightness(1.15);
+    opacity: 0.9;
+}
+
+.dark .footer-grid-img {
+    filter: grayscale(1) contrast(1.35) brightness(0.95);
+    opacity: 1;
+}
+
+.footer-grid-fade {
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        transparent 18%,
+        rgb(194 197 204 / 0.35) 48%,
+        rgb(194 197 204 / 0.92) 78%,
+        rgb(194 197 204) 100%
+    );
+}
+
+.dark .footer-grid-fade {
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        transparent 18%,
+        rgb(18 19 21 / 0.35) 48%,
+        rgb(18 19 21 / 0.88) 78%,
+        rgb(18 19 21) 100%
+    );
 }
 
 .fade-hero-light {
@@ -352,6 +445,40 @@ swiper-slide {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/*
+ * Game ribbons: cards fill each slide, with a little padding so border-2 /
+ * border-[3px] + shadow stay inside the slide box (avoids last-card clip).
+ * Do not use Swiper slides-offset-* with slidesPerView — those offsets are
+ * not subtracted from slide width, so the track overruns on the right.
+ */
+.game-ribbon swiper-slide {
+    justify-content: flex-start;
+    align-items: stretch;
+    box-sizing: border-box;
+    padding-inline: 3px;
+    padding-block: 4px;
+}
+
+.game-ribbon swiper-slide > * {
+    width: 100%;
+    min-width: 0;
+}
+
+[data-ribbon-view] {
+    overflow-x: clip;
+    overflow-y: visible;
+    overflow-clip-margin: 8px;
+}
+
+.game-ribbon {
+    overflow: visible;
+}
+
+.game-ribbon::part(container) {
+    overflow: clip;
+    overflow-clip-margin: 8px;
 }
 
 .parallax-bg {

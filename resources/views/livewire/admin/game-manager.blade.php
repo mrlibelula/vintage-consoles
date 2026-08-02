@@ -25,7 +25,7 @@
                     <label for="console-select" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300 mb-2">Select Console</label>
                     <select wire:model.live="selectedConsole" id="console-select"
                             @change="$dispatch('loader-top-on'); setTimeout(() => $dispatch('loader-top-off'), 500)"
-                            class="w-full md:w-[18rem]_ px-3 py-2 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500">
+                            class="form-field w-full md:w-[18rem]_ px-3 py-2 text-xl">
                         @foreach($consoles as $console)
                             <option value="{{ $console->short_name }}">{{ $console->long_name }} ({{ $console->short_name }})</option>
                         @endforeach
@@ -35,13 +35,13 @@
                 <div class="flex-1">
                     <label for="search" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300 mb-2">Search Games</label>
                     <input wire:model.live.debounce.300ms="searchTerm" type="text" id="search" placeholder="Search by title or publisher..."
-                        class="w-full px-3 py-2 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 placeholder-cod-gray-500 dark:placeholder-cod-gray-400 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500">
+                        class="form-field w-full px-3 py-2 text-xl">
                 </div>
 
                 <div class="w-full sm:w-auto">
                     <label for="per-page" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300 mb-2">Per page</label>
                     <select wire:model.live="perPage" id="per-page"
-                            class="w-full sm:w-28 px-3 py-2 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500">
+                            class="form-field w-full sm:w-28 px-3 py-2 text-xl">
                         <option value="4">4</option>
                         <option value="8">8</option>
                         <option value="12">12</option>
@@ -231,7 +231,7 @@
                                             <div class="min-w-[14rem]">
                                                 <label for="form_console_header" class="sr-only">Console</label>
                                                 <select wire:model.live="formConsole" id="form_console_header"
-                                                        class="w-full px-3 py-1.5 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                        class="form-field w-full px-3 py-1.5 text-xl">
                                                     @foreach($consoles as $consoleOption)
                                                         <option value="{{ $consoleOption->short_name }}">{{ $consoleOption->long_name }} ({{ $consoleOption->short_name }})</option>
                                                     @endforeach
@@ -275,7 +275,7 @@
                                                     </div>
                                                 </div>
                                                 <input wire:model="title" type="text" id="title" required
-                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="form-field mt-1 block w-full">
                                                 @error('title') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                                 <p class="mt-1 text-sm text-cod-gray-500 dark:text-cod-gray-400">Enter the game title, then click "API Fill" to fetch data from IGDB</p>
                                             </div>
@@ -283,7 +283,7 @@
                                             <div>
                                                 <label for="publisher" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Publisher <span class="text-rose-600">*</span></label>
                                                 <input wire:model="publisher" type="text" id="publisher" required
-                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="form-field mt-1 block w-full">
                                                 @error('publisher') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                             </div>
 
@@ -291,13 +291,13 @@
                                                 <div>
                                                     <label for="release_year" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Release Year <span class="text-rose-600">*</span></label>
                                                     <input wire:model="release_year" type="number" id="release_year" required min="1970" max="{{ date('Y') + 5 }}"
-                                                        class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                        class="form-field mt-1 block w-full">
                                                     @error('release_year') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                                 </div>
                                                 <div>
                                                     <label for="rating" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Rating (0–1) <span class="text-rose-600">*</span></label>
                                                     <input wire:model="rating" type="number" id="rating" required min="0" max="1" step="0.01"
-                                                        class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                        class="form-field mt-1 block w-full">
                                                     @error('rating') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                                 </div>
                                             </div>
@@ -310,7 +310,7 @@
 
                                                 @if(strtolower($formConsole) === 'pc')
                                                     <input wire:model="rom" type="url" id="rom_url" placeholder="https://play.libe.dev/games/bundles/game.jsdos"
-                                                        class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                        class="form-field mt-1 block w-full">
                                                     <p class="mt-1 text-sm text-cod-gray-500 dark:text-cod-gray-400">MS-DOS games require a .jsdos bundle URL</p>
                                                 @else
                                                     <input wire:model="romFile" type="file" id="rom_file" accept="{{ $this->romFileAccept }}"
@@ -351,14 +351,14 @@
                                             <div>
                                                 <label for="poster" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Poster URL</label>
                                                 <input wire:model="poster" type="text" id="poster" placeholder="https://images.igdb.com/... (filled by API Fill)"
-                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="form-field mt-1 block w-full">
                                                 @error('poster') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                             </div>
 
                                             <div>
                                                 <label for="game_preview" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Game Preview URL</label>
                                                 <input wire:model="game_preview" type="text" id="game_preview" placeholder="https://example.com/preview.gif or /videos/preview.webm"
-                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="form-field mt-1 block w-full">
                                                 @error('game_preview') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                                 <p class="mt-1 text-sm text-cod-gray-500 dark:text-cod-gray-400">Animated GIF, WebM, or MP4 preview shown on game cards</p>
                                             </div>
@@ -366,7 +366,7 @@
                                             <div>
                                                 <label for="cartridge" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Cartridge URL</label>
                                                 <input wire:model="cartridge" type="text" id="cartridge" placeholder="https://example.com/cartridge.jpg"
-                                                    class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="form-field mt-1 block w-full">
                                                 @error('cartridge') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                             </div>
 
@@ -395,7 +395,7 @@
                                     <div class="mt-6">
                                         <label for="description" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Description <span class="text-rose-600">*</span></label>
                                         <textarea wire:model="description" id="description" rows="4" required
-                                                class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500"></textarea>
+                                                class="form-field mt-1 block w-full"></textarea>
                                         @error('description') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                     </div>
 
@@ -405,9 +405,9 @@
                                         @foreach($genres as $index => $genre)
                                             <div class="flex gap-4 mb-2">
                                                 <input wire:model="genres.{{ $index }}.name" type="text" placeholder="Genre slug (e.g. action-adventure)"
-                                                    class="flex-1 border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="form-field flex-1">
                                                 <input wire:model="genres.{{ $index }}.description" type="text" placeholder="Genre description"
-                                                    class="flex-[2] border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                    class="form-field flex-[2]">
                                                 @if(count($genres) > 1)
                                                     <button type="button" wire:click="removeGenre({{ $index }})"
                                                             class="px-3 py-2 text-red-600 hover:text-red-800">Remove</button>
@@ -465,7 +465,7 @@
                                                         <label for="screenshot-thumb-{{ $index }}" class="block text-sm font-medium text-cod-gray-700 dark:text-cod-gray-300">Thumbnail URL</label>
                                                         <input wire:model.live="screenshots.{{ $index }}.thumb_url" type="text" id="screenshot-thumb-{{ $index }}"
                                                             placeholder="https://images.igdb.com/... or /images/screenshot.jpg"
-                                                            class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                            class="form-field mt-1 block w-full">
                                                         @error('screenshots.' . $index . '.thumb_url') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                                                     </div>
                                                     <div class="flex gap-4 items-end">
@@ -473,7 +473,7 @@
                                                             <label for="screenshot-full-{{ $index }}" class="block text-sm font-medium text-cod-gray-700 dark:text-cod-gray-300">Full-size URL</label>
                                                             <input wire:model.live="screenshots.{{ $index }}.full_url" type="text" id="screenshot-full-{{ $index }}"
                                                                 placeholder="Optional; uses thumbnail when empty"
-                                                                class="mt-1 block w-full border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100 focus:ring-rose-500 focus:border-rose-500">
+                                                                class="form-field mt-1 block w-full">
                                                             @error('screenshots.' . $index . '.full_url') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                                                         </div>
                                                         <button type="button" wire:click="removeScreenshot({{ $index }})"

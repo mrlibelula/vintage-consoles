@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\SiteDataRestored;
 use App\Services\BackupService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
@@ -391,6 +392,48 @@ describe('restoreBackup with savestates', function () {
         expect(Storage::disk('savestates')->exists('1/nes/mario_0.state'))->toBeTrue();
         expect(Storage::disk('savestates')->exists('1/nes/mario_2.state'))->toBeFalse();
     });
+
+    it('ignores unknown columns from older backup schemas during restore', function () {
+        $user = User::factory()->create();
+        EmulatorSaveState::create([
+            'user_id'   => $user->id,
+            'console'   => 'nes',
+            'game_slug' => 'mario',
+            'slot'      => 1,
+            'disk_path' => '1/nes/mario_1.state',
+            'checksum'  => 'abc111',
+        ]);
+
+        $filename = app(BackupService::class)->createBackup(true);
+
+        // Inject a legacy column that no longer exists on this schema (as in uploaded vintage-backup ZIPs).
+        $content = Storage::disk('local')->get("backups/{$filename}");
+        $tmp = tempnam(sys_get_temp_dir(), 'bkcol_');
+        file_put_contents($tmp, $content);
+
+        $zip = new ZipArchiveAlias();
+        $zip->open($tmp);
+        $userData = json_decode($zip->getFromName('db/user_data.json'), true);
+        foreach ($userData['tables']['emulator_save_states'] as &$row) {
+            $row['emulator'] = 'nes';
+            $row['game_id'] = 999; // may or may not exist; filter handles either
+        }
+        unset($row);
+        $zip->deleteName('db/user_data.json');
+        $zip->addFromString('db/user_data.json', json_encode($userData, JSON_UNESCAPED_UNICODE));
+        $zip->close();
+
+        Storage::disk('local')->put("backups/{$filename}", file_get_contents($tmp));
+        @unlink($tmp);
+
+        EmulatorSaveState::query()->delete();
+
+        app(BackupService::class)->restoreBackup($filename);
+
+        expect(EmulatorSaveState::count())->toBe(1);
+        expect(EmulatorSaveState::first()->game_slug)->toBe('mario');
+        expect(EmulatorSaveState::first()->getAttributes())->not->toHaveKey('emulator');
+    });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -448,6 +491,52 @@ describe('SiteDataRestored notification', function () {
             $data = $notification->toDatabase($notification);
             return str_contains($data['message'], 'may have been replaced');
         });
+    });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// storeUploadedBackup
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('storeUploadedBackup', function () {
+
+    it('stores a valid uploaded backup under a sanitized name', function () {
+        $source = app(BackupService::class)->createBackup(false);
+        $contents = Storage::disk('local')->get("backups/{$source}");
+        Storage::disk('local')->delete("backups/{$source}");
+
+        $upload = UploadedFile::fake()->createWithContent('My Backup (copy).zip', $contents);
+        $stored = app(BackupService::class)->storeUploadedBackup($upload);
+
+        expect($stored)->toBe('My_Backup_copy.zip');
+        expect(Storage::disk('local')->exists("backups/{$stored}"))->toBeTrue();
+    });
+
+    it('avoids overwriting an existing backup with the same name', function () {
+        $source = app(BackupService::class)->createBackup(false);
+        $contents = Storage::disk('local')->get("backups/{$source}");
+        Storage::disk('local')->put('backups/same-name.zip', $contents);
+
+        $upload = UploadedFile::fake()->createWithContent('same-name.zip', $contents);
+        $stored = app(BackupService::class)->storeUploadedBackup($upload);
+
+        expect($stored)->toBe('same-name_2.zip');
+        expect(Storage::disk('local')->exists('backups/same-name.zip'))->toBeTrue();
+        expect(Storage::disk('local')->exists('backups/same-name_2.zip'))->toBeTrue();
+    });
+
+    it('rejects archives missing the backup manifest', function () {
+        $tmp = tempnam(sys_get_temp_dir(), 'badbk_');
+        $zip = new ZipArchiveAlias();
+        $zip->open($tmp, ZipArchiveAlias::CREATE | ZipArchiveAlias::OVERWRITE);
+        $zip->addFromString('db/core.json', '{}');
+        $zip->close();
+
+        $upload = UploadedFile::fake()->createWithContent('broken.zip', file_get_contents($tmp));
+        @unlink($tmp);
+
+        expect(fn () => app(BackupService::class)->storeUploadedBackup($upload))
+            ->toThrow(InvalidArgumentException::class);
     });
 });
 

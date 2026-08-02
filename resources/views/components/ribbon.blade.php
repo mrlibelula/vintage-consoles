@@ -1,51 +1,55 @@
 @props(['ob' => 'squares', 'customSlidesPerView' => []])
 @php
     if ($ob === 'squares') {
+        // Same band as group: 3 until wide, 4 before the right panel, 3 again at 2xl.
         $slides_per_view = [ 
             'sm' => 2,
             'md' => 3,
-            'xl' => 4,
+            'xl' => 3,
+            'wide' => 4,
+            '2xl' => 3,
         ]; 
         $space_between = [
             'sm' => 5,
             'md' => 10,
             'xl' => 15,
+            'wide' => 12,
+            '2xl' => 15,
         ];
     }
     if ($ob === 'group') {
+        // 3 until there's real room; 4 only in the wide band before the 2xl right panel; 3 again with the panel.
         $slides_per_view = [ 
             'sm' => 2,
-            'md' => 3,
-            'xl' => 4,  
+            'md' => 2,
+            'xl' => 3,
+            'wide' => 4,
+            '2xl' => 3,
         ]; 
         $space_between = [
-            'sm' => 10,
-            'md' => 20,
-            'xl' => 30,
+            'sm' => 16,
+            'md' => 28,
+            'xl' => 40,
+            'wide' => 36,
+            '2xl' => 40,
         ];
     }
-
-    // if ($ob === 'group') {
-    //     $slides_per_view = [ 
-    //         'sm' => 1,
-    //         'md' => 2,
-    //         'xl' => 3,
-    //     ]; 
-    //     $space_between = [
-    //         'sm' => 10,
-    //         'md' => 20,
-    //         'xl' => 30,
-    //     ];
-    // }
 
     if(count($customSlidesPerView)) {
         $slides_per_view = $customSlidesPerView; 
         $space_between = [
-            'sm' => 10,
-            'md' => 20,
-            'xl' => 30,
+            'sm' => 16,
+            'md' => 28,
+            'xl' => 40,
+            'wide' => 40,
+            '2xl' => 40,
         ];
     }
+
+    $slides_per_view['wide'] ??= $slides_per_view['xl'] ?? 3;
+    $slides_per_view['2xl'] ??= $slides_per_view['wide'] ?? $slides_per_view['xl'] ?? 3;
+    $space_between['wide'] ??= $space_between['xl'] ?? 30;
+    $space_between['2xl'] ??= $space_between['wide'] ?? $space_between['xl'] ?? 30;
 
     $dark_wallps = [
         "https://images.alphacoders.com/461/461092.jpg",
@@ -76,10 +80,16 @@
     mousewheel="true"
     {{-- loop="true" --}}
     free-mode="true"
+    round-lengths="true"
     {{-- effect="fade" --}}
     speed="600" 
     parallax="true"
+    {{-- Offsets are 0 on purpose: with slidesPerView, before/after offsets do not shrink slide
+         width and the last card clips. Border room is handled via slide padding in CSS. --}}
+    slides-offset-before="0"
+    slides-offset-after="0"
     {{-- init="false" --}}
+    class="game-ribbon w-full"
     breakpoints='{
         "640": {
             "slidesPerView": {{ $slides_per_view['sm'] }},
@@ -92,6 +102,14 @@
         "1024": {
             "slidesPerView": {{ $slides_per_view['xl'] }},
             "spaceBetween": {{ $space_between['xl'] }}
+        },
+        "1280": {
+            "slidesPerView": {{ $slides_per_view['wide'] }},
+            "spaceBetween": {{ $space_between['wide'] }}
+        },
+        "1536": {
+            "slidesPerView": {{ $slides_per_view['2xl'] }},
+            "spaceBetween": {{ $space_between['2xl'] }}
         }
     }'
 

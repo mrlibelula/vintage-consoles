@@ -35,17 +35,17 @@
     @mouseenter="scheduleShow()"
     @mouseleave="hideTip()"
     @scroll.window="if (show) hideTip()"
-    class="relative shrink-0"
+    class="relative w-full min-w-0 shrink-0"
 >
     <button
         type="button"
         x-ref="poster"
-        class="lazy-load-bg group block rounded-lg overflow-hidden bg-center bg-cover bg-no-repeat border-[3px] shadow-md shadow-cod-gray-500 dark:shadow-black border-cod-gray-500 dark:border-cod-gray-700 opacity-75 hover:opacity-100 smooth-300 cursor-pointer"
+        class="lazy-load-bg group block w-full rounded-lg overflow-hidden bg-center bg-cover bg-no-repeat border-[3px] shadow-md shadow-cod-gray-500 dark:shadow-black border-cod-gray-500 dark:border-cod-gray-700 opacity-75 hover:opacity-100 smooth-300 cursor-pointer"
         aria-label="{{ $posterTitle }}"
         data-bg-url="{{ $game?->poster }}"
         style="background-image: url({{ asset('images/placeholder-poster-homer.jpg') }});"
     >
-        <div class="flex items-end justify-center w-[8.5rem] h-[12rem] overflow-hidden">
+        <div class="flex items-end justify-center w-full aspect-[8.5/12] overflow-hidden">
             @if($showConsoleLabel && isset($game->console) && $game->console)
             <div class="w-full bg-white/70 dark:bg-cod-gray-700/70 dark:text-gray-200 font-mono text-xs py-0.5 font-semibold">
                 {{ $game->console->short_name === 'atari2600' ? 'Atari 2600' : $game->console->short_name }}

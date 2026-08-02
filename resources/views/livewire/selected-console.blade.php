@@ -5,9 +5,9 @@
         <!-- main -->
         <div class="w-full flex flex-col gap-y-8 items-start justify-start p-4">
 
-            <div class="w-full flex flex-col 2xl:flex-row gap-y-8 gap-x-[4rem] items-start justify-start">
+            <div class="w-full flex flex-col 2xl:flex-row gap-y-8 gap-x-8 items-start justify-start">
 
-                <!-- main content -->
+                <!-- main content — flex-1 + min-w-0 keeps width identical across group/squares/lista -->
                 <div
                     x-data="{
                         skeletonSquare: {{ $ob === 'squares' ? 'true' : 'false' }},
@@ -25,7 +25,7 @@
                         if (m === 'group') skeletonGroup = false;
                         if (m === 'squares') skeletonSquare = false;
                     "
-                    class="flex flex-col gap-y-8 w-full 2xl:w-[72%] main-container">
+                    class="flex flex-col gap-y-8 w-full min-w-0 2xl:flex-1 main-container">
 
                     <!-- game list display options -->
                     <div class="flex items-center justify-between gap-x-3 w-full dark:text-cod-gray-500 leading-none -mb-8">
@@ -159,16 +159,19 @@
                     </x-accordion>
                 </div>
 
-                <!-- right panel -->
-                <div class="w-full 2xl:w-[22vw] flex flex-col gap-y-4 items-start justify-start shadow-md shadow-cod-gray-400 dark:shadow-black border-[3.5px] border-cod-gray-200 dark:border-cod-gray-900 rounded-xl p-6 bg-cod-gray-100 dark:bg-cod-gray-900/60">
-                    <div class="flex items-center justify-center w-full _hover:scale-[1.4] 2xl:scale-[1.5] 2xl:hover:scale-[1.55] 2xl:hover:-translate-y-2 smooth-300">
-                        @if($selected_console->console_icon)
-                        <img class="my-6 w-full" src="{{ url($selected_console->console_icon) }}" alt="{{ $selected_console->short_name }}">
-                        @endif
+                <!-- right panel — shrink-0 so lista content cannot steal sidebar width -->
+                <div class="relative z-10 w-full 2xl:w-[16vw] 2xl:max-w-[16rem] 2xl:shrink-0 flex flex-col gap-y-4 items-start justify-start shadow-md shadow-cod-gray-400 dark:shadow-black border-[3.5px] border-cod-gray-200 dark:border-cod-gray-900 rounded-xl p-4 bg-cod-gray-100 dark:bg-cod-gray-900/60">
+                    {{-- Outer margins reserve layout space for the 1.9× transform so ROMs/data stay clear --}}
+                    <div class="w-full 2xl:mt-6 2xl:mb-8">
+                        <div class="flex items-center justify-center w-full 2xl:scale-[1.35] 2xl:hover:scale-[1.4] 2xl:hover:-translate-y-2 smooth-300 origin-center">
+                            @if($selected_console->console_icon)
+                            <img class="my-6 w-full" src="{{ url($selected_console->console_icon) }}" alt="{{ $selected_console->short_name }}">
+                            @endif
+                        </div>
                     </div>
 
                     <!-- Available games -->
-                    <div class="mt-8 flex flex-col w-full text-left gap-y-1">
+                    <div class="mt-2 2xl:mt-4 flex flex-col w-full text-left gap-y-1">
                         <div class="flex items-center gap-x-2">
                             <x-icons.joystick class="w-[2.5rem] h-[2.5rem] opacity-50 text-cod-gray-700 dark:text-cod-gray-400" />
                             <span class="text-[2.5rem] text-cod-gray-900 dark:text-cod-gray-200">{{ $selected_console->games->count() }}</span>

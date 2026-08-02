@@ -17,6 +17,10 @@ export default {
             screens: {
                 play: '1080px',
             },
+            maxWidth: {
+                // Shared site shell (nav + page content). Mid desktop, not ultrawide.
+                site: '60rem',
+            },
             fontFamily: {
                 // sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 sans: ['var(--app-font-family)', ...defaultTheme.fontFamily.sans],

@@ -7,6 +7,7 @@ use App\Service\Tool;
 use App\Services\GameRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Navigation extends Component
@@ -84,6 +85,12 @@ class Navigation extends Component
             ->notifications()
             ->where('id', $id)
             ->update(['read_at' => now()]);
+    }
+
+    #[On('site-data-restored')]
+    public function refreshAfterSiteRestore(): void
+    {
+        // Re-render so the unread SiteDataRestored banner appears immediately.
     }
 
     public function render()

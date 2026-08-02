@@ -84,6 +84,7 @@
             </div> --}}
 
             <x-banner />
+            <x-toaster />
     
             <div class="min-h-screen">
 
@@ -94,7 +95,7 @@
                 <!-- Page Heading -->
                 @if (isset($header))
                 <header class="bg-cod-gray-100 dark:bg-cod-gray-950/40">
-                    <div class="max-w-[85rem] mx-auto py-6 px-4 xl:px-6 lg:px-8">
+                    <div class="max-w-site mx-auto py-6 px-4 xl:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
@@ -109,15 +110,53 @@
             @if (request()->routeIs('play'))
             <div></div>
             @else
-            <footer>
-                <a href="https://libe.dev" target="_other_LIBEDEV_{{ uniqid() }}" class="group flex items-center justify-center gap-y-2 gap-x-2 pt-10 pb-6">
-                    <div class="h-4 w-4 opacity-30 group-hover:opacity-50 smooth-300 rounded-sm overflow-hidden">
-                        <img class="w-full h-full" src="{{ asset('images/libesoft.io_inv.png') }}" alt="">
+            <footer class="relative mt-12 overflow-hidden">
+                {{-- pixel grid on exact #e11d48 tone; fades right; light/dark opacity --}}
+                <div class="footer-grid pointer-events-none absolute inset-0" aria-hidden="true">
+                    <img
+                        src="{{ asset('images/bg-blue.png') }}"
+                        alt=""
+                        class="footer-grid-img select-none"
+                    />
+                </div>
+                <div class="footer-grid-fade pointer-events-none absolute inset-0" aria-hidden="true"></div>
+
+                {{-- rose rule separating main ↔ footer --}}
+                <div
+                    class="pointer-events-none absolute inset-x-0 top-0 z-[1] h-px bg-gradient-to-r from-[#e11d48] via-[#e11d48]/50 to-transparent shadow-[0_0_8px_1px_rgba(225,29,72,0.4)]"
+                    aria-hidden="true"
+                ></div>
+
+                <div class="relative z-[1] flex items-center justify-between gap-x-4 px-4 py-5 sm:px-6 lg:px-8 max-w-site mx-auto">
+                    <a
+                        wire:navigate
+                        href="{{ route('about') }}"
+                        @click="$dispatch('loader-top-on')"
+                        class="group sepia_ relative inline-flex items-center gap-x-2 text-base tracking-wider text-white hover:text-white/80 dark:text-cod-gray-400 dark:hover:text-[#e11d48] smooth-300"
+                    >
+                        <x-pixelarticon
+                            name="info-box"
+                            :size="18"
+                            class="opacity-95 group-hover:opacity-100 text-white group-hover:text-white/80 dark:text-cod-gray-400 dark:opacity-70 dark:group-hover:opacity-100 dark:group-hover:text-[#e11d48] smooth-300"
+                        />
+                        <span class="border-b border-transparent group-hover:border-white/50 dark:group-hover:border-[#e11d48]/50 pb-0.5">{{ __('About') }}</span>
+                    </a>
+
+                    <div class="hidden sm:flex items-center gap-x-1.5 text-cod-gray-500/30" aria-hidden="true">
+                        <span class="h-1 w-1 rounded-sm bg-current"></span>
+                        <span class="h-1 w-1 rounded-sm bg-current opacity-70"></span>
+                        <span class="h-1 w-1 rounded-sm bg-current opacity-40"></span>
                     </div>
-                    <div class="text-base text-cod-gray-600/80 group-hover:text-cod-gray-500 smooth-300">
-                        libe.dev
-                    </div>
-                </a>
+
+                    <a href="https://libe.dev" target="_other_LIBEDEV_{{ uniqid() }}" class="group flex items-center gap-x-2">
+                        <div class="h-4 w-4 opacity-30 group-hover:opacity-50 smooth-300 rounded-sm overflow-hidden">
+                            <img class="w-full h-full" src="{{ asset('images/libesoft.io_inv.png') }}" alt="">
+                        </div>
+                        <div class="text-base text-[#1e2024] dark:text-[#6b7280] group-hover:text-cod-gray-800 dark:text-cod-gray-400_ dark:group-hover:text-cod-gray-300 smooth-300">
+                            libe.dev
+                        </div>
+                    </a>
+                </div>
             </footer>
             @endif
     

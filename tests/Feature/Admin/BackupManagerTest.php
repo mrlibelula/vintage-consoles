@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Notifications\SiteDataRestored;
 use App\Services\BackupService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
@@ -191,6 +192,9 @@ describe('Restore password gate', function () {
             ->set('restorePassword', 'my-secret')
             ->call('confirmRestore')
             ->assertSet('showRestoreModal', false)
+            ->assertSet('restoringFile', null)
+            ->assertDispatched('toast', type: 'success', message: "Restore from {$filename} completed successfully.")
+            ->assertDispatched('site-data-restored')
             ->assertHasNoErrors();
 
         // Catalog restored to backup state
@@ -209,10 +213,25 @@ describe('Restore password gate', function () {
             ->test(BackupManager::class)
             ->call('openRestoreModal', $filename)
             ->set('restorePassword', 'pass')
-            ->call('confirmRestore');
+            ->call('confirmRestore')
+            ->assertSet('showRestoreModal', false)
+            ->assertDispatched('toast');
 
         Notification::assertSentTo($admin,   SiteDataRestored::class);
         Notification::assertSentTo($regular, SiteDataRestored::class);
+    });
+
+    it('closes restore modal and toasts an error when restore fails', function () {
+        $admin = makeAdmin('pass');
+
+        Livewire::actingAs($admin)
+            ->test(BackupManager::class)
+            ->call('openRestoreModal', 'missing-backup_no-saves.zip')
+            ->set('restorePassword', 'pass')
+            ->call('confirmRestore')
+            ->assertSet('showRestoreModal', false)
+            ->assertSet('restoringFile', null)
+            ->assertDispatched('toast', type: 'error');
     });
 
     it('clears password field and error on cancel', function () {
@@ -227,6 +246,137 @@ describe('Restore password gate', function () {
             ->assertSet('restorePassword', '')
             ->assertSet('restorePasswordError', null)
             ->assertSet('showRestoreModal', false);
+    });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Upload backup
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('Upload backup', function () {
+
+    it('stores a valid uploaded zip and opens preview', function () {
+        $admin = makeAdmin();
+        $source = app(BackupService::class)->createBackup(false);
+        $contents = Storage::disk('local')->get("backups/{$source}");
+        Storage::disk('local')->delete("backups/{$source}");
+
+        $upload = UploadedFile::fake()->createWithContent('restored-from-laptop.zip', $contents);
+
+        Livewire::actingAs($admin)
+            ->test(BackupManager::class)
+            ->set('uploadFile', $upload)
+            ->call('uploadBackup')
+            ->assertHasNoErrors()
+            ->assertSet('showPreviewModal', true)
+            ->assertSet('previewingFile', 'restored-from-laptop.zip')
+            ->assertDispatched('toast', type: 'success');
+
+        expect(Storage::disk('local')->exists('backups/restored-from-laptop.zip'))->toBeTrue();
+        expect(app(BackupService::class)->listBackups())->toHaveCount(1);
+    });
+
+    it('rejects a zip that is not a valid backup archive', function () {
+        $admin = makeAdmin();
+
+        $tmp = tempnam(sys_get_temp_dir(), 'badbk_');
+        $zip = new \ZipArchive();
+        $zip->open($tmp, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+        $zip->addFromString('readme.txt', 'not a backup');
+        $zip->close();
+        $contents = file_get_contents($tmp);
+        @unlink($tmp);
+
+        $upload = UploadedFile::fake()->createWithContent('fake.zip', $contents);
+
+        Livewire::actingAs($admin)
+            ->test(BackupManager::class)
+            ->set('uploadFile', $upload)
+            ->call('uploadBackup')
+            ->assertHasErrors(['uploadFile']);
+
+        expect(app(BackupService::class)->listBackups())->toBeEmpty();
+    });
+
+    it('rejects non-zip uploads', function () {
+        $admin = makeAdmin();
+        $upload = UploadedFile::fake()->createWithContent('notes.txt', 'hello');
+
+        Livewire::actingAs($admin)
+            ->test(BackupManager::class)
+            ->set('uploadFile', $upload)
+            ->call('uploadBackup')
+            ->assertHasErrors(['uploadFile']);
+    });
+
+    it('can restore after uploading a backup zip', function () {
+        Notification::fake();
+
+        Genre::create(['name' => 'Action', 'description' => '']);
+        $admin = makeAdmin('my-secret');
+        $source = app(BackupService::class)->createBackup(false);
+        $contents = Storage::disk('local')->get("backups/{$source}");
+        Storage::disk('local')->delete("backups/{$source}");
+
+        Genre::create(['name' => 'Sports', 'description' => '']);
+        expect(Genre::count())->toBe(2);
+
+        $upload = UploadedFile::fake()->createWithContent('from-other-server.zip', $contents);
+
+        Livewire::actingAs($admin)
+            ->test(BackupManager::class)
+            ->set('uploadFile', $upload)
+            ->call('uploadBackup')
+            ->call('openRestoreModal', 'from-other-server.zip')
+            ->set('restorePassword', 'my-secret')
+            ->call('confirmRestore')
+            ->assertSet('showRestoreModal', false)
+            ->assertHasNoErrors();
+
+        expect(Genre::count())->toBe(1);
+        expect(Genre::first()->name)->toBe('Action');
+    });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Download backup
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('Download backup', function () {
+
+    it('downloads an existing backup zip', function () {
+        $admin    = makeAdmin();
+        $filename = app(BackupService::class)->createBackup(false);
+
+        Livewire::actingAs($admin)
+            ->test(BackupManager::class)
+            ->call('downloadBackup', $filename)
+            ->assertFileDownloaded($filename);
+    });
+
+    it('rejects path traversal filenames without downloading', function () {
+        $admin = makeAdmin();
+        app(BackupService::class)->createBackup(false);
+
+        expect(fn () => app(BackupService::class)->downloadBackup('../secrets.zip'))
+            ->toThrow(InvalidArgumentException::class);
+
+        Livewire::actingAs($admin)
+            ->test(BackupManager::class)
+            ->call('downloadBackup', '../secrets.zip')
+            ->assertNoFileDownloaded();
+    });
+
+    it('rejects missing backups without downloading', function () {
+        $admin = makeAdmin();
+
+        expect(fn () => app(BackupService::class)->downloadBackup('backup_missing_no-saves.zip'))
+            ->toThrow(RuntimeException::class);
+
+        Livewire::actingAs($admin)
+            ->test(BackupManager::class)
+            ->call('downloadBackup', 'backup_missing_no-saves.zip')
+            ->assertNoFileDownloaded();
     });
 });
 

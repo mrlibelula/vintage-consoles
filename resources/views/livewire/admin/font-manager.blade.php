@@ -81,7 +81,7 @@
                 <div>
                     <label for="font-file" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300 mb-2">Font file</label>
                     <input wire:model="fontFile" id="font-file" type="file" accept=".ttf,.otf,.woff,.woff2,font/ttf,font/otf,font/woff,font/woff2"
-                        class="w-full px-3 py-2 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100">
+                        class="form-field w-full px-3 py-2">
                     @error('fontFile')
                         <p class="mt-2 text-red-600">{{ $message }}</p>
                     @enderror
@@ -90,7 +90,7 @@
                 <div>
                     <label for="font-label" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300 mb-2">Label</label>
                     <input wire:model="label" id="font-label" type="text"
-                        class="w-full px-3 py-2 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100">
+                        class="form-field w-full px-3 py-2">
                     @error('label')
                         <p class="mt-2 text-red-600">{{ $message }}</p>
                     @enderror
@@ -99,7 +99,7 @@
                 <div>
                     <label for="font-family-name" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300 mb-2">CSS family name</label>
                     <input wire:model="familyName" id="font-family-name" type="text"
-                        class="w-full px-3 py-2 border border-cod-gray-300 dark:border-cod-gray-600 rounded-md shadow-sm bg-cod-gray-50 dark:bg-cod-gray-700 text-cod-gray-900 dark:text-cod-gray-100">
+                        class="form-field w-full px-3 py-2">
                     @error('familyName')
                         <p class="mt-2 text-red-600">{{ $message }}</p>
                     @enderror

@@ -18,11 +18,13 @@ switch ($align) {
         break;
 }
 
-switch ($width) {
-    case '48':
-        $width = 'w-48';
-        break;
-}
+$width = match ((string) $width) {
+    '48' => 'w-48',
+    '56' => 'w-56',
+    '60' => 'w-60',
+    '64' => 'w-64',
+    default => str_starts_with((string) $width, 'w-') ? $width : 'w-48',
+};
 @endphp
 
 <div class="relative" x-data="{ open: false }" @click.away="open = false" @close.stop="open = false">

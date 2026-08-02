@@ -3,23 +3,18 @@
 
         {{-- Header --}}
         <div class="mb-8">
-            <h1 class="text-3xl text-cod-gray-900 dark:text-cod-gray-100">Backup / Restore</h1>
+            <div class="flex items-center gap-x-3">
+                <x-pixelarticon
+                    name="save"
+                    :size="32"
+                    class="text-cod-gray-900 dark:text-cod-gray-100"
+                />
+                <h1 class="text-3xl text-cod-gray-900 dark:text-cod-gray-100">Backup / Restore</h1>
+            </div>
             <p class="mt-2 text-xl text-cod-gray-600 dark:text-cod-gray-400">
                 Create ZIP backups of catalog, chat, and migration docs. Restore replaces data on this server.
             </p>
         </div>
-
-        {{-- Flash messages --}}
-        @if (session()->has('success'))
-            <div class="mb-4 bg-green-100 dark:bg-green-900/30 border border-green-400 text-green-800 dark:text-green-300 px-4 py-3 rounded-md" role="alert">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if (session()->has('error'))
-            <div class="mb-4 bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-800 dark:text-red-300 px-4 py-3 rounded-md" role="alert">
-                {{ session('error') }}
-            </div>
-        @endif
 
         {{-- ── Create Backup ─────────────────────────────────────────────────── --}}
         <div class="bg-cod-gray-50 dark:bg-cod-gray-800 shadow rounded-lg p-6 mb-6">
@@ -70,29 +65,98 @@
             </div>
         </div>
 
+        {{-- ── Upload Backup ─────────────────────────────────────────────────── --}}
+        <div class="bg-cod-gray-50 dark:bg-cod-gray-800 shadow rounded-lg p-6 mb-6">
+            <h2 class="text-2xl font-semibold text-cod-gray-800 dark:text-cod-gray-200 mb-4">Upload Backup</h2>
+            <p class="mb-4 text-xl text-cod-gray-600 dark:text-cod-gray-400">
+                Restore from a ZIP previously downloaded from this app (or another deployment).
+                Upload stores it in Available Backups — then preview and confirm restore with your password.
+            </p>
+
+            <form wire:submit="uploadBackup" class="space-y-4">
+                <div>
+                    <label for="backup-upload-file" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300 mb-2">
+                        Backup ZIP file
+                    </label>
+                    <input
+                        id="backup-upload-file"
+                        type="file"
+                        wire:model="uploadFile"
+                        accept=".zip,application/zip,application/x-zip-compressed"
+                        class="form-field w-full px-3 py-2 text-xl"
+                    >
+                    <div wire:loading wire:target="uploadFile" class="mt-2 text-base text-cod-gray-500 dark:text-cod-gray-400">
+                        Uploading file…
+                    </div>
+                    @error('uploadFile')
+                        <p class="mt-2 text-base text-red-600 dark:text-red-400">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <button
+                    type="submit"
+                    wire:loading.attr="disabled"
+                    wire:target="uploadBackup,uploadFile"
+                    class="inline-flex items-center gap-x-2 px-5 py-2 rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 text-xl font-medium transition disabled:opacity-60"
+                >
+                    <svg wire:loading wire:target="uploadBackup" class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                    </svg>
+                    <svg wire:loading.remove wire:target="uploadBackup" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                    </svg>
+                    <span wire:loading.remove wire:target="uploadBackup">Upload Backup</span>
+                    <span wire:loading wire:target="uploadBackup">Processing…</span>
+                </button>
+            </form>
+        </div>
+
         {{-- ── Available Backups ──────────────────────────────────────────────── --}}
         <div class="bg-cod-gray-50 dark:bg-cod-gray-800 shadow rounded-lg p-6">
-            <h2 class="text-2xl font-semibold text-cod-gray-800 dark:text-cod-gray-200 mb-4">Available Backups</h2>
+            <div class="mb-4 flex items-baseline justify-between gap-x-4">
+                <h2 class="text-2xl font-semibold text-cod-gray-800 dark:text-cod-gray-200">Available Backups</h2>
+                @if(count($backups) > 0)
+                    <span class="text-base text-cod-gray-500 dark:text-cod-gray-400">{{ count($backups) }} {{ Str::plural('backup', count($backups)) }}</span>
+                @endif
+            </div>
 
             @if(count($backups) === 0)
-                <p class="text-xl text-cod-gray-500 dark:text-cod-gray-400">No backups yet. Create one above.</p>
+                <div class="flex flex-col items-center justify-center py-10 text-center">
+                    <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-cod-gray-200/80 dark:bg-cod-gray-700">
+                        <svg class="h-6 w-6 text-cod-gray-500 dark:text-cod-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                        </svg>
+                    </div>
+                    <p class="text-xl text-cod-gray-600 dark:text-cod-gray-300">No backups yet</p>
+                    <p class="mt-1 text-base text-cod-gray-500 dark:text-cod-gray-400">Create one above to get started.</p>
+                </div>
             @else
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto -mx-2 sm:mx-0 pb-10">
                     <table class="min-w-full divide-y divide-cod-gray-200 dark:divide-cod-gray-700 text-xl">
                         <thead>
                             <tr class="text-left text-base uppercase tracking-wider text-cod-gray-500 dark:text-cod-gray-400">
-                                <th class="py-3 pr-4">File</th>
+                                <th class="py-3 px-2 sm:pr-4">File</th>
                                 <th class="py-3 pr-4">Date</th>
                                 <th class="py-3 pr-4">Size</th>
                                 <th class="py-3 pr-4">Save states</th>
-                                <th class="py-3">Actions</th>
+                                <th class="py-3 pl-2 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-cod-gray-100 dark:divide-cod-gray-700">
                             @foreach($backups as $backup)
-                            <tr class="hover:bg-cod-gray-100/50 dark:hover:bg-cod-gray-700/40 smooth-300">
-                                <td class="py-3 pr-4 font-mono text-base text-cod-gray-700 dark:text-cod-gray-300 break-all">
-                                    {{ $backup['filename'] }}
+                            <tr wire:key="backup-{{ $backup['filename'] }}" class="hover:bg-cod-gray-100/50 dark:hover:bg-cod-gray-700/40 smooth-300">
+                                <td class="py-3 px-2 sm:pr-4 max-w-[14rem] sm:max-w-xs">
+                                    <div class="flex items-center gap-x-2.5 min-w-0">
+                                        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-cod-gray-200/80 dark:bg-cod-gray-700 text-cod-gray-500 dark:text-cod-gray-400">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                                            </svg>
+                                        </span>
+                                        <span class="font-mono text-base text-cod-gray-700 dark:text-cod-gray-300 truncate" title="{{ $backup['filename'] }}">
+                                            {{ $backup['filename'] }}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td class="py-3 pr-4 whitespace-nowrap text-cod-gray-600 dark:text-cod-gray-400">
                                     {{ $backup['created_at']
@@ -104,35 +168,82 @@
                                 </td>
                                 <td class="py-3 pr-4">
                                     @if($backup['includes_savestates'])
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-base font-medium bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300">Yes</span>
+                                        <span class="inline-flex items-center gap-x-1 px-2 py-0.5 rounded text-base font-medium bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300" title="Save states included">
+                                            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                            Yes
+                                        </span>
                                     @else
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-base font-medium bg-cod-gray-100 dark:bg-cod-gray-700 text-cod-gray-500 dark:text-cod-gray-400">No</span>
+                                        <span class="inline-flex items-center gap-x-1 px-2 py-0.5 rounded text-base font-medium bg-cod-gray-100 dark:bg-cod-gray-700 text-cod-gray-500 dark:text-cod-gray-400" title="Save states not included">
+                                            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                            No
+                                        </span>
                                     @endif
                                 </td>
-                                <td class="py-3">
-                                    <div class="flex items-center gap-x-2 flex-wrap">
+                                <td class="py-3 pl-2">
+                                    <div class="flex items-center justify-end gap-x-1.5 whitespace-nowrap">
                                         <button
                                             type="button"
                                             wire:click="openPreview(@js($backup['filename']))"
                                             wire:loading.attr="disabled"
                                             wire:target="openPreview"
-                                            class="px-3 py-1 text-base rounded border border-cod-gray-300 dark:border-cod-gray-600 text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-100 dark:hover:bg-cod-gray-700 smooth-300 disabled:opacity-60"
+                                            data-tooltip="Preview"
+                                            aria-label="Preview {{ $backup['filename'] }}"
+                                            class="app-tooltip inline-flex items-center justify-center p-1.5 rounded-md border border-cod-gray-300 dark:border-cod-gray-600 text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-100 dark:hover:bg-cod-gray-700 smooth-300 disabled:opacity-60"
                                         >
-                                            <span wire:loading.remove wire:target="openPreview">Preview</span>
-                                            <span wire:loading wire:target="openPreview">Loading…</span>
+                                            <svg wire:loading.remove wire:target="openPreview" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                            <svg wire:loading wire:target="openPreview" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                                            </svg>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            wire:click="downloadBackup(@js($backup['filename']))"
+                                            wire:loading.attr="disabled"
+                                            wire:target="downloadBackup"
+                                            data-tooltip="Download"
+                                            aria-label="Download {{ $backup['filename'] }}"
+                                            class="app-tooltip inline-flex items-center justify-center p-1.5 rounded-md border border-sky-400 dark:border-sky-600 text-sky-700 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-900/30 smooth-300 disabled:opacity-60"
+                                        >
+                                            <svg wire:loading.remove wire:target="downloadBackup" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                            </svg>
+                                            <svg wire:loading wire:target="downloadBackup" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                                            </svg>
                                         </button>
                                         <button
                                             type="button"
                                             wire:click="openRestoreModal(@js($backup['filename']))"
-                                            class="px-3 py-1 text-base rounded border border-amber-400 dark:border-amber-600 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/30 smooth-300"
-                                        >Restore</button>
+                                            data-tooltip="Restore"
+                                            aria-label="Restore {{ $backup['filename'] }}"
+                                            class="app-tooltip inline-flex items-center justify-center p-1.5 rounded-md border border-amber-400 dark:border-amber-600 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/30 smooth-300"
+                                        >
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                            </svg>
+                                        </button>
                                         <button
                                             type="button"
                                             wire:click="openDeleteModal(@js($backup['filename']))"
                                             wire:loading.attr="disabled"
                                             wire:target="openDeleteModal"
-                                            class="px-3 py-1 text-base rounded border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 smooth-300 disabled:opacity-60"
-                                        >Delete</button>
+                                            data-tooltip="Delete"
+                                            aria-label="Delete {{ $backup['filename'] }}"
+                                            class="app-tooltip app-tooltip-end inline-flex items-center justify-center p-1.5 rounded-md border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 smooth-300 disabled:opacity-60"
+                                        >
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -153,7 +264,6 @@
     aria-modal="true"
     x-data
     x-init="document.body.style.overflow = 'hidden'"
-    x-on:destroy="document.body.style.overflow = ''"
     @keydown.escape.window="$wire.closePreview()"
 >
     <div class="flex min-h-screen items-start justify-center px-4 pb-8 pt-20 text-center">
@@ -370,7 +480,6 @@
     aria-modal="true"
     x-data
     x-init="document.body.style.overflow = 'hidden'"
-    x-on:destroy="document.body.style.overflow = ''"
     @keydown.escape.window="$wire.closeDeleteModal()"
 >
     <div class="flex min-h-screen items-center justify-center px-4 pt-20 pb-8">
@@ -432,7 +541,6 @@
     aria-modal="true"
     x-data
     x-init="document.body.style.overflow = 'hidden'"
-    x-on:destroy="document.body.style.overflow = ''"
     @keydown.escape.window="$wire.closeRestoreModal()"
 >
     <div class="flex min-h-screen items-center justify-center px-4 pt-20 pb-8">
@@ -452,50 +560,63 @@
         </div>
 
         <div class="px-6 py-5 space-y-4">
-            {{-- Warning --}}
-            <div class="rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 px-4 py-3 text-base text-amber-800 dark:text-amber-300">
-                <strong>This will overwrite current catalog, migration docs, and chat data</strong> on this server with the contents of the backup.
-                User accounts will <strong>not</strong> be changed.
-                @if($restoringFile && str_contains($restoringFile, '_no-saves'))
-                    Save states will <strong>not</strong> be touched.
-                @else
-                    If this backup includes save states, they will be <strong>replaced</strong>.
-                @endif
-                All users will be notified.
+            <div
+                wire:loading
+                wire:target="confirmRestore"
+                class="rounded-md border border-sky-200 bg-sky-50 px-4 py-3 text-base text-sky-800 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300"
+            >
+                Restoring catalog and files… this can take a moment. The dialog will close when finished.
             </div>
 
-            {{-- Password field --}}
-            <div>
-                <label for="restore-password" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300 mb-1">
-                    Your admin password
-                </label>
-                <input
-                    id="restore-password"
-                    type="password"
-                    wire:model="restorePassword"
-                    wire:keydown.enter="confirmRestore"
-                    autocomplete="current-password"
-                    placeholder="Enter your password to confirm"
-                    class="w-full px-3 py-2 text-xl border rounded-md shadow-sm bg-white dark:bg-cod-gray-800
-                           text-cod-gray-900 dark:text-cod-gray-100 placeholder-cod-gray-400
-                           {{ $restorePasswordError ? 'border-red-500 focus:ring-red-500' : 'border-cod-gray-300 dark:border-cod-gray-600 focus:ring-rose-500' }}
-                           focus:outline-none focus:ring-2 focus:border-transparent"
-                >
-                @if($restorePasswordError)
-                    <p class="mt-1 text-base text-red-600 dark:text-red-400">{{ $restorePasswordError }}</p>
-                @endif
+            <div class="space-y-4" wire:loading.class="opacity-60 pointer-events-none" wire:target="confirmRestore">
+                {{-- Warning --}}
+                <div class="rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 px-4 py-3 text-base text-amber-800 dark:text-amber-300">
+                    <strong>This will overwrite current catalog, migration docs, and chat data</strong> on this server with the contents of the backup.
+                    User accounts will <strong>not</strong> be changed.
+                    @if($restoringFile && str_contains($restoringFile, '_no-saves'))
+                        Save states will <strong>not</strong> be touched.
+                    @else
+                        If this backup includes save states, they will be <strong>replaced</strong>.
+                    @endif
+                    All users will be notified.
+                </div>
+
+                {{-- Password field --}}
+                <div>
+                    <label for="restore-password" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300 mb-1">
+                        Your admin password
+                    </label>
+                    <input
+                        id="restore-password"
+                        type="password"
+                        wire:model="restorePassword"
+                        wire:keydown.enter="confirmRestore"
+                        wire:loading.attr="disabled"
+                        wire:target="confirmRestore"
+                        autocomplete="current-password"
+                        placeholder="Enter your password to confirm"
+                        class="form-field w-full px-3 py-2 text-xl {{ $restorePasswordError ? 'border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-500 dark:focus:border-red-500 dark:focus:ring-red-500' : '' }}"
+                    >
+                    @if($restorePasswordError)
+                        <p class="mt-1 text-base text-red-600 dark:text-red-400">{{ $restorePasswordError }}</p>
+                    @endif
+                </div>
             </div>
         </div>
 
         {{-- Footer --}}
         <div class="px-6 py-4 border-t border-cod-gray-200 dark:border-cod-gray-700 flex items-center justify-between gap-x-4">
             <button
+                type="button"
                 wire:click="closeRestoreModal"
-                class="px-4 py-1.5 rounded-md text-xl border border-cod-gray-300 dark:border-cod-gray-600 text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-100 dark:hover:bg-cod-gray-800 smooth-300"
+                wire:loading.attr="disabled"
+                wire:target="confirmRestore"
+                class="px-4 py-1.5 rounded-md text-xl border border-cod-gray-300 dark:border-cod-gray-600 text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-100 dark:hover:bg-cod-gray-800 smooth-300 disabled:opacity-60"
             >
                 Cancel
             </button>
             <button
+                type="button"
                 wire:click="confirmRestore"
                 wire:loading.attr="disabled"
                 wire:target="confirmRestore"
