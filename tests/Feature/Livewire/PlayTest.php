@@ -354,7 +354,7 @@ describe('Tab management', function () {
             ->assertSee('nes');
     });
 
-    it('renders arcade controls only for arcade consoles', function () {
+    it('renders arcade coin/start controls only for arcade consoles', function () {
         $arcade = Console::factory()->create([
             'short_name' => 'arcade',
             'long_name' => 'Arcade',
@@ -370,9 +370,10 @@ describe('Tab management', function () {
             'console_short_name' => 'arcade',
             'game_title_slug' => 'galaga',
         ])
-            ->assertSee('Insert Coin')
+            ->assertSee('Coin')
             ->assertSee('Start')
-            ->assertSee('Hotkeys');
+            ->assertSee('Hotkeys')
+            ->assertDontSee('Insert Coin');
 
         $console = playNesConsole();
         playNesGame($console);
@@ -380,7 +381,9 @@ describe('Tab management', function () {
         Livewire::test(Play::class, [
             'console_short_name' => 'nes',
             'game_title_slug' => 'super-mario-bros',
-        ])->assertDontSee('Insert Coin');
+        ])
+            ->assertDontSeeHtml(">Coin</button>")
+            ->assertDontSee('Insert Coin');
     });
 
     it('renders live chat below the emulator for guests when messages omit user_id', function () {

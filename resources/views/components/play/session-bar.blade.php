@@ -69,6 +69,25 @@
                 }, window.location.origin)
             } catch (_error) {}
         },
+        sendArcade(action, down) {
+            const iframe = document.getElementById('game-iframe')
+            if (!iframe?.contentWindow || !action) return
+            // Prefer RetroPad simulateInput in the player (select=coin, start=P1).
+            // Do not synthesize Digit1/5 — EmulatorJS binds 1/2/3 to quick-save hotkeys.
+            iframe.contentWindow.postMessage({
+                type: 'vintage-arcade-key',
+                action,
+                down,
+            }, window.location.origin)
+        },
+        pressArcade(action, event) {
+            event.preventDefault()
+            this.sendArcade(action, true)
+        },
+        releaseArcade(action, event) {
+            event.preventDefault()
+            this.sendArcade(action, false)
+        },
         init() {
             this.dock = this.$el.closest('.play-emulator-dock')
             this.slotMessageHandler = (event) => this.onSlotMessage(event)
@@ -100,7 +119,24 @@
             </a>
 
             @if ($isArcade)
-                <span class="text-cod-gray-600 dark:text-cod-gray-400">Coin · Start below</span>
+                <span class="inline-flex items-center gap-x-1">
+                    <button
+                        type="button"
+                        class="select-none rounded border border-rose-700/70 dark:border-rose-400/60 px-1.5 py-0.5 text-xs leading-none text-rose-700 dark:text-rose-300 hover:bg-rose-700/10 dark:hover:bg-rose-400/10"
+                        @pointerdown="pressArcade('coin', $event)"
+                        @pointerup="releaseArcade('coin', $event)"
+                        @pointerleave="releaseArcade('coin', $event)"
+                        @pointercancel="releaseArcade('coin', $event)"
+                    >Coin</button>
+                    <button
+                        type="button"
+                        class="select-none rounded border border-cod-gray-500 dark:border-cod-gray-500 px-1.5 py-0.5 text-xs leading-none text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-500/10 dark:hover:bg-cod-gray-400/10"
+                        @pointerdown="pressArcade('start', $event)"
+                        @pointerup="releaseArcade('start', $event)"
+                        @pointerleave="releaseArcade('start', $event)"
+                        @pointercancel="releaseArcade('start', $event)"
+                    >Start</button>
+                </span>
             @endif
 
             @if ($isPc)
@@ -167,8 +203,8 @@
                 <div class="flex justify-between gap-x-4"><dt class="font-mono text-cod-gray-300">Ctrl+Alt+1–5</dt><dd class="text-cod-gray-400">Pick slot</dd></div>
                 @endif
                 @if ($isArcade)
-                <div class="flex justify-between gap-x-4"><dt class="font-mono text-cod-gray-300">Insert Coin</dt><dd class="text-cod-gray-400">Coin (on-screen button)</dd></div>
-                <div class="flex justify-between gap-x-4"><dt class="font-mono text-cod-gray-300">Start</dt><dd class="text-cod-gray-400">P1 Start (on-screen button)</dd></div>
+                <div class="flex justify-between gap-x-4"><dt class="font-mono text-cod-gray-300">Coin</dt><dd class="text-cod-gray-400">Insert coin (session bar)</dd></div>
+                <div class="flex justify-between gap-x-4"><dt class="font-mono text-cod-gray-300">Start</dt><dd class="text-cod-gray-400">P1 Start (session bar)</dd></div>
                 @endif
             </dl>
         </div>

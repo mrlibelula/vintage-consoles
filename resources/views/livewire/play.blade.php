@@ -20,7 +20,6 @@
                             @endif>
                         </iframe>
                     </div>
-                    <x-play.arcade-controls :console="$console" />
                     <div class="shrink-0">
                         <x-play.session-bar
                             :console="$console"
