@@ -11,6 +11,30 @@ let sharedPlayer = null
 let sharedPlayerMountId = null
 let progressTimer = null
 let saveTimer = null
+/** Re-apply mute until the first PLAYING settles (YouTube often races unmuted autoplay). */
+let enforceMuteUntil = 0
+
+function forceMute(player) {
+    if (!player) return
+    try {
+        player.mute?.()
+        if (typeof player.setVolume === 'function') {
+            player.setVolume(0)
+        }
+    } catch {
+        /* ignore */
+    }
+}
+
+function beginMutedPlayback(player) {
+    forceMute(player)
+    enforceMuteUntil = Date.now() + 1500
+    try {
+        player?.playVideo?.()
+    } catch {
+        /* ignore */
+    }
+}
 
 function ytReady() {
     return Boolean(window.YT && window.YT.Player)
@@ -156,6 +180,7 @@ function destroySharedPlayer() {
     }
     sharedPlayer = null
     sharedPlayerMountId = null
+    enforceMuteUntil = 0
 }
 
 function playerIsAlive() {
@@ -477,8 +502,7 @@ export function bootVintageYoutubeMedia() {
                             videoId: video.youtube_id,
                             startSeconds: start >= 3 ? start : 0,
                         })
-                        sharedPlayer.mute?.()
-                        sharedPlayer.playVideo?.()
+                        beginMutedPlayback(sharedPlayer)
                         this.capturePlayerDuration(video.youtube_id)
                         this.startProgressWatch(video.youtube_id)
                         this.playerLoading = false
@@ -497,12 +521,14 @@ export function bootVintageYoutubeMedia() {
 
                 const self = this
                 sharedPlayerMountId = mountKey
+                // No autoplay in playerVars: user-gesture clicks let YT start unmuted
+                // before onReady can mute. We mute first, then playVideo().
                 sharedPlayer = new YT.Player(mount, {
                     width: '100%',
                     height: '100%',
                     videoId: video.youtube_id,
                     playerVars: {
-                        autoplay: 1,
+                        autoplay: 0,
                         mute: 1,
                         playsinline: 1,
                         rel: 0,
@@ -521,11 +547,10 @@ export function bootVintageYoutubeMedia() {
                                     iframe.style.height = '100%'
                                     iframe.style.border = '0'
                                 }
-                                event.target.mute()
                                 if (start >= 3) {
                                     event.target.seekTo(start, true)
                                 }
-                                event.target.playVideo()
+                                beginMutedPlayback(event.target)
                             } catch { /* ignore */ }
                             self.capturePlayerDuration(video.youtube_id)
                             self.startProgressWatch(video.youtube_id)
@@ -535,6 +560,15 @@ export function bootVintageYoutubeMedia() {
                             self.playerError = 'This video cannot be played'
                         },
                         onStateChange: (event) => {
+                            if (
+                                Date.now() < enforceMuteUntil
+                                && (
+                                    event.data === YT.PlayerState.BUFFERING
+                                    || event.data === YT.PlayerState.PLAYING
+                                )
+                            ) {
+                                forceMute(event.target)
+                            }
                             if (event.data === YT.PlayerState.PLAYING) {
                                 self.playerLoading = false
                                 self.capturePlayerDuration(video.youtube_id)

@@ -154,53 +154,51 @@
             @endif
         </div>
 
-        @if ($showSlotDots)
-            <div class="pointer-events-none absolute inset-y-0 left-1/2 flex -translate-x-1/2 items-center">
-                <div class="pointer-events-auto inline-flex items-center gap-x-2 text-cod-gray-700 dark:text-cod-gray-300">
-                    <span>Slots</span>
-                    <div
-                        class="inline-flex items-center gap-x-1.5"
-                        role="group"
-                        :aria-label="'Slot ' + selectedSlot + ' of ' + slotTotal + ' selected'"
-                    >
-                        <template x-for="n in slotTotal" :key="n">
-                            <button
-                                type="button"
-                                class="inline-block h-3 w-3 rounded-full transition duration-150 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/60"
-                                :class="slotDotClass(n)"
-                                :aria-label="slotAriaLabel(n)"
-                                :aria-pressed="n === selectedSlot ? 'true' : 'false'"
-                                :title="slotAriaLabel(n)"
-                                @click="selectSlot(n)"
-                            ></button>
-                        </template>
-                    </div>
-                    <span class="text-cod-gray-600 dark:text-cod-gray-500" aria-hidden="true">·</span>
+        <div class="play-session-bar__jumps">
+            @if ($showSlotDots)
+                <span class="text-cod-gray-700 dark:text-cod-gray-300">Slots</span>
+                <div
+                    class="inline-flex items-center gap-x-1.5"
+                    role="group"
+                    :aria-label="'Slot ' + selectedSlot + ' of ' + slotTotal + ' selected'"
+                >
+                    <template x-for="n in slotTotal" :key="n">
+                        <button
+                            type="button"
+                            class="inline-block h-3 w-3 rounded-full transition duration-150 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/60"
+                            :class="slotDotClass(n)"
+                            :aria-label="slotAriaLabel(n)"
+                            :aria-pressed="n === selectedSlot ? 'true' : 'false'"
+                            :title="slotAriaLabel(n)"
+                            @click="selectSlot(n)"
+                        ></button>
+                    </template>
                 </div>
-            </div>
-        @endif
+                <span class="text-cod-gray-600 dark:text-cod-gray-500" aria-hidden="true">·</span>
+            @endif
 
-        <nav class="play-session-bar__jumps" aria-label="Quick jumps">
-            <a
-                href="#play-chat"
-                class="play-session-bar__jump"
-                @click.prevent="jumpTo('play-chat')"
-            >Chat</a>
-            <span class="text-cod-gray-600 dark:text-cod-gray-500" aria-hidden="true">·</span>
-            <a
-                href="#play-multiplayer"
-                class="play-session-bar__jump"
-                @click.prevent="jumpTo('play-multiplayer')"
-            >Multiplayer</a>
-            <span class="text-cod-gray-600 dark:text-cod-gray-500" aria-hidden="true">·</span>
-            <button
-                type="button"
-                class="play-session-bar__jump"
-                @click="openHotkeys()"
-            >
-                Hotkeys
-            </button>
-        </nav>
+            <nav class="contents" aria-label="Quick jumps">
+                <a
+                    href="#play-chat"
+                    class="play-session-bar__jump"
+                    @click.prevent="jumpTo('play-chat')"
+                >Chat</a>
+                <span class="text-cod-gray-600 dark:text-cod-gray-500" aria-hidden="true">·</span>
+                <a
+                    href="#play-multiplayer"
+                    class="play-session-bar__jump"
+                    @click.prevent="jumpTo('play-multiplayer')"
+                >Multiplayer</a>
+                <span class="text-cod-gray-600 dark:text-cod-gray-500" aria-hidden="true">·</span>
+                <button
+                    type="button"
+                    class="play-session-bar__jump"
+                    @click="openHotkeys()"
+                >
+                    Hotkeys
+                </button>
+            </nav>
+        </div>
     </div>
 
     <div
