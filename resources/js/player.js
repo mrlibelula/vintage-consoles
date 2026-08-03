@@ -254,8 +254,39 @@ function vintagePlayerPlayPauseKeydown(event) {
     toggleVintageEmulatorPlayPause()
 }
 
+// Arrow/space/page keys scroll the parent play page (scroll chaining) unless prevented
+// inside the focused iframe — even when the game still receives the input.
+const PAGE_SCROLL_KEY_CODES = new Set([
+    'ArrowUp',
+    'ArrowDown',
+    'ArrowLeft',
+    'ArrowRight',
+    'Space',
+    'PageUp',
+    'PageDown',
+    'Home',
+    'End',
+])
+
+function vintagePlayerBlockPageScrollKeys(event) {
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+        return
+    }
+
+    if (!PAGE_SCROLL_KEY_CODES.has(event.code)) {
+        return
+    }
+
+    if (isVintageFullscreenKeyTargetEditable(event.target)) {
+        return
+    }
+
+    event.preventDefault()
+}
+
 window.addEventListener('keydown', vintagePlayerFullscreenKeydown, true)
 window.addEventListener('keydown', vintagePlayerPlayPauseKeydown, true)
+window.addEventListener('keydown', vintagePlayerBlockPageScrollKeys, true)
 
 const KEY_CODE_FALLBACKS = {
     KeyX: 88,

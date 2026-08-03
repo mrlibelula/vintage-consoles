@@ -175,6 +175,7 @@
                             ></button>
                         </template>
                     </div>
+                    <span class="text-cod-gray-600 dark:text-cod-gray-500" aria-hidden="true">·</span>
                 </div>
             </div>
         @endif
