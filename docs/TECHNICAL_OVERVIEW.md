@@ -1,12 +1,14 @@
 # Vintage Consoles — Technical Project Overview
 
-> A comprehensive technical reference for AI-assisted blog post generation, targeting tech interviewers and talent hunters.
+> A comprehensive technical reference.
 
 ---
 
 ## Project Summary
 
-**Vintage Consoles** is a full-stack web application that delivers a browser-based retro gaming experience. Users can play classic games from multiple vintage gaming platforms (NES, SNES, Arcade, Atari 2600, and MS-DOS/PC) directly in their browser without any downloads or installations. The application features real-time chat per game, OAuth authentication, an admin panel with AI-assisted game metadata entry, and a modern, responsive UI with dark mode support.
+**Vintage Consoles** is a full-stack web application that delivers a browser-based retro gaming experience. Users can play classic games from multiple vintage gaming platforms (NES, SNES, Arcade, Atari 2600, and MS-DOS/PC) directly in their browser without any downloads or installations. The application features authenticated cloud save states, custom control mappings, per-game chat, YouTube walkthrough resume, OAuth authentication, an admin panel with IGDB-assisted metadata entry and site backup/restore, and a modern responsive UI with dark mode, custom fonts, and pixel-art cursors.
+
+The game catalog runs on **MySQL via Eloquent**. A legacy `vintage-consoles.json` file remains only as the **seed/import source** for `php artisan vintage:import`.
 
 ---
 
@@ -18,7 +20,7 @@
 | **PHP** | ^8.1 | Server-side language |
 | **Laravel** | ^10.10 | MVC Framework |
 | **Livewire** | ^3.0 | Full-stack reactive components |
-| **Laravel Jetstream** | ^4.0 | Authentication scaffolding (Teams, API tokens, 2FA) |
+| **Laravel Jetstream** | ^4.0 | Authentication scaffolding (API tokens, 2FA) |
 | **Laravel Sanctum** | ^3.2 | SPA & API token authentication |
 | **Laravel Socialite** | ^5.21 | OAuth providers (Google login) |
 
@@ -27,19 +29,21 @@
 |------------|---------|---------|
 | **TailwindCSS** | ^3.1.0 | Utility-first CSS framework |
 | **Alpine.js** | (via Livewire) | Lightweight JS framework |
-| **Vite** | ^4.0.0 | Next-gen frontend build tool |
+| **Vite** | ^4.0.0 | Frontend build tool |
 | **Swiper** | ^11.2.10 | Touch-enabled carousel/slider |
+| **pixelarticons** | ^2.1.0 | Pixel-art icon SVGs |
 
 ### Emulation Engines
 | Engine | Version | Consoles Supported |
 |--------|---------|-------------------|
-| **EmulatorJS** | 4.0.7 (CDN) | NES, SNES, Arcade, Atari 2600 |
-| **JS-DOS** | v8 (CDN) | MS-DOS/PC games |
+| **EmulatorJS** | 4.2.3 (CDN) | NES, SNES, Arcade, Atari 2600 |
+| **JS-DOS** | 8.3.20 (CDN) | MS-DOS/PC games |
 
-### AI Integration
+### Metadata & Integrations
 | Service | Package | Purpose |
 |---------|---------|---------|
-| **OpenAI GPT-4o-mini** | openai-php/laravel ^0.11.0 | AI-assisted game metadata fetching |
+| **IGDB** | marcreichel/igdb-laravel ^4.3 | Game metadata, covers, screenshots, genres |
+| **OpenAI PHP SDK** | openai-php/laravel ^0.11.0 | Present in composer; **unused** (replaced by IGDB fill) |
 
 ### Development & Testing
 | Tool | Version | Purpose |
@@ -63,63 +67,73 @@
 ## Architecture Overview
 
 ### Application Pattern
-The project follows **Laravel's MVC architecture** enhanced with **Livewire's component-based reactive pattern**. This creates a Single-Page Application (SPA) feel while maintaining server-side rendering benefits (SEO, security, simplicity).
+The project follows **Laravel's MVC architecture** enhanced with **Livewire's component-based reactive pattern**. Catalog and user data live in MySQL; ROMs, chat transcripts, save-state binaries, and backups live on dedicated storage disks.
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                         Browser                                  │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐ │
-│  │  Livewire   │  │ EmulatorJS  │  │       JS-DOS            │ │
-│  │ Components  │  │  (iframe)   │  │      (iframe)           │ │
-│  └──────┬──────┘  └──────┬──────┘  └───────────┬─────────────┘ │
-└─────────┼────────────────┼─────────────────────┼────────────────┘
-          │ WebSocket/     │ ROM Fetch           │ .jsdos Bundle
-          │ AJAX           │                     │
-┌─────────▼────────────────▼─────────────────────▼────────────────┐
-│                    Laravel Backend                               │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐ │
-│  │  Livewire   │  │   Routes    │  │      Services           │ │
-│  │  Components │  │  (web.php)  │  │  (Game, GameSession)    │ │
-│  └──────┬──────┘  └──────┬──────┘  └───────────┬─────────────┘ │
-│         │                │                     │                │
-│  ┌──────▼────────────────▼─────────────────────▼─────────────┐ │
-│  │              JSON File Storage (vintage-consoles.json)     │ │
-│  │              ROM Files (storage/data/games/{console}/)     │ │
-│  └────────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                           Browser                                 │
+│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────────────┐ │
+│  │  Livewire   │  │  EmulatorJS  │  │         JS-DOS           │ │
+│  │ Components  │  │   (iframe)   │  │        (iframe)          │ │
+│  └──────┬──────┘  └──────┬───────┘  └────────────┬─────────────┘ │
+└─────────┼────────────────┼───────────────────────┼───────────────┘
+          │ AJAX/Livewire  │ ROM + SharedArrayBuffer│ .jsdos Bundle
+┌─────────▼────────────────▼───────────────────────▼───────────────┐
+│                      Laravel Backend                              │
+│  ┌──────────────┐  ┌──────────────┐  ┌─────────────────────────┐ │
+│  │   Livewire   │  │ Controllers  │  │ Services                │ │
+│  │  Components  │  │ (saves, YT,  │  │ GameRepository, Backup, │ │
+│  │              │  │  controls)   │  │ AppFont, Igdb*          │ │
+│  └──────┬───────┘  └──────┬───────┘  └────────────┬────────────┘ │
+│         │                 │                        │               │
+│  ┌──────▼─────────────────▼────────────────────────▼────────────┐ │
+│  │ MySQL (Eloquent)                                             │ │
+│  │ consoles · games · genres · screenshots · save states ·      │ │
+│  │ control settings · fonts · settings · YT progress · users    │ │
+│  ├──────────────────────────────────────────────────────────────┤ │
+│  │ Storage disks                                                │ │
+│  │ data: ROMs, chat JSON, import JSON                           │ │
+│  │ savestates: binary save files                                │ │
+│  │ fonts: public font files                                     │ │
+│  │ local: backups/*.zip, migration-docs                         │ │
+│  └──────────────────────────────────────────────────────────────┘ │
+└───────────────────────────────────────────────────────────────────┘
 ```
+
+**Import path (ops only):** `storage/data/vintage-consoles.json` → `php artisan vintage:import` → MySQL (+ IGDB enrichment).
 
 ### Directory Structure
 
 ```
 app/
-├── Actions/                    # Jetstream action classes (6 files)
-├── Console/                    # Artisan commands
+├── Actions/                    # Fortify/Jetstream + UpsertEmulatorSaveState, SyncEmulatorSaveStatesFromDisk
+├── Console/Commands/           # vintage:import (JSON → MySQL + IGDB)
 ├── Http/
-│   ├── Controllers/            # Traditional controllers (Login, base)
-│   ├── Kernel.php              # HTTP middleware registration
-│   └── Middleware/             # Custom middleware (Admin, Auth, HTTPS)
-├── Livewire/                   # Reactive components
+│   ├── Controllers/            # OAuth, EmulatorSaveState, EmulatorControlSetting, YoutubeVideoProgress
+│   └── Middleware/             # Admin, Auth, HTTPS, CrossOriginIsolation
+├── Livewire/                   # Reactive UI components
 │   ├── Admin/
-│   │   └── GameManager.php     # Admin CRUD with AI integration
-│   ├── Chat.php                # Real-time game chat
-│   ├── Dashboard.php           # Main console/game browser
-│   ├── DosPlayer.php           # JS-DOS emulator wrapper
-│   ├── JsPlayer.php            # EmulatorJS wrapper
-│   ├── Play.php                # Game detail & player page
-│   ├── Genres.php              # Genre-based game browser
-│   └── Publishers.php          # Publisher-based game browser
-├── Models/
-│   └── User.php                # Eloquent user model
-├── Providers/                  # Service providers (7 files)
-├── Service/                    # Business logic layer
-│   ├── Game.php                # Game data retrieval
-│   ├── GameManager.php         # CRUD operations on JSON
-│   ├── GameSession.php         # Session/cache optimization
-│   └── Tool.php                # Utility helpers
-├── View/
-│   └── Components/             # Blade view components (40+ files)
-└── helpers.php                 # Global helper functions
+│   │   ├── GameManager.php     # Catalog CRUD + IGDB fill
+│   │   ├── FontManager.php     # App font upload/activation
+│   │   └── BackupManager.php   # Site backup/restore
+│   ├── Chat.php                # Per-game chat (file-backed)
+│   ├── Dashboard.php           # Console/game browser home
+│   ├── DosPlayer.php / JsPlayer.php
+│   ├── Play.php                # Game detail + session dock
+│   ├── MySaves.php             # Cloud save-state manager
+│   ├── Genres.php / Publishers.php
+│   ├── Navigation.php, About.php, GameCard*.php, OrderBy*.php, …
+│   └── Concerns/               # Sorting, toasts, carousel traits
+├── Models/                     # Eloquent catalog + emulator + app models
+├── Service/                    # Legacy helpers (Tool still used; Game/GameManager residual)
+├── Services/                   # Active domain services
+│   ├── GameRepository.php
+│   ├── BackupService.php
+│   ├── AppFontService.php
+│   └── Igdb/                   # IgdbClient, GameImporter, IgdbImage
+├── Support/                    # GameIgdbPresenter, YouTubeUrl, BrowserLabel
+├── View/Components/            # Blade view components
+└── helpers.php
 ```
 
 ---
@@ -128,8 +142,8 @@ app/
 
 ### 1. Browser-Based Emulation
 
-#### EmulatorJS Integration (8/16/32-bit Consoles)
-The `JsPlayer` Livewire component configures and loads EmulatorJS:
+#### EmulatorJS Integration (8/16-bit Consoles)
+The `JsPlayer` Livewire component configures EmulatorJS and wires cloud save-state endpoints:
 
 ```php
 // app/Livewire/JsPlayer.php
@@ -140,34 +154,22 @@ public function mount(string $enc_json_game, string $console_short_name)
     $this->title = $game_data['title'];
     $this->short_name = $console_short_name;
     $this->game_url = route('game.serve', [
-        'console' => $console_short_name, 
-        'filename' => $game_data['rom']
+        'console' => $console_short_name,
+        'filename' => $game_data['rom'],
     ]);
+    $this->save_state_config = $this->buildSaveStateConfig($game_data, $console_short_name);
 }
 ```
 
 **Key configuration points:**
-- Global `EJS_*` JavaScript variables configure core selection, ROM URL, theme
-- EmulatorJS runtime loaded from jsDelivr CDN (v4.0.7)
-- Custom overlay loader fades on `EJS_onGameStart`/`EJS_ready`
-- Player isolated in iframe for sandboxed core execution
+- Global `EJS_*` variables configure core, ROM URL, theme, and game ID
+- EmulatorJS runtime pinned to CDN **v4.2.3** (`cdn.emulatorjs.org`)
+- Custom overlay loader fades on `EJS_onGameStart` / `EJS_ready`
+- Player routes use `cross-origin-isolation` middleware (COOP/COEP) so SharedArrayBuffer works for threaded WASM cores
+- Client-side save-state manager (`resources/js/emulation/SaveStateManager.js`) syncs slots with `/player-data/save-states`
 
 #### JS-DOS Integration (MS-DOS/PC)
-The `DosPlayer` component handles `.jsdos` bundles:
-
-```php
-// app/Livewire/DosPlayer.php
-public function mount(string $enc_json_game, string $console_short_name)
-{
-    $this->game = json_decode(Tool::decode($this->enc_json_game), true);
-}
-```
-
-**Key features:**
-- Auto-lock pointer capture for mouse-based games
-- Dark theme matching app aesthetic
-- Auto-start on bundle load
-- Resilient loader using `sessionStorage` to prevent re-display
+The `DosPlayer` component loads **JS-DOS 8.3.20** from jsDelivr for `.jsdos` bundles. PC titles do not use cloud save states (`MySaves` treats PC as unsupported for save-state sync).
 
 ### 2. ROM Delivery Pipeline
 
@@ -175,59 +177,59 @@ public function mount(string $enc_json_game, string $console_short_name)
 // routes/web.php
 Route::get('/games/serve/{console}/{filename}', function ($console, $filename) {
     $gamePath = storage_path("data/games/{$console}/{$filename}");
-    
+
     return response()->file($gamePath, [
-        'Content-Type' => mime_content_type($gamePath),
-        'Cache-Control' => 'public, max-age=31536000', // 1 year cache
+        'Content-Type'                 => mime_content_type($gamePath),
+        'Cache-Control'                => 'public, max-age=31536000',
+        'Cross-Origin-Resource-Policy' => 'cross-origin', // required under COEP
     ]);
 })->name('game.serve');
 ```
 
 **Security & Performance:**
-- ROMs served from `storage/data/games/{console}/` (not public)
-- MIME type auto-detection
+- ROMs served from `storage/data/games/{console}/` (not publicly listed)
+- MIME type auto-detection with octet-stream fallback
 - Aggressive browser/CDN caching (1 year)
-- No public storage exposure
+- CORP header so COEP-isolated player pages can load same-origin ROMs
 
-### 3. Session & Memory Optimization
+### 3. Catalog via Eloquent (`GameRepository`)
 
-The `GameSession` service implements a two-tier caching strategy:
+Runtime catalog access goes through `App\Services\GameRepository` (registered as a singleton). There is **no** `GameSession` session-footprint layer anymore — consoles and games are queried from MySQL with eager loading as needed.
 
 ```php
-// app/Service/GameSession.php
-public function __construct(array $consoles = null)
+// app/Services/GameRepository.php
+public function getConsole(string $shortName): ?Console
 {
-    // Only store basic console info in session (no full game data)
-    $basicConsoles = [];
-    foreach ($data['consoles'] as $console) {
-        $basicConsoles[] = [
-            'id' => $console['id'],
-            'long_name' => $console['long_name'],
-            'short_name' => $console['short_name'],
-            'game_count' => count($console['games'] ?? [])
-            // Note: 'games' deliberately excluded to save memory
-        ];
-    }
-    Session::put('consoles_basic', $basicConsoles);
-}
-
-public function getFullConsoleData(string $consoleShortName = null): array
-{
-    return cache()->remember($cacheKey, now()->addMinutes(30), function () {
-        // Load full data only when needed
-    });
+    return Console::where('short_name', $shortName)
+        ->with(['games' => function ($q) {
+            $q->with(['genres', 'screenshots' => fn ($q2) => $q2->orderBy('position')])
+              ->orderBy('title');
+        }])
+        ->first();
 }
 ```
 
-**Benefits:**
-- Session footprint reduced by ~90%
-- Full game data loaded on-demand
-- 30-minute cache for frequently accessed consoles
-- Cache invalidation on admin updates
+**Responsibilities:** list/get consoles and games, genre/publisher browsing, search/sort, admin CRUD helpers, IGDB screenshot sync.
 
-### 4. Real-Time Chat System
+### 4. Cloud Save States & Control Settings
 
-Per-game chat implemented with file-based JSON storage:
+Authenticated players get **5 save slots** per game (EmulatorJS consoles), stored as:
+- **DB rows** in `emulator_save_states` (metadata, checksums, optional previous-state backup columns)
+- **Binary files** on the `savestates` disk
+
+Related endpoints live under `player-data` (web middleware + `auth`), not `routes/api.php`:
+
+| Endpoint group | Purpose |
+|----------------|---------|
+| `/player-data/save-states` | Index, store, update label, destroy, download, restore backup |
+| `/player-data/control-settings` | Get/put per-user emulator control profiles (JSON) |
+| `/player-data/youtube-progress/{game}` | Resume positions for walkthrough videos |
+
+`MySaves` Livewire page (`/my/saves`) lists, uploads, deletes, and syncs save states from disk. The Play page session bar exposes slot dots, arcade Coin/Start helpers, hotkeys, and cloud-save CTAs.
+
+### 5. Real-Time Chat System
+
+Per-game chat remains **file-based JSON** on the `data` disk (intentionally not MySQL):
 
 ```php
 // app/Livewire/Chat.php
@@ -235,162 +237,112 @@ public function chatFilePath(): string
 {
     return 'chat/' . $this->console_id . '.' . $this->game['id'] . '.json';
 }
-
-public function loadMessages()
-{
-    $this->messages = json_decode(
-        Storage::disk('data')->get($this->chatFilePath()), 
-        true
-    );
-    $this->messages = Tool::sortByDate($this->messages, 'timestamp');
-}
 ```
 
 **Design decisions:**
-- File-based storage (no database dependency)
 - Lightweight JSON transcripts per game
 - Livewire event dispatching for near real-time updates
 - Guest and authenticated user support
+- Included in site backup/restore zip payloads
 
-### 5. Admin Panel with AI Integration
+### 6. Admin Panel with IGDB Integration
 
-The `GameManager` component integrates OpenAI for metadata fetching:
+Admin “API Fill” uses **IGDB** (replacing the former OpenAI metadata fill):
 
 ```php
 // app/Livewire/Admin/GameManager.php
-public function fetchGameDataFromAI()
-{
-    $response = OpenAI::chat()->create([
-        'model' => 'gpt-4o-mini',
-        'messages' => [
-            ['role' => 'user', 'content' => $prompt],
-        ],
-        'temperature' => 0.3,
-    ]);
-    
-    $gameData = json_decode($response->choices[0]->message->content, true);
-    
-    // Auto-fill form fields
-    $this->publisher = $gameData['publisher'];
-    $this->release_year = $gameData['release_year'];
-    $this->genres = $gameData['genres'];
-}
+/**
+ * Fetch game metadata from the IGDB API (replaces the old AI Fill).
+ */
 ```
 
-**Admin Features:**
-- Full CRUD for games across consoles
-- ROM file validation (local files for consoles, URLs for DOS)
-- Console-specific file extension validation
-- Move games between consoles
-- AI-assisted metadata entry (publisher, year, rating, genres)
-- Role-based access via Spatie Permission
+**Admin surfaces:**
+| Route | Component | Purpose |
+|-------|-----------|---------|
+| `/admin/games` | `GameManager` | CRUD, ROM validation, IGDB fill, walkthrough videos |
+| `/admin/fonts` | `FontManager` | Upload/activate/delete app fonts |
+| `/admin/backup` | `BackupManager` | Create, upload, preview, restore, delete backups |
 
-### 6. Authentication System
+Bulk catalog seeding: `php artisan vintage:import` (`ImportVintageConsoles` + `GameImporter` / `IgdbClient`).
 
-Multi-provider authentication setup:
+Role-based access via Spatie Permission (`admin` middleware).
+
+### 7. Backup / Restore
+
+`BackupService` produces and consumes versioned `.zip` archives including:
+- Core catalog tables (consoles, games, genres, screenshots, fonts, settings)
+- Optional emulator user data + `savestates` disk files
+- Chat JSON files and migration docs
+
+### 8. Authentication System
 
 ```php
-// routes/web.php
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle']);
 Route::get('/login/google/redirect', [LoginController::class, 'handleGoogleCallback']);
 ```
 
 **Features:**
 - Google OAuth via Laravel Socialite
-- Traditional email/password via Fortify
-- Two-factor authentication support
+- Email/password via Fortify
+- Two-factor authentication
 - API token management via Sanctum
 - Session browser management
 - Email verification
+- Per-user `cursor_style` (`default` | `alternate`)
 
-### 7. UI/UX Implementation
-
-#### TailwindCSS Configuration
+### 9. UI/UX Implementation
 
 ```javascript
-// tailwind.config.js
-export default {
-    darkMode: 'class',
-    theme: {
-        extend: {
-            fontFamily: {
-                sans: ['VT323', ...defaultTheme.fontFamily.sans], // Retro pixel font
-            },
-            colors: {
-                'cod-gray': {
-                    // Custom gray palette for dark theme
-                    DEFAULT: '#6B7280',
-                    950: '#121315'
-                }
-            }
-        }
-    },
-    plugins: [forms, typography],
-}
+// tailwind.config.js — retro pixel typography + custom dark palette
+fontFamily: { sans: ['VT323', ...defaultTheme.fontFamily.sans] },
+colors: { 'cod-gray': { /* … */, 950: '#121315' } }
 ```
 
-**UI Components:**
-- 40+ Blade view components
-- Skeleton loaders for async content
-- Fixed modals with keyboard navigation
-- Accordion panels for collapsible content
-- Theme switcher (light/dark mode)
-- Swiper carousel for screenshots
+**UI highlights:**
+- ~80 Blade view components
+- Theme switcher (light/dark)
+- Swiper carousels for screenshots / videos
+- Pixel-art icons (`pixelarticons`) and custom cursor pointers
+- App font system (bundled VT323 / HackerNoon V2; admin-managed extras)
+- Play session bar dock for emulator controls and save slots
+- Skeleton loaders, fixed modals, accordion panels
 
 ---
 
 ## Data Model
 
-### JSON-Based Storage
+### MySQL Catalog (runtime)
 
-Game data stored in `storage/data/vintage-consoles.json`:
+**consoles** — non-incrementing PK; `short_name` unique; JSON: `console_bgs`, `specs`, `community_links`, `options`; `igdb_platform_id`
 
-```json
-{
-  "consoles": [
-    {
-      "id": 1,
-      "short_name": "NES",
-      "long_name": "Nintendo Entertainment System",
-      "description": "Classic 8-bit gaming console from Nintendo",
-      "manufacturer": "Nintendo",
-      "release_year": "1985",
-      "console_logo": "/images/consoles/nes-logo.png",
-      "console_icon": "/images/consoles/nes-icon.png",
-      "console_bgs": ["/images/bgs/nes-bg.jpg"],
-      "emulator": {
-        "name": "EmulatorJS",
-        "version": "4.0.7"
-      },
-      "specs": {
-        "cpu": "8-bit MOS 6502",
-        "memory": "2KB RAM"
-      },
-      "games": [
-        {
-          "id": 1,
-          "title": "Super Mario Bros.",
-          "slug": "super-mario-bros",
-          "publisher": "Nintendo",
-          "release_year": "1985",
-          "rating": "0.89",
-          "description": "Classic platformer...",
-          "rom": "super-mario-bros.nes",
-          "poster": "/images/games/mario-poster.jpg",
-          "box": "/images/games/mario-box.jpg",
-          "cartridge": "/images/games/mario-cart.jpg",
-          "screenshots": ["..."],
-          "genres": [
-            {"name": "platformer", "description": "Jump and run"}
-          ],
-          "multiplayer_support": true,
-          "save_state_support": true,
-          "is_free": true
-        }
-      ]
-    }
-  ]
-}
+**games** — `console_id`, unique `(console_id, slug)`, optional unique `igdb_id`, media fields (`rom`, `poster`, `cover_image_id`, …), flags (`multiplayer_support`, `save_state_support`, `is_free`, `needs_igdb_sync`), JSON `igdb_response` + `walkthrough_videos`
+
+**genres** / **game_genre** — slug-style genre names with optional `igdb_id`
+
+**screenshots** — `igdb_image_id`, URLs, `position`
+
+### Emulator & App Tables
+
+**emulator_save_states** — `user_id` + `console` + `game_slug` + `slot`; disk path, size, checksum; backup columns for previous state
+
+**emulator_control_settings** — unique `user_id` + `console` + `game_id` + `emulator` + `profile`; JSON `settings`
+
+**app_fonts** / **app_settings** — font registry + key/value (e.g. active font)
+
+**youtube_video_progress** — `user_id`, `game_id`, `youtube_id`, `position_seconds`
+
+**users** — Jetstream/Fortify/Sanctum + Spatie roles + `cursor_style`
+
+### Import-Only JSON
+
+`storage/data/vintage-consoles.json` seeds consoles/games via `vintage:import`. It is **not** read at request time for the catalog UI.
+
+### Eloquent Relationships (summary)
+
+```
+Console 1──* Game *──* Genre
+Game 1──* Screenshot
+User ── EmulatorSaveState / EmulatorControlSetting / YoutubeVideoProgress (queried by user_id)
 ```
 
 ---
@@ -403,48 +355,47 @@ Game data stored in `storage/data/vintage-consoles.json`:
 tests/
 ├── Feature/
 │   ├── Admin/
-│   │   └── GameManagerTest.php    # Admin CRUD tests
+│   │   ├── GameManagerTest.php
+│   │   ├── FontManagerTest.php
+│   │   ├── BackupManagerTest.php
+│   │   └── BackupServiceTest.php
 │   ├── Livewire/
-│   │   ├── ChatTest.php           # Chat functionality
-│   │   ├── DashboardTest.php      # Dashboard component
-│   │   ├── DosPlayerTest.php      # DOS emulator
-│   │   ├── JsPlayerTest.php       # Console emulator
-│   │   ├── PlayTest.php           # Game page
-│   │   └── SelectedConsoleTest.php
-│   ├── AuthenticationTest.php
-│   ├── RegistrationTest.php
-│   └── ... (Jetstream feature tests)
+│   │   ├── ChatTest.php, DashboardTest.php, PlayTest.php
+│   │   ├── DosPlayerTest.php, JsPlayerTest.php
+│   │   ├── MySavesUploadTest.php, NavigationCursorStyleTest.php
+│   │   ├── OrderBy*.php, SelectedConsoleTest.php
+│   ├── EmulatorSaveStateTest.php
+│   ├── YoutubeVideoProgressTest.php
+│   ├── GameRepositoryTest.php
+│   └── … (Jetstream auth/profile/token tests)
 ├── Unit/
-│   ├── GameServiceTest.php
-│   ├── GameSessionServiceTest.php
-│   └── ToolServiceTest.php
-└── Pest.php                       # Pest configuration
+│   ├── GameModelTest.php, ScreenshotModelTest.php
+│   ├── GameImporterTest.php, IgdbImageTest.php
+│   ├── GameIgdbPresenterTest.php, YouTubeUrlTest.php
+│   ├── ToolServiceTest.php
+│   └── Support/BrowserLabelTest.php
+└── Pest.php
 ```
 
 ### Test Configuration
 
 ```php
-// tests/Feature/Livewire/DashboardTest.php
+// phpunit.xml → sqlite :memory:
+// Feature tests typically:
+uses(RefreshDatabase::class);
+
 beforeEach(function () {
-    // In-memory SQLite database
-    config(['database.default' => 'testing']);
-    config(['database.connections.testing' => [
-        'driver' => 'sqlite',
-        'database' => ':memory:',
-    ]]);
-    
-    // Fake storage disk
     Storage::fake('data');
-    Storage::disk('data')->put('vintage-consoles.json', json_encode(getMockData()));
+    Storage::fake('savestates');
+    // fonts / local faked where backup & font features are exercised
 });
 ```
 
 **Testing principles:**
-- In-memory SQLite database (no real DB touched)
-- Fake storage disks (no real files modified)
-- Comprehensive Livewire component testing
-- Service layer unit tests
-- Feature tests for full user flows
+- In-memory SQLite (no real MySQL touched)
+- Fake storage disks (`data`, `savestates`, `fonts`, `local`)
+- Livewire component tests + save-state / YouTube / repository coverage
+- No tests hit production files or live IGDB/OpenAI services
 
 ---
 
@@ -455,83 +406,94 @@ beforeEach(function () {
 ```json
 // package.json
 {
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build"
-    }
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  }
 }
 ```
 
 ### Environment Configuration
 
-Key configurations:
-- `config/openai.php` - OpenAI API key
-- `config/services.php` - OAuth credentials (Google)
-- `config/filesystems.php` - Storage disk for game data
-- `config/livewire.php` - Livewire asset URL configuration
+Key configs:
+- `config/services.php` — OAuth (Google), IGDB credentials
+- `config/filesystems.php` — `data`, `savestates`, `fonts`, `local` disks
+- `config/openai.php` — leftover OpenAI config (unused by app code)
+- `config/livewire.php` — Livewire asset URL configuration
+- `.env` — `APP_URL`, DB, IGDB client id/secret
+
+### Catalog bootstrap
+
+```bash
+php artisan migrate
+php artisan vintage:import   # JSON + IGDB → MySQL
+```
 
 ### Performance Considerations
 
-1. **CDN Assets**: EmulatorJS and JS-DOS loaded from CDN
-2. **Browser Caching**: 1-year cache headers on ROM files
-3. **Session Optimization**: Minimal session footprint
-4. **On-Demand Loading**: Full game data cached 30 minutes
-5. **Iframe Isolation**: Emulators sandboxed from main app
+1. **CDN assets**: EmulatorJS 4.2.3 and JS-DOS 8.3.20 from CDN
+2. **Browser caching**: 1-year cache headers on ROM files
+3. **Eager loading**: GameRepository loads genres/screenshots with console games
+4. **COI isolation**: Player iframes get SharedArrayBuffer without weakening the main app
+5. **IGDB images**: Cover/screenshot URLs built from image IDs (CDN presets) rather than storing large binaries
 
 ---
 
 ## Skills & Competencies Demonstrated
 
 ### Backend Development
-- Modern PHP 8.1+ with typed properties and union types
-- Laravel framework mastery (routing, middleware, service providers)
+- PHP 8.1+ with typed properties and modern Laravel patterns
+- Eloquent relational modeling for a content-heavy catalog
 - Livewire full-stack reactive components
-- Service layer architecture for business logic
-- JSON-based data storage with caching strategies
-- OAuth 2.0 implementation
+- Service-layer architecture (`GameRepository`, `BackupService`, IGDB pipeline)
+- OAuth 2.0, Fortify, Sanctum, Spatie roles
+- File + DB hybrid persistence (chat JSON, save-state binaries)
 
 ### Frontend Development
-- TailwindCSS utility-first styling
-- Dark mode implementation
+- TailwindCSS utility-first styling with dark mode
 - Component-based Blade architecture
-- JavaScript interop with PHP (Livewire)
-- Responsive design
-- Accessibility considerations
+- Emulator JS interop (postMessage, gamepad adapters, save-state manager)
+- Responsive play UI / session dock
+- Pixel typography, custom cursors, Swiper media carousels
+
+### Emulation & Browser Constraints
+- Cross-origin isolation (COOP/COEP) for SharedArrayBuffer
+- CORP headers on ROM responses
+- Iframe sandboxing of WASM cores
+- Cloud save-state sync across slots with backup restore
 
 ### Testing & Quality
-- Pest PHP modern testing syntax
-- Feature and unit test coverage
-- Mock/fake patterns for isolation
-- Livewire component testing
+- Pest PHP feature and unit coverage (~40 test files)
+- In-memory DB + fake storage isolation
+- Livewire, repository, and importer tests
 
-### DevOps & Performance
+### Integrations & Ops
+- IGDB metadata import and admin fill
+- Site-wide backup/restore zip format
 - Vite build pipeline
-- CDN integration
-- Aggressive caching strategies
-- Memory optimization techniques
-
-### AI Integration
-- OpenAI API integration
-- Prompt engineering for structured data
-- Error handling for AI responses
+- Role-gated admin tooling (games, fonts, backups)
 
 ### Software Architecture
-- MVC + Component hybrid pattern
-- Service layer abstraction
-- Separation of concerns
-- DRY principles with reusable components
+- MVC + Livewire hybrid
+- Clear separation: Models / Services / Livewire / Controllers
+- Import-only JSON vs runtime MySQL boundary
+- DRY shared concerns (sorting, toasts, presenters)
 
 ---
 
 ## Repository Statistics
 
-- **Main Language**: PHP (Laravel)
-- **Frontend**: Blade + TailwindCSS + Livewire
-- **Livewire Components**: 17
-- **Blade Components**: 40+
-- **Service Classes**: 4
-- **Test Files**: 20+
-- **Supported Consoles**: 5 (NES, SNES, Arcade, Atari 2600, PC/DOS)
+| Metric | Value |
+|--------|-------|
+| **Main language** | PHP (Laravel) |
+| **Frontend** | Blade + TailwindCSS + Livewire |
+| **Livewire components** | 20 (+ 3 concerns) |
+| **Blade components** | ~80 |
+| **Eloquent models** | 10 |
+| **Active domain services** | GameRepository, BackupService, AppFontService, Igdb* |
+| **Test files** | 40 |
+| **Supported consoles** | 5 (NES, SNES, Arcade, Atari 2600, PC/DOS) |
+| **Emulators** | EmulatorJS 4.2.3 · JS-DOS 8.3.20 |
 
 ---
 
