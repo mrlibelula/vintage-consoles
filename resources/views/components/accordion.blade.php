@@ -9,10 +9,14 @@
     @endif
 </button>
 
-@if ($toggler)
-<div x-init="$dispatch('loader-top-off')" class="flex flex-col w-full text-left gap-y-1">
+{{-- Keep slot mounted (CSS hide) so Alpine/PiP state inside survives collapse --}}
+<div
+    x-init="$dispatch('loader-top-off')"
+    @class([
+        'flex flex-col w-full text-left gap-y-1',
+        'hidden' => ! $toggler,
+    ])
+    @if (! $toggler) aria-hidden="true" @endif
+>
     {{ $slot }}
 </div>
-@else
-<div x-init="$dispatch('loader-top-off')" class="hidden"></div>
-@endif

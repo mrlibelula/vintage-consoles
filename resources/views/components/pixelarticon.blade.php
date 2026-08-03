@@ -40,6 +40,9 @@
             'M4 4h16v2H4zm0 14h16v2H4zM2 6h2v12H2zm18 0h2v12h-2zM8 9h2v6H8z',
             'M6 11h6v2H6zm8-2h2v2h-2zm2 4h2v2h-2z',
         ],
+        'message' => [
+            'M20 2H4v2h16zm0 14H6v2h14zm2-12h-2v12h2zM4 4H2v18h2zm2 14H4v2h2z',
+        ],
         'directions' => [
             'M2 2h2v2H2zm2 2h2v2H4zm2-2h2v2H6zM2 6h2v2H2zm4 0h2v2H6zm11 9h3v2h-3zm-2 2h2v3h-2zm2 3h3v2h-3zm3-3h2v3h-2zM15 2h2v10h-2zm-2 2h2v2h-2z',
             'M11 6h9v2h-9z',
@@ -69,6 +72,18 @@
         'user' => [
             'M9 2h6v2H9zm0 8h6v2H9zm6-6h2v6h-2zM7 4h2v6H7zM4 18h2v4H4zm14 0h2v4h-2zM8 14h8v2H8zm-2 2h2v2H6zm10 0h2v2h-2z',
         ],
+        'browser-chrome' => [
+            'M7 2h10v2H7zM5 4h2v2H5zm12 0h2v2h-2zM3 6h2v12H3zm16 0h2v12h-2zM5 18h2v2H5zm12 0h2v2h-2zM7 20h10v2H7zM9 8h6v2H9zm-2 2h2v4H7zm8 0h2v4h-2zM9 14h6v2H9z',
+        ],
+        'browser-firefox' => [
+            'M8 2h8v2H8zM6 4h2v2H6zm10 0h2v2h-2zM4 6h2v2H4zm14 0h2v2h-2zM2 8h2v8H2zm18 0h2v8h-2zM4 16h2v2H4zm14 0h2v2h-2zM6 18h2v2H6zm10 0h2v2h-2zM8 20h8v2H8zM8 8h8v2H8zm-2 2h2v4H6zm10 0h2v4h-2zM8 14h8v2H8z',
+        ],
+        'browser-safari' => [
+            'M7 2h10v2H7zM5 4h2v2H5zm12 0h2v2h-2zM3 6h2v12H3zm16 0h2v12h-2zM5 18h2v2H5zm12 0h2v2h-2zM7 20h10v2H7zM11 6h2v5h-2zm0 7h2v5h-2zM6 11h5v2H6zm7 0h5v2h-7z',
+        ],
+        'browser-edge' => [
+            'M7 2h10v2H7zM5 4h2v2H5zm12 0h2v2h-2zM3 6h2v10H3zm16 0h2v8h-2zM5 16h2v2H5zm12 2h2v2h-2zM7 18h10v2H7zM7 20h8v2H7zM8 8h8v2H8zm0 4h6v2H8z',
+        ],
         'logout' => [
             'M8 11h12v2H8zm8-2h2v2h-2z',
             'M14 7h2v10h-2zm2 6h2v2h-2zM6 2h12v2H6zm0 18h12v2H6zM4 4h2v16H4zm14 0h2v3h-2zm0 13h2v3h-2z',
@@ -76,6 +91,9 @@
         'login' => [
             'M2 11h14v2H2zm10-2h2v2h-2z',
             'M10 7h2v10h-2zm2 6h2v2h-2zM6 2h12v2H6zm0 18h12v2H6zM4 4h2v5H4zm0 11h2v5H4zM18 4h2v16h-2z',
+        ],
+        'send' => [
+            'M4 19h4v2H2v-8h2v6Zm8 0H8v-2h4v2Zm4-2h-4v-2h4v2Zm4-2h-4v-2h4v2Zm-10-2H4v-2h6v2Zm12 0h-2v-2h2v2ZM8 5H4v6H2V3h6v2Zm12 6h-4V9h4v2Zm-4-2h-4V7h4v2Zm-4-2H8V5h4v2Z',
         ],
         'cursor' => [
             'M6 4h2v16H6zm2 0h2v2H8zm2 2h2v2h-2zm2 2h2v2h-2zm2 2h2v2h-2zm2 2h2v2h-2zm-8 6h2v2H8zm2-2h2v2h-2zm2-2h6v2h-6z',

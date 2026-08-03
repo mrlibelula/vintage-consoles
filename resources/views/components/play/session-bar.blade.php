@@ -20,7 +20,7 @@
 @endphp
 
 <div
-    class="mt-1.5 rounded-md bg-cod-gray-200/70 dark:bg-cod-gray-900/70 px-2.5 py-2"
+    class="play-session-bar"
     x-data="{
         hotkeysOpen: false,
         dock: null,
@@ -106,10 +106,16 @@
             this.hotkeysOpen = false
             if (this.dock) this.dock.style.zIndex = ''
         },
+        jumpTo(id) {
+            const el = document.getElementById(id)
+            if (!el) return
+            // Sticky dock: scroll-margin on targets accounts for nav + dock height
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        },
     }"
 >
-    <div class="relative grid grid-cols-3 items-center gap-x-2 text-sm">
-        <div class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 justify-self-start">
+    <div class="play-session-bar__meta">
+        <div class="flex min-w-0 items-center gap-x-2 whitespace-nowrap">
             <a
                 wire:navigate
                 href="{{ route('home', $short) }}"
@@ -142,15 +148,15 @@
             @if ($isPc)
                 <span class="text-cod-gray-600 dark:text-cod-gray-400">· no cloud slots</span>
             @elseif (! auth()->check())
-                <span class="text-cod-gray-600 dark:text-cod-gray-400">Cloud saves · <a href="{{ route('login') }}" class="text-rose-700 dark:text-rose-300 hover:underline">sign in</a></span>
+                <span class="text-cod-gray-600 dark:text-cod-gray-400">· Cloud saves · <a href="{{ route('login') }}" class="text-rose-700 dark:text-rose-300 hover:underline">Sign in</a></span>
             @elseif (! $game->save_state_support)
                 <span class="text-cod-gray-600 dark:text-cod-gray-400">Slots <span class="text-fuchsia-700 dark:text-fuchsia-500">n/a</span></span>
             @endif
         </div>
 
-        <div class="justify-self-center">
-            @if ($showSlotDots)
-                <div class="inline-flex items-center gap-x-2 text-cod-gray-700 dark:text-cod-gray-300">
+        @if ($showSlotDots)
+            <div class="pointer-events-none absolute inset-y-0 left-1/2 flex -translate-x-1/2 items-center">
+                <div class="pointer-events-auto inline-flex items-center gap-x-2 text-cod-gray-700 dark:text-cod-gray-300">
                     <span>Slots</span>
                     <div
                         class="inline-flex items-center gap-x-1.5"
@@ -170,16 +176,30 @@
                         </template>
                     </div>
                 </div>
-            @endif
-        </div>
+            </div>
+        @endif
 
-        <button
-            type="button"
-            class="justify-self-end text-lg text-rose-700 dark:text-rose-300 hover:underline"
-            @click="openHotkeys()"
-        >
-            Hotkeys
-        </button>
+        <nav class="play-session-bar__jumps" aria-label="Quick jumps">
+            <a
+                href="#play-chat"
+                class="play-session-bar__jump"
+                @click.prevent="jumpTo('play-chat')"
+            >Chat</a>
+            <span class="text-cod-gray-600 dark:text-cod-gray-500" aria-hidden="true">·</span>
+            <a
+                href="#play-multiplayer"
+                class="play-session-bar__jump"
+                @click.prevent="jumpTo('play-multiplayer')"
+            >Multiplayer</a>
+            <span class="text-cod-gray-600 dark:text-cod-gray-500" aria-hidden="true">·</span>
+            <button
+                type="button"
+                class="play-session-bar__jump"
+                @click="openHotkeys()"
+            >
+                Hotkeys
+            </button>
+        </nav>
     </div>
 
     <div

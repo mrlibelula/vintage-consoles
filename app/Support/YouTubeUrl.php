@@ -81,6 +81,7 @@ class YouTubeUrl
         $defaults = [
             'enablejsapi' => '1',
             'playsinline' => '1',
+            'mute' => '1',
             'rel' => '0',
             'modestbranding' => '1',
         ];

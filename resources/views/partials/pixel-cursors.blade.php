@@ -124,9 +124,26 @@
     cursor: url('{{ asset('cursor-pointers/png/grabbing.png') }}') 16 16, grabbing;
   }
 
+  /* Beat input[type=text] text-cursor rules (higher specificity / later in cascade). */
   :disabled,
   [aria-disabled='true'],
-  .cursor-not-allowed {
+  .cursor-not-allowed,
+  input:not([type]):disabled,
+  input[type='text']:disabled,
+  input[type='search']:disabled,
+  input[type='email']:disabled,
+  input[type='url']:disabled,
+  input[type='password']:disabled,
+  input[type='number']:disabled,
+  textarea:disabled,
+  input:not([type]).cursor-not-allowed,
+  input[type='text'].cursor-not-allowed,
+  input[type='search'].cursor-not-allowed,
+  input[type='email'].cursor-not-allowed,
+  input[type='url'].cursor-not-allowed,
+  input[type='password'].cursor-not-allowed,
+  input[type='number'].cursor-not-allowed,
+  textarea.cursor-not-allowed {
     cursor: url('{{ asset('cursor-pointers/png/not-allowed.png') }}') 16 16, not-allowed;
   }
 
@@ -273,12 +290,6 @@
     cursor: url('{{ asset('cursor-pointers/png/grabbing-dark.png') }}') 16 16, grabbing;
   }
 
-  html.dark :disabled,
-  html.dark [aria-disabled='true'],
-  html.dark .cursor-not-allowed {
-    cursor: url('{{ asset('cursor-pointers/png/not-allowed-dark.png') }}') 16 16, not-allowed;
-  }
-
   html.dark .cursor-wait {
     cursor: url('{{ asset('cursor-pointers/png/wait-dark.png') }}') 16 16, wait;
   }
@@ -293,5 +304,28 @@
   html.dark textarea,
   html.dark .cursor-text {
     cursor: url('{{ asset('cursor-pointers/png/text.png') }}') 16 16, text;
+  }
+
+  /* After text-cursor rules so disabled guest chat input gets not-allowed. */
+  html.dark :disabled,
+  html.dark [aria-disabled='true'],
+  html.dark .cursor-not-allowed,
+  html.dark input:not([type]):disabled,
+  html.dark input[type='text']:disabled,
+  html.dark input[type='search']:disabled,
+  html.dark input[type='email']:disabled,
+  html.dark input[type='url']:disabled,
+  html.dark input[type='password']:disabled,
+  html.dark input[type='number']:disabled,
+  html.dark textarea:disabled,
+  html.dark input:not([type]).cursor-not-allowed,
+  html.dark input[type='text'].cursor-not-allowed,
+  html.dark input[type='search'].cursor-not-allowed,
+  html.dark input[type='email'].cursor-not-allowed,
+  html.dark input[type='url'].cursor-not-allowed,
+  html.dark input[type='password'].cursor-not-allowed,
+  html.dark input[type='number'].cursor-not-allowed,
+  html.dark textarea.cursor-not-allowed {
+    cursor: url('{{ asset('cursor-pointers/png/not-allowed-dark.png') }}') 16 16, not-allowed;
   }
 </style>

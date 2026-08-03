@@ -4,9 +4,9 @@
         <!-- player & user data: game 16:9; side panel full viewport height on desktop -->
         <div class="play-stage flex flex-col gap-y-1 max-play:overflow-visible">
             <div class="play-game-rail w-full shrink-0 max-play:relative max-play:left-1/2 max-play:-translate-x-1/2 max-play:w-screen max-play:max-w-none">
-                {{-- Fixed emulator dock (iframe + controls only; chat stays in normal flow) --}}
-                <div class="play-emulator-dock">
-                    <div id="game-container" class="play-game-frame relative w-full bg-black max-play:rounded-none rounded-lg overflow-hidden">
+                {{-- Sticky emulator dock (iframe + session bar); in-flow so chat top is always reachable --}}
+                <div class="play-emulator-dock" wire:ignore>
+                    <div id="game-container" class="play-game-frame relative w-full bg-black max-play:rounded-none rounded-t-lg overflow-hidden">
                         <iframe id="game-iframe" class="game-arena" frameborder="0" scrolling="no"
                             allow="fullscreen"
                             @if (strtolower($console->short_name) === 'pc')
@@ -20,7 +20,7 @@
                             @endif>
                         </iframe>
                     </div>
-                    <div class="shrink-0">
+                    <div class="play-session-bar-slot shrink-0">
                         <x-play.session-bar
                             :console="$console"
                             :game="$game"
@@ -31,30 +31,61 @@
                     </div>
                 </div>
 
-                {{-- In-flow spacer; height synced to fixed dock via script --}}
-                <div class="play-emulator-spacer max-play:hidden" aria-hidden="true"></div>
-
-                {{-- Live chat: fills remaining viewport below the emulator; scrolls with the page --}}
-                <div class="play-chat-block flex min-h-0 flex-col max-play:px-3">
-                    <div class="play-live-chat flex min-h-0 flex-col overflow-hidden">
-                        <div class="flex-1 min-h-0 overflow-hidden">
-                            @livewire('chat', [
-                                'console_id' => $console->id,
-                                'game' => $game->toArray(),
-                            ], uniqid())
-                        </div>
-                        <div class="shrink-0 flex items-center justify-center py-1">
-                            <div class="w-full">
-                                <x-input
-                                    type="text"
-                                    wire:model.live.lazy="input"
-                                    placeholder="New message here..."
-                                    class="h-[1.7rem] w-full text-base"
-                                />
+                {{-- Chat fills leftover viewport under the sticky dock; lobby scrolls below --}}
+                <div class="play-viewport-column">
+                    <div id="play-chat" class="play-chat-block flex min-h-0 flex-col max-play:px-3">
+                        <div class="play-live-chat flex min-h-0 flex-col overflow-hidden rounded-md border border-cod-gray-400 bg-[#d0d2d8] shadow-sm shadow-cod-gray-500/15 dark:border-cod-gray-700 dark:bg-cod-gray-900/50 dark:shadow-black/40">
+                            <div class="flex min-h-0 flex-1 flex-col overflow-hidden">
+                                @livewire('chat', [
+                                    'console_id' => $console->id,
+                                    'game' => $game->toArray(),
+                                ], 'play-chat-'.$console->id.'-'.$game->id)
+                            </div>
+                            <div class="play-chat-compose-row shrink-0 border-t border-cod-gray-400/80 dark:border-cod-gray-700">
+                                <div class="relative w-full">
+                                    <span class="pointer-events-none absolute inset-y-0 left-2 z-10 flex items-center text-cod-gray-500 dark:text-cod-gray-400">
+                                        @auth
+                                        <x-pixelarticon name="user" :size="20" />
+                                        @else
+                                        <x-pixelarticon name="login" :size="20" />
+                                        @endauth
+                                    </span>
+                                    @auth
+                                    <x-input
+                                        type="text"
+                                        wire:model.live.lazy="input"
+                                        wire:keydown.enter="sendMessage"
+                                        placeholder="New message here..."
+                                        class="play-chat-compose h-9 w-full pl-9 pr-9 text-base"
+                                    />
+                                    <button
+                                        type="button"
+                                        wire:click="sendMessage"
+                                        class="absolute inset-y-0 right-1.5 z-10 flex items-center text-rose-600 hover:text-rose-500 dark:text-rose-400 dark:hover:text-rose-300"
+                                        aria-label="Send message"
+                                        title="Send message"
+                                    >
+                                        <x-pixelarticon name="send" :size="20" />
+                                    </button>
+                                    @else
+                                    <x-input
+                                        type="text"
+                                        :disabled="true"
+                                        placeholder="Sign in to leave a message..."
+                                        class="play-chat-compose h-9 w-full cursor-not-allowed pl-9 pr-9 text-base opacity-60"
+                                        title="Sign in to leave a message"
+                                    />
+                                    <span class="pointer-events-none absolute inset-y-0 right-1.5 z-10 flex items-center text-cod-gray-500 opacity-40 dark:text-cod-gray-400">
+                                        <x-pixelarticon name="send" :size="20" />
+                                    </span>
+                                    @endauth
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <x-play.multiplayer-lobby :game="$game" />
             </div>
 
             <!-- game panel -->
@@ -63,10 +94,10 @@
                 <div class="play-side-panel-header shrink-0">
                     <div class="pb-3 lg:pb-2">
                         <div class="flex flex-col gap-y-1">
-                            <div class="leading-none text-2xl text-black dark:text-cod-gray-50">
+                            <div class="leading-none text-2xl text-cod-gray-950 dark:text-cod-gray-50">
                                 {{ $game->title }}
                             </div>
-                            <div class="leading-none text-cod-gray-900 dark:text-cod-gray-400">
+                            <div class="leading-none text-cod-gray-700 dark:text-cod-gray-400">
                                 {{ $game->publisher }}
                             </div>
                         </div>
@@ -84,7 +115,7 @@
                         x-transition:leave-end="opacity-0 scale-y-0"
                         x-cloak
                     >
-                        <div class="relative flex flex-col items-stretch gap-2 rounded-lg _border-2 border-fuchsia-200/80 dark:border-fuchsia-900/40 bg-gradient-to-br from-white via-fuchsia-50/70 to-white dark:from-fuchsia-950 dark:via-fuchsia-950/30 dark:to-fuchsia-900/70 px-3 py-2 shadow-md shadow-black/10 dark:shadow-black/90">
+                        <div class="relative flex flex-col items-stretch gap-2 rounded-lg border border-fuchsia-400/80 dark:border-fuchsia-900/40 bg-gradient-to-br from-fuchsia-300/45 via-[#d0d2d8] to-fuchsia-200/40 dark:from-fuchsia-950 dark:via-fuchsia-950 dark:to-fuchsia-900 px-3 py-2 shadow-md shadow-fuchsia-900/15 dark:shadow-black/90">
                             <div class="flex items-start gap-x-2 min-w-0">
                                 <p class="min-w-0 flex-1 text-base leading-tight text-cod-gray-900 dark:text-cod-gray-100">
                                     <span class="text-base">Save your game progress in Cloud.</span>
@@ -92,7 +123,7 @@
                                 </p>
                                 <button
                                     @click="show = false; sessionStorage.setItem('save-cta-dismissed', '1')"
-                                    class="flex-shrink-0 -mt-0.5_ -mr-1.5 p-0.5 rounded text-cod-gray-500 hover:text-cod-gray-800 dark:hover:text-cod-gray-300 transition duration-200"
+                                    class="flex-shrink-0 -mt-0.5_ -mr-1.5 p-0.5 rounded text-cod-gray-600 hover:text-cod-gray-900 dark:text-cod-gray-500 dark:hover:text-cod-gray-300 transition duration-200"
                                     aria-label="Dismiss"
                                 >
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -101,7 +132,7 @@
                                 </button>
                             </div>
                             <a href="{{ route('login') }}"
-                                class="flex w-full items-center justify-center gap-x-1.5 rounded-md bg-fuchsia-600 hover:bg-fuchsia-500 px-2 py-1 text-white text-sm tracking-wider _font-semibold transition duration-200 shadow shadow-black/30">
+                                class="flex w-full items-center justify-center gap-x-1.5 rounded-md bg-fuchsia-700 hover:bg-fuchsia-600 dark:bg-fuchsia-600 dark:hover:bg-fuchsia-500 px-2 py-1 text-white text-sm tracking-wider _font-semibold transition duration-200 shadow shadow-black/30">
                                 <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
@@ -148,13 +179,16 @@
                         <div class="flex flex-row-reverse items-start justify-center gap-x-4">
                             <div class="w-full">
                                 <div class="flex flex-col gap-y-1">
+                                    <div class="leading-none text-cod-gray-900 dark:text-cod-gray-200">
+                                        {{ $console->long_name }}
+                                    </div>
                                     <div class="flex items-center gap-x-1 justify-start">
-                                        <div class="leading-none text-cod-gray-900 dark:text-cod-gray-200">
+                                        <div class="leading-none text-cod-gray-600 dark:text-cod-gray-400">
                                             {{ $game->release_year }}
                                         </div>
-                                        <div class="text-cod-gray-900 dark:text-cod-gray-500">•</div>
+                                        <div class="text-cod-gray-500 dark:text-cod-gray-600">•</div>
                                         @if($game->rating)
-                                        <div class="leading-none text-cod-gray-900 dark:text-cod-gray-200">
+                                        <div class="leading-none text-cod-gray-600 dark:text-cod-gray-400">
                                             {{ number_format($game->rating * 100, 0) }}%
                                         </div>
                                         @endif
@@ -174,7 +208,7 @@
                                     </div>
                                     @endauth
                                     <div class="flex items-center gap-x-1 justify-start">
-                                        <div class="leading-none text-cod-gray-900 dark:text-cod-gray-400">Multiplayer:</div>
+                                        <div class="leading-none text-cod-gray-900 dark:text-cod-gray-200">Multiplayer:</div>
                                         @if ($game->multiplayer_support)
                                         <div class="leading-none text-green-700 dark:text-green-500">Yes</div>
                                         @else
@@ -198,19 +232,29 @@
                         <!-- description -->
                         <x-accordion wire:click="toggle('description')" :toggler="$accordion_toggler['description']">
                             <x-slot name="title">Description</x-slot>
-                            {{ $game->description }}
+                            <div class="text-cod-gray-900 dark:text-cod-gray-200 leading-tight">
+                                {{ $game->description }}
+                            </div>
                         </x-accordion>
 
                     </div>
                     </div>
                     @endif
 
-                    @if ($tabs['media'] && ($igdb['has_media'] ?? false))
-                    <div class="flex flex-1 min-h-0 flex-col play:overflow-visible overflow-y-auto">
-                        <div class="flex flex-col divide-y divide-cod-gray-700/60 dark:divide-cod-gray-600/50 p-4">
+                    {{-- Keep shell mounted after first Media visit so PiP survives Info/Media switches --}}
+                    @if (($tabs['media'] || $media_shell_mounted) && ($igdb['has_media'] ?? false))
+                    <div
+                        wire:key="play-media-shell-{{ $game->id }}"
+                        @class([
+                            'flex flex-1 min-h-0 flex-col play:overflow-visible overflow-y-auto',
+                            'hidden' => ! $tabs['media'],
+                        ])
+                        @if (! $tabs['media']) aria-hidden="true" @endif
+                    >
+                        <div class="flex flex-col gap-y-4 p-4">
                             @if ($igdb['has_videos'] ?? false)
-                            <div class="flex flex-col gap-y-2 py-4 first:pt-0 last:pb-0">
-                                <div class="text-rose-700 dark:text-rose-300 text-base">Videos</div>
+                            <x-accordion wire:click="toggle('videos')" :toggler="$accordion_toggler['videos']">
+                                <x-slot name="title">Videos</x-slot>
                                 <x-play.video-carousel
                                     :videos="$igdb['videos']"
                                     :game-id="$game->id"
@@ -219,21 +263,21 @@
                                     :csrf="csrf_token()"
                                     :can-sync="auth()->check()"
                                 />
-                            </div>
+                            </x-accordion>
                             @endif
 
                             @if (! empty($igdb['artworks']))
-                            <div class="flex flex-col gap-y-2 py-4 first:pt-0 last:pb-0">
-                                <div class="text-rose-700 dark:text-rose-300 text-base">Artworks</div>
+                            <x-accordion wire:click="toggle('artworks')" :toggler="$accordion_toggler['artworks']">
+                                <x-slot name="title">Artworks</x-slot>
                                 <x-play.artworks :artworks="$igdb['artworks']" :game-title="$game->title" />
-                            </div>
+                            </x-accordion>
                             @endif
 
                             @if (! empty($igdb['similar_games']))
-                            <div class="flex flex-col gap-y-2 py-4 first:pt-0 last:pb-0">
-                                <div class="text-rose-700 dark:text-rose-300 text-base">Similar</div>
+                            <x-accordion wire:click="toggle('similar')" :toggler="$accordion_toggler['similar']">
+                                <x-slot name="title">Similar</x-slot>
                                 <x-play.similar-games :games="$igdb['similar_games']" />
-                            </div>
+                            </x-accordion>
                             @endif
                         </div>
                     </div>
@@ -250,35 +294,40 @@
     if (window.__vintagePlayEmulatorSpacerSync) return
     window.__vintagePlayEmulatorSpacerSync = true
 
-    function syncPlayEmulatorSpacer() {
+    function syncPlayEmulatorDock() {
         const dock = document.querySelector('.play-emulator-dock')
-        const spacer = document.querySelector('.play-emulator-spacer')
-        const rail = document.querySelector('.play-game-rail')
-        if (!dock || !spacer || !rail) return
-        // Desktop only: spacer is hidden below the play breakpoint
-        if (window.matchMedia('(max-width: 1079px)').matches) {
-            spacer.style.height = ''
-            dock.style.left = ''
-            dock.style.width = ''
+        const column = document.querySelector('.play-viewport-column')
+        if (!dock) {
+            document.documentElement.style.removeProperty('--play-dock-height')
             return
         }
-        // Pin dock to the in-flow rail box so iframe width matches chat
-        // (CSS 100vw math drifts when a scrollbar is present).
-        const rect = rail.getBoundingClientRect()
-        dock.style.left = rect.left + 'px'
-        dock.style.width = rect.width + 'px'
-        spacer.style.height = dock.offsetHeight + 'px'
+
+        const dockH = dock.offsetHeight
+        // Persist on <html> — Livewire morphs .play-stage and would wipe an inline var there,
+        // briefly dropping --play-dock-height and exploding chat min-height.
+        if (dockH > 0) {
+            document.documentElement.style.setProperty('--play-dock-height', dockH + 'px')
+        }
+
+        const mobile = window.matchMedia('(max-width: 1079px)').matches
+        if (mobile && column) {
+            // Chat column fills whatever remains under the nav + in-flow dock.
+            const navPx = 4 * 16 // top-spacer / fixed nav = 4rem
+            const leftover = window.innerHeight - navPx - dockH
+            column.style.height = Math.max(leftover, 0) + 'px'
+            return
+        }
+
+        if (column) column.style.height = ''
     }
 
     function boot() {
-        syncPlayEmulatorSpacer()
+        syncPlayEmulatorDock()
         const dock = document.querySelector('.play-emulator-dock')
-        const rail = document.querySelector('.play-game-rail')
-        if (typeof ResizeObserver !== 'undefined') {
-            if (dock) new ResizeObserver(syncPlayEmulatorSpacer).observe(dock)
-            if (rail) new ResizeObserver(syncPlayEmulatorSpacer).observe(rail)
+        if (typeof ResizeObserver !== 'undefined' && dock) {
+            new ResizeObserver(syncPlayEmulatorDock).observe(dock)
         }
-        window.addEventListener('resize', syncPlayEmulatorSpacer)
+        window.addEventListener('resize', syncPlayEmulatorDock)
     }
 
     if (document.readyState === 'loading') {
@@ -286,8 +335,8 @@
     } else {
         boot()
     }
-    document.addEventListener('livewire:navigated', syncPlayEmulatorSpacer)
-    document.addEventListener('livewire:updated', syncPlayEmulatorSpacer)
+    document.addEventListener('livewire:navigated', syncPlayEmulatorDock)
+    document.addEventListener('livewire:updated', syncPlayEmulatorDock)
 })()
 </script>
 <script>

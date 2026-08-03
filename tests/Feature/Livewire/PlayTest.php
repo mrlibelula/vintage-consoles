@@ -81,7 +81,10 @@ describe('Play component mounting', function () {
             'game_title_slug'    => 'super-mario-bros',
         ])
         ->assertSet('accordion_toggler.description', true)
-        ->assertSet('accordion_toggler.screenshots', true);
+        ->assertSet('accordion_toggler.screenshots', true)
+        ->assertSet('accordion_toggler.videos', true)
+        ->assertSet('accordion_toggler.artworks', true)
+        ->assertSet('accordion_toggler.similar', true);
     });
 });
 
@@ -270,6 +273,35 @@ describe('Tab management', function () {
         ->assertSet('tabs.media', true);
     });
 
+    it('opens media accordions when switching to the media tab', function () {
+        $console = playNesConsole();
+        playNesGame($console, [
+            'walkthrough_videos' => [
+                ['title' => 'Guide', 'youtube_id' => 'dQw4w9WgXcQ'],
+            ],
+            'igdb_response' => [
+                'artworks' => [
+                    ['image_id' => 'ar123'],
+                ],
+            ],
+        ]);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->call('toggle', 'videos')
+            ->call('toggle', 'artworks')
+            ->call('toggle', 'similar')
+            ->assertSet('accordion_toggler.videos', false)
+            ->assertSet('accordion_toggler.artworks', false)
+            ->assertSet('accordion_toggler.similar', false)
+            ->call('changeTab', 'media')
+            ->assertSet('accordion_toggler.videos', true)
+            ->assertSet('accordion_toggler.artworks', true)
+            ->assertSet('accordion_toggler.similar', true);
+    });
+
     it('can switch back to info tab', function () {
         $console = playNesConsole();
         playNesGame($console, [
@@ -286,6 +318,53 @@ describe('Tab management', function () {
         ->call('changeTab', 'info')
         ->assertSet('tabs.info', true)
         ->assertSet('tabs.media', false);
+    });
+
+    it('keeps the media shell mounted after leaving the media tab', function () {
+        $console = playNesConsole();
+        playNesGame($console, [
+            'walkthrough_videos' => [
+                ['title' => 'Guide', 'youtube_id' => 'dQw4w9WgXcQ'],
+            ],
+        ]);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->assertSet('media_shell_mounted', false)
+            ->assertDontSeeHtml('video-thumb-carousel')
+            ->call('changeTab', 'media')
+            ->assertSet('media_shell_mounted', true)
+            ->assertSeeHtml('video-thumb-carousel')
+            ->call('changeTab', 'info')
+            ->assertSet('tabs.info', true)
+            ->assertSet('tabs.media', false)
+            ->assertSet('media_shell_mounted', true)
+            ->assertSeeHtml('video-thumb-carousel')
+            ->assertSeeHtml('play-media-shell-');
+    });
+
+    it('opens info accordions when switching to the info tab', function () {
+        $console = playNesConsole();
+        playNesGame($console, [
+            'walkthrough_videos' => [
+                ['title' => 'Guide', 'youtube_id' => 'dQw4w9WgXcQ'],
+            ],
+        ]);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->call('toggle', 'screenshots')
+            ->call('toggle', 'description')
+            ->assertSet('accordion_toggler.screenshots', false)
+            ->assertSet('accordion_toggler.description', false)
+            ->call('changeTab', 'media')
+            ->call('changeTab', 'info')
+            ->assertSet('accordion_toggler.screenshots', true)
+            ->assertSet('accordion_toggler.description', true);
     });
 
     it('ignores the removed chat tab', function () {
@@ -342,6 +421,39 @@ describe('Tab management', function () {
             ->assertSee('Artworks');
     });
 
+    it('renders similar games with play links in the media tab', function () {
+        $console = playNesConsole();
+        $similar = Game::factory()->create([
+            'console_id' => $console->id,
+            'igdb_id' => 4242,
+            'title' => 'Local Twin',
+            'slug' => 'local-twin',
+            'rom' => 'twin.nes',
+        ]);
+        playNesGame($console, [
+            'igdb_response' => [
+                'similar_games' => [
+                    ['id' => 4242, 'name' => 'Ignored', 'slug' => 'ignored'],
+                ],
+            ],
+        ]);
+
+        $similarUrl = route('play', [$console->short_name, $similar->slug], false);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug' => 'super-mario-bros',
+        ])
+            ->assertSet('igdb.has_media', true)
+            ->assertSet('igdb.similar_games.0.url', route('play', [$console->short_name, $similar->slug]))
+            ->assertDontSee('Similar')
+            ->call('changeTab', 'media')
+            ->assertSee('Similar')
+            ->assertSee('Local Twin')
+            ->assertSeeHtml('similar-games-carousel')
+            ->assertSeeHtml('href="'.e(url($similarUrl)).'"');
+    });
+
     it('renders session bar and hotkeys under the emulator', function () {
         $console = playNesConsole();
         playNesGame($console);
@@ -351,6 +463,12 @@ describe('Tab management', function () {
             'game_title_slug'    => 'super-mario-bros',
         ])
             ->assertSee('Hotkeys')
+            ->assertSee('Chat')
+            ->assertSee('Multiplayer')
+            ->assertSeeHtml('href="#play-chat"')
+            ->assertSeeHtml('href="#play-multiplayer"')
+            ->assertSeeHtml('id="play-chat"')
+            ->assertSeeHtml('id="play-multiplayer"')
             ->assertSee('nes');
     });
 
@@ -401,7 +519,12 @@ describe('Tab management', function () {
         ])
             ->assertSee('Hello from legacy chat!')
             ->assertSee('Guest')
-            ->assertSee('live chat room');
+            ->assertSee('live chat room')
+            ->assertSee('Live chat')
+            ->assertSee('Sign in to leave a message...')
+            ->assertDontSee('New message here...')
+            ->assertSeeHtml('cursor-not-allowed')
+            ->assertSeeHtml('disabled');
     });
 });
 
@@ -420,7 +543,112 @@ describe('Live chat input', function () {
             ->set('input', 'Hello from me')
             ->assertSet('input', '');
     });
+
+    it('shows an enabled message input for authenticated users', function () {
+        $user    = User::factory()->create();
+        $console = playNesConsole();
+        playNesGame($console);
+
+        $this->actingAs($user);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->assertSee('New message here...')
+            ->assertSeeHtml('aria-label="Send message"')
+            ->assertDontSee('Sign in to leave a message...');
+    });
+
+    it('sends a message via sendMessage action', function () {
+        $user    = User::factory()->create();
+        $console = playNesConsole();
+        $game    = playNesGame($console);
+        $path    = "chat/{$console->id}.{$game->id}.json";
+
+        $this->actingAs($user);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->set('input', 'Sent from button')
+            ->call('sendMessage')
+            ->assertSet('input', '');
+
+        $messages = json_decode(Storage::disk('data')->get($path), true);
+
+        expect(collect($messages)->pluck('message')->all())->toContain('Sent from button');
+    });
+
+    it('does not persist messages from guests', function () {
+        $console = playNesConsole();
+        $game    = playNesGame($console);
+        $path    = "chat/{$console->id}.{$game->id}.json";
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->set('input', 'Guest should not post')
+            ->assertSet('input', '');
+
+        $messages = Storage::disk('data')->exists($path)
+            ? (json_decode(Storage::disk('data')->get($path), true) ?? [])
+            : [];
+
+        expect(collect($messages)->pluck('message')->all())->not->toContain('Guest should not post');
+    });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Multiplayer lobby (UI stub)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('Multiplayer lobby', function () {
+    it('renders a disabled lobby below chat for guests', function () {
+        $console = playNesConsole();
+        playNesGame($console);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->assertSee('Multiplayer')
+            ->assertSee('Join lobby')
+            ->assertSee('Open rooms')
+            ->assertSee('No open rooms')
+            ->assertSee('Host table')
+            ->assertSee('Create room')
+            ->assertSee('P1')
+            ->assertSee('P4')
+            ->assertSeeHtml('aria-label="Join lobby"')
+            ->assertSeeHtml('aria-label="Host table"')
+            ->assertSeeHtml('aria-label="Create room"')
+            ->assertSeeHtml('disabled');
+    });
+
+    it('keeps lobby actions disabled for authenticated users', function () {
+        $user    = User::factory()->create();
+        $console = playNesConsole();
+        playNesGame($console);
+
+        $this->actingAs($user);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->assertSee('Multiplayer')
+            ->assertSee('Join lobby')
+            ->assertSee('Create room')
+            ->assertSeeHtml('aria-label="Join lobby"')
+            ->assertSeeHtml('aria-label="Host table"')
+            ->assertSeeHtml('aria-label="Create room"')
+            ->assertSeeHtml('cursor-not-allowed');
+    });
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Game URL Loading
 // ─────────────────────────────────────────────────────────────────────────────

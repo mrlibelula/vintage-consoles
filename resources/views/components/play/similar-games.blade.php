@@ -1,16 +1,25 @@
 @props(['games' => []])
 
 @if (! empty($games))
-<div class="w-full">
-    <swiper-container slides-per-view="auto" space-between="10" free-mode="true" grab-cursor="true" class="w-full">
+<div wire:ignore class="similar-games-carousel w-full overflow-hidden">
+    <swiper-container
+        class="block w-full"
+        slides-per-view="auto"
+        space-between="10"
+        free-mode="true"
+        grab-cursor="true"
+        prevent-clicks="false"
+        threshold="5"
+    >
         @foreach ($games as $item)
-            <swiper-slide style="width: 7.5rem">
+            <swiper-slide class="similar-games-carousel__slide">
+                {{-- Full reload: wire:navigate Play→Play leaves the ignored emulator dock stale. --}}
                 <a
                     href="{{ $item['url'] }}"
-                    wire:navigate
-                    class="group flex flex-col gap-y-1 no-underline"
+                    @click.prevent="$dispatch('loader-top-on'); window.location.assign($el.href)"
+                    class="group flex h-full w-full min-w-0 flex-col gap-y-1 no-underline"
                 >
-                    <div class="relative overflow-hidden rounded-md bg-cod-gray-900 aspect-[3/4]">
+                    <div class="relative aspect-[3/4] w-full overflow-hidden rounded-md bg-cod-gray-900">
                         @if (! empty($item['poster']))
                             <img
                                 src="{{ $item['poster'] }}"
@@ -24,7 +33,7 @@
                             </div>
                         @endif
                     </div>
-                    <div class="min-w-0">
+                    <div class="min-w-0 w-full">
                         <div class="truncate text-base text-cod-gray-800 dark:text-cod-gray-300" title="{{ $item['title'] }}">
                             {{ $item['title'] }}
                         </div>

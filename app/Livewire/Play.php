@@ -36,12 +36,18 @@ class Play extends Component
     public array $accordion_toggler = [
         'description'  => true,
         'screenshots'  => true,
+        'videos'       => true,
+        'artworks'     => true,
+        'similar'      => true,
     ];
 
     public array $tabs = [
         'info' => true,
         'media' => false,
     ];
+
+    /** Keep media DOM (and PiP Alpine state) after first visit so tab switches do not tear down the player. */
+    public bool $media_shell_mounted = false;
 
     public array $modals = [
         'screenshots' => false,
@@ -143,6 +149,17 @@ class Play extends Component
 
     public function updatedInput(): void
     {
+        $this->sendMessage();
+    }
+
+    public function sendMessage(): void
+    {
+        if (! auth()->check()) {
+            $this->input = '';
+
+            return;
+        }
+
         if ($this->input) {
             $userId    = auth()->id();
             $message   = $this->input;
@@ -224,6 +241,19 @@ class Play extends Component
 
         $this->tabs = array_map(fn () => false, $this->tabs);
         $this->tabs[$tab] = true;
+
+        // Each tab opens with its rose accordion sections expanded.
+        if ($tab === 'info') {
+            $this->accordion_toggler['screenshots'] = true;
+            $this->accordion_toggler['description'] = true;
+        }
+
+        if ($tab === 'media') {
+            $this->media_shell_mounted = true;
+            $this->accordion_toggler['videos'] = true;
+            $this->accordion_toggler['artworks'] = true;
+            $this->accordion_toggler['similar'] = true;
+        }
     }
 
     public function loadGameUrl(): void

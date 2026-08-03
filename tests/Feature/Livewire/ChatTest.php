@@ -1,7 +1,9 @@
 <?php
 
 use App\Livewire\Chat;
+use App\Models\User;
 use App\Service\Tool;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 
@@ -150,6 +152,7 @@ beforeEach(function () {
     $this->artisan('migrate', ['--database' => 'testing']);
     
     Storage::fake('data');
+    Cache::flush();
     
     // Create test users in memory database only
     \App\Models\User::factory()->create([
@@ -578,4 +581,70 @@ describe('View Rendering', function () {
         })
         ->assertViewHas('game', getMockGameData());
     });
-}); 
+
+    it('renders live chat chrome and presence column', function () {
+        Livewire::test(Chat::class, [
+            'console_id' => 1,
+            'game' => getMockGameData(),
+        ])
+            ->assertSee('Live chat')
+            ->assertSeeHtml('aria-label="Online now"');
+    });
+});
+
+describe('Chat presence', function () {
+    it('registers the current guest on mount', function () {
+        $component = Livewire::withHeaders([
+            'User-Agent' => 'Mozilla/5.0 Firefox/121.0',
+        ])->test(Chat::class, [
+            'console_id' => 1,
+            'game' => getMockGameData(),
+        ]);
+
+        $online = $component->get('online');
+
+        expect($online)->toHaveCount(1)
+            ->and($online[0]['name'])->toBe('Guest')
+            ->and($online[0]['user_id'])->toBeNull()
+            ->and($online[0]['icon'])->toBe('browser-firefox');
+    });
+
+    it('registers the authenticated user on mount', function () {
+        $user = User::find(1);
+
+        $component = Livewire::actingAs($user)
+            ->test(Chat::class, [
+                'console_id' => 1,
+                'game' => getMockGameData(),
+            ]);
+
+        $online = $component->get('online');
+
+        expect($online)->toHaveCount(1)
+            ->and($online[0]['name'])->toBe('TestUser')
+            ->and($online[0]['user_id'])->toBe(1)
+            ->and($online[0]['icon'])->toBe('user');
+    });
+
+    it('prunes stale presence entries on heartbeat', function () {
+        $key = 'chat:presence.1.1';
+        Cache::put($key, [
+            'guest:stale' => [
+                'name' => 'Guest',
+                'icon' => 'computer',
+                'user_id' => null,
+                'last_seen' => now()->subMinutes(5)->timestamp,
+            ],
+        ], 60);
+
+        $component = Livewire::test(Chat::class, [
+            'console_id' => 1,
+            'game' => getMockGameData(),
+        ]);
+
+        $keys = collect($component->get('online'))->pluck('key')->all();
+
+        expect($keys)->not->toContain('guest:stale')
+            ->and($component->get('online'))->toHaveCount(1);
+    });
+});

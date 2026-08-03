@@ -415,6 +415,12 @@ export function bootVintageYoutubeMedia() {
 
             dockInline() {
                 this.ensurePlayer({ pip: false })
+                // Media panel may be CSS-hidden while on Info; reveal it so the inline player is visible.
+                try {
+                    this.$wire?.changeTab?.('media')
+                } catch {
+                    /* ignore */
+                }
             },
 
             closePip() {
@@ -471,6 +477,7 @@ export function bootVintageYoutubeMedia() {
                             videoId: video.youtube_id,
                             startSeconds: start >= 3 ? start : 0,
                         })
+                        sharedPlayer.mute?.()
                         sharedPlayer.playVideo?.()
                         this.capturePlayerDuration(video.youtube_id)
                         this.startProgressWatch(video.youtube_id)
@@ -496,6 +503,7 @@ export function bootVintageYoutubeMedia() {
                     videoId: video.youtube_id,
                     playerVars: {
                         autoplay: 1,
+                        mute: 1,
                         playsinline: 1,
                         rel: 0,
                         modestbranding: 1,
@@ -513,6 +521,7 @@ export function bootVintageYoutubeMedia() {
                                     iframe.style.height = '100%'
                                     iframe.style.border = '0'
                                 }
+                                event.target.mute()
                                 if (start >= 3) {
                                     event.target.seekTo(start, true)
                                 }

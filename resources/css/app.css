@@ -19,9 +19,58 @@
     max-height: calc(100dvh - 4rem);
 }
 
-/* Play stage: desktop pins emulator dock fixed; chat + side panel scroll normally */
+/* Play stage: desktop sticky emulator dock; chat + side panel scroll normally */
 .play-stage {
     @apply w-full;
+    --play-stack-gap: 0.75rem; /* equal y-gap: dock ↔ chat */
+    --play-chat-pad-bottom: 1.25rem; /* breathing room above browser bottom edge */
+    overflow-anchor: none;
+}
+
+.play-emulator-dock {
+    display: flex;
+    flex-direction: column;
+    /* Flush iframe ↔ session bar; chat spacing uses --play-stack-gap elsewhere */
+    gap: 0;
+    background: transparent;
+}
+
+/* Session bar: body uses text-2xl — pin caption sizes so they never inherit that */
+.play-session-bar {
+    @apply flex min-h-[1.75rem] items-center rounded-md bg-transparent px-2.5 py-0.5;
+}
+
+.play-session-bar-slot {
+    @apply shrink-0;
+}
+
+/* Multiplayer lobby: pin to text-sm so table headers / seats don't inherit body text-2xl */
+.play-multiplayer-lobby {
+    font-size: 0.875rem;
+    line-height: 1;
+}
+
+.play-session-bar__meta {
+    @apply relative flex w-full items-center justify-between gap-x-2 leading-none;
+    font-size: 0.7rem;
+}
+
+.play-session-bar__jumps {
+    @apply inline-flex shrink-0 items-center gap-x-1.5 leading-none;
+}
+
+.play-session-bar__jump {
+    @apply leading-none text-rose-700 dark:text-rose-300 hover:underline;
+}
+
+.play-viewport-column {
+    @apply flex w-full min-h-0 flex-col;
+}
+
+.play-chat-block {
+    margin-top: var(--play-stack-gap);
+    padding-bottom: var(--play-chat-pad-bottom);
+    box-sizing: border-box;
 }
 
 .play-side-panel {
@@ -30,67 +79,110 @@
     max-height: 44vh;
 }
 
-/* Live chat: normal flow; fixed height so messages can scroll inside */
+/* Live chat: fills leftover viewport under the in-flow dock on mobile (height set via JS) */
 .play-live-chat {
-    height: 16rem;
+    @apply flex min-h-0 flex-1 flex-col;
+    height: auto;
+    min-height: 18rem;
+}
+
+.play-live-chat .play-chat-room {
+    @apply h-full min-h-0 flex-1;
+}
+
+@media (max-width: 1079px) {
+    .play-viewport-column {
+        /* Height synced in JS: remaining viewport under nav + emulator dock */
+        gap: 0;
+    }
+
+    .play-chat-block {
+        @apply flex min-h-0 flex-1 flex-col;
+        margin-top: var(--play-stack-gap);
+    }
 }
 
 @media (min-width: 1080px) {
     .play-stage {
-        /* Match <x-container> max-w-site + horizontal padding for fixed dock fallback.
-         * Prefer 100% (layout width) over 100vw so scrollbar gutters do not shift the dock.
-         * JS still pins left/width to .play-game-rail for pixel-perfect iframe↔chat alignment. */
+        /* Match <x-container> max-w-site + horizontal padding.
+         * Prefer 100% (layout width) over 100vw so scrollbar gutters do not shift layout. */
         --play-site: 60rem;
         --play-pad-x: 2rem; /* lg:px-8 */
         --play-col-gap: 1.5rem;
         --play-content-width: calc(min(100%, var(--play-site)) - 2 * var(--play-pad-x));
         --play-rail-width: calc((var(--play-content-width) - var(--play-col-gap)) * 0.7);
-        --play-rail-left: calc(max(0px, (100% - var(--play-site)) / 2) + var(--play-pad-x));
+        /* Used only until JS sets --play-dock-height on <html> (survives Livewire morph) */
+        --play-dock-height-fallback: min(52vh, calc(var(--play-rail-width) * 0.5625 + 2.75rem));
         @apply relative flex flex-row items-start;
         gap: var(--play-col-gap);
+        overflow-anchor: none;
     }
 
     .play-game-rail {
         @apply relative flex min-w-0 shrink-0 flex-col;
         width: calc((100% - var(--play-col-gap)) * 0.7);
-        /* Exact viewport under nav → chat flexes into leftover space below the spacer */
-        min-height: calc(100dvh - 4rem);
-        height: calc(100dvh - 4rem);
         padding-bottom: 0.75rem;
         box-sizing: border-box;
+        overflow: visible;
     }
 
     /*
-     * Only the emulator (iframe + session chrome) is fixed.
-     * Chat stays in normal flow below the spacer and scrolls with the page.
+     * Sticky (not fixed): dock stays in document flow so the Live chat header
+     * is always reachable when scrolling back to top. No spacer / scroll lock.
      */
     .play-emulator-dock {
-        position: fixed;
+        position: sticky;
         top: 4rem;
-        left: var(--play-rail-left);
         z-index: 10;
-        width: var(--play-rail-width);
-        @apply bg-cod-gray-200 dark:bg-cod-gray-950;
+        width: 100%;
+        /* Black merges with iframe; session bar paints its own gray */
+        @apply rounded-lg bg-black;
+        overflow: visible;
     }
 
     .play-game-frame {
-        @apply w-full;
+        @apply m-1 w-auto overflow-hidden rounded-t-md rounded-b-none;
         aspect-ratio: 16 / 9;
         max-height: calc(100dvh - 4rem - 4.5rem);
     }
 
-    /* Spacer height is set from the fixed dock via JS for an exact chat fill */
     .play-emulator-spacer {
-        @apply shrink-0;
+        display: none;
+    }
+
+    .play-viewport-column {
+        height: auto;
+        gap: 0;
+        box-sizing: border-box;
+        overflow-anchor: none;
+    }
+
+    .play-session-bar-slot {
+        position: relative;
+        z-index: 1;
+        isolation: isolate;
+        @apply rounded-b-lg bg-cod-gray-200 dark:bg-cod-gray-950;
     }
 
     .play-chat-block {
-        @apply relative z-0 flex min-h-0 flex-1 flex-col;
+        @apply relative z-0 flex min-h-0 flex-col;
+        margin-top: var(--play-stack-gap);
+        padding-bottom: var(--play-chat-pad-bottom);
+        /* Reserve bottom pad so the chat border isn't flush with the viewport edge */
+        min-height: calc(100dvh - 4rem - var(--play-dock-height, var(--play-dock-height-fallback)) - var(--play-stack-gap));
+        overflow-anchor: none;
+        scroll-margin-top: calc(4rem + var(--play-dock-height, var(--play-dock-height-fallback)) + 0.5rem);
     }
 
     .play-live-chat {
         @apply flex min-h-0 flex-1 flex-col;
         height: auto;
+        /* flex-1 fills the padded chat block; do not inherit min-height or it eats the bottom pad */
+        min-height: 0;
+    }
+
+    .play-multiplayer-lobby {
+        scroll-margin-top: calc(4rem + var(--play-dock-height, var(--play-dock-height-fallback)) + 0.5rem);
     }
 
     .play-side-panel {
@@ -99,10 +191,11 @@
         min-height: calc(100dvh - 4rem);
         @apply mb-0 flex min-w-0 shrink-0 flex-col;
         width: calc((100% - var(--play-col-gap)) * 0.3);
+        overflow-anchor: none;
     }
 
     .play-side-panel-header {
-        @apply sticky top-16 z-20 bg-[#c2c5cc] dark:bg-[#1e1f21];
+        @apply sticky top-16 z-20 bg-cod-gray-200 dark:bg-[#1e1f21];
     }
 }
 
@@ -118,7 +211,7 @@
 
 @media (min-width: 1080px) {
     .play-game-frame .game-arena {
-        @apply absolute inset-0 h-full w-full;
+        @apply absolute inset-0 h-full w-full rounded-t-md rounded-b-none;
     }
 }
 
@@ -128,6 +221,14 @@
         text-xl dark:border-cod-gray-700 dark:bg-cod-gray-800/50 dark:text-rose-200 dark:placeholder-cod-gray-400
         focus:border-rose-500 focus:ring-rose-500
         dark:focus:border-rose-600 dark:focus:ring-rose-600;
+}
+
+/* Live chat footer: flush input row (no nested field chrome) */
+.play-chat-compose.form-field {
+    @apply border-0 bg-transparent shadow-none rounded-none
+        focus:border-transparent focus:ring-0
+        dark:bg-transparent dark:border-0
+        dark:focus:border-transparent dark:focus:ring-0;
 }
 
 .smooth-300 {
@@ -585,6 +686,33 @@ swiper-slide {
     box-sizing: border-box;
     padding-block: 3px;
     align-items: stretch;
+}
+
+/*
+ * Similar games: slides-per-view="auto" must get a hard CSS width. Inline
+ * styles alone are unreliable, and unconstrained cover images / titles make
+ * later slides grow wider than the first.
+ */
+.similar-games-carousel {
+    height: auto;
+}
+
+.similar-games-carousel swiper-container {
+    height: auto;
+}
+
+.similar-games-carousel__slide,
+.similar-games-carousel swiper-slide {
+    box-sizing: border-box;
+    width: 7.5rem;
+    height: auto;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.similar-games-carousel swiper-slide > * {
+    width: 100%;
+    min-width: 0;
 }
 
 .parallax-bg {

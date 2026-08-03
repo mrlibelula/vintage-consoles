@@ -10,6 +10,7 @@
         items: {{ Js::from($artworks) }},
         imageSrc: '',
         imageLoading: false,
+        gameTitle: @js($gameTitle),
 
         fullSrc(index) {
             const art = this.items[index];
@@ -24,9 +25,17 @@
                 return;
             }
 
+            if (this.imageSrc === nextSrc) {
+                this.imageLoading = false;
+                return;
+            }
+
             this.imageLoading = true;
-            // Show thumb immediately so the dialog never looks empty while HD loads.
-            this.imageSrc = this.items[index]?.thumb || nextSrc;
+
+            // Prefer keeping the current image visible; fall back to thumb on first open.
+            if (!this.imageSrc) {
+                this.imageSrc = this.items[index]?.thumb || nextSrc;
+            }
 
             const preload = new Image();
             preload.onload = () => {
@@ -116,7 +125,7 @@
             aria-modal="true"
             aria-label="{{ $gameTitle }} artworks"
         >
-            <div class="flex min-h-full items-end justify-center px-4 pb-4 pt-16 text-center sm:items-center sm:px-6 sm:py-8">
+            <div class="flex min-h-full items-stretch justify-center sm:items-center sm:px-6 sm:py-8">
                 <div
                     class="fixed inset-0 transition-opacity"
                     aria-hidden="true"
@@ -126,10 +135,10 @@
                 </div>
 
                 <div
-                    class="relative z-10 flex w-full max-w-5xl flex-col overflow-hidden rounded-xl border border-cod-gray-700/80 bg-cod-gray-950/95 text-left shadow-2xl shadow-black/80"
+                    class="relative z-10 flex h-dvh w-full flex-col overflow-hidden rounded-none border-0 bg-cod-gray-950 text-left shadow-2xl shadow-black/80 sm:h-[min(85vh,56rem)] sm:w-full sm:max-w-5xl sm:rounded-xl sm:border sm:border-cod-gray-700/80 sm:bg-cod-gray-950/95"
                     @click.stop
                 >
-                    <div class="flex items-center justify-between border-b border-cod-gray-800 px-4 py-3 sm:px-6">
+                    <div class="flex shrink-0 items-center justify-between border-b border-cod-gray-800 px-4 py-3 sm:px-6">
                         <div class="text-sm text-cod-gray-300">
                             <span class="font-medium text-white">{{ $gameTitle }}</span>
                             &nbsp;—&nbsp;
@@ -147,7 +156,7 @@
                         </button>
                     </div>
 
-                    <div class="relative flex min-h-[45vh] items-center justify-center bg-black/40 px-4 py-6 sm:min-h-[60vh] sm:px-8 sm:py-8">
+                    <div class="relative min-h-0 flex-1 bg-black/40">
                         <div
                             x-show="imageLoading"
                             class="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
@@ -159,11 +168,11 @@
                         <img
                             x-show="imageSrc"
                             x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="opacity-0 scale-[0.98]"
-                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:enter-start="opacity-0"
+                            x-transition:enter-end="opacity-100"
                             :src="imageSrc"
-                            :alt="'{{ addslashes($gameTitle) }} artwork ' + (current + 1)"
-                            class="relative z-0 max-h-[55vh] w-full max-w-full object-contain sm:max-h-[70vh]"
+                            :alt="gameTitle + ' artwork ' + (current + 1)"
+                            class="absolute inset-0 z-0 h-full w-full object-contain p-4 sm:p-8"
                             decoding="async"
                             fetchpriority="high"
                         >
@@ -194,7 +203,7 @@
                     </div>
 
                     @if (count($artworks) > 1)
-                        <div class="flex items-center justify-center gap-x-1.5 border-t border-cod-gray-800 px-4 py-4">
+                        <div class="flex shrink-0 items-center justify-center gap-x-1.5 border-t border-cod-gray-800 px-4 py-4">
                             <template x-for="(_, idx) in items" :key="idx">
                                 <button
                                     type="button"
