@@ -167,7 +167,7 @@
             :aria-hidden="!(pipOpen && ownsPip)"
         >
             <div
-                class="flex cursor-move items-center justify-between gap-x-2 bg-cod-gray-900 px-2 py-1.5"
+                class="flex cursor-move select-none items-center justify-between gap-x-2 bg-cod-gray-900 px-2 py-1.5"
                 @pointerdown="startDrag($event)"
             >
                 <div class="min-w-0 truncate text-xs text-cod-gray-100" x-text="activeMetaLabel || activeTitle"></div>

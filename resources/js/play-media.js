@@ -619,22 +619,43 @@ export function bootVintageYoutubeMedia() {
                 if (event.button != null && event.button !== 0) {
                     return
                 }
+                if (event.target.closest('button, a, input, textarea, select')) {
+                    return
+                }
+                event.preventDefault()
+                window.getSelection()?.removeAllRanges()
+
+                const root = document.documentElement
+                const previousUserSelect = root.style.userSelect
+                const previousWebkitUserSelect = root.style.webkitUserSelect
+                root.style.userSelect = 'none'
+                root.style.webkitUserSelect = 'none'
+
                 this.drag = {
                     ox: event.clientX - this.pipX,
                     oy: event.clientY - this.pipY,
                 }
+                const preventSelect = (e) => e.preventDefault()
                 const move = (e) => {
                     if (!this.drag) return
+                    e.preventDefault()
                     this.pipX = Math.min(window.innerWidth - 80, Math.max(0, e.clientX - this.drag.ox))
                     this.pipY = Math.min(window.innerHeight - 80, Math.max(0, e.clientY - this.drag.oy))
                 }
                 const up = () => {
                     this.drag = null
+                    root.style.userSelect = previousUserSelect
+                    root.style.webkitUserSelect = previousWebkitUserSelect
+                    window.getSelection()?.removeAllRanges()
                     window.removeEventListener('pointermove', move)
                     window.removeEventListener('pointerup', up)
+                    window.removeEventListener('pointercancel', up)
+                    window.removeEventListener('selectstart', preventSelect)
                 }
                 window.addEventListener('pointermove', move)
                 window.addEventListener('pointerup', up)
+                window.addEventListener('pointercancel', up)
+                window.addEventListener('selectstart', preventSelect)
             },
         }))
     }
