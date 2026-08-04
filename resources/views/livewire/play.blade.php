@@ -156,10 +156,10 @@
                     </div>
                 </div>
 
-                <!-- info / media tabs -->
-                <x-tab-content :contain="false">
+                <!-- info / media tabs (desktop: scroll inside viewport-tall side panel) -->
+                <x-tab-content :contain="true">
                     @if ($tabs['info'])
-                    <div class="flex flex-1 min-h-0 flex-col play:overflow-visible overflow-y-auto">
+                    <div class="flex flex-1 min-h-0 flex-col overflow-y-auto">
                     <div class="flex flex-col gap-y-4 p-4">
                         @if ($game->genres->isNotEmpty())
                         <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 w-full">
@@ -246,7 +246,7 @@
                     <div
                         wire:key="play-media-shell-{{ $game->id }}"
                         @class([
-                            'flex flex-1 min-h-0 flex-col play:overflow-visible overflow-y-auto',
+                            'flex flex-1 min-h-0 flex-col overflow-y-auto',
                             'hidden' => ! $tabs['media'],
                         ])
                         @if (! $tabs['media']) aria-hidden="true" @endif

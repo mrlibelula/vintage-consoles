@@ -19,7 +19,7 @@
     max-height: calc(100dvh - 4rem);
 }
 
-/* Play stage: desktop sticky emulator dock; chat + side panel scroll normally */
+/* Play stage: desktop sticky emulator dock; side panel is viewport-tall + internally scrollable */
 .play-stage {
     @apply w-full;
     --play-stack-gap: 0.75rem; /* equal y-gap: dock ↔ chat */
@@ -185,17 +185,27 @@
         scroll-margin-top: calc(4rem + var(--play-dock-height, var(--play-dock-height-fallback)) + 0.5rem);
     }
 
+    /*
+     * Cap the side panel to the viewport and scroll tab content inside it.
+     * If long Info/Media content grew the panel (and thus .play-stage), the
+     * left rail's sticky dock would unstick once .play-game-rail scrolled away
+     * while the page kept going — collapsing the description "fixed" that.
+     */
     .play-side-panel {
-        height: auto;
-        max-height: none;
+        height: calc(100dvh - 4rem);
+        max-height: calc(100dvh - 4rem);
         min-height: calc(100dvh - 4rem);
+        position: sticky;
+        top: 4rem;
+        align-self: start;
+        overflow: hidden;
         @apply mb-0 flex min-w-0 shrink-0 flex-col;
         width: calc((100% - var(--play-col-gap)) * 0.3);
         overflow-anchor: none;
     }
 
     .play-side-panel-header {
-        @apply sticky top-16 z-20 bg-cod-gray-200 dark:bg-[#1e1f21];
+        @apply shrink-0 z-20 bg-cod-gray-200 dark:bg-[#1e1f21];
     }
 }
 
