@@ -223,8 +223,9 @@ class BackupService
 
         $driver = DB::getDriverName();
 
-        // Use DELETE (not TRUNCATE): MySQL TRUNCATE issues an implicit COMMIT and
-        // breaks Laravel's wrapping transaction ("There is no active transaction").
+        // Use DELETE (not TRUNCATE): MySQL TRUNCATE is DDL and issues an implicit COMMIT,
+        // which breaks Laravel's wrapping transaction ("There is no active transaction").
+        // Same for ALTER TABLE … AUTO_INCREMENT — that must run *after* this transaction.
         DB::transaction(function () use ($zip, $coreData, $includesSavestates, $driver) {
             if ($driver === 'mysql') {
                 DB::statement('SET FOREIGN_KEY_CHECKS=0');
@@ -253,13 +254,6 @@ class BackupService
                     }
                 }
                 // When savestates NOT in backup → leave emulator tables untouched
-
-                if ($driver === 'mysql') {
-                    $this->resetMysqlAutoIncrements(array_merge(
-                        self::CORE_TABLES,
-                        $includesSavestates ? self::EMULATOR_TABLES : []
-                    ));
-                }
             } finally {
                 if ($driver === 'mysql') {
                     DB::statement('SET FOREIGN_KEY_CHECKS=1');
@@ -268,6 +262,15 @@ class BackupService
                 }
             }
         });
+
+        // MySQL DDL: ALTER TABLE … AUTO_INCREMENT implicitly commits. Run outside the
+        // restore transaction so Laravel does not call PDO::commit() on a closed txn.
+        if ($driver === 'mysql') {
+            $this->resetMysqlAutoIncrements(array_merge(
+                self::CORE_TABLES,
+                $includesSavestates ? self::EMULATOR_TABLES : []
+            ));
+        }
 
         // Restore migration-docs
         foreach (Storage::disk('local')->files('migration-docs') as $f) {
@@ -452,6 +455,9 @@ class BackupService
     /**
      * Align AUTO_INCREMENT with current max id after DELETE+INSERT restore.
      * (TRUNCATE would have reset this automatically; DELETE does not.)
+     *
+     * Must run outside DB::transaction(): MySQL treats ALTER TABLE as DDL and
+     * implicitly commits, which leaves Laravel thinking a transaction is open.
      *
      * @param  list<string>  $tables
      */
