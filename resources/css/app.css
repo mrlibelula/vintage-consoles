@@ -19,7 +19,7 @@
     max-height: calc(100dvh - 4rem);
 }
 
-/* Play stage: desktop sticky emulator dock; side panel is viewport-tall + internally scrollable */
+/* Play stage: desktop sticky emulator dock; chat + side panel scroll normally */
 .play-stage {
     @apply w-full;
     --play-stack-gap: 0.75rem; /* equal y-gap: dock ↔ chat */
@@ -113,14 +113,26 @@
         --play-rail-width: calc((var(--play-content-width) - var(--play-col-gap)) * 0.7);
         /* Used only until JS sets --play-dock-height on <html> (survives Livewire morph) */
         --play-dock-height-fallback: min(52vh, calc(var(--play-rail-width) * 0.5625 + 2.75rem));
-        @apply relative flex flex-row items-start;
+        /*
+         * Grid (not flex + items-start): one row sized to the taller column so
+         * each sticky parent stretches to the full stage. Flex stretch is a no-op
+         * when the container height is auto, which let a tall Info panel scroll
+         * the page past .play-game-rail and unstick the emulator dock.
+         */
+        display: grid;
+        grid-template-columns:
+            calc((100% - var(--play-col-gap)) * 0.7)
+            calc((100% - var(--play-col-gap)) * 0.3);
         gap: var(--play-col-gap);
+        align-items: stretch;
+        position: relative;
         overflow-anchor: none;
     }
 
     .play-game-rail {
-        @apply relative flex min-w-0 shrink-0 flex-col;
-        width: calc((100% - var(--play-col-gap)) * 0.7);
+        @apply relative flex min-w-0 flex-col;
+        width: auto;
+        min-width: 0;
         padding-bottom: 0.75rem;
         box-sizing: border-box;
         overflow: visible;
@@ -185,27 +197,18 @@
         scroll-margin-top: calc(4rem + var(--play-dock-height, var(--play-dock-height-fallback)) + 0.5rem);
     }
 
-    /*
-     * Cap the side panel to the viewport and scroll tab content inside it.
-     * If long Info/Media content grew the panel (and thus .play-stage), the
-     * left rail's sticky dock would unstick once .play-game-rail scrolled away
-     * while the page kept going — collapsing the description "fixed" that.
-     */
     .play-side-panel {
-        height: calc(100dvh - 4rem);
-        max-height: calc(100dvh - 4rem);
+        height: auto;
+        max-height: none;
         min-height: calc(100dvh - 4rem);
-        position: sticky;
-        top: 4rem;
-        align-self: start;
-        overflow: hidden;
-        @apply mb-0 flex min-w-0 shrink-0 flex-col;
-        width: calc((100% - var(--play-col-gap)) * 0.3);
+        @apply mb-0 flex min-w-0 flex-col;
+        width: auto;
+        min-width: 0;
         overflow-anchor: none;
     }
 
     .play-side-panel-header {
-        @apply shrink-0 z-20 bg-cod-gray-200 dark:bg-[#1e1f21];
+        @apply sticky top-16 z-20 bg-cod-gray-200 dark:bg-[#1e1f21];
     }
 }
 
