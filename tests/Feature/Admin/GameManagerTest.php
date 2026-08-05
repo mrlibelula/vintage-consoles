@@ -272,7 +272,10 @@ describe('GameManager component', function () {
             ->assertSee('x-teleport="body"', false)
             ->assertSee('backdrop-blur-[4.5px]', false)
             ->assertSee('<swiper-container', false)
-            ->assertSee('fetchpriority="high"', false);
+            ->assertSee('fetchpriority="high"', false)
+            ->assertSee('@keydown.arrow-left.window.capture', false)
+            ->assertSee('@keydown.arrow-right.window.capture', false)
+            ->assertSee('claimKeyboard()', false);
     });
 
     it('can filter games by search term', function () {

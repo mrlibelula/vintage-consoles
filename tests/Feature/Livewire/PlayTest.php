@@ -418,7 +418,10 @@ describe('Tab management', function () {
             ->assertSet('igdb.has_media', true)
             ->assertDontSee('Artworks')
             ->call('changeTab', 'media')
-            ->assertSee('Artworks');
+            ->assertSee('Artworks')
+            ->assertSee('@keydown.arrow-left.window.capture', false)
+            ->assertSee('claimKeyboard()', false)
+            ->assertSee('id="game-iframe"', false);
     });
 
     it('renders similar games with play links in the media tab', function () {

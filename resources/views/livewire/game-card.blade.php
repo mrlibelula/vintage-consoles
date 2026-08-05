@@ -236,7 +236,7 @@
             transform: scale(0);
         }
     </style>
-    <div class="group relative containerCards aspect-square h-auto w-full overflow-hidden rounded-xl border-2 border-cod-gray-500 bg-cod-gray-200/80 shadow dark:border-cod-gray-700/50 dark:bg-cod-gray-900/90">
+    <div class="group relative containerCards aspect-square h-auto w-full overflow-hidden rounded-xl border-2 border-cod-gray-200 bg-cod-gray-200/80 shadow dark:border-cod-gray-900 dark:bg-cod-gray-900/90">
         <div class="card h-full">
             @if($showConsoleLabel && isset($game->console) && $game->console)
             <div class="absolute z-20 text-center w-full bg-cod-gray-500/70 dark:bg-cod-gray-800/70 text-xs font-semibold font-mono py-1 text-white/50 dark:text-gray-400">
@@ -283,7 +283,7 @@
                 >
                 </div>
                 <div class="infoProd absolute inset-x-0 bottom-0 z-10 flex items-center justify-center text-center pb-3 pt-8">
-                    <p class="nombreProd min-w-0 w-full px-2 text-center text-[1rem] font-thin leading-tight tracking-wider text-cod-gray-800 group-hover:text-rose-700 dark:text-cod-gray-300 dark:group-hover:text-rose-400 smooth-300">
+                    <p class="nombreProd min-w-0 w-full px-2 text-center text-[1rem] font-thin leading-tight tracking-wider text-cod-gray-900 group-hover:text-rose-700 dark:text-cod-gray-100 dark:group-hover:text-rose-400 smooth-300">
                         {{ $game->title }}
                     </p>
                     

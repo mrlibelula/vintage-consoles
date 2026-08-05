@@ -189,16 +189,16 @@
                                             type="button"
                                             wire:click="openPreview(@js($backup['filename']))"
                                             wire:loading.attr="disabled"
-                                            wire:target="openPreview"
+                                            wire:target="openPreview(@js($backup['filename']))"
                                             data-tooltip="Preview"
                                             aria-label="Preview {{ $backup['filename'] }}"
                                             class="app-tooltip inline-flex items-center justify-center p-1.5 rounded-md border border-cod-gray-300 dark:border-cod-gray-600 text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-100 dark:hover:bg-cod-gray-700 smooth-300 disabled:opacity-60"
                                         >
-                                            <svg wire:loading.remove wire:target="openPreview" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <svg wire:loading.remove wire:target="openPreview(@js($backup['filename']))" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                             </svg>
-                                            <svg wire:loading wire:target="openPreview" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                            <svg wire:loading wire:target="openPreview(@js($backup['filename']))" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
                                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
                                             </svg>
@@ -207,15 +207,15 @@
                                             type="button"
                                             wire:click="downloadBackup(@js($backup['filename']))"
                                             wire:loading.attr="disabled"
-                                            wire:target="downloadBackup"
+                                            wire:target="downloadBackup(@js($backup['filename']))"
                                             data-tooltip="Download"
                                             aria-label="Download {{ $backup['filename'] }}"
                                             class="app-tooltip inline-flex items-center justify-center p-1.5 rounded-md border border-sky-400 dark:border-sky-600 text-sky-700 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-900/30 smooth-300 disabled:opacity-60"
                                         >
-                                            <svg wire:loading.remove wire:target="downloadBackup" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <svg wire:loading.remove wire:target="downloadBackup(@js($backup['filename']))" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                                             </svg>
-                                            <svg wire:loading wire:target="downloadBackup" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                            <svg wire:loading wire:target="downloadBackup(@js($backup['filename']))" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
                                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
                                             </svg>
@@ -235,7 +235,7 @@
                                             type="button"
                                             wire:click="openDeleteModal(@js($backup['filename']))"
                                             wire:loading.attr="disabled"
-                                            wire:target="openDeleteModal"
+                                            wire:target="openDeleteModal(@js($backup['filename']))"
                                             data-tooltip="Delete"
                                             aria-label="Delete {{ $backup['filename'] }}"
                                             class="app-tooltip app-tooltip-end inline-flex items-center justify-center p-1.5 rounded-md border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 smooth-300 disabled:opacity-60"

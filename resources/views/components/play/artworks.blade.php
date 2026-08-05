@@ -50,20 +50,40 @@
             };
             preload.src = nextSrc;
         },
+        claimKeyboard() {
+            const iframe = document.getElementById('game-iframe');
+            if (iframe) {
+                iframe.dataset.galleryPointerEvents = iframe.style.pointerEvents || '';
+                iframe.style.pointerEvents = 'none';
+                try { iframe.blur(); } catch (_) {}
+            }
+            this.$nextTick(() => {
+                this.$refs.dialog?.focus({ preventScroll: true });
+            });
+        },
+        releaseKeyboard() {
+            const iframe = document.getElementById('game-iframe');
+            if (iframe) {
+                iframe.style.pointerEvents = iframe.dataset.galleryPointerEvents || '';
+                delete iframe.dataset.galleryPointerEvents;
+                this.$nextTick(() => {
+                    try { iframe.focus({ preventScroll: true }); } catch (_) {}
+                });
+            }
+        },
         openAt(index) {
             this.current = index;
             this.open = true;
             document.body.style.overflow = 'hidden';
             this.stage(index);
-            this.$nextTick(() => {
-                this.$refs.dialog?.focus({ preventScroll: true });
-            });
+            this.claimKeyboard();
         },
         close() {
             this.open = false;
             this.imageSrc = '';
             this.imageLoading = false;
             document.body.style.overflow = '';
+            this.releaseKeyboard();
         },
         prev() {
             this.current = this.current > 0 ? this.current - 1 : this.total - 1;
@@ -75,6 +95,9 @@
         },
     }"
     @keydown.escape.window.capture="if (open) { $event.preventDefault(); $event.stopImmediatePropagation(); close(); }"
+    @keydown.arrow-left.window.capture="if (open) { $event.preventDefault(); $event.stopImmediatePropagation(); prev(); }"
+    @keydown.arrow-right.window.capture="if (open) { $event.preventDefault(); $event.stopImmediatePropagation(); next(); }"
+    @focusin.window="if (open && $refs.dialog && $event.target instanceof Node && !$refs.dialog.contains($event.target)) { $refs.dialog.focus({ preventScroll: true }); }"
     class="w-full"
 >
     <swiper-container
@@ -111,8 +134,6 @@
             x-show="open"
             x-ref="dialog"
             tabindex="-1"
-            @keydown.arrow-left.stop.prevent="prev()"
-            @keydown.arrow-right.stop.prevent="next()"
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100"

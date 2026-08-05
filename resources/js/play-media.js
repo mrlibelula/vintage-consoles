@@ -11,8 +11,19 @@ let sharedPlayer = null
 let sharedPlayerMountId = null
 let progressTimer = null
 let saveTimer = null
-/** Re-apply mute until the first PLAYING settles (YouTube often races unmuted autoplay). */
+/** Re-apply mute until start settles (YouTube often unmutes after user-gesture play). */
 let enforceMuteUntil = 0
+let muteEnforceTimer = null
+/** Once true, stop re-muting so the viewer can unmute via YT controls. */
+let startMuteSettled = false
+
+function stopMuteEnforcement() {
+    if (muteEnforceTimer) {
+        clearInterval(muteEnforceTimer)
+        muteEnforceTimer = null
+    }
+    enforceMuteUntil = 0
+}
 
 function forceMute(player) {
     if (!player) return
@@ -26,14 +37,42 @@ function forceMute(player) {
     }
 }
 
+function playerReportsMuted(player) {
+    try {
+        if (typeof player?.isMuted === 'function' && player.isMuted()) {
+            return true
+        }
+        if (typeof player?.getVolume === 'function' && player.getVolume() === 0) {
+            return true
+        }
+    } catch {
+        /* ignore */
+    }
+    return false
+}
+
 function beginMutedPlayback(player) {
+    startMuteSettled = false
     forceMute(player)
-    enforceMuteUntil = Date.now() + 1500
+    enforceMuteUntil = Date.now() + 5000
+
+    if (muteEnforceTimer) {
+        clearInterval(muteEnforceTimer)
+    }
+    muteEnforceTimer = setInterval(() => {
+        if (startMuteSettled || Date.now() >= enforceMuteUntil || !player) {
+            stopMuteEnforcement()
+            return
+        }
+        forceMute(player)
+    }, 80)
+
     try {
         player?.playVideo?.()
     } catch {
         /* ignore */
     }
+    forceMute(player)
 }
 
 function ytReady() {
@@ -173,6 +212,8 @@ function destroySharedPlayer() {
         clearTimeout(saveTimer)
         saveTimer = null
     }
+    stopMuteEnforcement()
+    startMuteSettled = false
     try {
         sharedPlayer?.destroy?.()
     } catch {
@@ -180,7 +221,6 @@ function destroySharedPlayer() {
     }
     sharedPlayer = null
     sharedPlayerMountId = null
-    enforceMuteUntil = 0
 }
 
 function playerIsAlive() {
@@ -498,6 +538,7 @@ export function bootVintageYoutubeMedia() {
                     && typeof sharedPlayer.loadVideoById === 'function'
                 ) {
                     try {
+                        forceMute(sharedPlayer)
                         sharedPlayer.loadVideoById({
                             videoId: video.youtube_id,
                             startSeconds: start >= 3 ? start : 0,
@@ -522,7 +563,7 @@ export function bootVintageYoutubeMedia() {
                 const self = this
                 sharedPlayerMountId = mountKey
                 // No autoplay in playerVars: user-gesture clicks let YT start unmuted
-                // before onReady can mute. We mute first, then playVideo().
+                // before onReady can mute. We mute first, then playVideo(), then poll.
                 sharedPlayer = new YT.Player(mount, {
                     width: '100%',
                     height: '100%',
@@ -546,7 +587,17 @@ export function bootVintageYoutubeMedia() {
                                     iframe.style.width = '100%'
                                     iframe.style.height = '100%'
                                     iframe.style.border = '0'
+                                    const allow = iframe.getAttribute('allow') || ''
+                                    if (!/\bautoplay\b/i.test(allow)) {
+                                        iframe.setAttribute(
+                                            'allow',
+                                            allow
+                                                ? `${allow}; autoplay; encrypted-media`
+                                                : 'autoplay; encrypted-media; picture-in-picture',
+                                        )
+                                    }
                                 }
+                                forceMute(event.target)
                                 if (start >= 3) {
                                     event.target.seekTo(start, true)
                                 }
@@ -560,16 +611,28 @@ export function bootVintageYoutubeMedia() {
                             self.playerError = 'This video cannot be played'
                         },
                         onStateChange: (event) => {
+                            const starting = !startMuteSettled && Date.now() < enforceMuteUntil
                             if (
-                                Date.now() < enforceMuteUntil
+                                starting
                                 && (
-                                    event.data === YT.PlayerState.BUFFERING
+                                    event.data === YT.PlayerState.UNSTARTED
+                                    || event.data === YT.PlayerState.BUFFERING
                                     || event.data === YT.PlayerState.PLAYING
                                 )
                             ) {
                                 forceMute(event.target)
                             }
                             if (event.data === YT.PlayerState.PLAYING) {
+                                forceMute(event.target)
+                                // Drop enforcement once mute has stuck through PLAYING so the user can unmute.
+                                if (!startMuteSettled && playerReportsMuted(event.target)) {
+                                    window.setTimeout(() => {
+                                        if (playerReportsMuted(event.target)) {
+                                            startMuteSettled = true
+                                            stopMuteEnforcement()
+                                        }
+                                    }, 400)
+                                }
                                 self.playerLoading = false
                                 self.capturePlayerDuration(video.youtube_id)
                                 self.startProgressWatch(video.youtube_id)

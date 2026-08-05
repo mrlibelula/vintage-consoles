@@ -3,7 +3,7 @@
     @foreach ($games as $game)
         <swiper-slide class="relative">
             <div x-show="skeletonGroup" class="absolute inset-0 z-10 flex w-full items-start py-4">
-                <div class="group relative aspect-square w-full overflow-hidden rounded-xl border-2 border-cod-gray-500 bg-cod-gray-200/80 shadow dark:border-cod-gray-700/50 dark:bg-cod-gray-900/90">
+                <div class="group relative aspect-square w-full overflow-hidden rounded-xl border-2 border-cod-gray-200 bg-cod-gray-200/80 shadow dark:border-cod-gray-900 dark:bg-cod-gray-900/90">
                     <div class="absolute inset-0 skeleton">
                         <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-cod-gray-200 dark:to-cod-gray-900"></div>
                     </div>
