@@ -84,8 +84,11 @@
     @apply text-rose-700 underline decoration-cod-gray-500/40 underline-offset-2 dark:text-rose-300 dark:decoration-rose-800;
 }
 
-.cheat-sheet strong {
-    @apply text-cod-gray-900 dark:text-cod-gray-100;
+/* Markdown **bold** / <b>: no heavier weight — highlight by color only */
+.cheat-sheet strong,
+.cheat-sheet b {
+    @apply font-normal text-cod-gray-950 dark:text-white;
+    font-weight: 400;
     font-size: inherit;
 }
 
