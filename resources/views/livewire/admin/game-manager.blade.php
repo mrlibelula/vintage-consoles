@@ -296,7 +296,7 @@
                                                 </div>
                                                 <div>
                                                     <label for="rating" class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">Rating (0–1) <span class="text-rose-600">*</span></label>
-                                                    <input wire:model="rating" type="number" id="rating" required min="0" max="1" step="0.01"
+                                                    <input wire:model="rating" type="number" id="rating" required min="0" max="1" step="0.0001"
                                                         class="form-field mt-1 block w-full">
                                                     @error('rating') <p class="mt-1 text-xl text-red-600">{{ $message }}</p> @enderror
                                                 </div>
