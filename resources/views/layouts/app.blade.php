@@ -139,7 +139,7 @@
                         <span>{{ __('About') }}</span>
                     </a>
 
-                    <nav class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm tracking-wider" aria-label="{{ __('Consoles') }}">
+                    <nav class="hidden md:flex flex-nowrap items-center justify-center gap-x-3 text-sm tracking-wider whitespace-nowrap" aria-label="{{ __('Consoles') }}">
                         @foreach (app(\App\Services\GameRepository::class)->getConsoles() as $console)
                         <a
                             wire:navigate

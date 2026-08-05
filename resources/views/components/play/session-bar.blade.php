@@ -20,7 +20,7 @@
 @endphp
 
 <div
-    class="play-session-bar"
+    class="play-session-bar {{ $isArcade ? '' : 'max-play:hidden' }}"
     x-data="{
         hotkeysOpen: false,
         dock: null,
@@ -119,7 +119,7 @@
             <a
                 wire:navigate
                 href="{{ route('home', $short) }}"
-                class="uppercase tracking-wide text-cod-gray-600 dark:text-cod-gray-400 hover:text-rose-700 dark:hover:text-rose-300 hover:underline"
+                class="max-play:hidden uppercase tracking-wide text-cod-gray-600 dark:text-cod-gray-400 hover:text-rose-700 dark:hover:text-rose-300 hover:underline"
             >
                 {{ $isPc ? 'PC DOS' : $console->short_name }}
             </a>
@@ -146,15 +146,15 @@
             @endif
 
             @if ($isPc)
-                <span class="text-cod-gray-600 dark:text-cod-gray-400">· no cloud slots</span>
+                <span class="max-play:hidden text-cod-gray-600 dark:text-cod-gray-400">· no cloud slots</span>
             @elseif (! auth()->check())
-                <span class="text-cod-gray-600 dark:text-cod-gray-400">· Cloud saves · <a href="{{ route('login') }}" class="text-rose-700 dark:text-rose-300 hover:underline">Sign in</a></span>
+                <span class="max-play:hidden text-cod-gray-600 dark:text-cod-gray-400">· Cloud saves · <a href="{{ route('login') }}" class="text-rose-700 dark:text-rose-300 hover:underline">Sign in</a></span>
             @elseif (! $game->save_state_support)
-                <span class="text-cod-gray-600 dark:text-cod-gray-400">Slots <span class="text-fuchsia-700 dark:text-fuchsia-500">n/a</span></span>
+                <span class="max-play:hidden text-cod-gray-600 dark:text-cod-gray-400">Slots <span class="text-fuchsia-700 dark:text-fuchsia-500">n/a</span></span>
             @endif
         </div>
 
-        <div class="play-session-bar__jumps">
+        <div class="play-session-bar__jumps max-play:hidden">
             @if ($showSlotDots)
                 <span class="text-cod-gray-700 dark:text-cod-gray-300">Slots</span>
                 <div

@@ -24,6 +24,12 @@ class FontManager extends Component
 
     public string $familyName = '';
 
+    public bool $showDeleteModal = false;
+
+    public ?int $deletingFontId = null;
+
+    public ?string $deletingFontLabel = null;
+
     protected AppFontService $fontsService;
 
     public function boot(AppFontService $fontsService): void
@@ -95,6 +101,33 @@ class FontManager extends Component
         session()->flash('success', "Installed {$font->label}.");
     }
 
+    public function openDeleteModal(int $fontId): void
+    {
+        $font = AppFont::query()->findOrFail($fontId);
+
+        $this->deletingFontId = $font->id;
+        $this->deletingFontLabel = $font->label;
+        $this->showDeleteModal = true;
+    }
+
+    public function closeDeleteModal(): void
+    {
+        $this->showDeleteModal = false;
+        $this->deletingFontId = null;
+        $this->deletingFontLabel = null;
+        $this->unlockBodyScroll();
+    }
+
+    public function confirmDelete(): void
+    {
+        if ($this->deletingFontId === null) {
+            return;
+        }
+
+        $this->delete($this->deletingFontId);
+        $this->closeDeleteModal();
+    }
+
     public function delete(int $fontId): void
     {
         $font = AppFont::query()->findOrFail($fontId);
@@ -112,9 +145,21 @@ class FontManager extends Component
         session()->flash('success', 'Font deleted.');
     }
 
+    private function unlockBodyScroll(): void
+    {
+        $this->js('document.body.style.overflow = ""');
+    }
+
     public function render()
     {
-        return view('livewire.admin.font-manager');
+        $fontPreviews = $this->fonts->mapWithKeys(fn (AppFont $font) => [
+            $font->id => [
+                'url' => $this->fontsService->publicUrl($font),
+                'format' => $this->fontsService->cssFormat($font),
+            ],
+        ]);
+
+        return view('livewire.admin.font-manager', compact('fontPreviews'));
     }
 
     private function refreshFonts(): void

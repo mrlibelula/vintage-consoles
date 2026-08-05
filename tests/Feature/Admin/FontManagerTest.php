@@ -42,6 +42,18 @@ describe('Access control', function () {
             ->assertStatus(200)
             ->assertSeeLivewire('admin.font-manager');
     });
+
+    it('renders each installed font name in its own typeface', function () {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $this->actingAs($user)->get('/admin/fonts')
+            ->assertOk()
+            ->assertSee('font-family: "HackerNoonV2";', false)
+            ->assertSee('font-family: "VT323";', false)
+            ->assertSee('font-family: "HackerNoonV2", monospace;', false)
+            ->assertSee('font-family: "VT323", monospace;', false);
+    });
 });
 
 describe('Font management', function () {
@@ -163,5 +175,36 @@ describe('Font management', function () {
             ->call('delete', $font->id);
 
         expect(AppFont::query()->whereKey($font->id)->exists())->toBeTrue();
+    });
+
+    it('deletes an uploaded font through the confirmation dialog', function () {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $file = UploadedFile::fake()->create('ExtraType-Regular.ttf', 32, 'font/sfnt');
+
+        Livewire::actingAs($admin)
+            ->test(FontManager::class)
+            ->set('fontFile', $file)
+            ->set('label', 'Extra Type')
+            ->set('familyName', 'ExtraType')
+            ->call('install')
+            ->assertHasNoErrors();
+
+        $font = AppFont::query()->where('family_name', 'ExtraType')->firstOrFail();
+
+        Livewire::actingAs($admin)
+            ->test(FontManager::class)
+            ->call('openDeleteModal', $font->id)
+            ->assertSet('showDeleteModal', true)
+            ->assertSet('deletingFontId', $font->id)
+            ->assertSet('deletingFontLabel', 'Extra Type')
+            ->assertSee('Delete Font')
+            ->call('confirmDelete')
+            ->assertSet('showDeleteModal', false)
+            ->assertSet('deletingFontId', null);
+
+        expect(AppFont::query()->whereKey($font->id)->exists())->toBeFalse()
+            ->and(Storage::disk('fonts')->exists('uploads/extratype.ttf'))->toBeFalse();
     });
 });

@@ -3,7 +3,7 @@
 
         <!-- player & user data: game 16:9; side panel full viewport height on desktop -->
         <div class="play-stage flex flex-col gap-y-1 max-play:overflow-visible">
-            <div class="play-game-rail w-full shrink-0 max-play:relative max-play:left-1/2 max-play:-translate-x-1/2 max-play:w-screen max-play:max-w-none">
+            <div class="play-game-rail w-full shrink-0 max-play:relative max-play:left-1/2 max-play:-translate-x-1/2 max-play:w-[calc(100vw-var(--play-scrollbar-w,0px))] max-play:max-w-none">
                 {{-- Sticky emulator dock (iframe + session bar); in-flow so chat top is always reachable --}}
                 <div class="play-emulator-dock" wire:ignore>
                     <div id="game-container" class="play-game-frame relative w-full bg-black max-play:rounded-none rounded-t-lg overflow-hidden">
@@ -307,6 +307,12 @@
     function syncPlayEmulatorDock() {
         const dock = document.querySelector('.play-emulator-dock')
         const column = document.querySelector('.play-viewport-column')
+
+        // Full-bleed rail is sized off 100vw, which counts the classic scrollbar and
+        // would push the page wider than the visible area.
+        const scrollbarW = Math.max(window.innerWidth - document.documentElement.clientWidth, 0)
+        document.documentElement.style.setProperty('--play-scrollbar-w', scrollbarW + 'px')
+
         if (!dock) {
             document.documentElement.style.removeProperty('--play-dock-height')
             return

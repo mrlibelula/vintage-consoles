@@ -236,6 +236,14 @@
     max-height: 44vh;
 }
 
+@media (max-width: 1079px) {
+    .play-side-panel {
+        height: auto;
+        max-height: none;
+        min-height: 44vh;
+    }
+}
+
 /* Live chat: fills leftover viewport under the in-flow dock on mobile (height set via JS) */
 .play-live-chat {
     @apply flex min-h-0 flex-1 flex-col;
