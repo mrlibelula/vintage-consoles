@@ -36,4 +36,22 @@ describe('OrderByLista sorting', function () {
         ])
             ->assertSeeInOrder(['Alpha', 'Zulu']);
     });
+
+    it('reserves empty game rows on an incomplete page', function () {
+        $console = Console::factory()->create([
+            'id' => 1,
+            'short_name' => 'nes',
+        ]);
+
+        Game::factory()->count(2)->create([
+            'console_id' => $console->id,
+        ]);
+
+        $component = Livewire::test(OrderByLista::class, [
+            'selected_console' => $console,
+            'paginate' => 3,
+        ]);
+
+        expect(substr_count($component->html(), 'data-empty-game-slot'))->toBe(1);
+    });
 });

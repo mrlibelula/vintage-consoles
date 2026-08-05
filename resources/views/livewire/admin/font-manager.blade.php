@@ -28,16 +28,6 @@
             </div>
         @endif
 
-        <div class="bg-cod-gray-50 dark:bg-cod-gray-800 shadow rounded-lg p-6 mb-6">
-            <h2 class="text-2xl text-cod-gray-900 dark:text-cod-gray-100 mb-4">Preview</h2>
-            <p class="text-3xl" style="font-family: var(--app-font-family);">
-                The quick brown fox jumps over the lazy dog.
-            </p>
-            <p class="mt-2 text-xl text-cod-gray-600 dark:text-cod-gray-400">
-                Active family: {{ $fonts->firstWhere('id', $activeFontId)?->family_name ?? 'Unknown' }}
-            </p>
-        </div>
-
         <div class="bg-cod-gray-50 dark:bg-cod-gray-800 shadow rounded-lg overflow-hidden mb-6">
             <div class="px-6 py-4 border-b border-cod-gray-200 dark:border-cod-gray-700">
                 <h2 class="text-2xl font-medium text-cod-gray-900 dark:text-cod-gray-100">Installed Fonts</h2>
