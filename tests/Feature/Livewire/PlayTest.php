@@ -254,7 +254,7 @@ describe('Accordion management', function () {
 });
 
 describe('Tab management', function () {
-    it('switches to media tab and resets info tab', function () {
+    it('switches to extras tab and resets info tab', function () {
         $console = playNesConsole();
         playNesGame($console, [
             'walkthrough_videos' => [
@@ -267,13 +267,13 @@ describe('Tab management', function () {
             'game_title_slug'    => 'super-mario-bros',
         ])
         ->assertSet('tabs.info', true)
-        ->assertSet('tabs.media', false)
-        ->call('changeTab', 'media')
+        ->assertSet('tabs.extras', false)
+        ->call('changeTab', 'extras')
         ->assertSet('tabs.info', false)
-        ->assertSet('tabs.media', true);
+        ->assertSet('tabs.extras', true);
     });
 
-    it('opens media accordions when switching to the media tab', function () {
+    it('opens extras accordions when switching to the extras tab', function () {
         $console = playNesConsole();
         playNesGame($console, [
             'walkthrough_videos' => [
@@ -296,7 +296,7 @@ describe('Tab management', function () {
             ->assertSet('accordion_toggler.videos', false)
             ->assertSet('accordion_toggler.artworks', false)
             ->assertSet('accordion_toggler.similar', false)
-            ->call('changeTab', 'media')
+            ->call('changeTab', 'extras')
             ->assertSet('accordion_toggler.videos', true)
             ->assertSet('accordion_toggler.artworks', true)
             ->assertSet('accordion_toggler.similar', true);
@@ -314,13 +314,13 @@ describe('Tab management', function () {
             'console_short_name' => 'nes',
             'game_title_slug'    => 'super-mario-bros',
         ])
-        ->call('changeTab', 'media')
+        ->call('changeTab', 'extras')
         ->call('changeTab', 'info')
         ->assertSet('tabs.info', true)
-        ->assertSet('tabs.media', false);
+        ->assertSet('tabs.extras', false);
     });
 
-    it('keeps the media shell mounted after leaving the media tab', function () {
+    it('keeps the extras shell mounted after leaving the extras tab', function () {
         $console = playNesConsole();
         playNesGame($console, [
             'walkthrough_videos' => [
@@ -332,17 +332,17 @@ describe('Tab management', function () {
             'console_short_name' => 'nes',
             'game_title_slug'    => 'super-mario-bros',
         ])
-            ->assertSet('media_shell_mounted', false)
+            ->assertSet('extras_shell_mounted', false)
             ->assertDontSeeHtml('video-thumb-carousel')
-            ->call('changeTab', 'media')
-            ->assertSet('media_shell_mounted', true)
+            ->call('changeTab', 'extras')
+            ->assertSet('extras_shell_mounted', true)
             ->assertSeeHtml('video-thumb-carousel')
             ->call('changeTab', 'info')
             ->assertSet('tabs.info', true)
-            ->assertSet('tabs.media', false)
-            ->assertSet('media_shell_mounted', true)
+            ->assertSet('tabs.extras', false)
+            ->assertSet('extras_shell_mounted', true)
             ->assertSeeHtml('video-thumb-carousel')
-            ->assertSeeHtml('play-media-shell-');
+            ->assertSeeHtml('play-extras-shell-');
     });
 
     it('opens info accordions when switching to the info tab', function () {
@@ -361,7 +361,7 @@ describe('Tab management', function () {
             ->call('toggle', 'description')
             ->assertSet('accordion_toggler.screenshots', false)
             ->assertSet('accordion_toggler.description', false)
-            ->call('changeTab', 'media')
+            ->call('changeTab', 'extras')
             ->call('changeTab', 'info')
             ->assertSet('accordion_toggler.screenshots', true)
             ->assertSet('accordion_toggler.description', true);
@@ -378,10 +378,10 @@ describe('Tab management', function () {
         ->assertSet('tabs.info', true)
         ->call('changeTab', 'chat')
         ->assertSet('tabs.info', true)
-        ->assertSet('tabs.media', false);
+        ->assertSet('tabs.extras', false);
     });
 
-    it('defaults to info tab even when media exists', function () {
+    it('defaults to info tab even when extras exist', function () {
         $console = playNesConsole();
         playNesGame($console, [
             'walkthrough_videos' => [
@@ -394,14 +394,15 @@ describe('Tab management', function () {
             'game_title_slug'    => 'super-mario-bros',
         ])
             ->assertSet('igdb.has_media', true)
+            ->assertSet('igdb.has_extras', true)
             ->assertSet('tabs.info', true)
-            ->assertSet('tabs.media', false)
+            ->assertSet('tabs.extras', false)
             ->assertSee('Info')
-            ->assertSee('Media')
+            ->assertSee('Extras')
             ->assertSee('live chat room');
     });
 
-    it('shows artworks in the media tab', function () {
+    it('shows artworks in the extras tab', function () {
         $console = playNesConsole();
         playNesGame($console, [
             'igdb_response' => [
@@ -417,14 +418,14 @@ describe('Tab management', function () {
         ])
             ->assertSet('igdb.has_media', true)
             ->assertDontSee('Artworks')
-            ->call('changeTab', 'media')
+            ->call('changeTab', 'extras')
             ->assertSee('Artworks')
             ->assertSee('@keydown.arrow-left.window.capture', false)
             ->assertSee('claimKeyboard()', false)
             ->assertSee('id="game-iframe"', false);
     });
 
-    it('renders similar games with play links in the media tab', function () {
+    it('renders similar games with play links in the extras tab', function () {
         $console = playNesConsole();
         $similar = Game::factory()->create([
             'console_id' => $console->id,
@@ -450,11 +451,44 @@ describe('Tab management', function () {
             ->assertSet('igdb.has_media', true)
             ->assertSet('igdb.similar_games.0.url', route('play', [$console->short_name, $similar->slug]))
             ->assertDontSee('Similar')
-            ->call('changeTab', 'media')
+            ->call('changeTab', 'extras')
             ->assertSee('Similar')
             ->assertSee('Local Twin')
             ->assertSeeHtml('similar-games-carousel')
             ->assertSeeHtml('href="'.e(url($similarUrl)).'"');
+    });
+
+    it('shows the extras tab when only a cheat sheet exists (no media)', function () {
+        $console = playNesConsole();
+        $game = playNesGame($console);
+
+        app(\App\Services\CheatSheetService::class)->put($game, "# Super Mario Bros.\n\n## Cheat Codes\n- Reset + A + B — warp zone");
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->assertSet('igdb.has_media', false)
+            ->assertSet('igdb.has_extras', true)
+            ->assertSet('hasCheats', true)
+            ->assertSee('Extras')
+            ->call('changeTab', 'extras')
+            ->assertSee('Cheats')
+            ->assertSee('warp zone');
+    });
+
+    it('does not show extras tab or cheats accordion without a cheat file or media', function () {
+        $console = playNesConsole();
+        playNesGame($console);
+
+        Livewire::test(Play::class, [
+            'console_short_name' => 'nes',
+            'game_title_slug'    => 'super-mario-bros',
+        ])
+            ->assertSet('igdb.has_extras', false)
+            ->assertSet('hasCheats', false)
+            ->assertDontSee('Extras')
+            ->assertDontSee('Cheats');
     });
 
     it('renders session bar and hotkeys under the emulator', function () {

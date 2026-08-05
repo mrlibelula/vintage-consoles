@@ -184,6 +184,18 @@ describe('createBackup with savestates', function () {
         expect($zip->getFromName('chat/1.1.json'))->toBe('[]');
         $zip->close();
     });
+
+    it('includes nested cheat sheet files from the data disk', function () {
+        Storage::disk('data')->put('cheats/nes/contra/cheats.md', '# Contra');
+        Storage::disk('data')->put('cheats/snes/super-mario-kart/cheats.md', '# Super Mario Kart');
+
+        $filename = app(BackupService::class)->createBackup(true);
+        $zip = openZipFromLocal($filename);
+
+        expect($zip->getFromName('cheats/nes/contra/cheats.md'))->toBe('# Contra');
+        expect($zip->getFromName('cheats/snes/super-mario-kart/cheats.md'))->toBe('# Super Mario Kart');
+        $zip->close();
+    });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -292,6 +304,23 @@ describe('previewBackup', function () {
 
         expect($preview['db']['genres']['diff'])->toBe(-1);
     });
+
+    it('diffs nested cheat sheet paths by full path, not basename', function () {
+        Storage::disk('data')->put('cheats/nes/contra/cheats.md', '# Contra');
+        Storage::disk('data')->put('cheats/snes/super-mario-kart/cheats.md', '# SMK');
+
+        $filename = app(BackupService::class)->createBackup(false);
+
+        // After backup: remove one game's file, add a different game's file.
+        Storage::disk('data')->delete('cheats/snes/super-mario-kart/cheats.md');
+        Storage::disk('data')->put('cheats/nes/metroid/cheats.md', '# Metroid');
+
+        $preview = app(BackupService::class)->previewBackup($filename);
+
+        expect($preview['files']['cheats']['in_both'])->toBe(['nes/contra/cheats.md'])
+            ->and($preview['files']['cheats']['only_in_backup'])->toBe(['snes/super-mario-kart/cheats.md'])
+            ->and($preview['files']['cheats']['only_on_disk'])->toBe(['nes/metroid/cheats.md']);
+    });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -351,6 +380,22 @@ describe('restoreBackup without savestates', function () {
 
         // savestates disk unchanged
         expect(Storage::disk('savestates')->exists('1/game_1.state'))->toBeTrue();
+    });
+
+    it('restores nested cheat sheet files, replacing whatever is on disk', function () {
+        Storage::disk('data')->put('cheats/nes/contra/cheats.md', '# Contra');
+
+        $filename = app(BackupService::class)->createBackup(false);
+
+        // Mutate after backup: remove the backed-up file, add an orphan one.
+        Storage::disk('data')->delete('cheats/nes/contra/cheats.md');
+        Storage::disk('data')->put('cheats/nes/orphan/cheats.md', '# Orphan');
+
+        app(BackupService::class)->restoreBackup($filename);
+
+        expect(Storage::disk('data')->exists('cheats/nes/contra/cheats.md'))->toBeTrue();
+        expect(Storage::disk('data')->get('cheats/nes/contra/cheats.md'))->toBe('# Contra');
+        expect(Storage::disk('data')->exists('cheats/nes/orphan/cheats.md'))->toBeFalse();
     });
 });
 

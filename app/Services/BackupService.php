@@ -85,6 +85,11 @@ class BackupService
             $zip->addFromString($path, Storage::disk('data')->get($path));
         }
 
+        // Nested cheats/{console}/{slug}/cheats.md — allFiles() (not files()) to recurse subdirectories.
+        foreach (Storage::disk('data')->allFiles('cheats') as $path) {
+            $zip->addFromString($path, Storage::disk('data')->get($path));
+        }
+
         if ($includeSavestates) {
             foreach (Storage::disk('savestates')->allFiles() as $path) {
                 $zip->addFromString('savestates/' . $path, Storage::disk('savestates')->get($path));
@@ -182,9 +187,18 @@ class BackupService
         $diskChat  = $this->baseNames(Storage::disk('data')->files('chat'));
         $zipChat   = $this->baseNames(array_filter($zipEntries, fn ($e) => str_starts_with($e, 'chat/')));
 
+        // Nested cheats/{console}/{slug}/cheats.md — compare full relative paths, not basenames
+        // (every game's file is literally named cheats.md, so basenames would all collide).
+        $diskCheats = $this->relativePaths(Storage::disk('data')->allFiles('cheats'), 'cheats/');
+        $zipCheats  = $this->relativePaths(
+            array_filter($zipEntries, fn ($e) => str_starts_with($e, 'cheats/')),
+            'cheats/'
+        );
+
         $fileDiff = [
             'migration-docs' => $this->buildFileDiff($zipMigrationDocs, $diskMigrationDocs),
             'chat'           => $this->buildFileDiff($zipChat, $diskChat),
+            'cheats'         => $this->buildFileDiff($zipCheats, $diskCheats),
             'savestates'     => null,
         ];
 
@@ -288,6 +302,16 @@ class BackupService
         }
         foreach ($this->collectZipEntries($zip) as $entry) {
             if (str_starts_with($entry, 'chat/')) {
+                Storage::disk('data')->put($entry, $zip->getFromName($entry));
+            }
+        }
+
+        // Restore cheats (nested cheats/{console}/{slug}/cheats.md — allFiles() to recurse)
+        foreach (Storage::disk('data')->allFiles('cheats') as $f) {
+            Storage::disk('data')->delete($f);
+        }
+        foreach ($this->collectZipEntries($zip) as $entry) {
+            if (str_starts_with($entry, 'cheats/')) {
                 Storage::disk('data')->put($entry, $zip->getFromName($entry));
             }
         }
@@ -572,6 +596,15 @@ class BackupService
     private function baseNames(array $paths): array
     {
         return array_values(array_map('basename', $paths));
+    }
+
+    /** Strip a leading prefix from each path — used for nested trees where basenames collide. */
+    private function relativePaths(array $paths, string $prefix): array
+    {
+        return array_values(array_map(
+            fn ($path) => ltrim(substr($path, strlen($prefix)), '/'),
+            $paths
+        ));
     }
 
     private function buildFileDiff(array $inBackup, array $onDisk): array

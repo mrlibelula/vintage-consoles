@@ -107,6 +107,15 @@
         'script' => [
             'M16 19h2v2H4v-2h10v-2h2v2ZM6 15h8v2H4v2H2v-4h2V5h2v10ZM20 5h2v6h-2v8h-2V5H6V3h14v2Z',
         ],
+        'resize-se' => [
+            'M16 2h2v2h-2zM18 4h2v2h-2zM14 4h2v2h-2zM20 6h2v2h-2zM12 6h2v2h-2zM10 8h2v2h-2zM8 10h2v2h-2zM6 12h2v2h-2zM4 14h2v2h-2zM2 16h2v2h-2z',
+        ],
+        'resize-e' => [
+            'M2 11h2v2H2zm4 0h12v2H6zm14 0h2v2h-2zM4 9h2v2H4zm0 4h2v2H4zm14-4h2v2h-2zm0 4h2v2h-2z',
+        ],
+        'resize-s' => [
+            'M11 2h2v2h-2zm0 4h2v12h-2zm0 14h2v2h-2zM9 4h2v2H9zm4 0h2v2h-2zM9 18h2v2H9zm4 0h2v2h-2z',
+        ],
         default => null,
     };
 @endphp

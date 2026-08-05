@@ -3,6 +3,9 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Console;
+use App\Services\CheatImport\CheatMarkdownGenerator;
+use App\Services\CheatImport\CheatTextExtractor;
+use App\Services\CheatSheetService;
 use App\Services\GameRepository;
 use App\Services\Igdb\IgdbClient;
 use App\Services\Igdb\IgdbImage;
@@ -16,6 +19,7 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 #[Layout('layouts.app')]
 
@@ -63,6 +67,16 @@ class GameManager extends Component
     public array $igdbResponse = [];
     public bool $igdbScreenshotsShouldSync = false;
     public array $walkthroughVideos = [['title' => '', 'youtube_id' => '']];
+
+    // Cheat sheet import (edit mode only)
+    public string $cheatMarkdown = '';
+    public string $cheatSourceText = '';
+    public $cheatSourceFile = null;
+    public bool $cheatExistsOnDisk = false;
+    public bool $cheatImporting = false;
+    public string $cheatImportError = '';
+    public bool $showCheatPreviewModal = false;
+    public string $cheatPreviewHtml = '';
 
     protected GameRepository $repo;
 
@@ -253,6 +267,11 @@ class GameManager extends Component
         $consoleForValidation = $this->formConsole ?: $this->selectedConsole;
         $isPc = strtolower($consoleForValidation) === 'pc';
 
+        $cheatService = app(CheatSheetService::class);
+        $oldCheatPath = ($this->modalMode === 'edit' && $this->editingGame)
+            ? $cheatService->path($this->editingGame)
+            : null;
+
         // ROM validation / file upload
         $romFilename = $this->rom;
 
@@ -332,6 +351,7 @@ class GameManager extends Component
         }
 
         // Sync screenshots from IGDB response if present
+        $savedGame = null;
         if ($success && $this->igdbScreenshotsShouldSync && ! empty($this->igdbResponse)) {
             $savedGame = $this->repo->getGame(
                 $this->formConsole ?: $this->selectedConsole,
@@ -348,6 +368,14 @@ class GameManager extends Component
             if ($savedGame) {
                 $this->syncScreenshotsFromForm($savedGame, $this->screenshots);
             }
+        }
+
+        // Single persist point for the cheat sheet — write/delete cheats.md alongside the game save.
+        if ($success && $savedGame) {
+            if ($oldCheatPath !== null && $oldCheatPath !== $cheatService->path($savedGame)) {
+                Storage::disk('data')->delete($oldCheatPath);
+            }
+            $cheatService->save($savedGame, $this->cheatMarkdown);
         }
 
         if ($success) {
@@ -368,6 +396,8 @@ class GameManager extends Component
         $this->js('window.dispatchEvent(new CustomEvent("loader-top-on"))');
 
         if ($this->editingGame) {
+            app(CheatSheetService::class)->delete($this->editingGame);
+
             $success = $this->repo->deleteGame($this->selectedConsole, $this->editingGame->id);
 
             if ($success) {
@@ -504,6 +534,89 @@ class GameManager extends Component
         }
     }
 
+    /**
+     * Import from paste or upload, then ask the AI for a Markdown preview.
+     * Paste → format-only (keep content, perfect MD). Upload → extract cheats only.
+     * Does not touch disk — persist happens on "Update Game".
+     */
+    public function importCheatSheet(): void
+    {
+        $this->cheatImportError = '';
+        $this->cheatImporting = true;
+
+        try {
+            $extractor = app(CheatTextExtractor::class);
+            $fromUpload = (bool) $this->cheatSourceFile;
+
+            $sourceText = $fromUpload
+                ? $extractor->extractFromUpload($this->cheatSourceFile)
+                : $extractor->normalize($this->cheatSourceText);
+
+            if ($sourceText === '') {
+                $this->cheatImportError = 'Paste some text or choose a file to import first.';
+                return;
+            }
+
+            $consoleKey = $this->formConsole ?: $this->selectedConsole;
+            $consoleName = $this->consoles->firstWhere('short_name', $consoleKey)?->long_name
+                ?? $consoleKey;
+            $gameTitle = $this->title !== '' ? $this->title : ($this->editingGame->title ?? 'Unknown game');
+
+            $mode = $fromUpload
+                ? CheatMarkdownGenerator::MODE_EXTRACT
+                : CheatMarkdownGenerator::MODE_FORMAT;
+
+            $this->cheatMarkdown = app(CheatMarkdownGenerator::class)->generate(
+                $sourceText,
+                $gameTitle,
+                $consoleName,
+                $mode,
+            );
+            $this->cheatSourceFile = null;
+            $this->js('window.dispatchEvent(new CustomEvent("cheat-import-success"))');
+        } catch (Throwable $e) {
+            $this->cheatImportError = $e->getMessage();
+        } finally {
+            $this->cheatImporting = false;
+            $this->js('window.dispatchEvent(new CustomEvent("loader-top-off"))');
+        }
+    }
+
+    /** Clears the in-memory preview only; disk write/delete still happens on Update Game. */
+    public function clearCheatSheet(): void
+    {
+        $this->cheatMarkdown = '';
+        $this->cheatSourceText = '';
+        $this->cheatSourceFile = null;
+        $this->cheatImportError = '';
+        $this->cheatPreviewHtml = '';
+        $this->showCheatPreviewModal = false;
+    }
+
+    /** Render the current Markdown source into HTML for the preview dialog (no disk write). */
+    public function openCheatPreview(): void
+    {
+        $trimmed = trim($this->cheatMarkdown);
+
+        if ($trimmed === '') {
+            $this->cheatImportError = 'Nothing to preview — the Markdown source is empty.';
+            $this->showCheatPreviewModal = false;
+            $this->cheatPreviewHtml = '';
+
+            return;
+        }
+
+        $this->cheatImportError = '';
+        $this->cheatPreviewHtml = app(CheatSheetService::class)->toHtml($trimmed);
+        $this->showCheatPreviewModal = true;
+    }
+
+    public function closeCheatPreview(): void
+    {
+        $this->showCheatPreviewModal = false;
+        $this->cheatPreviewHtml = '';
+    }
+
     // -------------------------------------------------------------------------
     // Private helpers
     // -------------------------------------------------------------------------
@@ -529,6 +642,13 @@ class GameManager extends Component
         $this->igdbResponse        = [];
         $this->igdbScreenshotsShouldSync = false;
         $this->walkthroughVideos   = [['title' => '', 'youtube_id' => '']];
+        $this->cheatMarkdown           = '';
+        $this->cheatSourceText         = '';
+        $this->cheatSourceFile         = null;
+        $this->cheatExistsOnDisk       = false;
+        $this->cheatImportError        = '';
+        $this->showCheatPreviewModal   = false;
+        $this->cheatPreviewHtml        = '';
     }
 
     private function fillForm(\App\Models\Game $game): void
@@ -567,6 +687,13 @@ class GameManager extends Component
                 'youtube_id' => (string) ($row['youtube_id'] ?? ''),
             ])->values()->all()
             : [['title' => '', 'youtube_id' => '']];
+
+        $cheatService = app(CheatSheetService::class);
+        $this->cheatMarkdown     = $cheatService->get($game) ?? '';
+        $this->cheatExistsOnDisk = $cheatService->exists($game);
+        $this->cheatSourceText   = '';
+        $this->cheatSourceFile   = null;
+        $this->cheatImportError  = '';
     }
 
     private function validateRomUrl(string $url): array

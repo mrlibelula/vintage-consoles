@@ -8,6 +8,7 @@ use App\Models\EmulatorSaveState;
 use App\Models\Game;
 use App\Models\YoutubeVideoProgress;
 use App\Service\Tool;
+use App\Services\CheatSheetService;
 use App\Services\GameRepository;
 use App\Support\GameIgdbPresenter;
 use Illuminate\Support\Facades\Storage;
@@ -33,21 +34,25 @@ class Play extends Component
     /** @var array<string, int> youtube_id => position_seconds */
     public array $video_progress = [];
 
+    public bool $hasCheats = false;
+    public ?string $cheatHtml = null;
+
     public array $accordion_toggler = [
         'description'  => true,
         'screenshots'  => true,
         'videos'       => true,
+        'cheats'       => false,
         'artworks'     => true,
         'similar'      => true,
     ];
 
     public array $tabs = [
         'info' => true,
-        'media' => false,
+        'extras' => false,
     ];
 
-    /** Keep media DOM (and PiP Alpine state) after first visit so tab switches do not tear down the player. */
-    public bool $media_shell_mounted = false;
+    /** Keep extras DOM (and PiP Alpine state) after first visit so tab switches do not tear down the player. */
+    public bool $extras_shell_mounted = false;
 
     public array $modals = [
         'screenshots' => false,
@@ -70,6 +75,7 @@ class Play extends Component
 
         $this->loadSaveSlots($console_short_name);
         $this->loadIgdb();
+        $this->loadCheatSheet();
         $this->loadVideoProgress();
         $this->loadGameUrl();
 
@@ -99,7 +105,19 @@ class Play extends Component
 
         $this->igdb = app(GameIgdbPresenter::class)->present($this->game, $localByIgdbId);
 
-        $this->tabs = ['info' => true, 'media' => false];
+        $this->tabs = ['info' => true, 'extras' => false];
+    }
+
+    private function loadCheatSheet(): void
+    {
+        $service = app(CheatSheetService::class);
+        $markdown = $service->get($this->game);
+
+        $this->hasCheats = $markdown !== null;
+        $this->cheatHtml = $this->hasCheats ? $service->toHtml($markdown) : null;
+
+        // Extras tab: media content (videos/artworks/similar) and/or a cheat sheet.
+        $this->igdb['has_extras'] = ($this->igdb['has_media'] ?? false) || $this->hasCheats;
     }
 
     private function loadVideoProgress(): void
@@ -235,7 +253,7 @@ class Play extends Component
             return;
         }
 
-        if ($tab === 'media' && ! ($this->igdb['has_media'] ?? false)) {
+        if ($tab === 'extras' && ! ($this->igdb['has_extras'] ?? false)) {
             return;
         }
 
@@ -248,8 +266,8 @@ class Play extends Component
             $this->accordion_toggler['description'] = true;
         }
 
-        if ($tab === 'media') {
-            $this->media_shell_mounted = true;
+        if ($tab === 'extras') {
+            $this->extras_shell_mounted = true;
             $this->accordion_toggler['videos'] = true;
             $this->accordion_toggler['artworks'] = true;
             $this->accordion_toggler['similar'] = true;

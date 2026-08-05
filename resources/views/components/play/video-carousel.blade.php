@@ -58,9 +58,9 @@
             <button
                 type="button"
                 class="mt-1 text-left text-sm text-rose-700 dark:text-rose-300 hover:underline"
-                @click="scrollToMedia()"
+                @click="scrollToExtras()"
             >
-                See all media ↓
+                See all extras ↓
             </button>
         </div>
     @else
@@ -161,9 +161,9 @@
     <template x-teleport="body">
         <div
             x-ref="pip"
-            class="fixed z-[80] w-[min(22rem,calc(100vw-1.5rem))] overflow-hidden rounded-lg border border-cod-gray-700 bg-cod-gray-950 shadow-2xl shadow-black/50"
+            class="fixed z-[80] overflow-hidden rounded-lg border border-cod-gray-700 bg-cod-gray-950 shadow-2xl shadow-black/50"
             :class="pipOpen && ownsPip ? 'visible' : 'invisible pointer-events-none'"
-            :style="`left:${pipX}px;top:${pipY}px`"
+            :style="`left:${pipX}px;top:${pipY}px;width:min(${pipW}px, calc(100vw - 1.5rem))`"
             :aria-hidden="!(pipOpen && ownsPip)"
         >
             <div
@@ -191,6 +191,30 @@
                     class="absolute inset-0 z-[1] flex items-center justify-center bg-black/70 px-2 text-center text-rose-300 text-xs"
                     x-text="playerError"
                 ></div>
+            </div>
+
+            {{-- Desktop-only drag-to-resize grips (mobile keeps the fixed default size) --}}
+            <div
+                class="absolute inset-y-8 right-0 z-20 hidden w-2 cursor-ew-resize items-center justify-center text-cod-gray-500 hover:text-rose-400 play:flex"
+                @pointerdown.stop="startResize($event, 'e')"
+                aria-hidden="true"
+            >
+                <x-pixelarticon name="resize-e" :size="10" />
+            </div>
+            <div
+                class="absolute inset-x-8 bottom-0 z-20 hidden h-2 cursor-ns-resize items-center justify-center text-cod-gray-500 hover:text-rose-400 play:flex"
+                @pointerdown.stop="startResize($event, 's')"
+                aria-hidden="true"
+            >
+                <x-pixelarticon name="resize-s" :size="10" />
+            </div>
+            <div
+                class="absolute bottom-0 right-0 z-20 hidden h-5 w-5 cursor-nwse-resize items-center justify-center rounded-tl bg-cod-gray-900/80 text-cod-gray-400 hover:text-rose-400 play:flex"
+                @pointerdown.stop="startResize($event, 'se')"
+                aria-label="Resize picture-in-picture"
+                title="Drag to resize"
+            >
+                <x-pixelarticon name="resize-se" :size="12" />
             </div>
         </div>
     </template>

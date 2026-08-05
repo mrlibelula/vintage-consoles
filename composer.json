@@ -15,6 +15,7 @@
         "livewire/livewire": "^3.0",
         "marcreichel/igdb-laravel": "^4.3",
         "openai-php/laravel": "^0.11.0",
+        "smalot/pdfparser": "^2.12",
         "spatie/laravel-collection-macros": "^7.13",
         "spatie/laravel-permission": "^6.3"
     },

@@ -12,7 +12,7 @@
                 <h1 class="text-3xl text-cod-gray-900 dark:text-cod-gray-100">Backup / Restore</h1>
             </div>
             <p class="mt-2 text-xl text-cod-gray-600 dark:text-cod-gray-400">
-                Create ZIP backups of catalog, chat, and migration docs. Restore replaces data on this server.
+                Create ZIP backups of catalog, chat, cheat sheets, and migration docs. Restore replaces data on this server.
             </p>
         </div>
 
@@ -43,7 +43,7 @@
                 {{-- Info note --}}
                 <div class="rounded-md bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 px-4 py-3 text-base text-blue-800 dark:text-blue-300">
                     <strong>Never included:</strong> user accounts, roles, sessions — these stay on the target server.
-                    Backup contains: catalog (games, consoles, genres), app fonts &amp; settings, migration docs, chat.
+                    Backup contains: catalog (games, consoles, genres), app fonts &amp; settings, migration docs, chat, cheat sheets.
                 </div>
 
                 <button
@@ -388,6 +388,7 @@
             @foreach([
                 'migration-docs' => 'Migration Docs (storage/app/migration-docs/)',
                 'chat'           => 'Chat Files (storage/data/chat/)',
+                'cheats'         => 'Cheat Sheets (storage/data/cheats/)',
                 'savestates'     => 'Save State Files (storage/app/savestates/)',
             ] as $key => $label)
             @php $section = $previewData['files'][$key] ?? null @endphp
@@ -571,7 +572,7 @@
             <div class="space-y-4" wire:loading.class="opacity-60 pointer-events-none" wire:target="confirmRestore">
                 {{-- Warning --}}
                 <div class="rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 px-4 py-3 text-base text-amber-800 dark:text-amber-300">
-                    <strong>This will overwrite current catalog, migration docs, and chat data</strong> on this server with the contents of the backup.
+                    <strong>This will overwrite current catalog, migration docs, chat, and cheat sheet data</strong> on this server with the contents of the backup.
                     User accounts will <strong>not</strong> be changed.
                     @if($restoringFile && str_contains($restoringFile, '_no-saves'))
                         Save states will <strong>not</strong> be touched.

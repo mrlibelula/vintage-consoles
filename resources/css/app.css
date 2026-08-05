@@ -9,6 +9,160 @@
 /* Pixel Art Cursors (PNG) */
 /* Defined in `resources/views/partials/pixel-cursors.blade.php` via asset() so HTTPS/dev works. */
 
+/*
+ * Cheat-sheet Markdown (play Extras + admin preview).
+ * Same size as the panel (inherits global app font); headings stand out by color.
+ * List items render as flush paragraphs (no bullets / indent).
+ */
+.cheat-sheet {
+    @apply max-w-none overflow-x-auto text-cod-gray-800 dark:text-cod-gray-300;
+    line-height: 1.3;
+}
+
+.cheat-sheet h1,
+.cheat-sheet h2,
+.cheat-sheet h3,
+.cheat-sheet h4,
+.cheat-sheet h5,
+.cheat-sheet h6 {
+    @apply font-normal text-cod-gray-950 dark:text-white;
+    font-weight: 400;
+    font-size: inherit;
+    line-height: 1.25;
+    margin-top: 1.1rem;
+    margin-bottom: 0.35rem;
+}
+
+.cheat-sheet h1:first-child,
+.cheat-sheet h2:first-child,
+.cheat-sheet h3:first-child,
+.cheat-sheet h4:first-child,
+.cheat-sheet h5:first-child,
+.cheat-sheet h6:first-child {
+    margin-top: 0;
+}
+
+/* Body + bullets: same paragraph treatment, flush under the heading */
+.cheat-sheet p,
+.cheat-sheet li {
+    font-size: inherit;
+    line-height: 1.3;
+    margin-top: 0.45rem;
+    margin-bottom: 0.45rem;
+}
+
+.cheat-sheet ul,
+.cheat-sheet ol {
+    list-style: none;
+    margin-top: 0.15rem;
+    margin-bottom: 0.35rem;
+    padding-left: 0;
+}
+
+.cheat-sheet li {
+    display: block;
+    padding-left: 0;
+}
+
+.cheat-sheet li > p {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.cheat-sheet ul ul,
+.cheat-sheet ul ol,
+.cheat-sheet ol ul,
+.cheat-sheet ol ol {
+    margin-top: 0.15rem;
+    margin-bottom: 0.15rem;
+    padding-left: 0;
+}
+
+.cheat-sheet a {
+    @apply text-rose-700 underline decoration-cod-gray-500/40 underline-offset-2 dark:text-rose-300 dark:decoration-rose-800;
+}
+
+.cheat-sheet strong {
+    @apply text-cod-gray-900 dark:text-cod-gray-100;
+    font-size: inherit;
+}
+
+.cheat-sheet code {
+    @apply rounded bg-cod-gray-200/80 px-1 py-0.5 text-cod-gray-800 dark:bg-cod-gray-800 dark:text-cod-gray-100;
+    font-size: inherit;
+    line-height: 1.25;
+}
+
+.cheat-sheet pre {
+    @apply overflow-x-auto rounded border border-cod-gray-300 bg-cod-gray-100/70 p-2 dark:border-cod-gray-700 dark:bg-cod-gray-900;
+    font-size: inherit;
+    line-height: 1.3;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.cheat-sheet pre code {
+    @apply bg-transparent p-0;
+    font-size: inherit;
+}
+
+.cheat-sheet table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Beat global `* { font-size: 1.32rem }` — tables stay compact in the side panel */
+    font-size: 1rem;
+    line-height: 1.15;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.cheat-sheet thead th {
+    @apply font-normal text-cod-gray-950 dark:text-white;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.15;
+    text-align: left;
+    padding: 0.15rem 0.35rem;
+    border-bottom: 1px solid theme('colors.cod-gray.400');
+}
+
+.cheat-sheet tbody td {
+    @apply text-cod-gray-800 dark:text-cod-gray-300;
+    font-size: 1rem;
+    line-height: 1.15;
+    padding: 0.12rem 0.35rem;
+    vertical-align: top;
+    border-bottom: 1px solid theme('colors.cod-gray.300 / 55%');
+}
+
+.dark .cheat-sheet thead th {
+    border-bottom-color: theme('colors.cod-gray.600');
+}
+
+.dark .cheat-sheet tbody td {
+    border-bottom-color: theme('colors.cod-gray.700 / 70%');
+}
+
+.cheat-sheet tbody tr:last-child td {
+    border-bottom-width: 0;
+}
+
+.cheat-sheet hr {
+    @apply border-cod-gray-300 dark:border-cod-gray-700;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.cheat-sheet blockquote {
+    @apply border-l-2 border-cod-gray-400 pl-2 text-cod-gray-600 dark:border-cod-gray-600 dark:text-cod-gray-400;
+    font-size: inherit;
+    margin-top: 0.45rem;
+    margin-bottom: 0.45rem;
+    line-height: 1.3;
+}
+
 /* Play page: 16:9 frame flush under fixed nav (4rem); mobile keeps viewport-based iframe height */
 .play-game-frame {
     @apply max-play:block play:aspect-video;

@@ -148,15 +148,15 @@
                         <x-tab-item wire:click="changeTab('info')" @click="$dispatch('loader-top-on')" :active="$tabs['info']">
                             Info
                         </x-tab-item>
-                        @if ($igdb['has_media'] ?? false)
-                        <x-tab-item wire:click="changeTab('media')" @click="$dispatch('loader-top-on')" :active="$tabs['media']">
-                            Media
+                        @if ($igdb['has_extras'] ?? false)
+                        <x-tab-item wire:click="changeTab('extras')" @click="$dispatch('loader-top-on')" :active="$tabs['extras']">
+                            Extras
                         </x-tab-item>
                         @endif
                     </div>
                 </div>
 
-                <!-- info / media tabs -->
+                <!-- info / extras tabs -->
                 <x-tab-content :contain="false">
                     @if ($tabs['info'])
                     <div class="flex flex-1 min-h-0 flex-col play:overflow-visible overflow-y-auto">
@@ -241,15 +241,16 @@
                     </div>
                     @endif
 
-                    {{-- Keep shell mounted after first Media visit so PiP survives Info/Media switches --}}
-                    @if (($tabs['media'] || $media_shell_mounted) && ($igdb['has_media'] ?? false))
+                    {{-- Keep shell mounted after first Extras visit so PiP survives Info/Extras switches --}}
+                    @if (($tabs['extras'] || $extras_shell_mounted) && ($igdb['has_extras'] ?? false))
                     <div
-                        wire:key="play-media-shell-{{ $game->id }}"
+                        id="play-extras"
+                        wire:key="play-extras-shell-{{ $game->id }}"
                         @class([
                             'flex flex-1 min-h-0 flex-col play:overflow-visible overflow-y-auto',
-                            'hidden' => ! $tabs['media'],
+                            'hidden' => ! $tabs['extras'],
                         ])
-                        @if (! $tabs['media']) aria-hidden="true" @endif
+                        @if (! $tabs['extras']) aria-hidden="true" @endif
                     >
                         <div class="flex flex-col gap-y-4 p-4">
                             @if ($igdb['has_videos'] ?? false)
@@ -263,6 +264,15 @@
                                     :csrf="csrf_token()"
                                     :can-sync="auth()->check()"
                                 />
+                            </x-accordion>
+                            @endif
+
+                            @if ($hasCheats)
+                            <x-accordion wire:click="toggle('cheats')" :toggler="$accordion_toggler['cheats']">
+                                <x-slot name="title">Cheats</x-slot>
+                                <div class="cheat-sheet">
+                                    {!! $cheatHtml !!}
+                                </div>
                             </x-accordion>
                             @endif
 

@@ -6,6 +6,37 @@ const YT_API_SRC = 'https://www.youtube.com/iframe_api'
 const STORAGE_PREFIX = 'vintage.yt.progress.'
 const YT_API_TIMEOUT_MS = 15000
 
+const PIP_WIDTH_STORAGE_KEY = 'vintage-pip-width'
+const PIP_WIDTH_DEFAULT = 352 // 22rem
+const PIP_WIDTH_MIN = 280
+
+function pipWidthMax() {
+    const viewport = typeof window !== 'undefined' ? window.innerWidth : 1024
+    return Math.max(PIP_WIDTH_MIN, Math.min(720, viewport * 0.7))
+}
+
+function clampPipWidth(width) {
+    return Math.min(pipWidthMax(), Math.max(PIP_WIDTH_MIN, Math.round(width)))
+}
+
+function readPipWidth() {
+    try {
+        const raw = localStorage.getItem(PIP_WIDTH_STORAGE_KEY)
+        const n = Math.round(Number(raw) || 0)
+        return n > 0 ? clampPipWidth(n) : PIP_WIDTH_DEFAULT
+    } catch {
+        return PIP_WIDTH_DEFAULT
+    }
+}
+
+function writePipWidth(width) {
+    try {
+        localStorage.setItem(PIP_WIDTH_STORAGE_KEY, String(Math.round(width)))
+    } catch {
+        /* ignore quota */
+    }
+}
+
 let ytApiPromise = null
 let sharedPlayer = null
 let sharedPlayerMountId = null
@@ -259,7 +290,9 @@ export function bootVintageYoutubeMedia() {
             ownsPip: !config.compact,
             pipX: 16,
             pipY: Math.max(96, (typeof window !== 'undefined' ? window.innerHeight : 800) - 280),
+            pipW: readPipWidth(),
             drag: null,
+            resize: null,
             localProgress: {},
             durations: {},
             _durationProbe: null,
@@ -454,8 +487,8 @@ export function bootVintageYoutubeMedia() {
                 return duration ? `${title} · ${duration}` : title
             },
 
-            scrollToMedia() {
-                document.getElementById('play-media')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            scrollToExtras() {
+                document.getElementById('play-extras')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
             },
 
             openPip(index) {
@@ -480,9 +513,9 @@ export function bootVintageYoutubeMedia() {
 
             dockInline() {
                 this.ensurePlayer({ pip: false })
-                // Media panel may be CSS-hidden while on Info; reveal it so the inline player is visible.
+                // Extras panel may be CSS-hidden while on Info; reveal it so the inline player is visible.
                 try {
-                    this.$wire?.changeTab?.('media')
+                    this.$wire?.changeTab?.('extras')
                 } catch {
                     /* ignore */
                 }
@@ -744,6 +777,60 @@ export function bootVintageYoutubeMedia() {
                     root.style.userSelect = previousUserSelect
                     root.style.webkitUserSelect = previousWebkitUserSelect
                     window.getSelection()?.removeAllRanges()
+                    window.removeEventListener('pointermove', move)
+                    window.removeEventListener('pointerup', up)
+                    window.removeEventListener('pointercancel', up)
+                    window.removeEventListener('selectstart', preventSelect)
+                }
+                window.addEventListener('pointermove', move)
+                window.addEventListener('pointerup', up)
+                window.addEventListener('pointercancel', up)
+                window.addEventListener('selectstart', preventSelect)
+            },
+
+            /** Desktop-only drag-to-resize from the PiP edges/corners. Keeps 16:9 via aspect-video on the body. */
+            startResize(event, edge) {
+                if (event.button != null && event.button !== 0) {
+                    return
+                }
+                event.preventDefault()
+                event.stopPropagation()
+                window.getSelection()?.removeAllRanges()
+
+                const root = document.documentElement
+                const previousUserSelect = root.style.userSelect
+                const previousWebkitUserSelect = root.style.webkitUserSelect
+                root.style.userSelect = 'none'
+                root.style.webkitUserSelect = 'none'
+
+                this.resize = {
+                    edge,
+                    startX: event.clientX,
+                    startY: event.clientY,
+                    startW: this.pipW,
+                }
+
+                const preventSelect = (e) => e.preventDefault()
+                const move = (e) => {
+                    if (!this.resize) return
+                    e.preventDefault()
+                    const dx = e.clientX - this.resize.startX
+                    const dy = e.clientY - this.resize.startY
+                    // Height follows aspect-video, so "s" resize approximates a width delta from dy.
+                    let delta = dx
+                    if (this.resize.edge === 's') {
+                        delta = dy * (16 / 9)
+                    } else if (this.resize.edge === 'se') {
+                        delta = (dx + dy * (16 / 9)) / 2
+                    }
+                    this.pipW = clampPipWidth(this.resize.startW + delta)
+                }
+                const up = () => {
+                    this.resize = null
+                    root.style.userSelect = previousUserSelect
+                    root.style.webkitUserSelect = previousWebkitUserSelect
+                    window.getSelection()?.removeAllRanges()
+                    writePipWidth(this.pipW)
                     window.removeEventListener('pointermove', move)
                     window.removeEventListener('pointerup', up)
                     window.removeEventListener('pointercancel', up)

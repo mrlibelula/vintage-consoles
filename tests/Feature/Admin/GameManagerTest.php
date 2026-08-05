@@ -5,10 +5,13 @@ use App\Models\Console;
 use App\Models\Game;
 use App\Models\Screenshot;
 use App\Models\User;
+use App\Services\CheatSheetService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
+use OpenAI\Laravel\Facades\OpenAI;
+use OpenAI\Responses\Chat\CreateResponse;
 use Spatie\Permission\Models\Role;
 
 uses(RefreshDatabase::class);
@@ -388,5 +391,271 @@ describe('ROM handling', function () {
 
         expect($game)->not->toBeNull()
             ->and($game->rom)->toBe('mario.nes');
+    });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Cheat sheet
+// ─────────────────────────────────────────────────────────────────────────────
+
+function cheatManagerGame(array $attrs = []): Game
+{
+    return Game::create(array_merge([
+        'console_id'         => 1,
+        'title'               => 'Contra',
+        'slug'                => 'contra',
+        'publisher'           => 'Konami',
+        'release_year'        => '1988',
+        'description'         => 'Shooter',
+        'rating'              => 0.88,
+        'multiplayer_support' => true,
+        'save_state_support'  => true,
+        'is_free'             => true,
+        'needs_igdb_sync'     => false,
+    ], $attrs));
+}
+
+describe('Cheat sheet', function () {
+    it('shows Missing and an empty preview when no cheat file exists', function () {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+
+        Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openEditModal', $game->id)
+            ->assertSet('cheatExistsOnDisk', false)
+            ->assertSet('cheatMarkdown', '')
+            ->assertSee('Missing');
+    });
+
+    it('loads the existing cheat markdown into the preview on edit', function () {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+
+        app(CheatSheetService::class)->put($game, "# Contra\n\n## Cheat Codes\n- 30 Lives Code");
+
+        Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openEditModal', $game->id)
+            ->assertSet('cheatExistsOnDisk', true)
+            ->assertSet('cheatMarkdown', "# Contra\n\n## Cheat Codes\n- 30 Lives Code")
+            ->assertSee('Present');
+    });
+
+    it('writes cheats.md to disk only when Update Game is submitted', function () {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+
+        $component = Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openEditModal', $game->id)
+            ->set('cheatMarkdown', "# Contra\n\n## Cheat Codes\n- 30 Lives Code");
+
+        Storage::disk('data')->assertMissing('cheats/nes/contra/cheats.md');
+
+        $component->call('saveGame')->assertHasNoErrors();
+
+        Storage::disk('data')->assertExists('cheats/nes/contra/cheats.md');
+        expect(Storage::disk('data')->get('cheats/nes/contra/cheats.md'))->toContain('30 Lives Code');
+    });
+
+    it('deletes cheats.md when the preview is cleared and Update Game is submitted', function () {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+        app(CheatSheetService::class)->put($game, '# Contra');
+
+        Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openEditModal', $game->id)
+            ->set('cheatMarkdown', '   ')
+            ->call('saveGame')
+            ->assertHasNoErrors();
+
+        Storage::disk('data')->assertMissing('cheats/nes/contra/cheats.md');
+    });
+
+    it('moves the cheat file when the game title (slug) changes', function () {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+        app(CheatSheetService::class)->put($game, '# Contra');
+
+        Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openEditModal', $game->id)
+            ->set('title', 'Contra Force')
+            ->call('saveGame')
+            ->assertHasNoErrors();
+
+        Storage::disk('data')->assertMissing('cheats/nes/contra/cheats.md');
+        Storage::disk('data')->assertExists('cheats/nes/contra-force/cheats.md');
+    });
+
+    it('formats pasted text into markdown without touching disk', function () {
+        OpenAI::fake([
+            CreateResponse::fake([
+                'choices' => [
+                    ['message' => ['content' => "# Contra\n\n## Cheat Codes\n- 30 Lives Code\n\n## Tips\n- Always pay the cabbie"]],
+                ],
+            ]),
+        ]);
+        config(['openai.api_key' => 'sk-test-fake-key']);
+
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+
+        Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openEditModal', $game->id)
+            ->set('cheatSourceText', "Ctrl+Alt+X skips quiz.\nAlways pay the cabbie.")
+            ->call('importCheatSheet')
+            ->assertHasNoErrors()
+            ->assertSet('cheatMarkdown', "## Cheat Codes\n- 30 Lives Code\n\n## Tips\n- Always pay the cabbie");
+
+        OpenAI::chat()->assertSent(function (string $method, array $parameters) {
+            $system = $parameters['messages'][0]['content'] ?? '';
+
+            return $method === 'create'
+                && str_contains($system, 'NOT to analyze, filter, or extract')
+                && str_contains($parameters['messages'][1]['content'], 'Pasted text:');
+        });
+
+        Storage::disk('data')->assertMissing('cheats/nes/contra/cheats.md');
+    });
+
+    it('extracts cheats from an uploaded document without touching disk', function () {
+        OpenAI::fake([
+            CreateResponse::fake([
+                'choices' => [
+                    ['message' => ['content' => "# Contra\n\n## Cheat Codes\n- 30 Lives Code"]],
+                ],
+            ]),
+        ]);
+        config(['openai.api_key' => 'sk-test-fake-key']);
+
+        $file = UploadedFile::fake()->createWithContent(
+            'manual.txt',
+            "Full user manual.\nCheats: Up Up Down Down for 30 lives.\nStory text…"
+        );
+
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+
+        Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openEditModal', $game->id)
+            ->set('cheatSourceFile', $file)
+            ->call('importCheatSheet')
+            ->assertHasNoErrors()
+            ->assertSet('cheatMarkdown', "## Cheat Codes\n- 30 Lives Code");
+
+        OpenAI::chat()->assertSent(function (string $method, array $parameters) {
+            $system = $parameters['messages'][0]['content'] ?? '';
+
+            return $method === 'create'
+                && str_contains($system, 'AND all important supporting data around them')
+                && str_contains($parameters['messages'][1]['content'], 'Source document:');
+        });
+
+        Storage::disk('data')->assertMissing('cheats/nes/contra/cheats.md');
+    });
+
+    it('shows an error and keeps the preview unchanged when import fails', function () {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+
+        Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openEditModal', $game->id)
+            ->set('cheatSourceText', '')
+            ->call('importCheatSheet')
+            ->assertSet('cheatImportError', 'Paste some text or choose a file to import first.')
+            ->assertSet('cheatMarkdown', '');
+    });
+
+    it('clears the in-memory preview without touching disk', function () {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+        app(CheatSheetService::class)->put($game, '# Contra');
+
+        Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openEditModal', $game->id)
+            ->set('cheatMarkdown', 'something typed')
+            ->call('clearCheatSheet')
+            ->assertSet('cheatMarkdown', '');
+
+        Storage::disk('data')->assertExists('cheats/nes/contra/cheats.md');
+    });
+
+    it('opens a rendered Markdown preview dialog from the current source', function () {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+
+        Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openEditModal', $game->id)
+            ->set('cheatMarkdown', "# Contra\n\n## Cheat Codes\n- **30 Lives** Code")
+            ->call('openCheatPreview')
+            ->assertSet('showCheatPreviewModal', true)
+            ->assertSee('Cheat sheet preview')
+            ->assertSeeHtml('<strong>30 Lives</strong>')
+            ->assertSee('Cheat Codes')
+            ->assertDontSeeHtml('<h1>');
+
+        Storage::disk('data')->assertMissing('cheats/nes/contra/cheats.md');
+    });
+
+    it('does not open the preview dialog when the Markdown source is empty', function () {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+
+        Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openEditModal', $game->id)
+            ->set('cheatMarkdown', '   ')
+            ->call('openCheatPreview')
+            ->assertSet('showCheatPreviewModal', false)
+            ->assertSet('cheatImportError', 'Nothing to preview — the Markdown source is empty.');
+    });
+
+    it('closes the rendered Markdown preview dialog', function () {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+
+        Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openEditModal', $game->id)
+            ->set('cheatMarkdown', "# Contra\n\n- Up Up Down Down")
+            ->call('openCheatPreview')
+            ->assertSet('showCheatPreviewModal', true)
+            ->call('closeCheatPreview')
+            ->assertSet('showCheatPreviewModal', false)
+            ->assertSet('cheatPreviewHtml', '');
+    });
+
+    it('deletes the cheat file when the game is deleted', function () {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $game = cheatManagerGame();
+        app(CheatSheetService::class)->put($game, '# Contra');
+
+        Livewire::actingAs($user)
+            ->test(GameManager::class)
+            ->call('openDeleteModal', $game->id)
+            ->call('deleteGame');
+
+        Storage::disk('data')->assertMissing('cheats/nes/contra/cheats.md');
     });
 });

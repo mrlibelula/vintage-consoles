@@ -169,7 +169,7 @@
                  x-init="document.body.style.overflow = 'hidden'"
                  @screenshot-gallery-open.window="screenshotGalleryOpen = true"
                  @screenshot-gallery-close.window="screenshotGalleryOpen = false"
-                 @keydown.escape.window="if (!screenshotGalleryOpen) $wire.closeModal()"
+                 @keydown.escape.window="if (!screenshotGalleryOpen && !$wire.showCheatPreviewModal) $wire.closeModal()"
                  x-on:modal-closed.window="document.body.style.overflow = 'auto'">
                 <div class="flex items-center justify-center min-h-screen pt-20 px-4 pb-4 text-center sm:block sm:pt-8 sm:pb-4">
                     <div class="fixed inset-0 bg-cod-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" @click="$dispatch('loader-top-on');" wire:click="closeModal"></div>
@@ -505,6 +505,79 @@
                                         <button type="button" wire:click="addScreenshot"
                                                 class="mt-2 text-xl text-rose-600 hover:text-rose-800">+ Add Screenshot</button>
                                     </div>
+
+                                    @if($modalMode === 'edit')
+                                    <!-- Cheat sheet -->
+                                    <div class="mt-6" x-data="{ showCheatSuccess: false }" @cheat-import-success.window="showCheatSuccess = true; setTimeout(() => showCheatSuccess = false, 4000)">
+                                        <div class="flex items-center justify-between gap-x-2 mb-2">
+                                            <label class="block text-xl font-medium text-cod-gray-700 dark:text-cod-gray-300">
+                                                Cheat sheet
+                                            </label>
+                                            @if($cheatExistsOnDisk)
+                                                <span class="text-sm bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-1.5 py-0.5 rounded">Present</span>
+                                            @else
+                                                <span class="text-sm bg-cod-gray-200 dark:bg-cod-gray-700 text-cod-gray-600 dark:text-cod-gray-400 px-1.5 py-0.5 rounded">Missing</span>
+                                            @endif
+                                        </div>
+                                        <p class="mb-2 text-sm text-cod-gray-500 dark:text-cod-gray-400">
+                                            <strong>Paste:</strong> AI reformats your text into clean Markdown for the play panel (keeps content — tips, codes, etc.).
+                                            <strong>Upload</strong> (.txt/.md/.docx/.pdf): AI analyzes the document and extracts cheat codes/unlockables/secrets plus the important how-to context around them.
+                                            Then edit the source, use "Preview rendered MD", and hit "Update Game" to save.
+                                        </p>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            <div>
+                                                <label for="cheat_source_text" class="block text-sm font-medium text-cod-gray-700 dark:text-cod-gray-300">Paste source text</label>
+                                                <textarea wire:model="cheatSourceText" id="cheat_source_text" rows="4" placeholder="Paste cheat codes, manual excerpt, walkthrough text, etc."
+                                                    class="form-field mt-1 block w-full"></textarea>
+                                            </div>
+                                            <div>
+                                                <label for="cheat_source_file" class="block text-sm font-medium text-cod-gray-700 dark:text-cod-gray-300">Or upload a file</label>
+                                                <input wire:model="cheatSourceFile" type="file" id="cheat_source_file" accept=".txt,.md,.docx,.pdf"
+                                                    class="mt-1 block w-full text-cod-gray-900 dark:text-cod-gray-100 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100">
+                                                <div wire:loading wire:target="cheatSourceFile" class="mt-1 text-sm text-cod-gray-500 dark:text-cod-gray-400">Uploading…</div>
+                                                @error('cheatSourceFile') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                                                <p class="mt-1 text-sm text-cod-gray-500 dark:text-cod-gray-400">.txt, .md, .docx, or .pdf — legacy .doc is not supported</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-2 flex items-center gap-x-2">
+                                            <button type="button"
+                                                    @click="$dispatch('loader-top-on'); $wire.importCheatSheet()"
+                                                    wire:loading.attr="disabled"
+                                                    wire:target="importCheatSheet,cheatSourceFile"
+                                                    class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out disabled:opacity-60">
+                                                <span wire:loading.remove wire:target="importCheatSheet">Import &amp; normalize</span>
+                                                <span wire:loading wire:target="importCheatSheet">Analyzing…</span>
+                                            </button>
+                                            <button type="button" wire:click="clearCheatSheet"
+                                                    class="text-sm text-cod-gray-500 hover:text-rose-500 px-1">Clear</button>
+                                            <div x-show="showCheatSuccess" x-transition x-cloak
+                                                 class="inline-flex items-center px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded-md">
+                                                Cheat sheet normalized!
+                                            </div>
+                                        </div>
+
+                                        @if($cheatImportError)
+                                        <div class="mt-2 p-3 bg-rose-100 dark:bg-rose-900 border border-rose-300 dark:border-rose-700 rounded-md text-sm text-rose-800 dark:text-rose-200">
+                                            {{ $cheatImportError }}
+                                        </div>
+                                        @endif
+
+                                        <div class="mt-3">
+                                            <div class="flex items-center justify-between gap-x-2">
+                                                <label for="cheat_markdown" class="block text-sm font-medium text-cod-gray-700 dark:text-cod-gray-300">Markdown source (saved with Update Game)</label>
+                                                <button type="button" wire:click="openCheatPreview"
+                                                        class="text-sm text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                                    Preview rendered MD
+                                                </button>
+                                            </div>
+                                            <textarea wire:model="cheatMarkdown" id="cheat_markdown" rows="8" placeholder="## Cheat Codes&#10;- Up, Up, Down, Down, Left, Right, Left, Right, B, A, Start — 30 lives"
+                                                class="form-field mt-1 block w-full font-mono text-sm"></textarea>
+                                            <p class="mt-1 text-sm text-cod-gray-500 dark:text-cod-gray-400">Leave empty to remove the cheat sheet from this game.</p>
+                                        </div>
+                                    </div>
+                                    @endif
                                 </div>
 
                                 <div class="bg-cod-gray-50 dark:bg-cod-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
@@ -522,6 +595,57 @@
                     </div>
                 </div>
             </div>
+        @endif
+
+        {{-- Cheat sheet rendered Markdown preview (above the edit modal) --}}
+        @if($showCheatPreviewModal)
+        <div
+            class="fixed inset-0 z-[100] overflow-y-auto"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="cheat-preview-title"
+            x-data
+            x-init="document.body.style.overflow = 'hidden'"
+            @keydown.escape.window="$wire.closeCheatPreview()"
+        >
+            <div class="flex min-h-screen items-start justify-center px-4 pb-8 pt-20 text-center">
+                <div
+                    class="fixed inset-0 bg-black/60 backdrop-blur-sm"
+                    aria-hidden="true"
+                    wire:click="closeCheatPreview"
+                ></div>
+
+                <div class="relative inline-block w-full max-w-3xl text-left align-middle" @click.stop>
+                    <div class="overflow-hidden rounded-xl bg-cod-gray-50 shadow-2xl dark:bg-cod-gray-900">
+                        <div class="flex items-center justify-between px-6 py-4 border-b border-cod-gray-200 dark:border-cod-gray-700">
+                            <h3 id="cheat-preview-title" class="text-xl font-medium text-cod-gray-900 dark:text-cod-gray-100">
+                                Cheat sheet preview
+                            </h3>
+                            <button type="button" wire:click="closeCheatPreview"
+                                    class="text-cod-gray-400 hover:text-cod-gray-600 dark:hover:text-cod-gray-200"
+                                    aria-label="Close preview">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="px-6 py-5 max-h-[70vh] overflow-y-auto">
+                            <div class="cheat-sheet">
+                                {!! $cheatPreviewHtml !!}
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-x-2 px-6 py-3 border-t border-cod-gray-200 dark:border-cod-gray-700 bg-cod-gray-100/60 dark:bg-cod-gray-800">
+                            <button type="button" wire:click="closeCheatPreview"
+                                    class="inline-flex justify-center rounded-md border border-cod-gray-300 dark:border-cod-gray-600 shadow-sm px-4 py-2 bg-cod-gray-50 dark:bg-cod-gray-800 text-base font-medium text-cod-gray-700 dark:text-cod-gray-300 hover:bg-cod-gray-100 dark:hover:bg-cod-gray-700">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         @endif
     </div>
 </x-container>

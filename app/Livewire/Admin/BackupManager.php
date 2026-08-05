@@ -19,7 +19,7 @@ class BackupManager extends Component
     use WithFileUploads;
     use WithToasts;
 
-    public bool $includeSavestates = true;
+    public bool $includeSavestates = false;
     public array $backups = [];
     public bool $isCreating = false;
 
