@@ -15,4 +15,25 @@
         </div>
     </div>
     @endfor
+
+    {{-- pagination: caption + page boxes — mirrors vendor/livewire/tailwind.blade.php --}}
+    <nav aria-hidden="true" class="flex items-center justify-between">
+        {{-- mobile prev / next --}}
+        <div class="flex flex-1 justify-between sm:hidden">
+            <div class="h-9 w-24 rounded-md skeleton"></div>
+            <div class="h-9 w-20 rounded-md skeleton"></div>
+        </div>
+
+        {{-- desktop: "Showing …" + page boxes --}}
+        <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+            <div class="h-5 w-52 max-w-[55%] rounded-full skeleton"></div>
+            <div class="inline-flex overflow-hidden rounded-md">
+                <div class="h-9 w-9 shrink-0 skeleton"></div>
+                @for ($p = 0; $p < 5; $p++)
+                <div class="h-9 w-10 shrink-0 skeleton"></div>
+                @endfor
+                <div class="h-9 w-9 shrink-0 skeleton"></div>
+            </div>
+        </div>
+    </nav>
 </div>
