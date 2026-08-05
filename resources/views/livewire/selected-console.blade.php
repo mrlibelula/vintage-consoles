@@ -84,7 +84,7 @@
 
                     <!-- skeleton lista -->
                     <template x-if="skeletonLista">
-                        <div class="py-4 mb-[0.9rem]">
+                        <div class="w-full min-w-0 py-4">
                             <x-skeleton-lista />
                         </div>
                     </template>
